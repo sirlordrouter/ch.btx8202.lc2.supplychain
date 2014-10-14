@@ -1,21 +1,20 @@
-package example;
-
-import swissindex.PHARMA;
-import swissindex.WsPharmaV101;
-import swissindex.WsPharmaV101Soap;
-
-import java.util.List;
-
-/**
- * Created by Johannes on 13.10.14.
+package example;/**
+ * Created by Johannes on 14.10.14.
  */
 public class HelloWorldClient {
   public static void main(String[] argv) {
-      swissindex.WsPharmaV101 pharma = new WsPharmaV101();
-      WsPharmaV101Soap wsPharmaV101Soap = pharma.getWsPharmaV101Soap();
-      PHARMA p = wsPharmaV101Soap.downloadAll("de");
-
-      List<PHARMA.ITEM> item = p.getITEM();
-      System.out.println("Hello");
+      try {
+          Ws_Pharma_V101Locator locator = new Ws_Pharma_V101Locator();
+          Ws_Pharma_V101Soap_PortType service = locator.get();
+          // If authorization is required
+          //((Ws_Pharma_V101Soap12Stub)service).setUsername("user3");
+          //((Ws_Pharma_V101Soap12Stub)service).setPassword("pass3");
+          // invoke business method
+          service.businessMethod();
+      } catch (javax.xml.rpc.ServiceException ex) {
+          ex.printStackTrace();
+      } catch (java.rmi.RemoteException ex) {
+          ex.printStackTrace();
+      }  
   }
 }

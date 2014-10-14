@@ -1,743 +1,209 @@
+/**
+ * PHARMA.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
+ */
 
 package swissindex;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
+public class PHARMA  implements java.io.Serializable {
+    private swissindex.PHARMAITEM[] ITEM;
 
+    private swissindex.PHARMARESULT RESULT;
 
-/**
- * <p>Java-Klasse f\u00fcr anonymous complex type.
- * 
- * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
- * 
- * <pre>
- * &lt;complexType>
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="ITEM" maxOccurs="unbounded" minOccurs="0">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="GTIN" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="PHAR" type="{http://www.w3.org/2001/XMLSchema}integer" minOccurs="0"/>
- *                   &lt;element name="STATUS">
- *                     &lt;simpleType>
- *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                         &lt;enumeration value="A"/>
- *                         &lt;enumeration value="I"/>
- *                       &lt;/restriction>
- *                     &lt;/simpleType>
- *                   &lt;/element>
- *                   &lt;element name="STDATE" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *                   &lt;element name="LANG" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="DSCR" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="ADDSCR" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="ATC" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="COMP" minOccurs="0">
- *                     &lt;complexType>
- *                       &lt;complexContent>
- *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                           &lt;sequence>
- *                             &lt;element name="NAME" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                             &lt;element name="GLN" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                           &lt;/sequence>
- *                         &lt;/restriction>
- *                       &lt;/complexContent>
- *                     &lt;/complexType>
- *                   &lt;/element>
- *                 &lt;/sequence>
- *                 &lt;attribute name="DT" use="required" type="{http://www.w3.org/2001/XMLSchema}dateTime" />
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="RESULT" minOccurs="0">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="OK_ERROR">
- *                     &lt;simpleType>
- *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                         &lt;enumeration value="OK"/>
- *                         &lt;enumeration value="ERROR"/>
- *                       &lt;/restriction>
- *                     &lt;/simpleType>
- *                   &lt;/element>
- *                   &lt;element name="NBR_RECORD" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *                   &lt;element name="ERROR_CODE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="MESSAGE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/sequence>
- *       &lt;attribute name="CREATION_DATETIME" use="required" type="{http://www.w3.org/2001/XMLSchema}dateTime" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "item",
-    "result"
-})
-@XmlRootElement(name = "PHARMA")
-public class PHARMA {
+    private java.util.Calendar CREATION_DATETIME;  // attribute
 
-    @XmlElement(name = "ITEM")
-    protected List<PHARMA.ITEM> item;
-    @XmlElement(name = "RESULT")
-    protected PHARMA.RESULT result;
-    @XmlAttribute(name = "CREATION_DATETIME", required = true)
-    @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar creationdatetime;
-
-    /**
-     * Gets the value of the item property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the item property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getITEM().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PHARMA.ITEM }
-     * 
-     * 
-     */
-    public List<PHARMA.ITEM> getITEM() {
-        if (item == null) {
-            item = new ArrayList<PHARMA.ITEM>();
-        }
-        return this.item;
+    public PHARMA() {
     }
 
-    /**
-     * Ruft den Wert der result-Eigenschaft ab.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PHARMA.RESULT }
-     *     
-     */
-    public PHARMA.RESULT getRESULT() {
-        return result;
-    }
-
-    /**
-     * Legt den Wert der result-Eigenschaft fest.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PHARMA.RESULT }
-     *     
-     */
-    public void setRESULT(PHARMA.RESULT value) {
-        this.result = value;
-    }
-
-    /**
-     * Ruft den Wert der creationdatetime-Eigenschaft ab.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getCREATIONDATETIME() {
-        return creationdatetime;
-    }
-
-    /**
-     * Legt den Wert der creationdatetime-Eigenschaft fest.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setCREATIONDATETIME(XMLGregorianCalendar value) {
-        this.creationdatetime = value;
+    public PHARMA(
+           swissindex.PHARMAITEM[] ITEM,
+           swissindex.PHARMARESULT RESULT,
+           java.util.Calendar CREATION_DATETIME) {
+           this.ITEM = ITEM;
+           this.RESULT = RESULT;
+           this.CREATION_DATETIME = CREATION_DATETIME;
     }
 
 
     /**
-     * <p>Java-Klasse f\u00fcr anonymous complex type.
+     * Gets the ITEM value for this PHARMA.
      * 
-     * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="GTIN" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="PHAR" type="{http://www.w3.org/2001/XMLSchema}integer" minOccurs="0"/>
-     *         &lt;element name="STATUS">
-     *           &lt;simpleType>
-     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-     *               &lt;enumeration value="A"/>
-     *               &lt;enumeration value="I"/>
-     *             &lt;/restriction>
-     *           &lt;/simpleType>
-     *         &lt;/element>
-     *         &lt;element name="STDATE" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
-     *         &lt;element name="LANG" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="DSCR" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="ADDSCR" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="ATC" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="COMP" minOccurs="0">
-     *           &lt;complexType>
-     *             &lt;complexContent>
-     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                 &lt;sequence>
-     *                   &lt;element name="NAME" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                   &lt;element name="GLN" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                 &lt;/sequence>
-     *               &lt;/restriction>
-     *             &lt;/complexContent>
-     *           &lt;/complexType>
-     *         &lt;/element>
-     *       &lt;/sequence>
-     *       &lt;attribute name="DT" use="required" type="{http://www.w3.org/2001/XMLSchema}dateTime" />
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
+     * @return ITEM
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "gtin",
-        "phar",
-        "status",
-        "stdate",
-        "lang",
-        "dscr",
-        "addscr",
-        "atc",
-        "comp"
-    })
-    public static class ITEM {
+    public swissindex.PHARMAITEM[] getITEM() {
+        return ITEM;
+    }
 
-        @XmlElement(name = "GTIN")
-        protected String gtin;
-        @XmlElement(name = "PHAR")
-        protected BigInteger phar;
-        @XmlElement(name = "STATUS", required = true)
-        protected String status;
-        @XmlElement(name = "STDATE", required = true)
-        @XmlSchemaType(name = "dateTime")
-        protected XMLGregorianCalendar stdate;
-        @XmlElement(name = "LANG")
-        protected String lang;
-        @XmlElement(name = "DSCR")
-        protected String dscr;
-        @XmlElement(name = "ADDSCR")
-        protected String addscr;
-        @XmlElement(name = "ATC")
-        protected String atc;
-        @XmlElement(name = "COMP")
-        protected PHARMA.ITEM.COMP comp;
-        @XmlAttribute(name = "DT", required = true)
-        @XmlSchemaType(name = "dateTime")
-        protected XMLGregorianCalendar dt;
 
-        /**
-         * Ruft den Wert der gtin-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getGTIN() {
-            return gtin;
+    /**
+     * Sets the ITEM value for this PHARMA.
+     * 
+     * @param ITEM
+     */
+    public void setITEM(swissindex.PHARMAITEM[] ITEM) {
+        this.ITEM = ITEM;
+    }
+
+    public swissindex.PHARMAITEM getITEM(int i) {
+        return this.ITEM[i];
+    }
+
+    public void setITEM(int i, swissindex.PHARMAITEM _value) {
+        this.ITEM[i] = _value;
+    }
+
+
+    /**
+     * Gets the RESULT value for this PHARMA.
+     * 
+     * @return RESULT
+     */
+    public swissindex.PHARMARESULT getRESULT() {
+        return RESULT;
+    }
+
+
+    /**
+     * Sets the RESULT value for this PHARMA.
+     * 
+     * @param RESULT
+     */
+    public void setRESULT(swissindex.PHARMARESULT RESULT) {
+        this.RESULT = RESULT;
+    }
+
+
+    /**
+     * Gets the CREATION_DATETIME value for this PHARMA.
+     * 
+     * @return CREATION_DATETIME
+     */
+    public java.util.Calendar getCREATION_DATETIME() {
+        return CREATION_DATETIME;
+    }
+
+
+    /**
+     * Sets the CREATION_DATETIME value for this PHARMA.
+     * 
+     * @param CREATION_DATETIME
+     */
+    public void setCREATION_DATETIME(java.util.Calendar CREATION_DATETIME) {
+        this.CREATION_DATETIME = CREATION_DATETIME;
+    }
+
+    private java.lang.Object __equalsCalc = null;
+    public synchronized boolean equals(java.lang.Object obj) {
+        if (!(obj instanceof PHARMA)) return false;
+        PHARMA other = (PHARMA) obj;
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (__equalsCalc != null) {
+            return (__equalsCalc == obj);
         }
+        __equalsCalc = obj;
+        boolean _equals;
+        _equals = true && 
+            ((this.ITEM==null && other.getITEM()==null) || 
+             (this.ITEM!=null &&
+              java.util.Arrays.equals(this.ITEM, other.getITEM()))) &&
+            ((this.RESULT==null && other.getRESULT()==null) || 
+             (this.RESULT!=null &&
+              this.RESULT.equals(other.getRESULT()))) &&
+            ((this.CREATION_DATETIME==null && other.getCREATION_DATETIME()==null) || 
+             (this.CREATION_DATETIME!=null &&
+              this.CREATION_DATETIME.equals(other.getCREATION_DATETIME())));
+        __equalsCalc = null;
+        return _equals;
+    }
 
-        /**
-         * Legt den Wert der gtin-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setGTIN(String value) {
-            this.gtin = value;
+    private boolean __hashCodeCalc = false;
+    public synchronized int hashCode() {
+        if (__hashCodeCalc) {
+            return 0;
         }
-
-        /**
-         * Ruft den Wert der phar-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link BigInteger }
-         *     
-         */
-        public BigInteger getPHAR() {
-            return phar;
-        }
-
-        /**
-         * Legt den Wert der phar-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link BigInteger }
-         *     
-         */
-        public void setPHAR(BigInteger value) {
-            this.phar = value;
-        }
-
-        /**
-         * Ruft den Wert der status-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getSTATUS() {
-            return status;
-        }
-
-        /**
-         * Legt den Wert der status-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setSTATUS(String value) {
-            this.status = value;
-        }
-
-        /**
-         * Ruft den Wert der stdate-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public XMLGregorianCalendar getSTDATE() {
-            return stdate;
-        }
-
-        /**
-         * Legt den Wert der stdate-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public void setSTDATE(XMLGregorianCalendar value) {
-            this.stdate = value;
-        }
-
-        /**
-         * Ruft den Wert der lang-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getLANG() {
-            return lang;
-        }
-
-        /**
-         * Legt den Wert der lang-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setLANG(String value) {
-            this.lang = value;
-        }
-
-        /**
-         * Ruft den Wert der dscr-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getDSCR() {
-            return dscr;
-        }
-
-        /**
-         * Legt den Wert der dscr-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setDSCR(String value) {
-            this.dscr = value;
-        }
-
-        /**
-         * Ruft den Wert der addscr-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getADDSCR() {
-            return addscr;
-        }
-
-        /**
-         * Legt den Wert der addscr-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setADDSCR(String value) {
-            this.addscr = value;
-        }
-
-        /**
-         * Ruft den Wert der atc-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getATC() {
-            return atc;
-        }
-
-        /**
-         * Legt den Wert der atc-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setATC(String value) {
-            this.atc = value;
-        }
-
-        /**
-         * Ruft den Wert der comp-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link PHARMA.ITEM.COMP }
-         *     
-         */
-        public PHARMA.ITEM.COMP getCOMP() {
-            return comp;
-        }
-
-        /**
-         * Legt den Wert der comp-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link PHARMA.ITEM.COMP }
-         *     
-         */
-        public void setCOMP(PHARMA.ITEM.COMP value) {
-            this.comp = value;
-        }
-
-        /**
-         * Ruft den Wert der dt-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public XMLGregorianCalendar getDT() {
-            return dt;
-        }
-
-        /**
-         * Legt den Wert der dt-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public void setDT(XMLGregorianCalendar value) {
-            this.dt = value;
-        }
-
-
-        /**
-         * <p>Java-Klasse f\u00fcr anonymous complex type.
-         * 
-         * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
-         * 
-         * <pre>
-         * &lt;complexType>
-         *   &lt;complexContent>
-         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *       &lt;sequence>
-         *         &lt;element name="NAME" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *         &lt;element name="GLN" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *       &lt;/sequence>
-         *     &lt;/restriction>
-         *   &lt;/complexContent>
-         * &lt;/complexType>
-         * </pre>
-         * 
-         * 
-         */
-        @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(name = "", propOrder = {
-            "name",
-            "gln"
-        })
-        public static class COMP {
-
-            @XmlElement(name = "NAME")
-            protected String name;
-            @XmlElement(name = "GLN")
-            protected String gln;
-
-            /**
-             * Ruft den Wert der name-Eigenschaft ab.
-             * 
-             * @return
-             *     possible object is
-             *     {@link String }
-             *     
-             */
-            public String getNAME() {
-                return name;
+        __hashCodeCalc = true;
+        int _hashCode = 1;
+        if (getITEM() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getITEM());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getITEM(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
             }
-
-            /**
-             * Legt den Wert der name-Eigenschaft fest.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *     
-             */
-            public void setNAME(String value) {
-                this.name = value;
-            }
-
-            /**
-             * Ruft den Wert der gln-Eigenschaft ab.
-             * 
-             * @return
-             *     possible object is
-             *     {@link String }
-             *     
-             */
-            public String getGLN() {
-                return gln;
-            }
-
-            /**
-             * Legt den Wert der gln-Eigenschaft fest.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *     
-             */
-            public void setGLN(String value) {
-                this.gln = value;
-            }
-
         }
-
+        if (getRESULT() != null) {
+            _hashCode += getRESULT().hashCode();
+        }
+        if (getCREATION_DATETIME() != null) {
+            _hashCode += getCREATION_DATETIME().hashCode();
+        }
+        __hashCodeCalc = false;
+        return _hashCode;
     }
 
+    // Type metadata
+    private static org.apache.axis.description.TypeDesc typeDesc =
+        new org.apache.axis.description.TypeDesc(PHARMA.class, true);
+
+    static {
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">PHARMA"));
+        org.apache.axis.description.AttributeDesc attrField = new org.apache.axis.description.AttributeDesc();
+        attrField.setFieldName("CREATION_DATETIME");
+        attrField.setXmlName(new javax.xml.namespace.QName("", "CREATION_DATETIME"));
+        attrField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "dateTime"));
+        typeDesc.addFieldDesc(attrField);
+        org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("ITEM");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "ITEM"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">>PHARMA>ITEM"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        elemField.setMaxOccursUnbounded(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("RESULT");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "RESULT"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">>PHARMA>RESULT"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+    }
 
     /**
-     * <p>Java-Klasse f\u00fcr anonymous complex type.
-     * 
-     * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="OK_ERROR">
-     *           &lt;simpleType>
-     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-     *               &lt;enumeration value="OK"/>
-     *               &lt;enumeration value="ERROR"/>
-     *             &lt;/restriction>
-     *           &lt;/simpleType>
-     *         &lt;/element>
-     *         &lt;element name="NBR_RECORD" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
-     *         &lt;element name="ERROR_CODE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="MESSAGE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
+     * Return type metadata object
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "okerror",
-        "nbrrecord",
-        "errorcode",
-        "message"
-    })
-    public static class RESULT {
+    public static org.apache.axis.description.TypeDesc getTypeDesc() {
+        return typeDesc;
+    }
 
-        @XmlElement(name = "OK_ERROR", required = true)
-        protected String okerror;
-        @XmlElement(name = "NBR_RECORD")
-        protected Integer nbrrecord;
-        @XmlElement(name = "ERROR_CODE")
-        protected String errorcode;
-        @XmlElement(name = "MESSAGE")
-        protected String message;
+    /**
+     * Get Custom Serializer
+     */
+    public static org.apache.axis.encoding.Serializer getSerializer(
+           java.lang.String mechType, 
+           java.lang.Class _javaType,  
+           javax.xml.namespace.QName _xmlType) {
+        return 
+          new  org.apache.axis.encoding.ser.BeanSerializer(
+            _javaType, _xmlType, typeDesc);
+    }
 
-        /**
-         * Ruft den Wert der okerror-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getOKERROR() {
-            return okerror;
-        }
-
-        /**
-         * Legt den Wert der okerror-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setOKERROR(String value) {
-            this.okerror = value;
-        }
-
-        /**
-         * Ruft den Wert der nbrrecord-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link Integer }
-         *     
-         */
-        public Integer getNBRRECORD() {
-            return nbrrecord;
-        }
-
-        /**
-         * Legt den Wert der nbrrecord-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link Integer }
-         *     
-         */
-        public void setNBRRECORD(Integer value) {
-            this.nbrrecord = value;
-        }
-
-        /**
-         * Ruft den Wert der errorcode-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getERRORCODE() {
-            return errorcode;
-        }
-
-        /**
-         * Legt den Wert der errorcode-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setERRORCODE(String value) {
-            this.errorcode = value;
-        }
-
-        /**
-         * Ruft den Wert der message-Eigenschaft ab.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getMESSAGE() {
-            return message;
-        }
-
-        /**
-         * Legt den Wert der message-Eigenschaft fest.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setMESSAGE(String value) {
-            this.message = value;
-        }
-
+    /**
+     * Get Custom Deserializer
+     */
+    public static org.apache.axis.encoding.Deserializer getDeserializer(
+           java.lang.String mechType, 
+           java.lang.Class _javaType,  
+           javax.xml.namespace.QName _xmlType) {
+        return 
+          new  org.apache.axis.encoding.ser.BeanDeserializer(
+            _javaType, _xmlType, typeDesc);
     }
 
 }
