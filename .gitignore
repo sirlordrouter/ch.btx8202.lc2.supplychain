@@ -4,8 +4,8 @@
 .settings/
 
 # Intellij
-# .idea/
-# *.iws
+.idea/
+ *.iws
 
 # Mac
 .DS_Store
