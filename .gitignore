@@ -6,6 +6,7 @@
 # Intellij
 .idea/
  *.iws
+ workspace.xml
 
 # Mac
 .DS_Store
