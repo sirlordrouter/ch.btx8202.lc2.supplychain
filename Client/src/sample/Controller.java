@@ -2,11 +2,15 @@ package sample;
 
 import SwissIndex.*;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import services.barcoding.IBarcodeParsedEventListener;
 
 import javax.xml.rpc.ServiceException;
+import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.ResourceBundle;
 
 /**
  * Berner Fachhochschule</br>
@@ -18,12 +22,9 @@ import java.rmi.RemoteException;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class Controller implements IBarcodeParsedEventListener {
+public class Controller implements IBarcodeParsedEventListener, Initializable {
 
-    public Label MedInfo;
-    public Label labelItem;
-
-    public Controller () {}
+    @FXML private Label labelItem;
 
     @Override
     public void setBarcode(long barcode) {
@@ -49,7 +50,13 @@ public class Controller implements IBarcodeParsedEventListener {
         }
     }
 
+    @FXML
     public void Event(ActionEvent actionEvent) {
-        MedInfo.setText("Button clicked...please Scan item..");
+        labelItem.setText("Button clicked...please Scan item..");
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        labelItem.setText("Label has been initialized!");
     }
 }

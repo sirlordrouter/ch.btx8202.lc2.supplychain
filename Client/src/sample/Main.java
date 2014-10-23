@@ -2,8 +2,8 @@ package sample;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -24,7 +24,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("sample.fxml"));
+
+        Pane root = (Pane)fxmlLoader.load();
+        Controller controller = fxmlLoader.getController();
+
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
 
@@ -41,10 +46,11 @@ public class Main extends Application {
         BarcodeGlobalListener listener = new BarcodeGlobalListener();
         GlobalScreen.getInstance().addNativeKeyListener(listener);
 
-        primaryStage.show();
-
-        Controller controller = new Controller();
         listener.addListener(controller);
+
+        controller.setBarcode(7680340960153l);
+
+        primaryStage.show();
     }
 
 
