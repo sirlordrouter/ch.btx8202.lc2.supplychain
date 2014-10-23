@@ -1,4 +1,4 @@
-package model;
+package services.barcoding;
 
 /**
  * Berner Fachhochschule</br>
