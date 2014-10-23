@@ -18,7 +18,7 @@
       <Button layoutX="274.0" layoutY="265.0" mnemonicParsing="false" text="Login" />
       <TextField layoutX="225.0" layoutY="168.0" />
       <TextField layoutX="225.0" layoutY="209.0" />
-      <Label layoutX="123.0" layoutY="173.0" text="Benutzername" />
+      <Label layoutX="123.0" layoutY="173.0" text="Benutzername" fx:id="lblUsername"/>
       <Label layoutX="159.0" layoutY="214.0" text="Passwort" />
       <Label layoutX="136.0" layoutY="67.0" prefHeight="49.0" prefWidth="328.0" text="Apotheke Klinik Höheweg" textAlignment="CENTER" textFill="#5bc660">
          <font>
