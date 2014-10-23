@@ -24,14 +24,24 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-
+/*
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Login.fxml"));
 
         Pane root = (Pane)fxmlLoader.load();
         Controller controller = fxmlLoader.getController();
 
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(new Scene(root, 400, 270));
+*/
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainView.fxml"));
+
+        Pane root = (Pane)fxmlLoader.load();
+        Controller controller = fxmlLoader.getController();
+
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(new Scene(root, 400, 270));
+
 
 
         //Nativehook code, für den globalen Keylistener

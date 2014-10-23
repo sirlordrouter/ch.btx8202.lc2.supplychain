@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: aliceblue;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <Label layoutX="3.0" layoutY="-2.0" prefHeight="31.0" prefWidth="36.0" text="User:" />
+      <Pane fx:id="infoPane" layoutY="-1.0" prefHeight="38.0" prefWidth="600.0" style="-fx-background-color: lightsteelblue;">
+         <children>
+            <Label fx:id="userField" layoutX="43.0" layoutY="4.0" prefHeight="31.0" prefWidth="108.0" text="User: zehnp1" textFill="#2b5bae" />
+            <Label fx:id="locationField" layoutX="535.0" layoutY="4.0" prefHeight="31.0" prefWidth="65.0" text="StationA" textFill="#2b5bae" />
+            <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="6.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../media/Profilbild.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
