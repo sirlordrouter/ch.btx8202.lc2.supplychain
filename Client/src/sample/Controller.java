@@ -4,7 +4,6 @@ import SwissIndex.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import services.barcoding.IBarcodeParsedEventListener;
 
 import javax.xml.rpc.ServiceException;
@@ -24,7 +23,6 @@ import java.util.ResourceBundle;
  */
 public class Controller implements IBarcodeParsedEventListener, Initializable {
 
-    @FXML private Label labelItem;
 
     @Override
     public void setBarcode(long barcode) {
@@ -39,7 +37,7 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
 
             for (PHARMAITEM pharmaitem : de.getITEM()) {
                 PHARMAITEMCOMP comp = pharmaitem.getCOMP();
-                labelItem.setText("EAN: "+ barcode + ", Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
+                //labelItem.setText("EAN: "+ barcode + ", Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
                 System.out.println("Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
             }
 
@@ -52,11 +50,11 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
 
     @FXML
     public void Event(ActionEvent actionEvent) {
-        labelItem.setText("Button clicked...please Scan item..");
+        //labelItem.setText("Button clicked...please Scan item..");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        labelItem.setText("Label has been initialized!");
+       // labelItem.setText("Label has been initialized!");
     }
 }
