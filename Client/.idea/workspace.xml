@@ -79,9 +79,24 @@
       <file leaf-file-name="BarcodeGlobalListener.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/services/barcoding/BarcodeGlobalListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1083" max-vertical-offset="2204">
-              <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2403" max-vertical-offset="2850">
+              <caret line="80" column="55" selection-start-line="80" selection-start-column="55" selection-end-line="80" selection-end-column="55" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ScannerKeyCodes.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/services/barcoding/ScannerKeyCodes.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="665">
+              <caret line="13" column="16" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+              <folding>
+                <element signature="e#353#354#0" expanded="true" />
+                <element signature="e#385#386#0" expanded="true" />
+                <element signature="e#432#433#0" expanded="true" />
+                <element signature="e#459#460#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -89,7 +104,7 @@
       <file leaf-file-name="IBarcodeParsedEventListener.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/services/barcoding/IBarcodeParsedEventListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="152" max-vertical-offset="399">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="399">
               <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
               <folding />
             </state>
@@ -107,7 +122,7 @@
         </entry>
       </file>
       <file leaf-file-name="BarcodeType.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/BarcodeType.java">
+        <entry file="file://$PROJECT_DIR$/src/services/barcoding/BarcodeType.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="380">
               <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
@@ -117,13 +132,13 @@
         </entry>
       </file>
       <file leaf-file-name="BarcodeDataelements.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/model/BarcodeDataelements.java">
+        <entry file="file://$PROJECT_DIR$/src/services/barcoding/BarcodeDataelements.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.37173912" vertical-offset="0" max-vertical-offset="460">
-              <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.7021739" vertical-offset="0" max-vertical-offset="589">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding>
-                <element signature="e#189#190#0" expanded="true" />
-                <element signature="e#225#226#0" expanded="true" />
+                <element signature="e#482#483#0" expanded="true" />
+                <element signature="e#518#519#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -162,13 +177,15 @@
         <option value="$PROJECT_DIR$/src/model/entities/Company.java" />
         <option value="$PROJECT_DIR$/src/services/barcoding/IBarcodeParsedEventListener.java" />
         <option value="$PROJECT_DIR$/src/services/ViewDoesNotExistException.java" />
-        <option value="$PROJECT_DIR$/src/services/barcoding/BarcodeGlobalListener.java" />
         <option value="$PROJECT_DIR$/src/sample/sample.fxml" />
         <option value="$PROJECT_DIR$/src/sample/Main.java" />
         <option value="$PROJECT_DIR$/src/sample/Controller.java" />
         <option value="$PROJECT_DIR$/src/model/entities/BarcodeType.java" />
         <option value="$PROJECT_DIR$/src/model/BarcodeType.java" />
         <option value="$PROJECT_DIR$/src/model/BarcodeDataelements.java" />
+        <option value="$PROJECT_DIR$/src/services/barcoding/ScannerKeyCodes.java" />
+        <option value="$PROJECT_DIR$/src/services/barcoding/BarcodeGlobalListener.java" />
+        <option value="$PROJECT_DIR$/src/services/barcoding/BarcodeDataelements.java" />
       </list>
     </option>
   </component>
@@ -257,6 +274,14 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="barcoding" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -269,10 +294,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -571,12 +592,12 @@
       <workItem from="1413910446354" duration="6104000" />
       <workItem from="1413917192053" duration="3137000" />
       <workItem from="1413959013826" duration="454000" />
-      <workItem from="1414048034215" duration="2467000" />
+      <workItem from="1414048034215" duration="5766000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13464000" />
+    <option name="totallyTimeSpent" value="16763000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="560" y="99" width="1162" height="876" extended-state="0" />
@@ -878,26 +899,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/barcoding/IBarcodeParsedEventListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="399">
-          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="513">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/barcoding/BarcodeGlobalListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1188" max-vertical-offset="2071">
-          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -918,7 +923,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/BarcodeType.java">
+    <entry file="file://$PROJECT_DIR$/src/services/barcoding/IBarcodeParsedEventListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="399">
+          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/barcoding/ScannerKeyCodes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="665">
+          <caret line="13" column="16" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+          <folding>
+            <element signature="e#353#354#0" expanded="true" />
+            <element signature="e#385#386#0" expanded="true" />
+            <element signature="e#432#433#0" expanded="true" />
+            <element signature="e#459#460#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/barcoding/BarcodeGlobalListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2403" max-vertical-offset="2850">
+          <caret line="80" column="55" selection-start-line="80" selection-start-column="55" selection-end-line="80" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/barcoding/BarcodeType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="380">
           <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
@@ -926,13 +960,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/BarcodeDataelements.java">
+    <entry file="file://$PROJECT_DIR$/src/services/barcoding/BarcodeDataelements.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37173912" vertical-offset="0" max-vertical-offset="460">
-          <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.7021739" vertical-offset="0" max-vertical-offset="589">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding>
-            <element signature="e#189#190#0" expanded="true" />
-            <element signature="e#225#226#0" expanded="true" />
+            <element signature="e#482#483#0" expanded="true" />
+            <element signature="e#518#519#0" expanded="true" />
           </folding>
         </state>
       </provider>

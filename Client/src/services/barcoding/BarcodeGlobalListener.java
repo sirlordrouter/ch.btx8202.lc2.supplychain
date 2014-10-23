@@ -71,12 +71,46 @@ public class BarcodeGlobalListener implements NativeKeyListener {
     public void nativeKeyReleased(NativeKeyEvent e) {
         int keyCode = e.getKeyCode();
         System.out.println(keyCode);
+        System.out.println("String rep: "+ e.getKeyChar());
+        System.out.println("Key Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
+        System.out.println("Mod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
+        System.out.println("Key Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
+        System.out.println("Key Char "+e.getKeyChar());
+        System.out.println("Key Code "+e.getKeyCode());
+        System.out.println("Key Loc "+e.getKeyLocation());
+        System.out.println("Raw Code "+e.getRawCode());
+        System.out.println("Modif "+e.getModifiers());
 
         if (prefix1 && prefix2 && prefix3 && prefix4) {
             if (keyCode == END) {
 
                 // Bug fix, there is a additional sign in front of the code; cut
                 // it away!
+
+                //Try Parse String !!! Barcode may contains Letters or ( ) or similar
+                // (
+                /*
+                *   9
+                    String rep: ￿
+                    Key Text 8
+                    Mod Text Umschalt+Alt
+                    Key Char ￿
+                    Key Code 9
+                    Key Loc 1
+                    Raw Code 28
+                    Modif 1
+                *
+                * )
+                    10
+                    String rep: ￿
+                    Key Text 9
+                    Mod Text Strg+Alt
+                    Key Char ￿
+                    Key Code 10
+                    Key Loc 1
+                    Raw Code 25
+                    Modif 1
+                * */
 
                 // code is scanned
                 long tempBarCode = Long.parseLong(this.barcode) % 10000000000000l;
