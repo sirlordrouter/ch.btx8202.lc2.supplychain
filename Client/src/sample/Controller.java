@@ -4,7 +4,6 @@ import SwissIndex.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import services.barcoding.IBarcodeParsedEventListener;
 
 import javax.xml.rpc.ServiceException;
@@ -24,8 +23,6 @@ import java.util.ResourceBundle;
  */
 public class Controller implements IBarcodeParsedEventListener, Initializable {
 
-
-    @FXML public Label lblUsername;
 
     @Override
     public void setBarcode(long barcode) {
@@ -58,6 +55,6 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-       lblUsername.setText("Label has been initialized!");
+       //lblUsername.setText("Label has been initialized!");
     }
 }
