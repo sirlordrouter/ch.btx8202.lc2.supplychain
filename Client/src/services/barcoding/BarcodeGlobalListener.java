@@ -13,7 +13,13 @@ import java.util.ArrayList;
  * the programme we just received those 4 KeyCodes. So we check the income,
  * until we have this 4 received and then we read the numbers we receive until
  * there is a "enter" which is as a 10 so we know the code is complete. Then we
- * search for the patient and change the state and give an message. E voila
+ * search for the patient and change the state and give an message.
+ *
+ * The Scanner will detect the Pre- and Postfix from a DataLogic Scanner (DL 3200 VSI). Therefore
+ * the Scaner must be programmed according to the Product Reference Guide:
+ * http://www.datalogic.com/tools/download.aspx?iddwnfile=11877&path=%2fupload%2fmarketlit%2fmanuals%2f820037314.pdf&name=820037314
+ *
+ * TODO: Insert correct Steps in Manual to Programm Scanner According to this class
  *
  * @author Johannes Gnägi
  * @author Raphael Kapp
@@ -57,10 +63,30 @@ public class BarcodeGlobalListener implements NativeKeyListener {
 
     @Override
     public void nativeKeyTyped(NativeKeyEvent e) {
+
+        System.out.println("TYPEString rep: "+ e.getKeyChar());
+        System.out.println("TYPEKey Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
+        System.out.println("TYPEMod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
+        System.out.println("TYPEKey Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
+        System.out.println("TYPEKey Char "+e.getKeyChar());
+        System.out.println("TYPEKey Code "+e.getKeyCode());
+        System.out.println("TYPEKey Loc "+e.getKeyLocation());
+        System.out.println("TYPERaw Code "+e.getRawCode());
+        System.out.println("TYPEModif "+e.getModifiers());
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
+
+        System.out.println("PRESSString rep: "+ e.getKeyChar());
+        System.out.println("PRESSKey Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
+        System.out.println("PRESSMod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
+        System.out.println("PRESSKey Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
+        System.out.println("PRESSKey Char "+e.getKeyChar());
+        System.out.println("PRESSKey Code "+e.getKeyCode());
+        System.out.println("PRESSKey Loc "+e.getKeyLocation());
+        System.out.println("PRESSRaw Code "+e.getRawCode());
+        System.out.println("PRESSModif "+e.getModifiers());
     }
 
     /**
