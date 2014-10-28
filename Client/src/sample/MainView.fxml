@@ -24,9 +24,9 @@
         <items>
           <AnchorPane fx:id="mediInfoPane" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="189.0">
                <children>
-                  <ImageView fx:id="mediPicture" fitHeight="95.0" fitWidth="144.0" layoutX="27.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="mediPicture" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../Pictures/Tennis/0e7888b86bc7b6a76f986b883b75b18f.jpg" />
+                        <Image url="@../media/mediBild.jpg" />
                      </image>
                   </ImageView>
                </children>
@@ -44,7 +44,7 @@
       <ScrollBar layoutX="455.0" layoutY="37.0" orientation="VERTICAL" prefHeight="206.0" prefWidth="17.0" />
 
 
-      <ListView fx:id="medList" layoutX="453.0" layoutY="34.0" prefHeight="237.0" prefWidth="200.0"/>
+      <ListView fx:id="medList" layoutX="453.0" layoutY="34.0" prefHeight="237.0" prefWidth="200.0" />
 
 
       <Button fx:id="CheckInButton" layoutX="572.0" layoutY="298.0" mnemonicParsing="false" text="check in" />
