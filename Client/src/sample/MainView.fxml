@@ -1,22 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: aliceblue;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="657.0" style="-fx-background-color: aliceblue;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <Pane fx:id="infoPane" layoutY="-1.0" prefHeight="38.0" prefWidth="600.0" style="-fx-background-color: lightsteelblue;">
+      <Pane fx:id="infoPane" layoutY="-1.0" prefHeight="38.0" prefWidth="657.0" style="-fx-background-color: lightsteelblue;">
          <children>
             <Label fx:id="userField" layoutX="43.0" layoutY="4.0" prefHeight="31.0" prefWidth="108.0" text="User: zehnp1" textFill="#2b5bae" />
-            <Label fx:id="locationField" layoutX="535.0" layoutY="4.0" prefHeight="31.0" prefWidth="65.0" text="StationA" textFill="#2b5bae" />
+            <Label fx:id="locationField" layoutX="584.0" layoutY="4.0" prefHeight="31.0" prefWidth="59.0" text="StationA" textFill="#2b5bae" />
             <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="6.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../media/Profilbild.png" />
                </image>
             </ImageView>
+            <Label fx:id="dateTimeField" layoutX="254.0" layoutY="4.0" prefHeight="31.0" prefWidth="150.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" />
          </children>
       </Pane>
+      <SplitPane dividerPositions="0.5" layoutY="37.0" prefHeight="306.0" prefWidth="450.0">
+        <items>
+          <AnchorPane fx:id="mediInfoPane" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="189.0">
+               <children>
+                  <ImageView fx:id="mediPicture" fitHeight="95.0" fitWidth="144.0" layoutX="27.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../Pictures/Tennis/0e7888b86bc7b6a76f986b883b75b18f.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="231.0">
+               <children>
+                  <TextArea fx:id="medInfoField" layoutX="-6.0" layoutY="47.0" prefHeight="265.0" prefWidth="232.0" />
+                  <Label fx:id="mediName" layoutX="7.0" layoutY="14.0" prefHeight="21.0" prefWidth="205.0" text="Dafalgan 500mg, Tbl., 100Stk." />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <Separator fx:id="horizontalSeperator" layoutX="447.0" layoutY="37.0" orientation="VERTICAL" prefHeight="306.0" prefWidth="8.0" style="-fx-background-color: grey;" />
+      <Separator fx:id="horizontalSeparator" layoutX="453.0" layoutY="271.0" prefWidth="200.0" style="-fx-background-color: grey;" />
+      <ScrollBar layoutX="455.0" layoutY="37.0" orientation="VERTICAL" prefHeight="206.0" prefWidth="17.0" />
+
+
+      <ListView fx:id="medList" layoutX="453.0" layoutY="34.0" prefHeight="237.0" prefWidth="200.0"/>
+
+
+      <Button fx:id="CheckInButton" layoutX="572.0" layoutY="298.0" mnemonicParsing="false" text="check in" />
+      <Button fx:id="checkOutButton" layoutX="464.0" layoutY="298.0" mnemonicParsing="false" text="check out" />
    </children>
 </AnchorPane>
