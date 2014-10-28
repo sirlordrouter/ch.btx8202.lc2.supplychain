@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="657.0" style="-fx-background-color: aliceblue;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="656.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <Pane fx:id="infoPane" layoutY="-1.0" prefHeight="38.0" prefWidth="657.0" style="-fx-background-color: lightsteelblue;">
          <children>
@@ -20,34 +21,83 @@
             <Label fx:id="dateTimeField" layoutX="254.0" layoutY="4.0" prefHeight="31.0" prefWidth="150.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" />
          </children>
       </Pane>
-      <SplitPane dividerPositions="0.5" layoutY="37.0" prefHeight="306.0" prefWidth="450.0">
+      <SplitPane dividerPositions="0.4419642857142857" layoutY="37.0" prefHeight="306.0" prefWidth="450.0">
         <items>
-          <AnchorPane fx:id="mediInfoPane" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="189.0">
+          <AnchorPane fx:id="mediInfoPane" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="201.0" style="-fx-background-color: aliceblue;">
                <children>
-                  <ImageView fx:id="mediPicture" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="mediPicture" fitHeight="120.0" fitWidth="173.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../media/mediBild.jpg" />
                      </image>
                   </ImageView>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="231.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="259.0">
                <children>
-                  <TextArea fx:id="medInfoField" layoutX="-6.0" layoutY="47.0" prefHeight="265.0" prefWidth="232.0" />
-                  <Label fx:id="mediName" layoutX="7.0" layoutY="14.0" prefHeight="21.0" prefWidth="205.0" text="Dafalgan 500mg, Tbl., 100Stk." />
+                  <Label fx:id="mediName" layoutX="3.0" layoutY="-1.0" prefHeight="31.0" prefWidth="246.0" style="-fx-background-color: aliceblue;" text="Dafalgan 500mg, Tbl., 100Stk.">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Pane fx:id="medInfoField" layoutY="30.0" prefHeight="274.0" prefWidth="246.0" style="-fx-background-color: aliceblue;" />
                </children>
             </AnchorPane>
         </items>
       </SplitPane>
-      <Separator fx:id="horizontalSeperator" layoutX="447.0" layoutY="37.0" orientation="VERTICAL" prefHeight="306.0" prefWidth="8.0" style="-fx-background-color: grey;" />
-      <Separator fx:id="horizontalSeparator" layoutX="453.0" layoutY="271.0" prefWidth="200.0" style="-fx-background-color: grey;" />
-      <ScrollBar layoutX="455.0" layoutY="37.0" orientation="VERTICAL" prefHeight="206.0" prefWidth="17.0" />
-
-
-      <ListView fx:id="medList" layoutX="453.0" layoutY="34.0" prefHeight="237.0" prefWidth="200.0" />
-
-
-      <Button fx:id="CheckInButton" layoutX="572.0" layoutY="298.0" mnemonicParsing="false" text="check in" />
-      <Button fx:id="checkOutButton" layoutX="464.0" layoutY="298.0" mnemonicParsing="false" text="check out" />
+      <Separator fx:id="verticalSeperator" layoutX="447.0" layoutY="37.0" orientation="VERTICAL" prefHeight="306.0" prefWidth="8.0" style="-fx-background-color: gainsboro;" />
+      <Separator fx:id="horizontalSeparator1" layoutY="340.0" prefHeight="6.0" prefWidth="656.0" style="-fx-background-color: gainsboro;" />
+      <SplitPane dividerPositions="0.8289473684210527" layoutX="455.0" layoutY="36.0" orientation="VERTICAL" prefHeight="304.0" prefWidth="201.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="248.0" prefWidth="162.0">
+               <children>
+                  <TableView fx:id="medList" layoutX="-1.0" prefHeight="248.0" prefWidth="201.0">
+                    <columns>
+                      <TableColumn prefWidth="56.0" text="Name" />
+                      <TableColumn prefWidth="52.0" text="Menge" />
+                        <TableColumn prefWidth="45.0" text="GLN" />
+                        <TableColumn prefWidth="46.0" text="Lot" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="199.0" style="-fx-background-color: aliceblue;">
+               <children>
+                  <Button fx:id="checkOutButton" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" text="check out" />
+            
+                        
+                              <Button fx:id="CheckInButton" layoutX="113.0" layoutY="11.0" mnemonicParsing="false" text="check in" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <ImageView fx:id="produktionImage" fitHeight="90.0" fitWidth="108.0" layoutX="14.0" layoutY="368.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../media/Produktion.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="transportImage" fitHeight="90.0" fitWidth="87.0" layoutX="121.0" layoutY="368.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../media/Transport.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="grossistImage" fitHeight="90.0" fitWidth="81.0" layoutX="246.0" layoutY="368.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../media/Grossist.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="transportImage" fitHeight="90.0" fitWidth="87.0" layoutX="364.0" layoutY="368.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../media/Transport.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="stationImage" fitHeight="90.0" fitWidth="87.0" layoutX="483.0" layoutY="371.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../media/Station.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bettImage" fitHeight="90.0" fitWidth="87.0" layoutX="581.0" layoutY="371.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../media/Bett.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
