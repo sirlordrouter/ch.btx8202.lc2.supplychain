@@ -55,6 +55,6 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-       // labelItem.setText("Label has been initialized!");
+       //lblUsername.setText("Label has been initialized!");
     }
 }
