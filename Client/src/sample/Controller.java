@@ -1,6 +1,8 @@
 package sample;
 
 import SwissIndex.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,9 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import model.entities.Pharma;
 import services.barcoding.IBarcodeParsedEventListener;
 
 import javax.xml.rpc.ServiceException;
@@ -50,6 +54,13 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
     public ImageView stationImage;
     public ImageView bettImage;
     public TextArea txtareaMediInfo;
+    public javafx.scene.control.TableColumn tblColName;
+    public javafx.scene.control.TableColumn tblColMenge;
+    public javafx.scene.control.TableColumn tableColGLN;
+    public javafx.scene.control.TableColumn tablColHrst;
+
+    public ObservableList<Pharma> data =  FXCollections.observableArrayList();
+
 
     @Override
     public void setBarcode(String barcode, String barcodeType, int id) {
@@ -72,6 +83,8 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
                         + "ATC Code:" + pharmaitem.getATC() + "\n\n"
                         + "Firma: " + comp.getNAME() + ", \nGLN: " + comp.getGLN();
                 txtareaMediInfo.setText(info);
+
+                data.add(new Pharma(pharmaitem.getDSCR(), pharmaitem.getADDSCR(), comp.getGLN(), comp.getNAME(), "123"));
             }
 
         } catch (ServiceException e) {
@@ -92,6 +105,22 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
         userField.setText("User: " + username);
         dateTimeField.setText("Datum: 11-11-2014, 10:00 Uhr");
         locationField.setText("Demo Station");
+
+        final ObservableList columns = medList.getColumns();
+        tblColName.setCellValueFactory(
+                new PropertyValueFactory<Pharma,String>("Name")
+        );
+        tblColMenge.setCellValueFactory(
+                new PropertyValueFactory<Pharma,String>("Menge")
+        );
+        tableColGLN.setCellValueFactory(
+                new PropertyValueFactory<Pharma,String>("GLN")
+        );
+        tablColHrst.setCellValueFactory(
+                new PropertyValueFactory<PHARMAITEM,String>("Lot")
+        );
+
+        medList.setItems(data);
     }
 
     public void checkOut(ActionEvent actionEvent) {
