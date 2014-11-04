@@ -4,6 +4,13 @@ import SwissIndex.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import services.barcoding.IBarcodeParsedEventListener;
 
 import javax.xml.rpc.ServiceException;
@@ -24,8 +31,28 @@ import java.util.ResourceBundle;
 public class Controller implements IBarcodeParsedEventListener, Initializable {
 
 
+    public Label dateTimeField;
+    public AnchorPane mainFrame;
+    public Pane infoPane;
+    public Label userField;
+    public Label locationField;
+    public AnchorPane mediInfoPane;
+    public ImageView mediPicture;
+    public Label mediName;
+    public Pane medInfoField;
+    public TableView medList;
+    public Button checkOutButton;
+    public Button CheckInButton;
+    public ImageView produktionImage;
+    public ImageView transportImage;
+    public ImageView grossistImage;
+    public ImageView transportImageOut;
+    public ImageView stationImage;
+    public ImageView bettImage;
+    public TextArea txtareaMediInfo;
+
     @Override
-    public void setBarcode(long barcode) {
+    public void setBarcode(String barcode, String barcodeType, int id) {
 
         Ws_Pharma_V101Locator locator = new Ws_Pharma_V101Locator();
         Ws_Pharma_V101Soap_PortType service = null;
@@ -33,12 +60,18 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
 
             service = locator.getws_Pharma_V101Soap();
 
-            PHARMA de = service.getByGTIN(String.valueOf(barcode), "de");
+            PHARMA de = service.getByGTIN(barcode, "de");
 
             for (PHARMAITEM pharmaitem : de.getITEM()) {
                 PHARMAITEMCOMP comp = pharmaitem.getCOMP();
                 //labelItem.setText("EAN: "+ barcode + ", Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
                 System.out.println("Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
+                String info = "Beschreibung: " + pharmaitem.getDSCR() + "\n"
+                        + "Zusatz: " + pharmaitem.getADDSCR() + "\n"
+                        + "GTIN: " + barcode + "\n"
+                        + "ATC Code:" + pharmaitem.getATC() + "\n\n"
+                        + "Firma: " + comp.getNAME() + ", \nGLN: " + comp.getGLN();
+                txtareaMediInfo.setText(info);
             }
 
         } catch (ServiceException e) {
@@ -55,6 +88,15 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-       //lblUsername.setText("Label has been initialized!");
+        String username = "Testuser";
+        userField.setText("User: " + username);
+        dateTimeField.setText("Datum: 11-11-2014, 10:00 Uhr");
+        locationField.setText("Demo Station");
+    }
+
+    public void checkOut(ActionEvent actionEvent) {
+    }
+
+    public void checkIn(ActionEvent actionEvent) {
     }
 }

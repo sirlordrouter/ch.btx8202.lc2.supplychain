@@ -38,8 +38,9 @@ public class BarcodeDecoder {
      *
      * @param barcodeString
      */
-    public void BarcodeDecoder(String barcodeString) {
+    public static Barcode decode(String barcodeString) {
 
+        return new Barcode();
     }
 
 }

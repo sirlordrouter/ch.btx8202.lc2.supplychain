@@ -40,8 +40,8 @@ public class Main extends Application {
         Controller controller = fxmlLoader.getController();
 
         primaryStage.setTitle("Login");
-        primaryStage.setScene(new Scene(root, 400, 270));
-
+        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setFullScreen(true);
 
 
         //Nativehook code, für den globalen Keylistener
@@ -58,7 +58,7 @@ public class Main extends Application {
 
         listener.addListener(controller);
 
-        controller.setBarcode(7680340960153l);
+        controller.setBarcode("FË07680577870041".substring(3),"",0);
 
         primaryStage.show();
     }
