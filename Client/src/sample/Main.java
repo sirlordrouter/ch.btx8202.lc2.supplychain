@@ -39,7 +39,7 @@ public class Main extends Application {
         Pane root = (Pane)fxmlLoader.load();
         Controller controller = fxmlLoader.getController();
 
-        primaryStage.setTitle("Login");
+        primaryStage.setTitle("Home");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setFullScreen(true);
 
