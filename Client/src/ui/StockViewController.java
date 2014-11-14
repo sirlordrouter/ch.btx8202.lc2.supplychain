@@ -1,4 +1,4 @@
-package sample;
+package ui;
 
 import SwissIndex.*;
 import javafx.collections.FXCollections;
@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import model.entities.Pharma;
+import model.entities.User;
 import services.barcoding.IBarcodeParsedEventListener;
 
 import javax.xml.rpc.ServiceException;
@@ -32,7 +33,7 @@ import java.util.ResourceBundle;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class Controller implements IBarcodeParsedEventListener, Initializable {
+public class StockViewController implements IBarcodeParsedEventListener, Initializable {
 
 
     public Label dateTimeField;
@@ -61,6 +62,7 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
 
     public ObservableList<Pharma> data =  FXCollections.observableArrayList();
 
+    private Main application;
 
     @Override
     public void setBarcode(String barcode, String barcodeType, int id) {
@@ -73,24 +75,36 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
 
             PHARMA de = service.getByGTIN(barcode, "de");
 
-            for (PHARMAITEM pharmaitem : de.getITEM()) {
-                PHARMAITEMCOMP comp = pharmaitem.getCOMP();
-                //labelItem.setText("EAN: "+ barcode + ", Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
-                System.out.println("Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
-                String info = "Beschreibung: " + pharmaitem.getDSCR() + "\n"
-                        + "Zusatz: " + pharmaitem.getADDSCR() + "\n"
-                        + "GTIN: " + barcode + "\n"
-                        + "ATC Code:" + pharmaitem.getATC() + "\n\n"
-                        + "Firma: " + comp.getNAME() + ", \nGLN: " + comp.getGLN();
-                txtareaMediInfo.setText(info);
+            System.out.println("looking for GTIN: " + barcode);
 
-                data.add(new Pharma(pharmaitem.getDSCR(), pharmaitem.getADDSCR(), comp.getGLN(), comp.getNAME(), "123"));
+            if (de.getITEM() != null) {
+                for (PHARMAITEM pharmaitem : de.getITEM()) {
+                    if (pharmaitem != null) {
+                        PHARMAITEMCOMP comp = pharmaitem.getCOMP();
+                        //labelItem.setText("EAN: "+ barcode + ", Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
+                        System.out.println("Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
+                        String info = "Beschreibung: " + pharmaitem.getDSCR() + "\n"
+                                + "Zusatz: " + pharmaitem.getADDSCR() + "\n"
+                                + "GTIN: " + barcode + "\n"
+                                + "ATC Code:" + pharmaitem.getATC() + "\n\n"
+                                + "Firma: " + comp.getNAME() + ", \nGLN: " + comp.getGLN();
+                        txtareaMediInfo.setText(info);
+
+                        data.add(new Pharma(pharmaitem.getDSCR(), pharmaitem.getADDSCR(), comp.getGLN(), comp.getNAME(), "123"));
+                    } else {
+                        txtareaMediInfo.setText("Artikel mit Code " + barcode + " nicht gefunden. Versuchen Sie einen erneuten Scan.");
+                    }
+                }
+            } else {
+                txtareaMediInfo.setText("Artikel mit Code " + barcode + " nicht gefunden. Versuchen Sie einen erneuten Scan.");
             }
 
         } catch (ServiceException e) {
             e.printStackTrace();
+            txtareaMediInfo.setText("Keine Verbindung zu SwissINDEX.");
         } catch (RemoteException e) {
             e.printStackTrace();
+            txtareaMediInfo.setText("Keine Verbindung zu SwissINDEX.");
         }
     }
 
@@ -127,5 +141,21 @@ public class Controller implements IBarcodeParsedEventListener, Initializable {
     }
 
     public void checkIn(ActionEvent actionEvent) {
+    }
+
+    public void setApp(Main main) {
+        this.application = main;
+        User loggedUser = application.getLoggedUser();
+        userField.setText(loggedUser.getId());
+    }
+
+    public void processLogout(ActionEvent event) {
+        if (application == null){
+            // We are running in isolated FXML, possibly in Scene Builder.
+            // NO-OP.
+            return;
+        }
+
+        application.userLogout();
     }
 }
