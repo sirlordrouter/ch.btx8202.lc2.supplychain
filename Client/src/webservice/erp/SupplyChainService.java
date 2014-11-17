@@ -28,6 +28,36 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "checkinItems", targetNamespace = "http://service/", className = "webservice.erp.CheckinItems")
+    @ResponseWrapper(localName = "checkinItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.CheckinItemsResponse")
+    @Action(input = "http://service/SupplyChainService/checkinItemsRequest", output = "http://service/SupplyChainService/checkinItemsResponse")
+    public void checkinItems(
+        @WebParam(name = "arg0", targetNamespace = "")
+        List<Item> arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "checkoutItems", targetNamespace = "http://service/", className = "webservice.erp.CheckoutItems")
+    @ResponseWrapper(localName = "checkoutItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.CheckoutItemsResponse")
+    @Action(input = "http://service/SupplyChainService/checkoutItemsRequest", output = "http://service/SupplyChainService/checkoutItemsResponse")
+    public void checkoutItems(
+        @WebParam(name = "arg0", targetNamespace = "")
+        List<Item> arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
+
+    /**
+     * 
      * @param arg0
      * @return
      *     returns java.lang.String
@@ -40,39 +70,6 @@ public interface SupplyChainService {
     public String sayHelloWorldFrom(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
-
-    /**
-     * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns java.util.List<webservice.erp.Item>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getItemsByBatch", targetNamespace = "http://service/", className = "webservice.erp.GetItemsByBatch")
-    @ResponseWrapper(localName = "getItemsByBatchResponse", targetNamespace = "http://service/", className = "webservice.erp.GetItemsByBatchResponse")
-    @Action(input = "http://service/SupplyChainService/getItemsByBatchRequest", output = "http://service/SupplyChainService/getItemsByBatchResponse")
-    public List<Item> getItemsByBatch(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        XMLGregorianCalendar arg2);
-
-    /**
-     * 
-     * @param arg0
-     */
-    @WebMethod
-    @RequestWrapper(localName = "checkoutItems", targetNamespace = "http://service/", className = "webservice.erp.CheckoutItems")
-    @ResponseWrapper(localName = "checkoutItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.CheckoutItemsResponse")
-    @Action(input = "http://service/SupplyChainService/checkoutItemsRequest", output = "http://service/SupplyChainService/checkoutItemsResponse")
-    public void checkoutItems(
-        @WebParam(name = "arg0", targetNamespace = "")
-        List<Item> arg0);
 
     /**
      * 
@@ -109,14 +106,23 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg2
+     * @param arg1
      * @param arg0
+     * @return
+     *     returns java.util.List<webservice.erp.Item>
      */
     @WebMethod
-    @RequestWrapper(localName = "checkinItems", targetNamespace = "http://service/", className = "webservice.erp.CheckinItems")
-    @ResponseWrapper(localName = "checkinItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.CheckinItemsResponse")
-    @Action(input = "http://service/SupplyChainService/checkinItemsRequest", output = "http://service/SupplyChainService/checkinItemsResponse")
-    public void checkinItems(
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getItemsByBatch", targetNamespace = "http://service/", className = "webservice.erp.GetItemsByBatch")
+    @ResponseWrapper(localName = "getItemsByBatchResponse", targetNamespace = "http://service/", className = "webservice.erp.GetItemsByBatchResponse")
+    @Action(input = "http://service/SupplyChainService/getItemsByBatchRequest", output = "http://service/SupplyChainService/getItemsByBatchResponse")
+    public List<Item> getItemsByBatch(
         @WebParam(name = "arg0", targetNamespace = "")
-        List<Item> arg0);
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        XMLGregorianCalendar arg2);
 
 }

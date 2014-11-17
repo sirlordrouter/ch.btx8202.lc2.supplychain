@@ -1,6 +1,8 @@
 package ui;
 
 import data.IDataSource;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,12 +16,15 @@ import javafx.scene.layout.Pane;
 import model.entities.TradeItem;
 import model.entities.User;
 import services.ErpClient;
+import services.PropertiesReader;
 import services.SwissIndexClient;
 import services.barcoding.IBarcodeParsedEventListener;
 import webservice.erp.Item;
 import webservice.swissindex.PHARMAITEM;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -64,7 +69,7 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     public TextField txtGTIN;
 
     public ObservableList<Item> data =  FXCollections.observableArrayList();
-    IDataSource dataSource = new ErpClient();
+    IDataSource dataSource;
 
     private Main application;
 
@@ -110,28 +115,48 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
                 new PropertyValueFactory<Item,String>("GTIN")
         );
         tablColHrst.setCellValueFactory(
-                new PropertyValueFactory<PHARMAITEM,String>("Lot")
+                new PropertyValueFactory<PHARMAITEM,String>("Serial")
         );
 
         medList.setItems(data);
+
+        medList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object o, Object o2) {
+                if (medList.getSelectionModel().getSelectedItem() != null) {
+                    txtareaMediInfo.setText(o2.toString());
+                }
+            }
+        });
     }
 
     public void checkOut(ActionEvent actionEvent) {
         dataSource.checkoutItems(data);
         //clear list
-        data.removeAll();
+        data.clear();
         //Ev. Log Information
     }
 
     public void checkIn(ActionEvent actionEvent) {
         dataSource.checkinItems(data);
         //clear list
-        data.removeAll();
+        data.clear();
         //Ev. Log Information
     }
 
     public void setApp(Main main) {
         this.application = main;
+        Properties prop = null;
+        try {
+            PropertiesReader reader = new PropertiesReader();
+            prop = reader.getPropValues();
+            locationField.setText(prop.getProperty("stationBezeichnung"));
+            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            locationField.setText("Configuration could not be read!");
+        }
+
         User loggedUser = application.getLoggedUser();
         userField.setText(loggedUser.getId());
     }
@@ -153,14 +178,13 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
             item.setGTIN(txtGTIN.getText());
             item.setSerial(txtSeriennummer.getText());
             item.setLot(txtBatch.getText());
-            //Set Expiry Date
+            //Set Expiry Date when Service updated
             txtareaMediInfo.setText(item.toString());
             data.add(item);
+            clearItemInput();
         }else {
             txtareaMediInfo.setText("Kein Item gefunden.");
         }
-
-        clearItemInput();
     }
 
     private void clearItemInput() {
@@ -170,4 +194,14 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         txtExpiryDate.setText("");
     }
 
+    public void clearList(ActionEvent actionEvent) {
+        data.clear();
+        txtareaMediInfo.setText("Keine Einträge.");
+    }
+
+    public void deleteItem(ActionEvent actionEvent) {
+        if (medList.getSelectionModel().getSelectedItem() != null) {
+            data.remove(medList.getSelectionModel().getSelectedItem());
+        }
+    }
 }

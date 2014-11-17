@@ -7,9 +7,20 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane id="AnchorPane" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StockViewController">
+<AnchorPane id="AnchorPane" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StockViewController">
    <children>
-      <AnchorPane layoutY="-1.0" />
+      <AnchorPane layoutY="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label id="lblUserName" fx:id="userField" layoutX="721.0" layoutY="2.0" prefHeight="31.0" prefWidth="159.0" text="User: zehnp1" textFill="#2b5bae" AnchorPane.rightAnchor="79.0" AnchorPane.topAnchor="2.0" />
+            <Button mnemonicParsing="false" onAction="#processLogout" text="Logout" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
+            <Label id="lblCurrentDate" fx:id="dateTimeField" layoutX="286.0" layoutY="5.0" prefHeight="31.0" prefWidth="235.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" AnchorPane.leftAnchor="286.0" AnchorPane.topAnchor="5.0" />
+            <Label id="lblLocationInfo" fx:id="locationField" prefHeight="31.0" prefWidth="135.0" text="StationA" textFill="#2b5bae" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="5.0" />
+            <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="681.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="2.0">
+               <image>
+                  <Image url="@../media/Profilbild.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
       <SplitPane dividerPositions="0.6850152905198776" layoutY="40.0" prefHeight="306.0" prefWidth="656.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="254.0">
@@ -44,26 +55,28 @@
                                 <columns>
                                   <TableColumn id="listScannedItems" fx:id="tblColName" prefWidth="250.0" text="Name" />
                                   <TableColumn fx:id="tblColMenge" prefWidth="100.0" text="Menge" />
-                                    <TableColumn fx:id="tableColGLN" prefWidth="150.0" text="GLN" />
-                                    <TableColumn fx:id="tablColHrst" prefWidth="200.0" text="Hrst." />
+                                    <TableColumn fx:id="tableColGLN" prefWidth="150.0" text="GTIN" />
+                                    <TableColumn fx:id="tablColHrst" prefWidth="200.0" text="Serial" />
                                 </columns>
                               </TableView>
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="26.0" prefWidth="199.0" style="-fx-background-color: aliceblue;">
                            <children>
-                              <Button id="btnCheckOut" fx:id="checkOutButton" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkOut" text="check out" AnchorPane.topAnchor="11.0" />
-                              <Button id="btnCheckIn" fx:id="CheckInButton" layoutX="113.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkIn" text="check in" AnchorPane.topAnchor="11.0" />
+                              <Button id="btnCheckOut" fx:id="checkOutButton" layoutX="7.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkOut" text="check out" AnchorPane.topAnchor="11.0" />
+                              <Button id="btnCheckIn" fx:id="CheckInButton" layoutX="93.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkIn" text="check in" AnchorPane.topAnchor="11.0" />
                               <AnchorPane layoutY="59.0" prefHeight="219.0" prefWidth="294.0">
                                  <children>
                                     <Label layoutX="24.0" text="Manuelle Erfassung" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="0.0" />
-                                    <Button layoutX="205.0" layoutY="168.0" mnemonicParsing="false" onAction="#addItem" prefHeight="26.0" prefWidth="75.0" text="OK" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="14.0" />
+                                    <Button defaultButton="true" layoutX="205.0" layoutY="168.0" mnemonicParsing="false" onAction="#addItem" prefHeight="26.0" prefWidth="75.0" text="OK" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="14.0" />
                                     <TextField fx:id="txtExpiryDate" layoutX="14.0" layoutY="131.0" prefHeight="26.0" prefWidth="267.0" promptText="Ablaufdatum" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtBatch" layoutX="14.0" layoutY="97.0" prefHeight="26.0" prefWidth="267.0" promptText="Batch / Lot" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtSeriennummer" layoutX="14.0" layoutY="64.0" prefHeight="26.0" prefWidth="267.0" promptText="Seriennummer" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtGTIN" layoutX="14.0" layoutY="30.0" prefHeight="26.0" prefWidth="267.0" promptText="GTIN" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                  </children>
                               </AnchorPane>
+                              <Button layoutX="248.0" layoutY="11.0" mnemonicParsing="false" onAction="#clearList" text="Clear" AnchorPane.topAnchor="11.0" />
+                              <Button layoutX="170.0" layoutY="11.0" mnemonicParsing="false" onAction="#deleteItem" text="Löschen" AnchorPane.topAnchor="11.0" />
                            </children>
                         </AnchorPane>
                     </items>
@@ -106,14 +119,5 @@
             </ImageView>
          </children>
       </Pane>
-      <Label id="lblUserName" fx:id="userField" layoutX="723.0" layoutY="5.0" prefHeight="31.0" prefWidth="159.0" text="User: zehnp1" textFill="#2b5bae" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="5.0" />
-      <Button layoutX="892.0" layoutY="7.0" mnemonicParsing="false" onAction="#processLogout" text="Logout" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
-      <Label id="lblCurrentDate" fx:id="dateTimeField" layoutX="102.0" layoutY="5.0" prefHeight="31.0" prefWidth="235.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" AnchorPane.leftAnchor="102.0" AnchorPane.topAnchor="5.0" />
-      <Label id="lblLocationInfo" fx:id="locationField" layoutX="14.0" layoutY="5.0" prefHeight="31.0" prefWidth="135.0" text="StationA" textFill="#2b5bae" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="5.0" />
-      <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="684.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../media/Profilbild.png" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>

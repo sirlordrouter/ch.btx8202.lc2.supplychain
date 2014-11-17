@@ -11,6 +11,12 @@ import java.util.List;
  */
 public class ErpClient implements IDataSource{
 
+    private String stationGLN;
+
+    public ErpClient(String stationGLN) {
+        this.stationGLN = stationGLN;
+    }
+
     @Override
     public void checkinItems(List<Item> items) {
 

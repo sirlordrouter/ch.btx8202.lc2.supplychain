@@ -87,31 +87,31 @@ public class BarcodeGlobalListener implements NativeKeyListener {
                 barcode = barcode + e.getKeyChar();
         }
 
-        System.out.println("TYPEString rep: "+ e.getKeyChar()); //Gibt das richtige Barcodezeichen aus auf Mac
-        System.out.println("TYPEKey Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
-        System.out.println("TYPEMod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
-        System.out.println("TYPEKey Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
-        System.out.println("TYPEKey Char "+e.getKeyChar());
-        System.out.println("TYPEKey Code "+e.getKeyCode());
-        System.out.println("TYPEKey Loc "+e.getKeyLocation());
-        System.out.println("TYPERaw Code "+e.getRawCode());
-        System.out.println("TYPEModif "+e.getModifiers());
-        System.out.println("Ende Typed");
+//        System.out.println("TYPEString rep: "+ e.getKeyChar()); //Gibt das richtige Barcodezeichen aus auf Mac
+//        System.out.println("TYPEKey Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
+//        System.out.println("TYPEMod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
+//        System.out.println("TYPEKey Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
+//        System.out.println("TYPEKey Char "+e.getKeyChar());
+//        System.out.println("TYPEKey Code "+e.getKeyCode());
+//        System.out.println("TYPEKey Loc "+e.getKeyLocation());
+//        System.out.println("TYPERaw Code "+e.getRawCode());
+//        System.out.println("TYPEModif "+e.getModifiers());
+//        System.out.println("Ende Typed");
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
 
-        System.out.println("PRESSString rep: "+ e.getKeyChar());
-        System.out.println("PRESSKey Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
-        System.out.println("PRESSMod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
-        System.out.println("PRESSKey Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
-        System.out.println("PRESSKey Char "+e.getKeyChar());
-        System.out.println("PRESSKey Code "+e.getKeyCode());
-        System.out.println("PRESSKey Loc "+e.getKeyLocation());
-        System.out.println("PRESSRaw Code "+e.getRawCode());
-        System.out.println("PRESSModif "+e.getModifiers());
-        System.out.println("Ende Pressed");
+//        System.out.println("PRESSString rep: "+ e.getKeyChar());
+//        System.out.println("PRESSKey Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
+//        System.out.println("PRESSMod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
+//        System.out.println("PRESSKey Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
+//        System.out.println("PRESSKey Char "+e.getKeyChar());
+//        System.out.println("PRESSKey Code "+e.getKeyCode());
+//        System.out.println("PRESSKey Loc "+e.getKeyLocation());
+//        System.out.println("PRESSRaw Code "+e.getRawCode());
+//        System.out.println("PRESSModif "+e.getModifiers());
+//        System.out.println("Ende Pressed");
     }
 
     /**
@@ -121,17 +121,17 @@ public class BarcodeGlobalListener implements NativeKeyListener {
     @Override
     public void nativeKeyReleased(NativeKeyEvent e) {
         int keyCode = e.getKeyCode();
-        System.out.println(keyCode);
-        System.out.println("String rep: "+ e.getKeyChar());
-        System.out.println("Key Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
-        System.out.println("Mod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
-        System.out.println("Key Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
-        System.out.println("Key Char "+e.getKeyChar());
-        System.out.println("Key Code "+e.getKeyCode());
-        System.out.println("Key Loc "+e.getKeyLocation());
-        System.out.println("Raw Code "+e.getRawCode());
-        System.out.println("Modif "+e.getModifiers());
-        System.out.println("Ende Released");
+//        System.out.println(keyCode);
+//        System.out.println("String rep: "+ e.getKeyChar());
+//        System.out.println("Key Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
+//        System.out.println("Mod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
+//        System.out.println("Key Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
+//        System.out.println("Key Char "+e.getKeyChar());
+//        System.out.println("Key Code "+e.getKeyCode());
+//        System.out.println("Key Loc "+e.getKeyLocation());
+//        System.out.println("Raw Code "+e.getRawCode());
+//        System.out.println("Modif "+e.getModifiers());
+//        System.out.println("Ende Released");
 
 
         if (prefix1 && prefix2 && prefix3 && prefix4 &&  (keyCode == END)) {

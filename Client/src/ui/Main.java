@@ -28,8 +28,11 @@ import java.io.InputStream;
  */
 public class Main extends Application {
 
-    private final double MINIMUM_WINDOW_WIDTH = 800.0;
-    private final double MINIMUM_WINDOW_HEIGHT = 600.0;
+    private final double LOGIN_MINIMUM_WINDOW_WIDTH = 500.0;
+    private final double LOGIN_MINIMUM_WINDOW_HEIGHT = 320.0;
+
+    private final double MINIMUM_WINDOW_WIDTH = 1000;
+    private final double MINIMUM_WINDOW_HEIGHT = 800.0;
 
     private Stage stage;
 
@@ -57,8 +60,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         stage = primaryStage;
-        stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
-        stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
+        stage.setMinWidth(LOGIN_MINIMUM_WINDOW_WIDTH);
+        stage.setMinHeight(LOGIN_MINIMUM_WINDOW_HEIGHT);
         primaryStage.setTitle("ERP-Sim");
 
         setState(new UnauthenticatedState(this));
@@ -81,6 +84,9 @@ public class Main extends Application {
 
     public boolean authenticate(String userId, String password){
         if (Authenticator.validate(userId, password)) {
+            stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
+            stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
+
             loggedUser = User.of(userId);
             this.state.exit();
             this.state.handleLogin();
@@ -94,6 +100,8 @@ public class Main extends Application {
      * at the end of a session the user can logout properly and receives an infomation about the successful logout
      */
     void userLogout(){
+        stage.setMinWidth(LOGIN_MINIMUM_WINDOW_WIDTH);
+        stage.setMinHeight(LOGIN_MINIMUM_WINDOW_HEIGHT);
         loggedUser = null;
         this.state.exit();
         this.state.handleLogout();
@@ -111,7 +119,13 @@ public class Main extends Application {
         } finally {
            in.close();
         }
-        Scene scene = new Scene(page, 800, 600);
+        Scene scene;
+        if(fxml.equals("StockView.fxml")) {
+            scene = new Scene(page, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT);
+        } else {
+            scene = new Scene(page, LOGIN_MINIMUM_WINDOW_WIDTH, LOGIN_MINIMUM_WINDOW_HEIGHT);
+        }
+
         stage.setScene(scene);
         stage.sizeToScene();
         return (Initializable) loader.getController();

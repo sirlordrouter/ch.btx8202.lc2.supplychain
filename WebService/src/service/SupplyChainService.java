@@ -22,12 +22,12 @@ public class SupplyChainService {
   }
 
     @WebMethod
-    public void checkinItems(List<Item> items) {
+    public void checkinItems(List<Item> items, String gln) {
 
     }
 
     @WebMethod
-    public void checkoutItems(List<Item> items) {
+    public void checkoutItems(List<Item> items, String gln) {
 
     }
 

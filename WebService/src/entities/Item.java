@@ -15,6 +15,8 @@ public class Item {
     private String ATC;
     private Company producer;
 
+    public Item() {}
+
     public Item(String name, String menge, String GTIN, String lot, String expiryDate, String serial, String beschreibung, String zusatz, String ATC, Company producer) {
         Name = name;
         Menge = menge;
