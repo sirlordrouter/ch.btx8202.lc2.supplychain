@@ -38,9 +38,9 @@ public class BarcodeDecoder {
      *
      * @param barcodeString
      */
-    public static Barcode decode(String barcodeString) {
+    public static BarcodeInformation decode(String barcodeString) {
 
-        return new Barcode();
+        return new BarcodeInformation(ai_gtin);
     }
 
 }

@@ -137,8 +137,8 @@ public class BarcodeGlobalListener implements NativeKeyListener {
         if (prefix1 && prefix2 && prefix3 && prefix4 &&  (keyCode == END)) {
 
             for (IBarcodeParsedEventListener listener : listeners) {
-                System.out.println(barcode.substring(4));
-                listener.setBarcode(barcode.substring(4), "", 0);
+                System.out.println(barcode.substring(3));
+                listener.setBarcode(barcode.substring(3), "", 0);
             }
 
             this.barcode = "";
