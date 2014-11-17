@@ -138,7 +138,7 @@ public class BarcodeGlobalListener implements NativeKeyListener {
 
             for (IBarcodeParsedEventListener listener : listeners) {
                 System.out.println(barcode.substring(3));
-                listener.setBarcode(barcode.substring(3), "", 0);
+                listener.setBarcode(barcode.trim().substring(3), "", 0);
             }
 
             this.barcode = "";

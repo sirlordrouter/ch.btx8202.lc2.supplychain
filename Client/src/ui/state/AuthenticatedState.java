@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class AuthenticatedState extends AuthenticationState {
 
-
+    private BarcodeGlobalListener listener;
     /**
 	 * Constructor for this state implementation.
 	 * 
@@ -43,8 +43,7 @@ public class AuthenticatedState extends AuthenticationState {
             StockViewController controller = (StockViewController) super.context.replaceSceneContent("StockView.fxml");
             controller.setApp(super.context);
 
-            GlobalScreen.registerNativeHook();
-            BarcodeGlobalListener listener = new BarcodeGlobalListener();
+            listener = new BarcodeGlobalListener();
             GlobalScreen.getInstance().addNativeKeyListener(listener);
             listener.addListener(controller);
             controller.setBarcode("FË07680577870041".substring(3),"",0);
@@ -66,6 +65,9 @@ public class AuthenticatedState extends AuthenticationState {
 	 */
 	@Override
 	protected void exitState() {
+
+        GlobalScreen.getInstance().removeNativeKeyListener(listener);
+//        GlobalScreen.unregisterNativeHook();
         storeDataPersistent();
 	}
 

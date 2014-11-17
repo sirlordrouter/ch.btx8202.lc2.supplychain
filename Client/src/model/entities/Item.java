@@ -3,17 +3,17 @@ package model.entities;
 /**
  * Created by Johannes on 04.11.14.
  */
-public class Pharma {
+public class Item {
     private String Name;
     private String Menge;
     private String GLN;
     private String Lot;
     private String Serial;
 
-    public Pharma(){
+    public Item(){
     }
 
-    public Pharma(String name, String menge, String GLN, String lot, String serial) {
+    public Item(String name, String menge, String GLN, String lot, String serial) {
         Name = name;
         Menge = menge;
         this.GLN = GLN;

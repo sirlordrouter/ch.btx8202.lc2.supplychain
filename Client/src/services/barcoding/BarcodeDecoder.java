@@ -40,7 +40,7 @@ public class BarcodeDecoder {
      */
     public static BarcodeInformation decode(String barcodeString) {
 
-        return new BarcodeInformation(ai_gtin);
+        return null;
     }
 
 }

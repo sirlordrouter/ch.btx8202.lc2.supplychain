@@ -16,7 +16,9 @@ import java.util.Map;
 public class Authenticator {
     private static final Map<String, String> USERS = new HashMap<String, String>();
     static {
-        USERS.put("test", "test");
+        if (!USERS.containsKey("test")) {
+            USERS.put("test", "test");
+        }
     }
 
     public static boolean validate(String user, String password){
