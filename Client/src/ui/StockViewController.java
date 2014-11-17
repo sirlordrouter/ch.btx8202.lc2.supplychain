@@ -6,10 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -61,6 +58,10 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     public javafx.scene.control.TableColumn tblColMenge;
     public javafx.scene.control.TableColumn tableColGLN;
     public javafx.scene.control.TableColumn tablColHrst;
+    public TextField txtExpiryDate;
+    public TextField txtBatch;
+    public TextField txtSeriennummer;
+    public TextField txtGTIN;
 
     public ObservableList<Item> data =  FXCollections.observableArrayList();
     IDataSource dataSource = new ErpClient();
@@ -84,9 +85,6 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         }else {
             txtareaMediInfo.setText("Kein Item gefunden.");
         }
-
-
-
     }
 
     @FXML
@@ -147,4 +145,29 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
 
         application.userLogout();
     }
+
+    public void addItem(ActionEvent actionEvent) {
+        TradeItem item = SwissIndexClient.getItemInformationFromGTIN(txtGTIN.getText());
+
+        if (item != null) {
+            item.setGTIN(txtGTIN.getText());
+            item.setSerial(txtSeriennummer.getText());
+            item.setLot(txtBatch.getText());
+            //Set Expiry Date
+            txtareaMediInfo.setText(item.toString());
+            data.add(item);
+        }else {
+            txtareaMediInfo.setText("Kein Item gefunden.");
+        }
+
+        clearItemInput();
+    }
+
+    private void clearItemInput() {
+        txtGTIN.setText("");
+        txtSeriennummer.setText("");
+        txtBatch.setText("");
+        txtExpiryDate.setText("");
+    }
+
 }

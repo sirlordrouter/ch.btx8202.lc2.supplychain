@@ -9,19 +9,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StockViewController">
    <children>
-      <Pane id="windowPane" fx:id="infoPane" layoutY="-1.0" prefHeight="38.0" prefWidth="657.0" style="-fx-background-color: lightsteelblue;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
-         <children>
-            <Label id="lblUserName" fx:id="userField" layoutX="43.0" layoutY="4.0" prefHeight="31.0" prefWidth="159.0" text="User: zehnp1" textFill="#2b5bae" />
-            <Label id="lblLocationInfo" fx:id="locationField" layoutX="329.0" layoutY="4.0" prefHeight="31.0" prefWidth="135.0" text="StationA" textFill="#2b5bae" />
-            <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="6.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../media/Profilbild.png" />
-               </image>
-            </ImageView>
-            <Label id="lblCurrentDate" fx:id="dateTimeField" layoutX="130.0" layoutY="4.0" prefHeight="31.0" prefWidth="235.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" />
-            <Button layoutX="585.0" layoutY="6.0" mnemonicParsing="false" onAction="#processLogout" text="Logout" textAlignment="RIGHT" />
-         </children>
-      </Pane>
+      <AnchorPane layoutY="-1.0" />
       <SplitPane dividerPositions="0.6850152905198776" layoutY="40.0" prefHeight="306.0" prefWidth="656.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="254.0">
@@ -48,7 +36,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <SplitPane dividerPositions="0.4689075630252101" orientation="VERTICAL" prefHeight="304.0" prefWidth="201.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.5294117647058824" orientation="VERTICAL" prefHeight="304.0" prefWidth="201.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="162.0" prefWidth="199.0">
                            <children>
@@ -66,20 +54,16 @@
                            <children>
                               <Button id="btnCheckOut" fx:id="checkOutButton" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkOut" text="check out" AnchorPane.topAnchor="11.0" />
                               <Button id="btnCheckIn" fx:id="CheckInButton" layoutX="113.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkIn" text="check in" AnchorPane.topAnchor="11.0" />
-                              <Pane layoutY="50.0" prefHeight="263.0" prefWidth="294.0">
+                              <AnchorPane layoutY="59.0" prefHeight="219.0" prefWidth="294.0">
                                  <children>
-                                    <Label layoutX="14.0" layoutY="6.0" text="Manuelle Erfassung" />
-                                    <TextField layoutX="117.0" layoutY="36.0" />
-                                    <TextField layoutX="117.0" layoutY="74.0" />
-                                    <TextField layoutX="117.0" layoutY="115.0" />
-                                    <TextField layoutX="117.0" layoutY="159.0" />
-                                    <Label layoutX="14.0" layoutY="41.0" text="GTIN" />
-                                    <Label layoutX="14.0" layoutY="79.0" text="Seriennummer" />
-                                    <Label layoutX="14.0" layoutY="120.0" text="Batch / Lot" />
-                                    <Label layoutX="14.0" layoutY="164.0" text="Ablaufdatum" />
+                                    <Label layoutX="24.0" text="Manuelle Erfassung" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="0.0" />
+                                    <Button layoutX="205.0" layoutY="168.0" mnemonicParsing="false" onAction="#addItem" prefHeight="26.0" prefWidth="75.0" text="OK" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="14.0" />
+                                    <TextField fx:id="txtExpiryDate" layoutX="14.0" layoutY="131.0" prefHeight="26.0" prefWidth="267.0" promptText="Ablaufdatum" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
+                                    <TextField fx:id="txtBatch" layoutX="14.0" layoutY="97.0" prefHeight="26.0" prefWidth="267.0" promptText="Batch / Lot" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
+                                    <TextField fx:id="txtSeriennummer" layoutX="14.0" layoutY="64.0" prefHeight="26.0" prefWidth="267.0" promptText="Seriennummer" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
+                                    <TextField fx:id="txtGTIN" layoutX="14.0" layoutY="30.0" prefHeight="26.0" prefWidth="267.0" promptText="GTIN" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                  </children>
-                              </Pane>
-                              <Button layoutX="195.0" layoutY="270.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="OK" />
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
                     </items>
@@ -122,5 +106,14 @@
             </ImageView>
          </children>
       </Pane>
+      <Label id="lblUserName" fx:id="userField" layoutX="723.0" layoutY="5.0" prefHeight="31.0" prefWidth="159.0" text="User: zehnp1" textFill="#2b5bae" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="5.0" />
+      <Button layoutX="892.0" layoutY="7.0" mnemonicParsing="false" onAction="#processLogout" text="Logout" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
+      <Label id="lblCurrentDate" fx:id="dateTimeField" layoutX="102.0" layoutY="5.0" prefHeight="31.0" prefWidth="235.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" AnchorPane.leftAnchor="102.0" AnchorPane.topAnchor="5.0" />
+      <Label id="lblLocationInfo" fx:id="locationField" layoutX="14.0" layoutY="5.0" prefHeight="31.0" prefWidth="135.0" text="StationA" textFill="#2b5bae" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="5.0" />
+      <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="684.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../media/Profilbild.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

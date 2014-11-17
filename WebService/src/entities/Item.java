@@ -8,17 +8,19 @@ public class Item {
     private String Menge;
     private String GTIN;
     private String Lot;
+    private String ExpiryDate;
     private String Serial;
     private String Beschreibung;
     private String Zusatz;
     private String ATC;
     private Company producer;
 
-    public Item(String name, String menge, String GTIN, String lot, String serial, String beschreibung, String zusatz, String ATC, Company producer) {
+    public Item(String name, String menge, String GTIN, String lot, String expiryDate, String serial, String beschreibung, String zusatz, String ATC, Company producer) {
         Name = name;
         Menge = menge;
         this.GTIN = GTIN;
         Lot = lot;
+        ExpiryDate = expiryDate;
         Serial = serial;
         Beschreibung = beschreibung;
         Zusatz = zusatz;
@@ -96,6 +98,14 @@ public class Item {
 
     public void setProducer(Company producer) {
         this.producer = producer;
+    }
+
+    public String getExpiryDate() {
+        return ExpiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        ExpiryDate = expiryDate;
     }
 
     @Override
