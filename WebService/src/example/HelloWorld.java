@@ -4,7 +4,7 @@ import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 
 /**
- * Created by Johannes on 13.10.14.
+ * Created by Johannes on 17.11.14.
  */
 @WebService()
 public class HelloWorld {
