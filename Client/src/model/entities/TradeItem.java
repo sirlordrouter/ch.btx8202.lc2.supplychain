@@ -1,14 +1,26 @@
 package model.entities;
 
+import webservice.erp.Item;
+
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * BTX8202 (Living Case 2), HS2014</br>
- *
- *<p>An Address Class</p>
- *
- * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
- * @version 21-10-2014
+ * Created by Johannes on 17.11.14.
  */
-public class TradeItem {
+public class TradeItem extends Item {
+
+    public TradeItem() {
+        super();
+    }
+
+    @Override
+    public String toString() {
+        return  "Name: " + getName() + '\n' +
+                "Menge: " + getMenge() + '\n' +
+                "GTIN: " + getGTIN() + '\n' +
+                "Lot: " + getLot() + '\n' +
+                "Serial: " + getSerial() + '\n' +
+                "Beschreibung: " + getBeschreibung() + '\n' +
+                "Zusatz='" + getZusatz() + '\n' +
+                "ATC: " + getATC() + '\n' +
+                "Hersteller: " + producer;
+    }
 }

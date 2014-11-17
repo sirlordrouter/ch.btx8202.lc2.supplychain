@@ -1,13 +1,13 @@
 /**
- * Ws_Pharma_V101Soap_BindingStub.java
+ * Ws_Pharma_V101Soap12Stub.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package SwissIndex;
+package webservice.swissindex;
 
-public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub implements SwissIndex.Ws_Pharma_V101Soap_PortType {
+public class Ws_Pharma_V101Soap12Stub extends org.apache.axis.client.Stub implements webservice.swissindex.Ws_Pharma_V101Soap_PortType {
     private java.util.Vector cachedSerClasses = new java.util.Vector();
     private java.util.Vector cachedSerQNames = new java.util.Vector();
     private java.util.Vector cachedSerFactories = new java.util.Vector();
@@ -28,7 +28,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "lang"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">PHARMA"));
-        oper.setReturnClass(SwissIndex.PHARMA.class);
+        oper.setReturnClass(webservice.swissindex.PHARMA.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "PHARMA"));
         oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -41,7 +41,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "lang"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">PHARMA"));
-        oper.setReturnClass(SwissIndex.PHARMA.class);
+        oper.setReturnClass(webservice.swissindex.PHARMA.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "PHARMA"));
         oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -54,7 +54,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "lang"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">PHARMA"));
-        oper.setReturnClass(SwissIndex.PHARMA.class);
+        oper.setReturnClass(webservice.swissindex.PHARMA.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "PHARMA"));
         oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -67,7 +67,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "lang"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">PHARMA"));
-        oper.setReturnClass(SwissIndex.PHARMA.class);
+        oper.setReturnClass(webservice.swissindex.PHARMA.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "PHARMA"));
         oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -80,7 +80,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "lang"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">PHARMA"));
-        oper.setReturnClass(SwissIndex.PHARMA.class);
+        oper.setReturnClass(webservice.swissindex.PHARMA.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", "PHARMA"));
         oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -88,16 +88,16 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
 
     }
 
-    public Ws_Pharma_V101Soap_BindingStub() throws org.apache.axis.AxisFault {
+    public Ws_Pharma_V101Soap12Stub() throws org.apache.axis.AxisFault {
          this(null);
     }
 
-    public Ws_Pharma_V101Soap_BindingStub(java.net.URL endpointURL, javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
+    public Ws_Pharma_V101Soap12Stub(java.net.URL endpointURL, javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
          this(service);
          super.cachedEndpoint = endpointURL;
     }
 
-    public Ws_Pharma_V101Soap_BindingStub(javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
+    public Ws_Pharma_V101Soap12Stub(javax.xml.rpc.Service service) throws org.apache.axis.AxisFault {
         if (service == null) {
             super.service = new org.apache.axis.client.Service();
         } else {
@@ -119,42 +119,42 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
             qName = new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">>>PHARMA>ITEM>COMP");
             cachedSerQNames.add(qName);
-            cls = SwissIndex.PHARMAITEMCOMP.class;
+            cls = webservice.swissindex.PHARMAITEMCOMP.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">>>PHARMA>ITEM>STATUS");
             cachedSerQNames.add(qName);
-            cls = SwissIndex.PHARMAITEMSTATUS.class;
+            cls = webservice.swissindex.PHARMAITEMSTATUS.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(enumsf);
             cachedDeserFactories.add(enumdf);
 
             qName = new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">>>PHARMA>RESULT>OK_ERROR");
             cachedSerQNames.add(qName);
-            cls = SwissIndex.PHARMARESULTOK_ERROR.class;
+            cls = webservice.swissindex.PHARMARESULTOK_ERROR.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(enumsf);
             cachedDeserFactories.add(enumdf);
 
             qName = new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">>PHARMA>ITEM");
             cachedSerQNames.add(qName);
-            cls = SwissIndex.PHARMAITEM.class;
+            cls = webservice.swissindex.PHARMAITEM.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">>PHARMA>RESULT");
             cachedSerQNames.add(qName);
-            cls = SwissIndex.PHARMARESULT.class;
+            cls = webservice.swissindex.PHARMARESULT.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("http://swissindex.e-mediat.net/SwissindexPharma_out_V101", ">PHARMA");
             cachedSerQNames.add(qName);
-            cls = SwissIndex.PHARMA.class;
+            cls = webservice.swissindex.PHARMA.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -225,7 +225,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         }
     }
 
-    public SwissIndex.PHARMA downloadAll(java.lang.String lang) throws java.rmi.RemoteException {
+    public webservice.swissindex.PHARMA downloadAll(java.lang.String lang) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -236,7 +236,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         _call.setEncodingStyle(null);
         _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
         _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP12_CONSTANTS);
         _call.setOperationName(new javax.xml.namespace.QName("", "DownloadAll"));
 
         setRequestHeaders(_call);
@@ -249,9 +249,9 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         else {
             extractAttachments(_call);
             try {
-                return (SwissIndex.PHARMA) _resp;
+                return (webservice.swissindex.PHARMA) _resp;
             } catch (java.lang.Exception _exception) {
-                return (SwissIndex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, SwissIndex.PHARMA.class);
+                return (webservice.swissindex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, webservice.swissindex.PHARMA.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -259,7 +259,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
 }
     }
 
-    public SwissIndex.PHARMA downloadByDate(java.util.Calendar mutationDate, java.lang.String lang) throws java.rmi.RemoteException {
+    public webservice.swissindex.PHARMA downloadByDate(java.util.Calendar mutationDate, java.lang.String lang) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -270,7 +270,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         _call.setEncodingStyle(null);
         _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
         _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP12_CONSTANTS);
         _call.setOperationName(new javax.xml.namespace.QName("", "DownloadByDate"));
 
         setRequestHeaders(_call);
@@ -283,9 +283,9 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         else {
             extractAttachments(_call);
             try {
-                return (SwissIndex.PHARMA) _resp;
+                return (webservice.swissindex.PHARMA) _resp;
             } catch (java.lang.Exception _exception) {
-                return (SwissIndex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, SwissIndex.PHARMA.class);
+                return (webservice.swissindex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, webservice.swissindex.PHARMA.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -293,7 +293,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
 }
     }
 
-    public SwissIndex.PHARMA getByGTIN(java.lang.String GTIN, java.lang.String lang) throws java.rmi.RemoteException {
+    public webservice.swissindex.PHARMA getByGTIN(java.lang.String GTIN, java.lang.String lang) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -304,7 +304,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         _call.setEncodingStyle(null);
         _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
         _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP12_CONSTANTS);
         _call.setOperationName(new javax.xml.namespace.QName("", "GetByGTIN"));
 
         setRequestHeaders(_call);
@@ -317,9 +317,9 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         else {
             extractAttachments(_call);
             try {
-                return (SwissIndex.PHARMA) _resp;
+                return (webservice.swissindex.PHARMA) _resp;
             } catch (java.lang.Exception _exception) {
-                return (SwissIndex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, SwissIndex.PHARMA.class);
+                return (webservice.swissindex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, webservice.swissindex.PHARMA.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -327,7 +327,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
 }
     }
 
-    public SwissIndex.PHARMA getByPharmacode(java.lang.String pharmacode, java.lang.String lang) throws java.rmi.RemoteException {
+    public webservice.swissindex.PHARMA getByPharmacode(java.lang.String pharmacode, java.lang.String lang) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -338,7 +338,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         _call.setEncodingStyle(null);
         _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
         _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP12_CONSTANTS);
         _call.setOperationName(new javax.xml.namespace.QName("", "GetByPharmacode"));
 
         setRequestHeaders(_call);
@@ -351,9 +351,9 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         else {
             extractAttachments(_call);
             try {
-                return (SwissIndex.PHARMA) _resp;
+                return (webservice.swissindex.PHARMA) _resp;
             } catch (java.lang.Exception _exception) {
-                return (SwissIndex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, SwissIndex.PHARMA.class);
+                return (webservice.swissindex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, webservice.swissindex.PHARMA.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -361,7 +361,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
 }
     }
 
-    public SwissIndex.PHARMA getByDescr(java.lang.String descr, java.lang.String lang) throws java.rmi.RemoteException {
+    public webservice.swissindex.PHARMA getByDescr(java.lang.String descr, java.lang.String lang) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -372,7 +372,7 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         _call.setEncodingStyle(null);
         _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
         _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP12_CONSTANTS);
         _call.setOperationName(new javax.xml.namespace.QName("", "GetByDescr"));
 
         setRequestHeaders(_call);
@@ -385,9 +385,9 @@ public class Ws_Pharma_V101Soap_BindingStub extends org.apache.axis.client.Stub 
         else {
             extractAttachments(_call);
             try {
-                return (SwissIndex.PHARMA) _resp;
+                return (webservice.swissindex.PHARMA) _resp;
             } catch (java.lang.Exception _exception) {
-                return (SwissIndex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, SwissIndex.PHARMA.class);
+                return (webservice.swissindex.PHARMA) org.apache.axis.utils.JavaUtils.convert(_resp, webservice.swissindex.PHARMA.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

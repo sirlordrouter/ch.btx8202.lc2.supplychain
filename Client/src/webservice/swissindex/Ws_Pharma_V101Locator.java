@@ -5,9 +5,9 @@
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package SwissIndex;
+package webservice.swissindex;
 
-public class Ws_Pharma_V101Locator extends org.apache.axis.client.Service implements SwissIndex.Ws_Pharma_V101 {
+public class Ws_Pharma_V101Locator extends org.apache.axis.client.Service implements webservice.swissindex.Ws_Pharma_V101 {
 
     public Ws_Pharma_V101Locator() {
     }
@@ -39,7 +39,7 @@ public class Ws_Pharma_V101Locator extends org.apache.axis.client.Service implem
         ws_Pharma_V101SoapWSDDServiceName = name;
     }
 
-    public SwissIndex.Ws_Pharma_V101Soap_PortType getws_Pharma_V101Soap() throws javax.xml.rpc.ServiceException {
+    public webservice.swissindex.Ws_Pharma_V101Soap_PortType getws_Pharma_V101Soap() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(ws_Pharma_V101Soap_address);
@@ -50,9 +50,9 @@ public class Ws_Pharma_V101Locator extends org.apache.axis.client.Service implem
         return getws_Pharma_V101Soap(endpoint);
     }
 
-    public SwissIndex.Ws_Pharma_V101Soap_PortType getws_Pharma_V101Soap(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public webservice.swissindex.Ws_Pharma_V101Soap_PortType getws_Pharma_V101Soap(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            SwissIndex.Ws_Pharma_V101Soap_BindingStub _stub = new SwissIndex.Ws_Pharma_V101Soap_BindingStub(portAddress, this);
+            webservice.swissindex.Ws_Pharma_V101Soap_BindingStub _stub = new webservice.swissindex.Ws_Pharma_V101Soap_BindingStub(portAddress, this);
             _stub.setPortName(getws_Pharma_V101SoapWSDDServiceName());
             return _stub;
         }
@@ -84,7 +84,7 @@ public class Ws_Pharma_V101Locator extends org.apache.axis.client.Service implem
         ws_Pharma_V101Soap12WSDDServiceName = name;
     }
 
-    public SwissIndex.Ws_Pharma_V101Soap_PortType getws_Pharma_V101Soap12() throws javax.xml.rpc.ServiceException {
+    public webservice.swissindex.Ws_Pharma_V101Soap_PortType getws_Pharma_V101Soap12() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(ws_Pharma_V101Soap12_address);
@@ -95,9 +95,9 @@ public class Ws_Pharma_V101Locator extends org.apache.axis.client.Service implem
         return getws_Pharma_V101Soap12(endpoint);
     }
 
-    public SwissIndex.Ws_Pharma_V101Soap_PortType getws_Pharma_V101Soap12(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public webservice.swissindex.Ws_Pharma_V101Soap_PortType getws_Pharma_V101Soap12(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            SwissIndex.Ws_Pharma_V101Soap12Stub _stub = new SwissIndex.Ws_Pharma_V101Soap12Stub(portAddress, this);
+            webservice.swissindex.Ws_Pharma_V101Soap12Stub _stub = new webservice.swissindex.Ws_Pharma_V101Soap12Stub(portAddress, this);
             _stub.setPortName(getws_Pharma_V101Soap12WSDDServiceName());
             return _stub;
         }
@@ -119,13 +119,13 @@ public class Ws_Pharma_V101Locator extends org.apache.axis.client.Service implem
      */
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (SwissIndex.Ws_Pharma_V101Soap_PortType.class.isAssignableFrom(serviceEndpointInterface)) {
-                SwissIndex.Ws_Pharma_V101Soap_BindingStub _stub = new SwissIndex.Ws_Pharma_V101Soap_BindingStub(new java.net.URL(ws_Pharma_V101Soap_address), this);
+            if (webservice.swissindex.Ws_Pharma_V101Soap_PortType.class.isAssignableFrom(serviceEndpointInterface)) {
+                webservice.swissindex.Ws_Pharma_V101Soap_BindingStub _stub = new webservice.swissindex.Ws_Pharma_V101Soap_BindingStub(new java.net.URL(ws_Pharma_V101Soap_address), this);
                 _stub.setPortName(getws_Pharma_V101SoapWSDDServiceName());
                 return _stub;
             }
-            if (SwissIndex.Ws_Pharma_V101Soap_PortType.class.isAssignableFrom(serviceEndpointInterface)) {
-                SwissIndex.Ws_Pharma_V101Soap12Stub _stub = new SwissIndex.Ws_Pharma_V101Soap12Stub(new java.net.URL(ws_Pharma_V101Soap12_address), this);
+            if (webservice.swissindex.Ws_Pharma_V101Soap_PortType.class.isAssignableFrom(serviceEndpointInterface)) {
+                webservice.swissindex.Ws_Pharma_V101Soap12Stub _stub = new webservice.swissindex.Ws_Pharma_V101Soap12Stub(new java.net.URL(ws_Pharma_V101Soap12_address), this);
                 _stub.setPortName(getws_Pharma_V101Soap12WSDDServiceName());
                 return _stub;
             }

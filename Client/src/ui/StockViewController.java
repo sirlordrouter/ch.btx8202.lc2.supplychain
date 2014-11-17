@@ -1,6 +1,6 @@
 package ui;
 
-import SwissIndex.*;
+import data.IDataSource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,13 +14,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import model.entities.Item;
+import model.entities.TradeItem;
 import model.entities.User;
+import services.ErpClient;
+import services.SwissIndexClient;
 import services.barcoding.IBarcodeParsedEventListener;
+import webservice.erp.Item;
+import webservice.swissindex.PHARMAITEM;
 
-import javax.xml.rpc.ServiceException;
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 /**
@@ -61,6 +63,7 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     public javafx.scene.control.TableColumn tablColHrst;
 
     public ObservableList<Item> data =  FXCollections.observableArrayList();
+    IDataSource dataSource = new ErpClient();
 
     private Main application;
 
@@ -73,55 +76,17 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         }
 
         txtareaMediInfo.setText("Barcode " + barcode + " gescannt.");
+        TradeItem i = SwissIndexClient.getItemInformationFromGTIN(barcode);
 
-        Ws_Pharma_V101Locator locator = new Ws_Pharma_V101Locator();
-        Ws_Pharma_V101Soap_PortType service = null;
-        try {
-
-            txtareaMediInfo.appendText("SwissINDEX abfrage...");
-            service = locator.getws_Pharma_V101Soap();
-            PHARMA de = service.getByGTIN(barcode, "de");
-            txtareaMediInfo.appendText("SwissINDEX antwort...");
-            System.out.println("looking for GTIN: " + barcode);
-
-            if (de.getITEM() != null) {
-                txtareaMediInfo.appendText("SwissINDEX Item vorhanden..");
-                for (PHARMAITEM pharmaitem : de.getITEM()) {
-
-                    txtareaMediInfo.appendText(de.getITEM().toString());
-
-                    if (pharmaitem != null) {
-                        PHARMAITEMCOMP comp = pharmaitem.getCOMP();
-                        //labelItem.setText("EAN: "+ barcode + ", Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
-                        System.out.println("Firma: " + comp.getNAME() + ", GLN: " + comp.getGLN());
-                        String info = "Beschreibung: " + pharmaitem.getDSCR() + "\n"
-                                + "Zusatz: " + pharmaitem.getADDSCR() + "\n"
-                                + "GTIN: " + barcode + "\n"
-                                + "ATC Code:" + pharmaitem.getATC() + "\n\n"
-                                + "Firma: " + comp.getNAME() + ", \nGLN: " + comp.getGLN();
-                        txtareaMediInfo.setText(info);
-
-                        data.add(new Item(pharmaitem.getDSCR(), pharmaitem.getADDSCR(), comp.getGLN(), comp.getNAME(), "123"));
-                    } else {
-                        txtareaMediInfo.appendText("Pharmaitem nicht gefunden.");
-                    }
-                }
-            } else {
-                txtareaMediInfo.appendText("Artikel mit Code " + barcode + " nicht gefunden. Versuchen Sie einen erneuten Scan.");
-            }
-
-
-
-        } catch (ServiceException e) {
-            e.printStackTrace();
-            txtareaMediInfo.setText("Keine Verbindung zu SwissINDEX.");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            txtareaMediInfo.setText("Keine Verbindung zu SwissINDEX.");
-        } finally {
-            service = null;
-            locator = null;
+        if (i != null) {
+            txtareaMediInfo.setText(i.toString());
+            data.add(i);
+        }else {
+            txtareaMediInfo.setText("Kein Item gefunden.");
         }
+
+
+
     }
 
     @FXML
@@ -144,7 +109,7 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
                 new PropertyValueFactory<Item,String>("Menge")
         );
         tableColGLN.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("GLN")
+                new PropertyValueFactory<Item,String>("GTIN")
         );
         tablColHrst.setCellValueFactory(
                 new PropertyValueFactory<PHARMAITEM,String>("Lot")
@@ -154,11 +119,17 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     }
 
     public void checkOut(ActionEvent actionEvent) {
-
+        dataSource.checkoutItems(data);
+        //clear list
+        data.removeAll();
+        //Ev. Log Information
     }
 
     public void checkIn(ActionEvent actionEvent) {
-
+        dataSource.checkinItems(data);
+        //clear list
+        data.removeAll();
+        //Ev. Log Information
     }
 
     public void setApp(Main main) {

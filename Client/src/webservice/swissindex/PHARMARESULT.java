@@ -5,10 +5,10 @@
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package SwissIndex;
+package webservice.swissindex;
 
 public class PHARMARESULT  implements java.io.Serializable {
-    private SwissIndex.PHARMARESULTOK_ERROR OK_ERROR;
+    private webservice.swissindex.PHARMARESULTOK_ERROR OK_ERROR;
 
     private java.lang.Integer NBR_RECORD;
 
@@ -20,7 +20,7 @@ public class PHARMARESULT  implements java.io.Serializable {
     }
 
     public PHARMARESULT(
-           SwissIndex.PHARMARESULTOK_ERROR OK_ERROR,
+           webservice.swissindex.PHARMARESULTOK_ERROR OK_ERROR,
            java.lang.Integer NBR_RECORD,
            java.lang.String ERROR_CODE,
            java.lang.String MESSAGE) {
@@ -36,7 +36,7 @@ public class PHARMARESULT  implements java.io.Serializable {
      * 
      * @return OK_ERROR
      */
-    public SwissIndex.PHARMARESULTOK_ERROR getOK_ERROR() {
+    public webservice.swissindex.PHARMARESULTOK_ERROR getOK_ERROR() {
         return OK_ERROR;
     }
 
@@ -46,7 +46,7 @@ public class PHARMARESULT  implements java.io.Serializable {
      * 
      * @param OK_ERROR
      */
-    public void setOK_ERROR(SwissIndex.PHARMARESULTOK_ERROR OK_ERROR) {
+    public void setOK_ERROR(webservice.swissindex.PHARMARESULTOK_ERROR OK_ERROR) {
         this.OK_ERROR = OK_ERROR;
     }
 

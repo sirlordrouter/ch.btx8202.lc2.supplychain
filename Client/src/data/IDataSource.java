@@ -1,6 +1,7 @@
 package data;
 
-import model.entities.Item;
+
+import webservice.erp.Item;
 
 import java.util.Date;
 import java.util.List;

@@ -5,12 +5,12 @@
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package SwissIndex;
+package webservice.swissindex;
 
 public class PHARMA  implements java.io.Serializable {
-    private SwissIndex.PHARMAITEM[] ITEM;
+    private webservice.swissindex.PHARMAITEM[] ITEM;
 
-    private SwissIndex.PHARMARESULT RESULT;
+    private webservice.swissindex.PHARMARESULT RESULT;
 
     private java.util.Calendar CREATION_DATETIME;  // attribute
 
@@ -18,8 +18,8 @@ public class PHARMA  implements java.io.Serializable {
     }
 
     public PHARMA(
-           SwissIndex.PHARMAITEM[] ITEM,
-           SwissIndex.PHARMARESULT RESULT,
+           webservice.swissindex.PHARMAITEM[] ITEM,
+           webservice.swissindex.PHARMARESULT RESULT,
            java.util.Calendar CREATION_DATETIME) {
            this.ITEM = ITEM;
            this.RESULT = RESULT;
@@ -32,7 +32,7 @@ public class PHARMA  implements java.io.Serializable {
      * 
      * @return ITEM
      */
-    public SwissIndex.PHARMAITEM[] getITEM() {
+    public webservice.swissindex.PHARMAITEM[] getITEM() {
         return ITEM;
     }
 
@@ -42,15 +42,15 @@ public class PHARMA  implements java.io.Serializable {
      * 
      * @param ITEM
      */
-    public void setITEM(SwissIndex.PHARMAITEM[] ITEM) {
+    public void setITEM(webservice.swissindex.PHARMAITEM[] ITEM) {
         this.ITEM = ITEM;
     }
 
-    public SwissIndex.PHARMAITEM getITEM(int i) {
+    public webservice.swissindex.PHARMAITEM getITEM(int i) {
         return this.ITEM[i];
     }
 
-    public void setITEM(int i, SwissIndex.PHARMAITEM _value) {
+    public void setITEM(int i, webservice.swissindex.PHARMAITEM _value) {
         this.ITEM[i] = _value;
     }
 
@@ -60,7 +60,7 @@ public class PHARMA  implements java.io.Serializable {
      * 
      * @return RESULT
      */
-    public SwissIndex.PHARMARESULT getRESULT() {
+    public webservice.swissindex.PHARMARESULT getRESULT() {
         return RESULT;
     }
 
@@ -70,7 +70,7 @@ public class PHARMA  implements java.io.Serializable {
      * 
      * @param RESULT
      */
-    public void setRESULT(SwissIndex.PHARMARESULT RESULT) {
+    public void setRESULT(webservice.swissindex.PHARMARESULT RESULT) {
         this.RESULT = RESULT;
     }
 

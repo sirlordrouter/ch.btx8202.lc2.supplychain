@@ -5,14 +5,14 @@
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package SwissIndex;
+package webservice.swissindex;
 
 public class PHARMAITEM  implements java.io.Serializable {
     private java.lang.String GTIN;
 
     private java.math.BigInteger PHAR;
 
-    private SwissIndex.PHARMAITEMSTATUS STATUS;
+    private webservice.swissindex.PHARMAITEMSTATUS STATUS;
 
     private java.util.Calendar STDATE;
 
@@ -24,7 +24,7 @@ public class PHARMAITEM  implements java.io.Serializable {
 
     private java.lang.String ATC;
 
-    private SwissIndex.PHARMAITEMCOMP COMP;
+    private webservice.swissindex.PHARMAITEMCOMP COMP;
 
     private java.util.Calendar DT;  // attribute
 
@@ -34,13 +34,13 @@ public class PHARMAITEM  implements java.io.Serializable {
     public PHARMAITEM(
            java.lang.String GTIN,
            java.math.BigInteger PHAR,
-           SwissIndex.PHARMAITEMSTATUS STATUS,
+           webservice.swissindex.PHARMAITEMSTATUS STATUS,
            java.util.Calendar STDATE,
            java.lang.String LANG,
            java.lang.String DSCR,
            java.lang.String ADDSCR,
            java.lang.String ATC,
-           SwissIndex.PHARMAITEMCOMP COMP,
+           webservice.swissindex.PHARMAITEMCOMP COMP,
            java.util.Calendar DT) {
            this.GTIN = GTIN;
            this.PHAR = PHAR;
@@ -100,7 +100,7 @@ public class PHARMAITEM  implements java.io.Serializable {
      * 
      * @return STATUS
      */
-    public SwissIndex.PHARMAITEMSTATUS getSTATUS() {
+    public webservice.swissindex.PHARMAITEMSTATUS getSTATUS() {
         return STATUS;
     }
 
@@ -110,7 +110,7 @@ public class PHARMAITEM  implements java.io.Serializable {
      * 
      * @param STATUS
      */
-    public void setSTATUS(SwissIndex.PHARMAITEMSTATUS STATUS) {
+    public void setSTATUS(webservice.swissindex.PHARMAITEMSTATUS STATUS) {
         this.STATUS = STATUS;
     }
 
@@ -220,7 +220,7 @@ public class PHARMAITEM  implements java.io.Serializable {
      * 
      * @return COMP
      */
-    public SwissIndex.PHARMAITEMCOMP getCOMP() {
+    public webservice.swissindex.PHARMAITEMCOMP getCOMP() {
         return COMP;
     }
 
@@ -230,7 +230,7 @@ public class PHARMAITEM  implements java.io.Serializable {
      * 
      * @param COMP
      */
-    public void setCOMP(SwissIndex.PHARMAITEMCOMP COMP) {
+    public void setCOMP(webservice.swissindex.PHARMAITEMCOMP COMP) {
         this.COMP = COMP;
     }
 

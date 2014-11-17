@@ -5,7 +5,7 @@
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package SwissIndex;
+package webservice.swissindex;
 
 public class PHARMAITEMSTATUS implements java.io.Serializable {
     private java.lang.String _value_;
