@@ -85,39 +85,6 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <Pane layoutY="346.0" prefHeight="128.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-         <children>
-            <ImageView fx:id="produktionImage" fitHeight="90.0" fitWidth="108.0" layoutX="37.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../media/Produktion.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="transportImage" fitHeight="90.0" fitWidth="87.0" layoutX="144.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../media/Transport.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="grossistImage" fitHeight="90.0" fitWidth="81.0" layoutX="253.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../media/Grossist.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="transportImageOut" fitHeight="90.0" fitWidth="87.0" layoutX="360.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../media/Transport.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="stationImage" fitHeight="90.0" fitWidth="87.0" layoutX="481.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../media/Station.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bettImage" fitHeight="90.0" fitWidth="87.0" layoutX="572.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../media/Bett.png" />
-               </image>
-            </ImageView>
-         </children>
-      </Pane>
+      <Pane layoutY="346.0" prefHeight="128.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
    </children>
 </AnchorPane>
