@@ -28,6 +28,21 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "sayHelloWorldFrom", targetNamespace = "http://service/", className = "webservice.erp.SayHelloWorldFrom")
+    @ResponseWrapper(localName = "sayHelloWorldFromResponse", targetNamespace = "http://service/", className = "webservice.erp.SayHelloWorldFromResponse")
+    @Action(input = "http://service/SupplyChainService/sayHelloWorldFromRequest", output = "http://service/SupplyChainService/sayHelloWorldFromResponse")
+    public String sayHelloWorldFrom(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
      * @param arg1
      * @param arg0
      */
@@ -55,21 +70,6 @@ public interface SupplyChainService {
         List<Item> arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "sayHelloWorldFrom", targetNamespace = "http://service/", className = "webservice.erp.SayHelloWorldFrom")
-    @ResponseWrapper(localName = "sayHelloWorldFromResponse", targetNamespace = "http://service/", className = "webservice.erp.SayHelloWorldFromResponse")
-    @Action(input = "http://service/SupplyChainService/sayHelloWorldFromRequest", output = "http://service/SupplyChainService/sayHelloWorldFromResponse")
-    public String sayHelloWorldFrom(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
 
     /**
      * 
