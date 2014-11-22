@@ -11,5 +11,5 @@ package services.barcoding;
  * @version 21-10-2014
  */
 public interface IBarcodeParsedEventListener {
-     void setBarcode(String barcode, String barcodeType, int scannerId);
+     void setBarcode(String barcode, BarcodeGlobalListener.CODE_IDENTITY identity, int scannerId);
 }

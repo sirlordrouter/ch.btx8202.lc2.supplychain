@@ -24,6 +24,12 @@ public class ErpClient implements IDataSource{
     public ErpClient(String stationGLN) {
 
         this.stationGLN = stationGLN;
+
+
+    }
+
+    public void connectService() {
+
         supplyChainService = new SupplyChainServiceService();
         supplyChainServicePort = supplyChainService.getSupplyChainServicePort();
     }

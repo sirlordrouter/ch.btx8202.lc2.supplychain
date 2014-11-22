@@ -18,11 +18,14 @@ import model.entities.User;
 import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
+import services.barcoding.BarcodeGlobalListener;
 import services.barcoding.IBarcodeParsedEventListener;
 import webservice.erp.Item;
 import webservice.swissindex.PHARMAITEM;
 
+import javax.xml.ws.WebServiceException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -68,13 +71,14 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     public TextField txtSeriennummer;
     public TextField txtGTIN;
 
+
     public ObservableList<Item> data =  FXCollections.observableArrayList();
     IDataSource dataSource;
 
     private Main application;
 
     @Override
-    public void setBarcode(String barcode, String barcodeType, int id) {
+    public void setBarcode(String barcode, BarcodeGlobalListener.CODE_IDENTITY barcodeType, int id) {
 
         //HACK
         if (barcode.startsWith("0")) {
@@ -152,7 +156,12 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
             prop = reader.getPropValues();
             locationField.setText(prop.getProperty("stationBezeichnung"));
             dataSource = new ErpClient(prop.getProperty("stationGLN"));
-        } catch (IOException e) {
+        } catch (ConnectException e ) {
+            locationField.setText("No Connection to ERP WebService");
+        } catch(WebServiceException e) {
+            locationField.setText("No Connection to ERP WebService");
+        }
+        catch (IOException e) {
             e.printStackTrace();
             locationField.setText("Configuration could not be read!");
         }

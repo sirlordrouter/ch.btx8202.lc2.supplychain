@@ -4,6 +4,7 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class is the Global Keyevent Listener, who watches for the Barcodes, we
@@ -50,15 +51,21 @@ public class BarcodeGlobalListener implements NativeKeyListener {
     private static boolean prefix3 = false;
     private static boolean prefix4 = false;
 
+
+    public static enum CODE_IDENTITY { BARCODE, DATAMATRIX };
     public static final String BARCODE = "FË0";
     public static final String DATAMATRIX = "Dm1";
+    public static HashMap barcodeTypes = new HashMap<Integer,String>();
 
     private String barcode = "";
     private String allChars = "";
     private ArrayList<IBarcodeParsedEventListener> listeners = null;
 
     public BarcodeGlobalListener() {
+
         listeners = new ArrayList<IBarcodeParsedEventListener>();
+        barcodeTypes.put(BARCODE, CODE_IDENTITY.BARCODE);
+        barcodeTypes.put(DATAMATRIX,CODE_IDENTITY.DATAMATRIX);
     }
 
     public void addListener(IBarcodeParsedEventListener listener) {
@@ -138,7 +145,13 @@ public class BarcodeGlobalListener implements NativeKeyListener {
 
             for (IBarcodeParsedEventListener listener : listeners) {
                 System.out.println(barcode.substring(3));
-                listener.setBarcode(barcode.trim().substring(3), "", 0);
+                for (Object key: barcodeTypes.keySet() ) {
+                    String k = (String) key;
+                    if (barcode.substring(1,3).equals(k)) {
+                        listener.setBarcode(barcode.trim().substring(3), (CODE_IDENTITY)barcodeTypes.get(key), 0);
+                    }
+                }
+
             }
 
             this.barcode = "";
