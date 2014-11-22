@@ -27,6 +27,7 @@ import javax.xml.ws.WebServiceException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
+import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -80,13 +81,32 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     @Override
     public void setBarcode(String barcode, BarcodeGlobalListener.CODE_IDENTITY barcodeType, int id) {
 
-        //HACK
-        if (barcode.startsWith("0")) {
-            barcode = barcode.substring(1);
-        }
+        List<Item> items;
 
         txtareaMediInfo.setText("Barcode " + barcode + " gescannt.");
-        TradeItem i = SwissIndexClient.getItemInformationFromGTIN(barcode);
+
+        //SSCC
+        if (barcode.length() == 18 || barcode.length() == 1 ) {
+            items = dataSource.getItemsBySSCC(barcode);
+            for (Item item : items) {
+                retrieveItemInformation(item);
+            }
+        } else if(barcode.length() == 13) //GLN / EAN
+        {
+            //HACK
+            if (barcode.startsWith("0")) {
+                barcode = barcode.substring(1);
+            }
+
+            Item i = new Item();
+            i.setGTIN(barcode);
+            retrieveItemInformation(i);
+        }
+
+    }
+
+    private void retrieveItemInformation(Item item) {
+        TradeItem i = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
 
         if (i != null) {
             txtareaMediInfo.setText(i.toString());
@@ -95,6 +115,7 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
             txtareaMediInfo.setText("Kein Item gefunden.");
         }
     }
+
 
     @FXML
     public void Event(ActionEvent actionEvent) {
@@ -156,6 +177,7 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
             prop = reader.getPropValues();
             locationField.setText(prop.getProperty("stationBezeichnung"));
             dataSource = new ErpClient(prop.getProperty("stationGLN"));
+
         } catch (ConnectException e ) {
             locationField.setText("No Connection to ERP WebService");
         } catch(WebServiceException e) {

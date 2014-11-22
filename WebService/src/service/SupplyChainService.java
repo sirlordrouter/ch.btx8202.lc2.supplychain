@@ -99,6 +99,7 @@ public class SupplyChainService {
         /**
          * Contained SSCC?
          */
+        String ssccSecPack = getSSCCcontainingSecondaryPackage(sscc);
 
         List<Item> items =  null;
         ResultSet rs;
@@ -107,7 +108,7 @@ public class SupplyChainService {
         try {
             String query = "SELECT GTINsek, SerialNr, BatchLot, ExpiryDate FROM SecondaryPackage WHERE SSCC = ?";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, sscc);
+            ps.setString(1, ssccSecPack);
             rs =  ps.executeQuery();
 
             items = addItemsFromResult(rs);
@@ -125,8 +126,51 @@ public class SupplyChainService {
         return items;
     }
 
-    public void getSSCC(String sscc) {
-        
+    private String getSSCCcontainingSecondaryPackage(String sscc) {
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        String count = "SELECT Count(*) as 'Anzahl' FROM LogisticPackage WHERE SSCC = ? OR ContainedSSCC=?";
+        System.out.println(count);
+        String query = "SELECT SSCC,ContainedSSCC FROM LogisticPackage WHERE SSCC = ? OR ContainedSSCC=?";
+        System.out.println(query);
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement(count);
+            ps.setString(1, sscc);
+            ps.setString(2, sscc);
+            rs =  ps.executeQuery();
+            final ResultSetMetaData metaData = rs.getMetaData();
+            System.out.println("Column Count: " + metaData.getColumnCount() + metaData.getColumnName(1));
+            rs.next();
+            int rows = rs.getInt("Anzahl");
+
+            ps = connection.prepareStatement(query);
+
+            ps.setString(1, sscc);
+            ps.setString(2, sscc);
+            rs =  ps.executeQuery();
+
+
+            if (rows == 1) {
+                rs.next();
+                //Is there another LogisitcPackage contained?
+                String r = rs.getString("SSCC");
+               if (rs.wasNull()) {
+                   return getSSCCcontainingSecondaryPackage(rs.getString("ContainedSSCC"));
+               } else { //If SSCC probably contains Items, return
+                   return r;
+               }
+            } else {
+                //ERROR ...or no Entry
+                System.out.println("No Entry for SSCC " + sscc + "Row count: " + rows);
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
     private List<Item> addItemsFromResult(ResultSet rs) throws SQLException {
@@ -211,7 +255,7 @@ public class SupplyChainService {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, gtin);
             ps.setString(2, batchLot);
-            ps.setDate(3,  new Date(expiryDate.getTime()));
+            ps.setDate(3, new Date(expiryDate.getTime()));
             rs =  ps.executeQuery();
 
             items = addItemsFromResult(rs);
@@ -279,7 +323,10 @@ public class SupplyChainService {
 
     public static void main(String[] argv) {
     Object implementor = new SupplyChainService();
+
+
     String address = "http://localhost:9000/SupplyChainService";
     Endpoint.publish(address, implementor);
-  }
+
+    }
 }
