@@ -2,6 +2,7 @@ package service;
 
 import data.DbConnectorLogistic;
 import entities.Item;
+import service.exceptions.NoSuchSSCCFoundException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -12,7 +13,25 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Created by Johannes on 17.11.14.
+ * Berner Fachhochschule</br>
+ * Medizininformatik BSc</br>
+ * Modul </br>
+ *
+ *<p>
+ * Provides a Service similar to an ERP. Checkin/out of items, searching items and orders
+ * are Part of this service.
+ * Identifications are Codes from GS1, especially:
+ * <ul>
+ *     <li>Serial Shipping Container Code (SSCC)</li>
+ *     <li>Global Shipment IDetification Number (GSIN)</li>
+ *     <li>Global Location Number (GLN)</li>
+ *     <li>Global Trade Item Number (GTIN)</li>
+ * </ul>
+ * More Information about GS1 Identifications can be found under <a href="http://www.gs1.org/barcodes/technical/id_keys">GS1 Identification Reference</a>.
+ * </p>
+ *
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 29-11-2014
  */
 @WebService()
 public class SupplyChainService {
@@ -37,6 +56,10 @@ public class SupplyChainService {
      */
     @WebMethod
     public void checkinItems(List<Item> items, String gln) {
+
+        //Prüfen obn nicht schon eingecheckt
+        //Ev. bi Products no Lagerort GLN als Attribut
+
         //State 2: Arrived
         insertTrackingItems(items, gln, 2);
     }
@@ -52,6 +75,7 @@ public class SupplyChainService {
     @WebMethod
     public void checkoutItems(List<Item> items, String gln) {
         //State 3: Processed
+        // Prüfen ob nicht ausgechcekct
         System.out.println(items.toArray() + " " + gln);
         insertTrackingItems(items, gln, 3);
     }
@@ -86,6 +110,7 @@ public class SupplyChainService {
 
     /**
      * getItemsBySSCC
+     * Wird der ganze Order geholt, oder nur die Items der jeweiligen SSCC?
      *
      * @param sscc
      *  an SSCC for Search Items in
@@ -94,13 +119,124 @@ public class SupplyChainService {
      */
     @WebMethod
     public List<Item> getItemsBySSCC(String sscc) {
+        List<Item> items;
+        try {
+            return getAllItemsBySSCC(sscc);
+        } catch (NoSuchSSCCFoundException ex) {
+            return null;
+        }
 
-        //LogisticPackage  => SSCC ?
+    }
+
+    private List<Item> getAllItemsBySSCC(String sscc) throws NoSuchSSCCFoundException{
+        List<Item> items;
+
         /**
-         * Contained SSCC?
+         * going level up searching for sscc first, looking after items contained in this sscc,
+         * if no items found, go top down
          */
-        String ssccSecPack = getSSCCcontainingSecondaryPackage(sscc);
 
+        //1.Case is LP containing Products, whe have reached the lowest, return them.
+        items = getProductsBySCC(sscc);
+        if (items.size() > 0) {
+            return items;
+        } else {
+            //Is there any Logistic Package with this sscc?
+            if (getLogisticePackageSSCC(sscc).equals("")) {
+                //there is no such sscc, maybe wrong?
+                //raise Exception which is handled or what to do?
+                throw new NoSuchSSCCFoundException();
+            } else { //Its asscc but no items in ith, so probably third-stage upwards.
+                //Gte all sscc which are contained in this one
+                List<String> containedInSSCC = getLogisticePackagesContainedInSSCC(sscc);
+                if (containedInSSCC.size() > 0) {
+                    for (String s : containedInSSCC) {
+                       try {
+                           return getAllItemsBySSCC(s);
+                       } catch (NoSuchSSCCFoundException ex) {
+                           return new ArrayList<Item>();
+                       }
+                    }
+                }
+            }
+        }
+
+        return items;
+    }
+
+    /**
+     * Is there a logisticPackage with this sscc?
+     * @param sscc
+     * @return
+     */
+    private String getLogisticePackageSSCC(String sscc) {
+
+        ArrayList<String> packages = new ArrayList<String>();
+
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        String query = "SELECT SSCC FROM LogisticPackage WHERE SSCC = ?";
+        System.out.println(query);
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, sscc);
+            rs =  ps.executeQuery();
+
+            rs.next();
+            String r = rs.getString("SSCC");
+            if (!rs.wasNull()) {
+                return r;
+            } else {
+                return "";
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param containedInSSCC
+     *  SSCC where may other SSCC are contained
+     * @return
+     *  list of Strings with SSCC's which are contained in containedInSCC
+     */
+    private List<String> getLogisticePackagesContainedInSSCC(String containedInSSCC) {
+        ArrayList<String> packages = new ArrayList<String>();
+
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        String query = "SELECT SSCC,ContainedInSSCC FROM LogisticPackage WHERE ContainedInSSCC = ?";
+        System.out.println(query);
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, containedInSSCC);
+            rs =  ps.executeQuery();
+
+            while (rs.next()) {
+                //Is there another LogisitcPackage contained?
+                String r = rs.getString("SSCC");
+                if (!rs.wasNull()) {
+                    packages.add(r);
+                }
+            }
+
+            return packages;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+    private List<Item> getProductsBySCC(String sscc) {
         List<Item> items =  null;
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
@@ -108,7 +244,7 @@ public class SupplyChainService {
         try {
             String query = "SELECT GTINsek, SerialNr, BatchLot, ExpiryDate FROM SecondaryPackage WHERE SSCC = ?";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, ssccSecPack);
+            ps.setString(1, sscc);
             rs =  ps.executeQuery();
 
             items = addItemsFromResult(rs);
@@ -126,13 +262,14 @@ public class SupplyChainService {
         return items;
     }
 
+    //Depricated
     private String getSSCCcontainingSecondaryPackage(String sscc) {
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
 
-        String count = "SELECT Count(*) as 'Anzahl' FROM LogisticPackage WHERE SSCC = ? OR ContainedSSCC=?";
+        String count = "SELECT Count(*) as 'Anzahl' FROM LogisticPackage WHERE SSCC = ? OR ContainedInSSCC=?";
         System.out.println(count);
-        String query = "SELECT SSCC,ContainedSSCC FROM LogisticPackage WHERE SSCC = ? OR ContainedSSCC=?";
+        String query = "SELECT SSCC,ContainedInSSCC FROM LogisticPackage WHERE SSCC = ? OR ContainedInSSCC=?";
         System.out.println(query);
         PreparedStatement ps = null;
         try {
@@ -157,7 +294,7 @@ public class SupplyChainService {
                 //Is there another LogisitcPackage contained?
                 String r = rs.getString("SSCC");
                if (rs.wasNull()) {
-                   return getSSCCcontainingSecondaryPackage(rs.getString("ContainedSSCC"));
+                   return getSSCCcontainingSecondaryPackage(rs.getString("ContainedInSSCC"));
                } else { //If SSCC probably contains Items, return
                    return r;
                }
@@ -288,11 +425,31 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
-            String query = "SELECT ShipmentId,OrderNr FROM LogisticPackage WHERE SSCC = ? OR ContainedSSCC=?";
-            PreparedStatement ps = connection.prepareStatement(query);
+
+            String count = "SELECT Count(*) as Anzahl FROM LogisticPackage WHERE SSCC = ? OR ContainedInSSCC=?";
+
+            PreparedStatement ps = connection.prepareStatement(count);
             ps.setString(1, sscc);
             ps.setString(2, sscc);
             rs =  ps.executeQuery();
+            final ResultSetMetaData metaData = rs.getMetaData();
+            System.out.println("Column Count: " + metaData.getColumnCount() + metaData.getColumnName(1));
+            rs.next();
+            int rows = rs.getInt("Anzahl");
+
+            String query = "SELECT ShipmentId,OrderNr FROM LogisticPackage WHERE SSCC = ? OR ContainedInSSCC=?";
+             ps = connection.prepareStatement(query);
+            ps.setString(1, sscc);
+            ps.setString(2, sscc);
+            rs =  ps.executeQuery();
+
+            if (rows == 1) {
+                rs.next();
+            } else {
+                //ERROR ...or no Entry
+                System.out.println("No Entry for SSCC " + sscc + "Row count: " + rows);
+                return null;
+            }
 
             if (rs.getFetchSize() == 1) {
                 order = rs.getBigDecimal(1).toString();
