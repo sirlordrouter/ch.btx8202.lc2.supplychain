@@ -2,6 +2,7 @@ package service;
 
 import data.DbConnectorLogistic;
 import entities.Item;
+import service.exceptions.NoSuchGLNFoundException;
 import service.exceptions.NoSuchSSCCFoundException;
 
 import javax.jws.WebMethod;
@@ -46,6 +47,18 @@ public class SupplyChainService {
     return result;
   }
 
+    @WebMethod
+    public List<Item> getCheckedInItems(String gln) throws NoSuchGLNFoundException {
+        ArrayList<Item> items = new ArrayList<Item>();
+
+        //TrackedItems suchen wo gln = gln
+        //Resultat filtern wo nur bestellt und arrived da ist
+        // allenfalls gleich pro secondaryPackage schreiben wo gelagert als alternative
+
+
+        return items;
+    }
+
     /**
      * checkinItems
      *
@@ -87,6 +100,7 @@ public class SupplyChainService {
         try {
             String query = "INSERT INTO TrackedItems (GTIN, SerialNr, ExpiryDate, GLNscan, Date, StateNr) VALUES (?,?,?,?,?,?)";
             for (Item item : items) {
+                //TODO: Inhalt überprüfen ob stimmt, gerade Datum schwierig, muss auch Zeitstempel beinhalten
                 PreparedStatement ps = connection.prepareStatement(query);
                 ps.setString(1, item.getGTIN());
                 ps.setString(2, item.getSerial());
@@ -94,7 +108,8 @@ public class SupplyChainService {
                 ps.setString(4, gln);
                 ps.setDate(5, new Date(new java.util.Date().getTime()));
                 ps.setInt(6, trackingState);
-                ps.executeQuery();
+                int i = ps.executeUpdate();
+                System.out.println(i);
             }
 
         } catch (SQLException e) {
@@ -109,8 +124,8 @@ public class SupplyChainService {
     }
 
     /**
-     * getItemsBySSCC
-     * Wird der ganze Order geholt, oder nur die Items der jeweiligen SSCC?
+     * Gibt eine Liste von Items zurück,
+     * welche sich in dem LogisticPackge oder den darin enthaltenen LogisticPackages befinden.
      *
      * @param sscc
      *  an SSCC for Search Items in
@@ -236,6 +251,13 @@ public class SupplyChainService {
         }
     }
 
+    /**
+     *
+     * @param sscc
+     * @return
+     *  a List with Items Contained in this LogisitcPackge, empty List provided if no
+     *  Products are contained, but maybe another logisticUnit
+     */
     private List<Item> getProductsBySCC(String sscc) {
         List<Item> items =  null;
         ResultSet rs;
@@ -262,54 +284,6 @@ public class SupplyChainService {
         return items;
     }
 
-    //Depricated
-    private String getSSCCcontainingSecondaryPackage(String sscc) {
-        ResultSet rs;
-        Connection connection = connectorLogistic.getConnection();
-
-        String count = "SELECT Count(*) as 'Anzahl' FROM LogisticPackage WHERE SSCC = ? OR ContainedInSSCC=?";
-        System.out.println(count);
-        String query = "SELECT SSCC,ContainedInSSCC FROM LogisticPackage WHERE SSCC = ? OR ContainedInSSCC=?";
-        System.out.println(query);
-        PreparedStatement ps = null;
-        try {
-            ps = connection.prepareStatement(count);
-            ps.setString(1, sscc);
-            ps.setString(2, sscc);
-            rs =  ps.executeQuery();
-            final ResultSetMetaData metaData = rs.getMetaData();
-            System.out.println("Column Count: " + metaData.getColumnCount() + metaData.getColumnName(1));
-            rs.next();
-            int rows = rs.getInt("Anzahl");
-
-            ps = connection.prepareStatement(query);
-
-            ps.setString(1, sscc);
-            ps.setString(2, sscc);
-            rs =  ps.executeQuery();
-
-
-            if (rows == 1) {
-                rs.next();
-                //Is there another LogisitcPackage contained?
-                String r = rs.getString("SSCC");
-               if (rs.wasNull()) {
-                   return getSSCCcontainingSecondaryPackage(rs.getString("ContainedInSSCC"));
-               } else { //If SSCC probably contains Items, return
-                   return r;
-               }
-            } else {
-                //ERROR ...or no Entry
-                System.out.println("No Entry for SSCC " + sscc + "Row count: " + rows);
-                return null;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-            return null;
-        }
-    }
-
     private List<Item> addItemsFromResult(ResultSet rs) throws SQLException {
         List<Item> items = new ArrayList<Item>();
         while (rs.next()) {
@@ -325,12 +299,13 @@ public class SupplyChainService {
 
 
     /**
-     * getItemByIdentifier
+     * Gets an Item with corresponding GTIN and Serial Number
+     *
      * @param gtin
      *  gtin to get item
      * @param serialNumber
-     *  serialnumber of items
-     * @return a Single Item
+     *  serialnumber of item
+     * @return a Single Item - as identifiers should be unique
      */
     @WebMethod
     public Item getItemByIdentifier(String gtin, String serialNumber) {
@@ -371,7 +346,7 @@ public class SupplyChainService {
     }
 
     /**
-     * getItemsByBatch
+     * Gets all trade items with a specific batch and expiry date
      *
      * @param gtin
      *  gtin to get item
@@ -411,9 +386,10 @@ public class SupplyChainService {
     }
 
     /**
+     * Looks for an order which hold a specific sscc
      *
      * @param sscc
-     *  sscc to look for an order
+     *  sscc to look to which order it belongs
      * @return
      *  String with order number
      */
@@ -426,6 +402,16 @@ public class SupplyChainService {
 
         try {
 
+            /**
+             * Nochmals überlegen = Wie kommen die Informationen in die DB???
+             * Was ist auf dem elektronischen Lieferein was anschliessend übernommen werden kann?
+             *
+             *
+             * SSCC suchen =>Order
+             * ev falls order / shiptmentid nicht redundant
+             *
+             */
+
             String count = "SELECT Count(*) as Anzahl FROM LogisticPackage WHERE SSCC = ? OR ContainedInSSCC=?";
 
             PreparedStatement ps = connection.prepareStatement(count);
@@ -437,7 +423,7 @@ public class SupplyChainService {
             rs.next();
             int rows = rs.getInt("Anzahl");
 
-            String query = "SELECT ShipmentId,OrderNr FROM LogisticPackage WHERE SSCC = ? OR ContainedInSSCC=?";
+            String query = "SELECT ShipmentIdGSIN,OrderNr FROM LogisticPackage WHERE SSCC = ?";
              ps = connection.prepareStatement(query);
             ps.setString(1, sscc);
             ps.setString(2, sscc);
@@ -471,12 +457,6 @@ public class SupplyChainService {
 
         return null;
     }
-
-    //TODO wenn möglich
-    /**
-     * Auflisten von Eingechekten items
-     *
-     */
 
     public static void main(String[] argv) {
     Object implementor = new SupplyChainService();
