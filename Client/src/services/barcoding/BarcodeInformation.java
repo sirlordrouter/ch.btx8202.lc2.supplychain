@@ -69,6 +69,9 @@ public class BarcodeInformation {
         this.AI21_SERIAL_NUMBER = AI21_SERIAL_NUMBER;
     }
 
+    public BarcodeInformation() {
+    }
+
     public String getAI00_SSCC() {
         return AI00_SSCC;
     }

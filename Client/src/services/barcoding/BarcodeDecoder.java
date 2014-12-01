@@ -1,5 +1,8 @@
 package services.barcoding;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Berner Fachhochschule</br>
  * Medizininformatik BSc</br>
@@ -17,30 +20,70 @@ package services.barcoding;
  */
 public class BarcodeDecoder {
 
-    /**
-     *
-     */
-    public static final int GS1_128 = 0;
-    /**
-     * GS1
-     */
-    public static final int EAN = 1;
-    /**
-     *
-     */
-    public static final int DATAMATRIX = 2;
-    /**
-     *
-     */
-    public static final int DATABAR = 3;
 
     /**
      *
      * @param barcodeString
+     *  information string contained in the barcode
+     * @param identity
+     *  type of barcode
+     * @return
+     *  a BarcodeInformation Object holding the deserialized Information
+     * @throws NoValidBarcodeTypeException
+     *  if none of the available types is identified
      */
-    public static BarcodeInformation decode(String barcodeString) {
+    public static BarcodeInformation decode(String barcodeString, BarcodeGlobalListener.CODE_IDENTITY identity)
+            throws NoValidBarcodeTypeException {
+        switch (identity) {
+            case BARCODE:
+                return new BarcodeInformation("", barcodeString);
+            case DATAMATRIX:
+                return deserializeBarcodeInformation(barcodeString);
+            case GS1_128:
+                return deserializeBarcodeInformation(barcodeString);
+            default:
+                throw new NoValidBarcodeTypeException();
+        }
+    }
 
-        return null;
+    private static BarcodeInformation deserializeBarcodeInformation(String barcodeString) {
+        BarcodeInformation barcodeInformation = new BarcodeInformation();
+        String[] splitted = barcodeString.split( "\\)" );
+        HashMap<Integer,String> info = new HashMap<Integer, String>();
+        for (int i = 0; i < splitted.length; i++) {
+            String part = splitted[i];
+            int key = Integer.parseInt(part.substring(0, 2));
+            String value = splitted[i].substring(3);
+            info.put(key,value);
+        }
+
+        for (Map.Entry<Integer, String> entry : info.entrySet()) {
+            switch (entry.getKey()) {
+                case 0 :
+                    barcodeInformation.setAI00_SSCC(entry.getValue());
+                    break;
+                case 1 :
+                    barcodeInformation.setAI01_HANDELSEINHEIT(entry.getValue());
+                    break;
+                case 2:
+                    barcodeInformation.setAI02_ENTHALTENE_EINHEIT(entry.getValue());
+                    break;
+                case 10 :
+                    barcodeInformation.setAI10_CHARGENNUMMER(entry.getValue());
+                    break;
+                case 11:
+                    barcodeInformation.setAI11_PRODUKTIONSDATUM(entry.getValue());
+                    break;
+                case 17:
+                    barcodeInformation.setAI17_VERFALLSDATUM(entry.getValue());
+                    break;
+                case 21:
+                    barcodeInformation.setAI21_SERIAL_NUMBER(entry.getValue());
+                    break;
+            }
+        }
+
+        return barcodeInformation;
     }
 
 }

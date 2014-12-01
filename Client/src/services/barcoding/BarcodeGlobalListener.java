@@ -52,9 +52,15 @@ public class BarcodeGlobalListener implements NativeKeyListener {
     private static boolean prefix4 = false;
 
 
-    public static enum CODE_IDENTITY { BARCODE, DATAMATRIX };
+    public static enum CODE_IDENTITY { BARCODE, DATAMATRIX, GS1_128 };
+    /*
+    * Different Prefixes are possbile for the different types
+    * */
     public static final String BARCODE = "FË0";
-    public static final String DATAMATRIX = "Dm1";
+    public static final String DATAMATRIX01 = "Dm¨d1";
+    public static final String DATAMATRIX02 = "Dm1";
+    public static final String DATAMATRIX03 = "Dm¨¨d1";
+    public static final String GS1_128 = "*¨C1";
     public static HashMap barcodeTypes = new HashMap<Integer,String>();
 
     private String barcode = "";
@@ -65,7 +71,10 @@ public class BarcodeGlobalListener implements NativeKeyListener {
 
         listeners = new ArrayList<IBarcodeParsedEventListener>();
         barcodeTypes.put(BARCODE, CODE_IDENTITY.BARCODE);
-        barcodeTypes.put(DATAMATRIX,CODE_IDENTITY.DATAMATRIX);
+        barcodeTypes.put(DATAMATRIX01,CODE_IDENTITY.DATAMATRIX);
+        barcodeTypes.put(DATAMATRIX02,CODE_IDENTITY.DATAMATRIX);
+        barcodeTypes.put(DATAMATRIX03,CODE_IDENTITY.DATAMATRIX);
+        barcodeTypes.put(GS1_128,CODE_IDENTITY.GS1_128);
     }
 
     public void addListener(IBarcodeParsedEventListener listener) {
@@ -85,7 +94,7 @@ public class BarcodeGlobalListener implements NativeKeyListener {
     public void nativeKeyTyped(NativeKeyEvent e) {
 
         allChars += e.getKeyChar();
-        System.out.println("All CHars output: " + allChars);
+        System.out.println("All chars output: " + allChars);
 
         if (prefix1 && prefix2 && prefix3 && prefix4) {
                 // some character has been read, append it to "barcoding.barcoding cache"
@@ -93,32 +102,10 @@ public class BarcodeGlobalListener implements NativeKeyListener {
                 // one too high, and a zero is then a 11, so -1 modulo 10
                 barcode = barcode + e.getKeyChar();
         }
-
-//        System.out.println("TYPEString rep: "+ e.getKeyChar()); //Gibt das richtige Barcodezeichen aus auf Mac
-//        System.out.println("TYPEKey Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
-//        System.out.println("TYPEMod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
-//        System.out.println("TYPEKey Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
-//        System.out.println("TYPEKey Char "+e.getKeyChar());
-//        System.out.println("TYPEKey Code "+e.getKeyCode());
-//        System.out.println("TYPEKey Loc "+e.getKeyLocation());
-//        System.out.println("TYPERaw Code "+e.getRawCode());
-//        System.out.println("TYPEModif "+e.getModifiers());
-//        System.out.println("Ende Typed");
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
-
-//        System.out.println("PRESSString rep: "+ e.getKeyChar());
-//        System.out.println("PRESSKey Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
-//        System.out.println("PRESSMod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
-//        System.out.println("PRESSKey Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
-//        System.out.println("PRESSKey Char "+e.getKeyChar());
-//        System.out.println("PRESSKey Code "+e.getKeyCode());
-//        System.out.println("PRESSKey Loc "+e.getKeyLocation());
-//        System.out.println("PRESSRaw Code "+e.getRawCode());
-//        System.out.println("PRESSModif "+e.getModifiers());
-//        System.out.println("Ende Pressed");
     }
 
     /**
@@ -128,30 +115,18 @@ public class BarcodeGlobalListener implements NativeKeyListener {
     @Override
     public void nativeKeyReleased(NativeKeyEvent e) {
         int keyCode = e.getKeyCode();
-//        System.out.println(keyCode);
-//        System.out.println("String rep: "+ e.getKeyChar());
-//        System.out.println("Key Text "+NativeKeyEvent.getKeyText(e.getKeyCode()));
-//        System.out.println("Mod Text "+NativeKeyEvent.getModifiersText(e.getKeyCode()));
-//        System.out.println("Key Char "+NativeKeyEvent.getKeyText(e.getKeyChar()));
-//        System.out.println("Key Char "+e.getKeyChar());
-//        System.out.println("Key Code "+e.getKeyCode());
-//        System.out.println("Key Loc "+e.getKeyLocation());
-//        System.out.println("Raw Code "+e.getRawCode());
-//        System.out.println("Modif "+e.getModifiers());
-//        System.out.println("Ende Released");
-
 
         if (prefix1 && prefix2 && prefix3 && prefix4 &&  (keyCode == END)) {
 
             for (IBarcodeParsedEventListener listener : listeners) {
-                System.out.println(barcode.substring(3));
                 for (Object key: barcodeTypes.keySet() ) {
                     String k = (String) key;
-                    if (barcode.substring(1,3).equals(k)) {
-                        listener.setBarcode(barcode.trim().substring(3), (CODE_IDENTITY)barcodeTypes.get(key), 0);
+                    //are the first chars according to the length of the current key equal?
+                    if (barcode.trim().substring(0,k.length()).equals(k)) {
+                        //matches a key, so probably a valid barcode entered
+                        listener.setBarcode(barcode.trim().substring(k.length()), (CODE_IDENTITY)barcodeTypes.get(key), 0);
                     }
                 }
-
             }
 
             this.barcode = "";

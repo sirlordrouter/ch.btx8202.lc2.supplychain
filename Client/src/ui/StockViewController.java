@@ -18,8 +18,7 @@ import model.entities.User;
 import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
-import services.barcoding.BarcodeGlobalListener;
-import services.barcoding.IBarcodeParsedEventListener;
+import services.barcoding.*;
 import webservice.erp.Item;
 import webservice.swissindex.PHARMAITEM;
 
@@ -82,27 +81,40 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     public void setBarcode(String barcode, BarcodeGlobalListener.CODE_IDENTITY barcodeType, int id) {
 
         List<Item> items;
+        BarcodeInformation info = null;
 
         txtareaMediInfo.setText("Barcode " + barcode + " gescannt.");
 
-        //SSCC
-        if (barcode.length() == 18 || barcode.length() == 1 ) {
-            items = dataSource.getItemsBySSCC(barcode);
-            for (Item item : items) {
-                retrieveItemInformation(item);
-            }
-        } else if(barcode.length() == 13) //GLN / EAN
-        {
-            //HACK
-            if (barcode.startsWith("0")) {
-                barcode = barcode.substring(1);
+        try {
+            info = BarcodeDecoder.decode(barcode, barcodeType);
+
+            if (!info.getAI00_SSCC().equals("")) {
+                items = dataSource.getItemsBySSCC(barcode);
+                for (Item item : items) {
+                    retrieveItemInformation(item);
+                }
+            } else if(!info.getAI01_HANDELSEINHEIT().equals("")) {
+                Item i = new Item();
+                i.setGTIN(barcode);
+                retrieveItemInformation(i);
+            } else {
+                //Well then... no idea wwhat to do => there is no usable data stored here...
+                throw new NullPointerException();
             }
 
-            Item i = new Item();
-            i.setGTIN(barcode);
-            retrieveItemInformation(i);
+        } catch (NoValidBarcodeTypeException e) {
+            //HACK: in the database is an sscc with id 1 => only reason for following code
+            //TODO: Remove
+            if (barcode.length() == 1) {
+                items = dataSource.getItemsBySSCC(barcode);
+                for (Item item : items) {
+                    retrieveItemInformation(item);
+                }
+            }
+
+            throw new NullPointerException();
+            //Display that no valid barcode
         }
-
     }
 
     private void retrieveItemInformation(Item item) {
