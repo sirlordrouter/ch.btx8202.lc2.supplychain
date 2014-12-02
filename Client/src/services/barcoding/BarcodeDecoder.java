@@ -40,7 +40,6 @@ public class BarcodeDecoder {
         barcodeTypes.put(GS1_128,CODE_IDENTITY.GS1_128);
     }
 
-
     /**
      *
      * @param barcodeString
