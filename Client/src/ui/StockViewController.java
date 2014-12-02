@@ -92,22 +92,17 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
             txtareaMediInfo.appendText(info.toString());
 
             if (info.getAI00_SSCC() != null) {
-
-<<<<<<< HEAD
-                items = dataSource.getItemsBySSCC(scannedString.getBarcodeData());
-=======
                 items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
->>>>>>> c39d75361800de45443ee4923427891fa3293436
                 for (Item item : items) {
                     retrieveItemInformation(item);
                 }
             } else if(info.getAI01_HANDELSEINHEIT() != null) {
                 Item i = new Item();
-<<<<<<< HEAD
+
                 i.setGTIN(scannedString.getBarcodeData());
-=======
+
                 i.setGTIN(info.getAI01_HANDELSEINHEIT());
->>>>>>> c39d75361800de45443ee4923427891fa3293436
+
                 retrieveItemInformation(i);
             } else {
                 //Well then... no idea wwhat to do => there is no usable data stored here...
@@ -152,7 +147,6 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         userField.setText("User: " + username);
         dateTimeField.setText("Datum: 11-11-2014, 10:00 Uhr");
         locationField.setText("Demo Station");
-        txtInput.requestFocus();
 
         final ObservableList columns = medList.getColumns();
         tblColName.setCellValueFactory(
@@ -178,6 +172,7 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
                 }
             }
         });
+        txtInput.requestFocus();
     }
 
     public void checkOut(ActionEvent actionEvent) {
@@ -229,9 +224,8 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
 
     public void addItem(ActionEvent actionEvent) {
         try {
-            ScannedString ss = BarcodeDecoder.parseScannedString(txtInput.getText());
+            ScannedString ss = BarcodeDecoder.parseScannedString(txtInput.getText().trim().substring(2));
             BarcodeInformation bi = BarcodeDecoder.decode(ss.getBarcodeData(),ss.getCodeIdentity());
-            System.out.println(bi.getAI01_HANDELSEINHEIT());
             TradeItem item = SwissIndexClient.getItemInformationFromGTIN(bi.getAI01_HANDELSEINHEIT());
 
             if (item != null) {
