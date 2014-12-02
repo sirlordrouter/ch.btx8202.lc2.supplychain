@@ -4,7 +4,6 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * This class is the Global Keyevent Listener, who watches for the Barcodes, we
