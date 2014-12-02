@@ -29,20 +29,26 @@ public class BarcodeDecoder {
      *  type of barcode
      * @return
      *  a BarcodeInformation Object holding the deserialized Information
-     * @throws NoValidBarcodeTypeException
+     * @throws NotImplementedBarcodeTypeException
      *  if none of the available types is identified
      */
     public static BarcodeInformation decode(String barcodeString, BarcodeGlobalListener.CODE_IDENTITY identity)
-            throws NoValidBarcodeTypeException {
+            throws NotImplementedBarcodeTypeException {
         switch (identity) {
             case BARCODE:
-                return new BarcodeInformation("", barcodeString);
+                return new BarcodeInformation(null, barcodeString);
             case DATAMATRIX:
                 return deserializeBarcodeInformation(barcodeString);
             case GS1_128:
-                return deserializeBarcodeInformation(barcodeString);
+                if (barcodeString.length() == 20) {
+                    return new BarcodeInformation(barcodeString.trim().substring(2));
+                }
+                else {
+                    return deserializeBarcodeInformation(barcodeString);
+                }
+
             default:
-                throw new NoValidBarcodeTypeException();
+                throw new NotImplementedBarcodeTypeException();
         }
     }
 
@@ -50,7 +56,7 @@ public class BarcodeDecoder {
         BarcodeInformation barcodeInformation = new BarcodeInformation();
         String[] splitted = barcodeString.split( "\\)" );
         HashMap<Integer,String> info = new HashMap<Integer, String>();
-        for (int i = 0; i < splitted.length; i++) {
+        for (int i = 1; i < splitted.length; i++) {
             String part = splitted[i];
             int key = Integer.parseInt(part.substring(0, 2));
             String value = splitted[i].substring(3);

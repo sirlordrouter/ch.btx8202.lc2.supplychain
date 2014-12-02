@@ -88,21 +88,23 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         try {
             info = BarcodeDecoder.decode(barcode, barcodeType);
 
-            if (!info.getAI00_SSCC().equals("")) {
+            
+
+            if (info.getAI00_SSCC() != null) {
                 items = dataSource.getItemsBySSCC(barcode);
                 for (Item item : items) {
                     retrieveItemInformation(item);
                 }
-            } else if(!info.getAI01_HANDELSEINHEIT().equals("")) {
+            } else if(info.getAI01_HANDELSEINHEIT() != null) {
                 Item i = new Item();
                 i.setGTIN(barcode);
                 retrieveItemInformation(i);
             } else {
                 //Well then... no idea wwhat to do => there is no usable data stored here...
-                throw new NullPointerException();
+                System.out.println("No Data Found for Barcode...");
             }
 
-        } catch (NoValidBarcodeTypeException e) {
+        } catch (NotImplementedBarcodeTypeException e) {
             //HACK: in the database is an sscc with id 1 => only reason for following code
             //TODO: Remove
             if (barcode.length() == 1) {
