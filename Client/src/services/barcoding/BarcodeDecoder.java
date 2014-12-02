@@ -1,5 +1,7 @@
 package services.barcoding;
 
+import services.barcoding.exceptions.NotImplementedBarcodeTypeException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +50,7 @@ public class BarcodeDecoder {
      *  type of barcode
      * @return
      *  a BarcodeInformation Object holding the deserialized Information
-     * @throws NotImplementedBarcodeTypeException
+     * @throws services.barcoding.exceptions.NotImplementedBarcodeTypeException
      *  if none of the available types is identified
      */
     public static BarcodeInformation decode(String barcodeString, CODE_IDENTITY identity)

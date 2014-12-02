@@ -3,10 +3,12 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../Libraries/JNativeHook/jar/JNativeHook.jar!/" />
       <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.11.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../ScannerHook" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$USER_HOME$/.ideaLibSources/junit-4.11-sources.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../ScannerHook/src" />
     </SOURCES>
   </library>
 </component>

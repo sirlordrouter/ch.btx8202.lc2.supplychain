@@ -2,6 +2,7 @@ package services.barcoding;
 
 import junit.framework.TestCase;
 import org.junit.Assert;
+import services.barcoding.exceptions.NotImplementedBarcodeTypeException;
 
 public class BarcodeDecoderTest extends TestCase {
 

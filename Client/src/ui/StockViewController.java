@@ -19,6 +19,7 @@ import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
 import services.barcoding.*;
+import services.barcoding.exceptions.NotImplementedBarcodeTypeException;
 import webservice.erp.Item;
 import webservice.swissindex.PHARMAITEM;
 
@@ -35,13 +36,12 @@ import java.util.ResourceBundle;
  * Medizininformatik BSc</br>
  * BTX8202 (Living Case 2), HS2014</br>
  *
- *<p>An Address Class</p>
+ *<p></p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
 public class StockViewController implements IBarcodeParsedEventListener, Initializable {
-
 
     public Label dateTimeField;
     public AnchorPane mainFrame;

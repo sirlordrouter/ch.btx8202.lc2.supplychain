@@ -2,6 +2,7 @@ package services.barcoding;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import services.barcoding.exceptions.NotImplementedBarcodeTypeException;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,7 @@ public class BarcodeGlobalListener implements NativeKeyListener {
     /*
     * Scanner Suffix ENTER
     * */
-    private static final int END = NativeKeyEvent.VC_ENTER;// 10; //Means Enter
+    private static final int END = NativeKeyEvent.VC_ENTER;// 10; //Means Enter // keyCHar \r 13  rawCode 36, keyCode 0
 
     private static boolean prefix1 = false;
     private static boolean prefix2 = false;
@@ -73,6 +74,7 @@ public class BarcodeGlobalListener implements NativeKeyListener {
         } else {
             return false;
         }
+
     }
 
     @Override
@@ -106,7 +108,7 @@ public class BarcodeGlobalListener implements NativeKeyListener {
             for (IBarcodeParsedEventListener listener : listeners) {
                 try {
                     ScannedString ss = BarcodeDecoder.parseScannedString(barcode);
-
+                    listener.setBarcode(ss);
                 } catch (NotImplementedBarcodeTypeException e1) {
                     //DO what ever you want..
                 }

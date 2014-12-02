@@ -1,4 +1,4 @@
-package services.barcoding;
+package services.barcoding.exceptions;
 
 /**
  * Created by Johannes on 02.12.14.
