@@ -202,5 +202,18 @@ public class BarcodeInformation {
         result = 31 * result + (AI21_SERIAL_NUMBER != null ? AI21_SERIAL_NUMBER.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "BarcodeInformation{" +
+                "AI00_SSCC='" + AI00_SSCC + '\'' +
+                ", AI01_HANDELSEINHEIT='" + AI01_HANDELSEINHEIT + '\'' +
+                ", AI02_ENTHALTENE_EINHEIT='" + AI02_ENTHALTENE_EINHEIT + '\'' +
+                ", AI10_CHARGENNUMMER='" + AI10_CHARGENNUMMER + '\'' +
+                ", AI11_PRODUKTIONSDATUM='" + AI11_PRODUKTIONSDATUM + '\'' +
+                ", AI17_VERFALLSDATUM='" + AI17_VERFALLSDATUM + '\'' +
+                ", AI21_SERIAL_NUMBER='" + AI21_SERIAL_NUMBER + '\'' +
+                '}';
+    }
 }
 

@@ -88,9 +88,10 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         try {
             info = BarcodeDecoder.decode(barcode, barcodeType);
 
-            
+            txtareaMediInfo.appendText(info.toString());
 
             if (info.getAI00_SSCC() != null) {
+
                 items = dataSource.getItemsBySSCC(barcode);
                 for (Item item : items) {
                     retrieveItemInformation(item);
