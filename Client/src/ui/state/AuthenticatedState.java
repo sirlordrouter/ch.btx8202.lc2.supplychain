@@ -3,7 +3,9 @@ package ui.state;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
+import services.barcoding.BarcodeDecoder;
 import services.barcoding.BarcodeGlobalListener;
+import services.barcoding.ScannedString;
 import ui.Main;
 import ui.StockViewController;
 
@@ -46,7 +48,7 @@ public class AuthenticatedState extends AuthenticationState {
             listener = new BarcodeGlobalListener();
             GlobalScreen.getInstance().addNativeKeyListener(listener);
             listener.addListener(controller);
-            controller.setBarcode("1", BarcodeGlobalListener.CODE_IDENTITY.BARCODE,0);
+            controller.setBarcode(new ScannedString("1", BarcodeDecoder.CODE_IDENTITY.BARCODE,0));
             //controller.setBarcode("FË07680577870041".substring(3), BarcodeGlobalListener.CODE_IDENTITY.BARCODE,0);
 
             loadProtectedUserResources();
