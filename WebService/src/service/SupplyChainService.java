@@ -167,9 +167,10 @@ public class SupplyChainService {
                 if (containedInSSCC.size() > 0) {
                     for (String s : containedInSSCC) {
                        try {
-                           return getAllItemsBySSCC(s);
+                           items.addAll(getAllItemsBySSCC(s));
+                           return items;
                        } catch (NoSuchSSCCFoundException ex) {
-                           return new ArrayList<Item>();
+                           return items;
                        }
                     }
                 }
@@ -198,7 +199,7 @@ public class SupplyChainService {
             ps = connection.prepareStatement(query);
             ps.setString(1, sscc);
             rs =  ps.executeQuery();
-
+            //TODO: was passiert wenn keine Row gefunden?
             rs.next();
             String r = rs.getString("SSCC");
             if (!rs.wasNull()) {
@@ -426,7 +427,6 @@ public class SupplyChainService {
             String query = "SELECT ShipmentIdGSIN,OrderNr FROM LogisticPackage WHERE SSCC = ?";
              ps = connection.prepareStatement(query);
             ps.setString(1, sscc);
-            ps.setString(2, sscc);
             rs =  ps.executeQuery();
 
             if (rows == 1) {

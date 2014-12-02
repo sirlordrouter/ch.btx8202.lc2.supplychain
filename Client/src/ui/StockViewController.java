@@ -92,13 +92,13 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
 
             if (info.getAI00_SSCC() != null) {
 
-                items = dataSource.getItemsBySSCC(barcode);
+                items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
                 for (Item item : items) {
                     retrieveItemInformation(item);
                 }
             } else if(info.getAI01_HANDELSEINHEIT() != null) {
                 Item i = new Item();
-                i.setGTIN(barcode);
+                i.setGTIN(info.getAI01_HANDELSEINHEIT());
                 retrieveItemInformation(i);
             } else {
                 //Well then... no idea wwhat to do => there is no usable data stored here...

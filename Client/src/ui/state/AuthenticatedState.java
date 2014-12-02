@@ -46,7 +46,7 @@ public class AuthenticatedState extends AuthenticationState {
             listener = new BarcodeGlobalListener();
             GlobalScreen.getInstance().addNativeKeyListener(listener);
             listener.addListener(controller);
-            controller.setBarcode("1", BarcodeGlobalListener.CODE_IDENTITY.BARCODE,0);
+            controller.setBarcode("00106141410000098764", BarcodeGlobalListener.CODE_IDENTITY.GS1_128,0);
             //controller.setBarcode("FË07680577870041".substring(3), BarcodeGlobalListener.CODE_IDENTITY.BARCODE,0);
 
             loadProtectedUserResources();
