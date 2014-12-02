@@ -23,10 +23,10 @@ public class BarcodeDecoderTest extends TestCase {
         BarcodeInformation gs1128_2_InformationDecoded;
 
         try {
-            dataMatrixInformationDecoded = BarcodeDecoder.decode(datamatrix, BarcodeGlobalListener.CODE_IDENTITY.DATAMATRIX);
-            gs1128InformationDecoded = BarcodeDecoder.decode(gs1_128, BarcodeGlobalListener.CODE_IDENTITY.GS1_128);
-            gs113InformationDecoded = BarcodeDecoder.decode(gs1_13, BarcodeGlobalListener.CODE_IDENTITY.BARCODE);
-            gs1128_2_InformationDecoded = BarcodeDecoder.decode(gs1_128_ext, BarcodeGlobalListener.CODE_IDENTITY.GS1_128);
+            dataMatrixInformationDecoded = BarcodeDecoder.decode(datamatrix, BarcodeDecoder.CODE_IDENTITY.DATAMATRIX);
+            gs1128InformationDecoded = BarcodeDecoder.decode(gs1_128, BarcodeDecoder.CODE_IDENTITY.GS1_128);
+            gs113InformationDecoded = BarcodeDecoder.decode(gs1_13, BarcodeDecoder.CODE_IDENTITY.BARCODE);
+            gs1128_2_InformationDecoded = BarcodeDecoder.decode(gs1_128_ext, BarcodeDecoder.CODE_IDENTITY.GS1_128);
         } catch (NotImplementedBarcodeTypeException e) {
             throw new AssertionError("No valid code identity provided");
         }

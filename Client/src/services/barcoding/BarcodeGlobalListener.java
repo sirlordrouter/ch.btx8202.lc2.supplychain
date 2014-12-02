@@ -52,16 +52,7 @@ public class BarcodeGlobalListener implements NativeKeyListener {
     private static boolean prefix4 = false;
 
 
-    public static enum CODE_IDENTITY { BARCODE, DATAMATRIX, GS1_128 };
-    /*
-    * Different Prefixes are possbile for the different types
-    * */
-    public static final String BARCODE = "FË0";
-    public static final String DATAMATRIX01 = "Dm¨d1";
-    public static final String DATAMATRIX02 = "Dm1";
-    public static final String DATAMATRIX03 = "Dm¨¨d1";
-    public static final String GS1_128 = "*¨C1";
-    public static HashMap barcodeTypes = new HashMap<Integer,String>();
+
 
     private String barcode = "";
     private String allChars = "";
@@ -70,11 +61,6 @@ public class BarcodeGlobalListener implements NativeKeyListener {
     public BarcodeGlobalListener() {
 
         listeners = new ArrayList<IBarcodeParsedEventListener>();
-        barcodeTypes.put(BARCODE, CODE_IDENTITY.BARCODE);
-        barcodeTypes.put(DATAMATRIX01,CODE_IDENTITY.DATAMATRIX);
-        barcodeTypes.put(DATAMATRIX02,CODE_IDENTITY.DATAMATRIX);
-        barcodeTypes.put(DATAMATRIX03,CODE_IDENTITY.DATAMATRIX);
-        barcodeTypes.put(GS1_128,CODE_IDENTITY.GS1_128);
     }
 
     public void addListener(IBarcodeParsedEventListener listener) {
@@ -119,13 +105,11 @@ public class BarcodeGlobalListener implements NativeKeyListener {
         if (prefix1 && prefix2 && prefix3 && prefix4 &&  (keyCode == END)) {
 
             for (IBarcodeParsedEventListener listener : listeners) {
-                for (Object key: barcodeTypes.keySet() ) {
-                    String k = (String) key;
-                    //are the first chars according to the length of the current key equal?
-                    if (barcode.trim().substring(0,k.length()).equals(k)) {
-                        //matches a key, so probably a valid barcode entered
-                        listener.setBarcode(barcode.trim().substring(k.length()), (CODE_IDENTITY)barcodeTypes.get(key), 0);
-                    }
+                try {
+                    ScannedString ss = BarcodeDecoder.parseScannedString(barcode);
+
+                } catch (NotImplementedBarcodeTypeException e1) {
+                    //DO what ever you want..
                 }
             }
 

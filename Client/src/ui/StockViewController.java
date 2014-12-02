@@ -70,6 +70,7 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     public TextField txtBatch;
     public TextField txtSeriennummer;
     public TextField txtGTIN;
+    public TextField txtInput;
 
 
     public ObservableList<Item> data =  FXCollections.observableArrayList();
@@ -78,27 +79,35 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     private Main application;
 
     @Override
-    public void setBarcode(String barcode, BarcodeGlobalListener.CODE_IDENTITY barcodeType, int id) {
+    public void setBarcode(ScannedString scannedString) {
 
         List<Item> items;
         BarcodeInformation info = null;
 
-        txtareaMediInfo.setText("Barcode " + barcode + " gescannt.");
+        txtareaMediInfo.setText("Barcode " + scannedString.getBarcodeData() + " gescannt.");
 
         try {
-            info = BarcodeDecoder.decode(barcode, barcodeType);
+            info = BarcodeDecoder.decode(scannedString.getBarcodeData(), scannedString.getCodeIdentity());
 
             txtareaMediInfo.appendText(info.toString());
 
             if (info.getAI00_SSCC() != null) {
 
+<<<<<<< HEAD
+                items = dataSource.getItemsBySSCC(scannedString.getBarcodeData());
+=======
                 items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
+>>>>>>> c39d75361800de45443ee4923427891fa3293436
                 for (Item item : items) {
                     retrieveItemInformation(item);
                 }
             } else if(info.getAI01_HANDELSEINHEIT() != null) {
                 Item i = new Item();
+<<<<<<< HEAD
+                i.setGTIN(scannedString.getBarcodeData());
+=======
                 i.setGTIN(info.getAI01_HANDELSEINHEIT());
+>>>>>>> c39d75361800de45443ee4923427891fa3293436
                 retrieveItemInformation(i);
             } else {
                 //Well then... no idea wwhat to do => there is no usable data stored here...
@@ -108,8 +117,8 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         } catch (NotImplementedBarcodeTypeException e) {
             //HACK: in the database is an sscc with id 1 => only reason for following code
             //TODO: Remove
-            if (barcode.length() == 1) {
-                items = dataSource.getItemsBySSCC(barcode);
+            if (scannedString.getBarcodeData().length() == 1) {
+                items = dataSource.getItemsBySSCC(scannedString.getBarcodeData());
                 for (Item item : items) {
                     retrieveItemInformation(item);
                 }
@@ -143,6 +152,7 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         userField.setText("User: " + username);
         dateTimeField.setText("Datum: 11-11-2014, 10:00 Uhr");
         locationField.setText("Demo Station");
+        txtInput.requestFocus();
 
         final ObservableList columns = medList.getColumns();
         tblColName.setCellValueFactory(
@@ -218,19 +228,29 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     }
 
     public void addItem(ActionEvent actionEvent) {
-        TradeItem item = SwissIndexClient.getItemInformationFromGTIN(txtGTIN.getText());
+        try {
+            ScannedString ss = BarcodeDecoder.parseScannedString(txtInput.getText());
+            BarcodeInformation bi = BarcodeDecoder.decode(ss.getBarcodeData(),ss.getCodeIdentity());
+            System.out.println(bi.getAI01_HANDELSEINHEIT());
+            TradeItem item = SwissIndexClient.getItemInformationFromGTIN(bi.getAI01_HANDELSEINHEIT());
 
-        if (item != null) {
-            item.setGTIN(txtGTIN.getText());
-            item.setSerial(txtSeriennummer.getText());
-            item.setLot(txtBatch.getText());
-            //Set Expiry Date when Service updated
-            txtareaMediInfo.setText(item.toString());
-            data.add(item);
-            clearItemInput();
-        }else {
-            txtareaMediInfo.setText("Kein Item gefunden.");
+            if (item != null) {
+                item.setGTIN(txtGTIN.getText());
+                item.setSerial(txtSeriennummer.getText());
+                item.setLot(txtBatch.getText());
+                //Set Expiry Date when Service updated
+                txtareaMediInfo.setText(item.toString());
+                data.add(item);
+                clearItemInput();
+            }else {
+                txtareaMediInfo.setText("Kein Item gefunden.");
+            }
+        } catch (NotImplementedBarcodeTypeException e) {
+            System.out.println("hello world");
         }
+
+
+
     }
 
     private void clearItemInput() {
@@ -238,6 +258,7 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         txtSeriennummer.setText("");
         txtBatch.setText("");
         txtExpiryDate.setText("");
+        txtInput.setText("");
     }
 
     public void clearList(ActionEvent actionEvent) {

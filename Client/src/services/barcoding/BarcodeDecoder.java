@@ -19,6 +19,26 @@ import java.util.Map;
  * @version 23-10-2014
  */
 public class BarcodeDecoder {
+    public static enum CODE_IDENTITY { BARCODE, DATAMATRIX, GS1_128 };
+    /*
+    * Different Prefixes are possbile for the different types
+    * */
+    public static final String BARCODE = "FË0";
+    public static final String DATAMATRIX01 = "Dm¨d1";
+    public static final String DATAMATRIX02 = "Dm1";
+    public static final String DATAMATRIX03 = "Dm¨¨d1";
+    public static final String GS1_128 = "*¨C1";
+    public static HashMap barcodeTypes;
+
+    static {
+        barcodeTypes = new HashMap<Integer, String>();
+
+        barcodeTypes.put(BARCODE, CODE_IDENTITY.BARCODE);
+        barcodeTypes.put(DATAMATRIX01,CODE_IDENTITY.DATAMATRIX);
+        barcodeTypes.put(DATAMATRIX02,CODE_IDENTITY.DATAMATRIX);
+        barcodeTypes.put(DATAMATRIX03,CODE_IDENTITY.DATAMATRIX);
+        barcodeTypes.put(GS1_128,CODE_IDENTITY.GS1_128);
+    }
 
     /**
      *
@@ -31,7 +51,7 @@ public class BarcodeDecoder {
      * @throws NotImplementedBarcodeTypeException
      *  if none of the available types is identified
      */
-    public static BarcodeInformation decode(String barcodeString, BarcodeGlobalListener.CODE_IDENTITY identity)
+    public static BarcodeInformation decode(String barcodeString, CODE_IDENTITY identity)
             throws NotImplementedBarcodeTypeException {
         switch (identity) {
             case BARCODE:
@@ -89,6 +109,19 @@ public class BarcodeDecoder {
         }
 
         return barcodeInformation;
+    }
+
+    public static ScannedString parseScannedString(String scannedString) throws NotImplementedBarcodeTypeException {
+        for (Object key: barcodeTypes.keySet() ) {
+            String k = (String) key;
+            //are the first chars according to the length of the current key equal?
+            if (scannedString.trim().substring(0,k.length()).equals(k)) {
+                //matches a key, so probably a valid barcode entered
+                 return new ScannedString(scannedString.trim().substring(k.length()), (CODE_IDENTITY)barcodeTypes.get(key), 0);
+            }
+        }
+
+        throw new NotImplementedBarcodeTypeException();
     }
 
 }
