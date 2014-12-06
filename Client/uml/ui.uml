@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>ui</OriginalElement>
+  <nodes>
+    <node x="106.75" y="174.0">ui.state.AuthenticationState</node>
+    <node x="-121.0" y="96.0">ui.state.AuthenticatedState</node>
+    <node x="-335.0" y="241.0">services.SwissIndexClient</node>
+    <node x="-312.0" y="-6.0">services.ErpClient</node>
+    <node x="269.0" y="-54.0">ui.state.UnauthenticatedState</node>
+    <node x="-308.0" y="292.0">services.Authenticator</node>
+    <node x="150.0" y="-106.0">ui.Main</node>
+    <node x="-170.0" y="-104.0">ui.LoginController</node>
+    <node x="-132.0" y="0.0">ui.StockViewController</node>
+    <node x="-403.0" y="189.0">services.ViewDoesNotExistException</node>
+    <node x="-362.0" y="44.0">services.PropertiesReader</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ui.StockViewController" target="ui.Main">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.Main" target="ui.state.AuthenticationState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.state.AuthenticatedState" target="ui.state.AuthenticationState">
+      <point x="0.0" y="-14.5" />
+      <point x="-47.5" y="147.0" />
+      <point x="-13.25" y="200.0" />
+      <point x="-39.0" y="14.5" />
+    </edge>
+    <edge source="ui.state.UnauthenticatedState" target="ui.state.AuthenticationState">
+      <point x="0.0" y="-14.5" />
+      <point x="371.0" y="54.0" />
+      <point x="390.75" y="198.0" />
+      <point x="39.0" y="14.5" />
+    </edge>
+    <edge source="ui.StockViewController" target="services.PropertiesReader">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.Main" target="ui.state.UnauthenticatedState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.state.AuthenticatedState" target="ui.state.UnauthenticatedState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.state.AuthenticatedState" target="ui.StockViewController">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.LoginController" target="ui.Main">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.state.AuthenticationState" target="ui.Main">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.state.UnauthenticatedState" target="ui.state.AuthenticatedState">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="ui.StockViewController" target="services.ErpClient">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="112.5" y="125.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

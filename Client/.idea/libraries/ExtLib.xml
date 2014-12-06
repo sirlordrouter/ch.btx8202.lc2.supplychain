@@ -4,7 +4,9 @@
       <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.11.jar!/" />
       <root url="jar://$PROJECT_DIR$/../../ScannerHook/out/artifacts/BarcodeHook_jar/BarcodeHook.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/../../ScannerHook/doc" />
+    </JAVADOC>
     <SOURCES>
       <root url="jar://$USER_HOME$/.ideaLibSources/junit-4.11-sources.jar!/" />
     </SOURCES>
