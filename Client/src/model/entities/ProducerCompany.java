@@ -11,6 +11,7 @@ public class ProducerCompany extends Company {
         super();
     }
 
+
     @Override
     public String toString() {
         return "GLN: " + getGLN() + '\n' +

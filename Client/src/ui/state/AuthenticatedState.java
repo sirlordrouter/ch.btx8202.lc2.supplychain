@@ -1,11 +1,9 @@
 package ui.state;
 
 
-import org.jnativehook.GlobalScreen;
+import barcodeHook.Scanner;
+import barcodeHook.ScannerEvent;
 import org.jnativehook.NativeHookException;
-import services.barcoding.BarcodeDecoder;
-import services.barcoding.BarcodeGlobalListener;
-import services.barcoding.ScannedString;
 import ui.Main;
 import ui.StockViewController;
 
@@ -24,7 +22,8 @@ import java.util.logging.Logger;
  */
 public class AuthenticatedState extends AuthenticationState {
 
-    private BarcodeGlobalListener listener;
+    private Scanner scn;
+    private StockViewController controller;
     /**
 	 * Constructor for this state implementation.
 	 * 
@@ -42,13 +41,13 @@ public class AuthenticatedState extends AuthenticationState {
 	@Override
 	protected void entryState() {
         try {
-            StockViewController controller = (StockViewController) super.context.replaceSceneContent("StockView.fxml");
+            controller = (StockViewController) super.context.replaceSceneContent("StockView.fxml");
             controller.setApp(super.context);
 
-            listener = new BarcodeGlobalListener();
-            GlobalScreen.getInstance().addNativeKeyListener(listener);
-            listener.addListener(controller);
-            controller.setBarcode(new ScannedString("00106141410000098764", BarcodeDecoder.CODE_IDENTITY.GS1_128,0));
+            scn = new Scanner();
+            scn.addScannerEventListener(controller, "(/",0);
+            ScannerEvent evt = new ScannerEvent(this, "*¨C100106141410000098764", "(/","\r",0);
+            controller.handleScannerEvent(evt);
             //controller.setBarcode("FË07680577870041".substring(3), BarcodeGlobalListener.CODE_IDENTITY.BARCODE,0);
 
             loadProtectedUserResources();
@@ -69,7 +68,7 @@ public class AuthenticatedState extends AuthenticationState {
 	@Override
 	protected void exitState() {
 
-        GlobalScreen.getInstance().removeNativeKeyListener(listener);
+        Scanner.removeScannerListener(controller);
 //        GlobalScreen.unregisterNativeHook();
         storeDataPersistent();
 	}

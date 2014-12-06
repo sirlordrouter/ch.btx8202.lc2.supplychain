@@ -1,6 +1,14 @@
 package ui;
 
+import barcode.Barcode;
+import barcode.BarcodeDecoder;
+import barcode.BarcodeInformation;
+import barcode.ScannedString;
+import barcodeHook.ScannerEvent;
+import barcodeHook.ScannerListener;
 import data.IDataSource;
+import exceptions.BarcodeNotDeserializeableException;
+import exceptions.NotImplementedBarcodeTypeException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,8 +26,6 @@ import model.entities.User;
 import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
-import services.barcoding.*;
-import services.barcoding.exceptions.NotImplementedBarcodeTypeException;
 import webservice.erp.Item;
 import webservice.swissindex.PHARMAITEM;
 
@@ -41,7 +47,7 @@ import java.util.ResourceBundle;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class StockViewController implements IBarcodeParsedEventListener, Initializable {
+public class StockViewController implements ScannerListener, Initializable {
 
     public Label dateTimeField;
     public AnchorPane mainFrame;
@@ -72,57 +78,10 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
     public TextField txtGTIN;
     public TextField txtInput;
 
-
     public ObservableList<Item> data =  FXCollections.observableArrayList();
     IDataSource dataSource;
 
     private Main application;
-
-    @Override
-    public void setBarcode(ScannedString scannedString) {
-
-        List<Item> items;
-        BarcodeInformation info = null;
-
-        txtareaMediInfo.setText("Barcode " + scannedString.getBarcodeData() + " gescannt.");
-
-        try {
-            info = BarcodeDecoder.decode(scannedString.getBarcodeData(), scannedString.getCodeIdentity());
-
-            txtareaMediInfo.appendText(info.toString());
-
-            if (info.getAI00_SSCC() != null) {
-                items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
-                for (Item item : items) {
-                    retrieveItemInformation(item);
-                }
-            } else if(info.getAI01_HANDELSEINHEIT() != null) {
-                Item i = new Item();
-
-                i.setGTIN(scannedString.getBarcodeData());
-
-                i.setGTIN(info.getAI01_HANDELSEINHEIT());
-
-                retrieveItemInformation(i);
-            } else {
-                //Well then... no idea wwhat to do => there is no usable data stored here...
-                System.out.println("No Data Found for Barcode...");
-            }
-
-        } catch (NotImplementedBarcodeTypeException e) {
-            //HACK: in the database is an sscc with id 1 => only reason for following code
-            //TODO: Remove
-            if (scannedString.getBarcodeData().length() == 1) {
-                items = dataSource.getItemsBySSCC(scannedString.getBarcodeData());
-                for (Item item : items) {
-                    retrieveItemInformation(item);
-                }
-            }
-
-            throw new NullPointerException();
-            //Display that no valid barcode
-        }
-    }
 
     private void retrieveItemInformation(Item item) {
         TradeItem i = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
@@ -241,8 +200,9 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
             }
         } catch (NotImplementedBarcodeTypeException e) {
             System.out.println("hello world");
+        } catch (BarcodeNotDeserializeableException e) {
+            e.printStackTrace();
         }
-
 
 
     }
@@ -264,5 +224,36 @@ public class StockViewController implements IBarcodeParsedEventListener, Initial
         if (medList.getSelectionModel().getSelectedItem() != null) {
             data.remove(medList.getSelectionModel().getSelectedItem());
         }
+    }
+
+    @Override
+    public void handleScannerEvent(ScannerEvent evt) {
+        List<Item> items;
+        BarcodeInformation info = null;
+
+        txtareaMediInfo.setText("Barcode " + evt.getBarCode() + " gescannt.");
+
+
+        Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
+        info =  code.getBarcodeInformation();
+
+        txtareaMediInfo.appendText(info.toString());
+
+        if (info.getAI00_SSCC() != null) {
+            items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
+            for (Item item : items) {
+                retrieveItemInformation(item);
+            }
+        } else if(info.getAI01_HANDELSEINHEIT() != null) {
+            Item i = new Item();
+
+            i.setGTIN(info.getAI01_HANDELSEINHEIT());
+
+            retrieveItemInformation(i);
+        } else {
+            //Well then... no idea wwhat to do => there is no usable data stored here...
+            System.out.println("No Data Found for Barcode...");
+        }
+
     }
 }
