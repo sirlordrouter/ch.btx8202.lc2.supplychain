@@ -1,17 +1,13 @@
 package ui;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.entities.User;
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
 import services.Authenticator;
 import ui.state.AuthenticationState;
 import ui.state.UnauthenticatedState;
@@ -47,13 +43,13 @@ public class Main extends Application {
         System.setProperty("javafx.macosx.embedded", "true");
         java.awt.Toolkit.getDefaultToolkit();
 
-        if (!GlobalScreen.isNativeHookRegistered()) {
-            try {
-                GlobalScreen.registerNativeHook();
-            } catch (NativeHookException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (!GlobalScreen.isNativeHookRegistered()) {
+//            try {
+//                GlobalScreen.registerNativeHook();
+//            } catch (NativeHookException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         launch(args);
     }

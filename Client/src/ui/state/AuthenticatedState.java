@@ -44,9 +44,8 @@ public class AuthenticatedState extends AuthenticationState {
             controller = (StockViewController) super.context.replaceSceneContent("StockView.fxml");
             controller.setApp(super.context);
 
-            scn = new Scanner();
-            scn.addScannerEventListener(controller, "(/",0);
-            ScannerEvent evt = new ScannerEvent(this, "*¨C100106141410000098764", "(/","\r",0);
+            Scanner.addScannerEventListener(controller, "(/",0); //Special character excaped by \\
+            ScannerEvent evt = new ScannerEvent(this, "*¨C100106141410000098764", "(/","",0);
             controller.handleScannerEvent(evt);
             //controller.setBarcode("FË07680577870041".substring(3), BarcodeGlobalListener.CODE_IDENTITY.BARCODE,0);
 
@@ -67,7 +66,6 @@ public class AuthenticatedState extends AuthenticationState {
 	 */
 	@Override
 	protected void exitState() {
-
         Scanner.removeScannerListener(controller);
 //        GlobalScreen.unregisterNativeHook();
         storeDataPersistent();

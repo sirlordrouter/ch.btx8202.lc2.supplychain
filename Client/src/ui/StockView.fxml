@@ -7,6 +7,16 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
+<!--
+* Berner Fachhochschule</br>
+* Medizininformatik BSc</br>
+* Modul Living Case 2</br>
+*
+*<p>Class Description</p>
+*
+* @author Patrizia Zehner, patriziasusanna.zehnder@students.bfh.ch
+* @version 04-11-2014
+-->
 <AnchorPane id="AnchorPane" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StockViewController">
    <children>
       <AnchorPane layoutY="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -68,8 +78,8 @@
                               <AnchorPane layoutY="59.0" prefHeight="249.0" prefWidth="294.0">
                                  <children>
                                     <Label layoutX="24.0" text="Manuelle Erfassung" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="0.0" />
-                                    <Button defaultButton="true" layoutX="205.0" layoutY="198.0" mnemonicParsing="false" onAction="#addItem" prefHeight="26.0" prefWidth="75.0" text="OK" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="14.0" />
-                                    <TextField fx:id="txtExpiryDate" layoutX="14.0" layoutY="165.0" prefHeight="26.0" prefWidth="267.0" promptText="Ablaufdatum" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
+                                    <Button layoutX="205.0" layoutY="198.0" mnemonicParsing="false" onAction="#addItem" prefHeight="26.0" prefWidth="75.0" text="OK" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="14.0" /> <!--defaultButton="true" excludec because of globallistener adds enter to barcoe -->
+                                     <TextField fx:id="txtExpiryDate" layoutX="14.0" layoutY="165.0" prefHeight="26.0" prefWidth="267.0" promptText="Ablaufdatum" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtBatch" layoutX="14.0" layoutY="131.0" prefHeight="26.0" prefWidth="267.0" promptText="Batch / Lot" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtSeriennummer" layoutX="14.0" layoutY="97.0" prefHeight="26.0" prefWidth="267.0" promptText="Seriennummer" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtGTIN" layoutX="14.0" layoutY="63.0" prefHeight="26.0" prefWidth="267.0" promptText="GTIN" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />

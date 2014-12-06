@@ -183,20 +183,22 @@ public class StockViewController implements ScannerListener, Initializable {
 
     public void addItem(ActionEvent actionEvent) {
         try {
-            ScannedString ss = BarcodeDecoder.parseScannedString(txtInput.getText().trim().substring(2));
-            BarcodeInformation bi = BarcodeDecoder.decode(ss.getBarcodeData(),ss.getCodeIdentity());
-            TradeItem item = SwissIndexClient.getItemInformationFromGTIN(bi.getAI01_HANDELSEINHEIT());
+            if (!txtInput.getText().equals("")) {
+                ScannedString ss = BarcodeDecoder.parseScannedString(txtInput.getText().trim().substring(2));
+                BarcodeInformation bi = BarcodeDecoder.decode(ss.getBarcodeData(), ss.getCodeIdentity());
+                TradeItem item = SwissIndexClient.getItemInformationFromGTIN(bi.getAI01_HANDELSEINHEIT());
 
-            if (item != null) {
-                item.setGTIN(txtGTIN.getText());
-                item.setSerial(txtSeriennummer.getText());
-                item.setLot(txtBatch.getText());
-                //Set Expiry Date when Service updated
-                txtareaMediInfo.setText(item.toString());
-                data.add(item);
-                clearItemInput();
-            }else {
-                txtareaMediInfo.setText("Kein Item gefunden.");
+                if (item != null) {
+                    item.setGTIN(txtGTIN.getText());
+                    item.setSerial(txtSeriennummer.getText());
+                    item.setLot(txtBatch.getText());
+                    //Set Expiry Date when Service updated
+                    txtareaMediInfo.setText(item.toString());
+                    data.add(item);
+                    clearItemInput();
+                } else {
+                    txtareaMediInfo.setText("Kein Item gefunden.");
+                }
             }
         } catch (NotImplementedBarcodeTypeException e) {
             System.out.println("hello world");
