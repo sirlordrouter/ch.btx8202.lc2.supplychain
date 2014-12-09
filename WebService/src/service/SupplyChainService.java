@@ -48,15 +48,23 @@ public class SupplyChainService {
   }
 
     @WebMethod
-    public List<Item> getCheckedInItems(String gln) throws NoSuchGLNFoundException {
-        ArrayList<Item> items = new ArrayList<Item>();
+    public WebServiceResult getCheckedInItems(String gln) throws NoSuchGLNFoundException {
+
+        ArrayList<Item> checkedInItems = new ArrayList<Item>();
+        boolean resultState = false;
+
+        //Datenbankabfrage
+
+        WebServiceResult webServiceResult = new WebServiceResult(checkedInItems, resultState);
+
+
 
         //TrackedItems suchen wo gln = gln
         //Resultat filtern wo nur bestellt und arrived da ist
         // allenfalls gleich pro secondaryPackage schreiben wo gelagert als alternative
 
 
-        return items;
+        return webServiceResult;
     }
 
     /**

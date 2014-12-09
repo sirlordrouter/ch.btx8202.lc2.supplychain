@@ -8,6 +8,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
+<!--
+* Berner Fachhochschule</br>
+* Medizininformatik BSc</br>
+* Modul Living Case 2</br>
+*
+*<p>Class Description</p>
+*
+* @author Patrizia Zehnder, patriziasusanna.zehnder@students.bfh.ch
+* @version 04-11-2014
+-->
+
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="316.0" prefWidth="500.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="ui.LoginController">
     <children>
         <AnchorPane id="anchorPane2" prefHeight="300.0" prefWidth="500.0" styleClass="top-segment" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
