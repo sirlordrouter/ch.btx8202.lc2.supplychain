@@ -66,60 +66,43 @@
       <file leaf-file-name="SupplyChainService.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/service/SupplyChainService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.0671296" vertical-offset="1425" max-vertical-offset="8493">
-              <caret line="169" column="62" selection-start-line="169" selection-start-column="62" selection-end-line="169" selection-end-column="62" />
+            <state vertical-scroll-proportion="1.1306533" vertical-offset="15" max-vertical-offset="7245">
+              <caret line="46" column="18" selection-start-line="46" selection-start-column="18" selection-end-line="46" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#getLogisticePackagesContainedInSSCC#0;class#SupplyChainService#0" expanded="false" />
-                <marker date="1417514060000" expanded="true" signature="2808:2906" placeholder="INSERT INTO ..." />
-                <marker date="1417514060000" expanded="true" signature="6120:6167" placeholder="SELECT SSCC ..LogisticPackage..." />
-                <marker date="1417514060000" expanded="true" signature="7194:7268" placeholder="SELECT SSCC,..LogisticPackage..." />
-                <marker date="1417514060000" expanded="true" signature="8311:8394" placeholder="SELECT GTINs..SecondaryPackage..." />
-                <marker date="1417514060000" expanded="true" signature="9857:9960" placeholder="SELECT GTINs..SecondaryPackage..." />
-                <marker date="1417514060000" expanded="true" signature="11217:11335" placeholder="SELECT GTINs..SecondaryPackage..." />
-                <marker date="1417514060000" expanded="true" signature="12680:12762" placeholder="SELECT Count..LogisticPackage..." />
-                <marker date="1417514060000" expanded="true" signature="13211:13276" placeholder="SELECT Shipm..LogisticPackage..." />
+                <element signature="e#1557#1563#0" expanded="true" />
+                <element signature="e#6183#6191#0" expanded="true" />
+                <element signature="e#7257#7265#0" expanded="true" />
+                <element signature="e#9190#9196#0" expanded="true" />
+                <marker date="1418119236000" expanded="true" signature="2998:3096" placeholder="INSERT INTO ..." />
+                <marker date="1418119236000" expanded="true" signature="6310:6357" placeholder="SELECT SSCC ..LogisticPackage..." />
+                <marker date="1418119236000" expanded="true" signature="7384:7458" placeholder="SELECT SSCC,..LogisticPackage..." />
+                <marker date="1418119236000" expanded="true" signature="8501:8584" placeholder="SELECT GTINs..SecondaryPackage..." />
+                <marker date="1418119236000" expanded="true" signature="10047:10150" placeholder="SELECT GTINs..SecondaryPackage..." />
+                <marker date="1418119236000" expanded="true" signature="11407:11525" placeholder="SELECT GTINs..SecondaryPackage..." />
+                <marker date="1418119236000" expanded="true" signature="12870:12952" placeholder="SELECT Count..LogisticPackage..." />
+                <marker date="1418119236000" expanded="true" signature="13401:13466" placeholder="SELECT Shipm..LogisticPackage..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DbConnectorLogistic.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/data/DbConnectorLogistic.java">
+      <file leaf-file-name="WebServiceResult.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/service/WebServiceResult.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="798" max-vertical-offset="950">
-              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PropertiesReader.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/data/PropertiesReader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="608">
-              <caret line="15" column="50" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Item.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/entities/Item.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="2489">
-              <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Company.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/entities/Company.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="1064">
-              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="230" max-vertical-offset="840">
+              <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#665#666#0" expanded="true" />
+                <element signature="e#693#694#0" expanded="true" />
+                <element signature="e#739#740#0" expanded="true" />
+                <element signature="e#773#774#0" expanded="true" />
+                <element signature="e#806#807#0" expanded="true" />
+                <element signature="e#835#836#0" expanded="true" />
+                <element signature="e#880#881#0" expanded="true" />
+                <element signature="e#916#917#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -148,6 +131,7 @@
         <option value="$PROJECT_DIR$/src/service/exceptions/NoSuchGLNFoundException.java" />
         <option value="$PROJECT_DIR$/Tests/service/SupplyChainServiceTest.java" />
         <option value="$PROJECT_DIR$/src/service/SupplyChainService.java" />
+        <option value="$PROJECT_DIR$/src/service/WebServiceResult.java" />
       </list>
     </option>
   </component>
@@ -159,10 +143,9 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="81" />
-    <option name="y" value="23" />
-    <option name="width" value="1599" />
-    <option name="height" value="1023" />
+    <option name="y" value="22" />
+    <option name="width" value="1280" />
+    <option name="height" value="733" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -248,6 +231,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WebService" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WebService" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WebService" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WebService" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="service" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -259,14 +274,14 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="options.lastSelected" value="preferences.JavaFX" />
+    <property name="options.lastSelected" value="preferences.applicationServers" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
     <property name="last_opened_file_path" value="$APPLICATION_HOME_DIR$/lib/junit-4.11.jar!/" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="true" />
@@ -732,23 +747,24 @@
       <workItem from="1417529680238" duration="804000" />
       <workItem from="1417860062846" duration="1923000" />
       <workItem from="1417875597664" duration="607000" />
+      <workItem from="1418111390865" duration="1044000" />
+      <workItem from="1418117537513" duration="2423000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47572000" />
+    <option name="totallyTimeSpent" value="51039000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="81" y="23" width="1599" height="1023" extended-state="0" />
+    <frame x="0" y="22" width="1280" height="733" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2029544" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20234375" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39916405" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -757,19 +773,20 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928178" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24983944" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24921875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928178" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928178" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928178" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -794,60 +811,60 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>360</line>
+          <line>368</line>
           <properties />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>336</line>
+          <line>344</line>
           <properties />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>167</line>
+          <line>175</line>
           <properties />
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>76</line>
+          <line>84</line>
           <properties />
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>91</line>
+          <line>99</line>
           <properties />
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>97</line>
+          <line>105</line>
           <properties />
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>103</line>
+          <line>111</line>
           <properties />
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>159</line>
+          <line>167</line>
           <properties />
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>165</line>
+          <line>173</line>
           <properties />
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/service/SupplyChainService.java</url>
-          <line>170</line>
+          <line>178</line>
           <properties />
           <option name="timeStamp" value="26" />
         </line-breakpoint>
@@ -879,6 +896,30 @@
     </option>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/data/PropertiesReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="480">
+          <caret line="15" column="50" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entities/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1965">
+          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entities/Company.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="840">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/entities/Company.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="1064">
@@ -893,15 +934,18 @@
           <caret line="153" column="42" selection-start-line="153" selection-start-column="42" selection-end-line="153" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getLogisticePackagesContainedInSSCC#0;class#SupplyChainService#0" expanded="false" />
-            <marker date="1417514060000" expanded="true" signature="2808:2906" placeholder="INSERT INTO ..." />
-            <marker date="1417514060000" expanded="true" signature="6120:6167" placeholder="SELECT SSCC ..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="7194:7268" placeholder="SELECT SSCC,..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="8311:8394" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="9857:9960" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="11217:11335" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="12680:12762" placeholder="SELECT Count..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="13211:13276" placeholder="SELECT Shipm..LogisticPackage..." />
+            <element signature="e#1557#1563#0" expanded="true" />
+            <element signature="e#6183#6191#0" expanded="true" />
+            <element signature="e#7257#7265#0" expanded="true" />
+            <element signature="e#9190#9196#0" expanded="true" />
+            <marker date="1418119236000" expanded="true" signature="2998:3096" placeholder="INSERT INTO ..." />
+            <marker date="1418119236000" expanded="true" signature="6310:6357" placeholder="SELECT SSCC ..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="7384:7458" placeholder="SELECT SSCC,..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="8501:8584" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="10047:10150" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="11407:11525" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="12870:12952" placeholder="SELECT Count..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="13401:13466" placeholder="SELECT Shipm..LogisticPackage..." />
           </folding>
         </state>
       </provider>
@@ -952,15 +996,18 @@
           <caret line="64" column="19" selection-start-line="64" selection-start-column="19" selection-end-line="64" selection-end-column="19" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getLogisticePackagesContainedInSSCC#0;class#SupplyChainService#0" expanded="false" />
-            <marker date="1417514060000" expanded="true" signature="2808:2906" placeholder="INSERT INTO ..." />
-            <marker date="1417514060000" expanded="true" signature="6120:6167" placeholder="SELECT SSCC ..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="7194:7268" placeholder="SELECT SSCC,..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="8311:8394" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="9857:9960" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="11217:11335" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="12680:12762" placeholder="SELECT Count..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="13211:13276" placeholder="SELECT Shipm..LogisticPackage..." />
+            <element signature="e#1557#1563#0" expanded="true" />
+            <element signature="e#6183#6191#0" expanded="true" />
+            <element signature="e#7257#7265#0" expanded="true" />
+            <element signature="e#9190#9196#0" expanded="true" />
+            <marker date="1418119236000" expanded="true" signature="2998:3096" placeholder="INSERT INTO ..." />
+            <marker date="1418119236000" expanded="true" signature="6310:6357" placeholder="SELECT SSCC ..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="7384:7458" placeholder="SELECT SSCC,..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="8501:8584" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="10047:10150" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="11407:11525" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="12870:12952" placeholder="SELECT Count..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="13401:13466" placeholder="SELECT Shipm..LogisticPackage..." />
           </folding>
         </state>
       </provider>
@@ -1003,15 +1050,18 @@
           <caret line="64" column="19" selection-start-line="64" selection-start-column="19" selection-end-line="64" selection-end-column="19" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getLogisticePackagesContainedInSSCC#0;class#SupplyChainService#0" expanded="false" />
-            <marker date="1417514060000" expanded="true" signature="2808:2906" placeholder="INSERT INTO ..." />
-            <marker date="1417514060000" expanded="true" signature="6120:6167" placeholder="SELECT SSCC ..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="7194:7268" placeholder="SELECT SSCC,..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="8311:8394" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="9857:9960" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="11217:11335" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="12680:12762" placeholder="SELECT Count..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="13211:13276" placeholder="SELECT Shipm..LogisticPackage..." />
+            <element signature="e#1557#1563#0" expanded="true" />
+            <element signature="e#6183#6191#0" expanded="true" />
+            <element signature="e#7257#7265#0" expanded="true" />
+            <element signature="e#9190#9196#0" expanded="true" />
+            <marker date="1418119236000" expanded="true" signature="2998:3096" placeholder="INSERT INTO ..." />
+            <marker date="1418119236000" expanded="true" signature="6310:6357" placeholder="SELECT SSCC ..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="7384:7458" placeholder="SELECT SSCC,..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="8501:8584" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="10047:10150" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="11407:11525" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="12870:12952" placeholder="SELECT Count..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="13401:13466" placeholder="SELECT Shipm..LogisticPackage..." />
           </folding>
         </state>
       </provider>
@@ -1054,15 +1104,18 @@
           <caret line="117" column="24" selection-start-line="117" selection-start-column="24" selection-end-line="117" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getLogisticePackagesContainedInSSCC#0;class#SupplyChainService#0" expanded="false" />
-            <marker date="1417514060000" expanded="true" signature="2808:2906" placeholder="INSERT INTO ..." />
-            <marker date="1417514060000" expanded="true" signature="6120:6167" placeholder="SELECT SSCC ..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="7194:7268" placeholder="SELECT SSCC,..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="8311:8394" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="9857:9960" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="11217:11335" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="12680:12762" placeholder="SELECT Count..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="13211:13276" placeholder="SELECT Shipm..LogisticPackage..." />
+            <element signature="e#1557#1563#0" expanded="true" />
+            <element signature="e#6183#6191#0" expanded="true" />
+            <element signature="e#7257#7265#0" expanded="true" />
+            <element signature="e#9190#9196#0" expanded="true" />
+            <marker date="1418119236000" expanded="true" signature="2998:3096" placeholder="INSERT INTO ..." />
+            <marker date="1418119236000" expanded="true" signature="6310:6357" placeholder="SELECT SSCC ..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="7384:7458" placeholder="SELECT SSCC,..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="8501:8584" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="10047:10150" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="11407:11525" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="12870:12952" placeholder="SELECT Count..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="13401:13466" placeholder="SELECT Shipm..LogisticPackage..." />
           </folding>
         </state>
       </provider>
@@ -1105,15 +1158,18 @@
           <caret line="171" column="24" selection-start-line="171" selection-start-column="24" selection-end-line="171" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getLogisticePackagesContainedInSSCC#0;class#SupplyChainService#0" expanded="false" />
-            <marker date="1417514060000" expanded="true" signature="2808:2906" placeholder="INSERT INTO ..." />
-            <marker date="1417514060000" expanded="true" signature="6120:6167" placeholder="SELECT SSCC ..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="7194:7268" placeholder="SELECT SSCC,..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="8311:8394" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="9857:9960" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="11217:11335" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="12680:12762" placeholder="SELECT Count..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="13211:13276" placeholder="SELECT Shipm..LogisticPackage..." />
+            <element signature="e#1557#1563#0" expanded="true" />
+            <element signature="e#6183#6191#0" expanded="true" />
+            <element signature="e#7257#7265#0" expanded="true" />
+            <element signature="e#9190#9196#0" expanded="true" />
+            <marker date="1418119236000" expanded="true" signature="2998:3096" placeholder="INSERT INTO ..." />
+            <marker date="1418119236000" expanded="true" signature="6310:6357" placeholder="SELECT SSCC ..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="7384:7458" placeholder="SELECT SSCC,..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="8501:8584" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="10047:10150" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="11407:11525" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="12870:12952" placeholder="SELECT Count..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="13401:13466" placeholder="SELECT Shipm..LogisticPackage..." />
           </folding>
         </state>
       </provider>
@@ -1156,15 +1212,18 @@
           <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getLogisticePackagesContainedInSSCC#0;class#SupplyChainService#0" expanded="false" />
-            <marker date="1417514060000" expanded="true" signature="2808:2906" placeholder="INSERT INTO ..." />
-            <marker date="1417514060000" expanded="true" signature="6120:6167" placeholder="SELECT SSCC ..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="7194:7268" placeholder="SELECT SSCC,..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="8311:8394" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="9857:9960" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="11217:11335" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="12680:12762" placeholder="SELECT Count..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="13211:13276" placeholder="SELECT Shipm..LogisticPackage..." />
+            <element signature="e#1557#1563#0" expanded="true" />
+            <element signature="e#6183#6191#0" expanded="true" />
+            <element signature="e#7257#7265#0" expanded="true" />
+            <element signature="e#9190#9196#0" expanded="true" />
+            <marker date="1418119236000" expanded="true" signature="2998:3096" placeholder="INSERT INTO ..." />
+            <marker date="1418119236000" expanded="true" signature="6310:6357" placeholder="SELECT SSCC ..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="7384:7458" placeholder="SELECT SSCC,..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="8501:8584" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="10047:10150" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="11407:11525" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="12870:12952" placeholder="SELECT Count..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="13401:13466" placeholder="SELECT Shipm..LogisticPackage..." />
           </folding>
         </state>
       </provider>
@@ -1207,15 +1266,18 @@
           <caret line="23" column="14" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getLogisticePackagesContainedInSSCC#0;class#SupplyChainService#0" expanded="false" />
-            <marker date="1417514060000" expanded="true" signature="2808:2906" placeholder="INSERT INTO ..." />
-            <marker date="1417514060000" expanded="true" signature="6120:6167" placeholder="SELECT SSCC ..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="7194:7268" placeholder="SELECT SSCC,..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="8311:8394" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="9857:9960" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="11217:11335" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="12680:12762" placeholder="SELECT Count..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="13211:13276" placeholder="SELECT Shipm..LogisticPackage..." />
+            <element signature="e#1557#1563#0" expanded="true" />
+            <element signature="e#6183#6191#0" expanded="true" />
+            <element signature="e#7257#7265#0" expanded="true" />
+            <element signature="e#9190#9196#0" expanded="true" />
+            <marker date="1418119236000" expanded="true" signature="2998:3096" placeholder="INSERT INTO ..." />
+            <marker date="1418119236000" expanded="true" signature="6310:6357" placeholder="SELECT SSCC ..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="7384:7458" placeholder="SELECT SSCC,..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="8501:8584" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="10047:10150" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="11407:11525" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="12870:12952" placeholder="SELECT Count..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="13401:13466" placeholder="SELECT Shipm..LogisticPackage..." />
           </folding>
         </state>
       </provider>
@@ -1259,48 +1321,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="dbDummy://dbtable:/cce8eacf/df66a8f6-4ed1-48a1-8aef-d05c963c2175/SupplyChainLogistic.dbo.State">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="com.intellij.persistence.database.editor.DatabaseTableFileEditorProvider">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/config.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.06674473" vertical-offset="0" max-vertical-offset="854">
           <caret line="3" column="36" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/cce8eacf/df66a8f6-4ed1-48a1-8aef-d05c963c2175/SupplyChainLogistic.dbo.SecondaryPackage">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="com.intellij.persistence.database.editor.DatabaseTableFileEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/cce8eacf/df66a8f6-4ed1-48a1-8aef-d05c963c2175/SupplyChainLogistic.dbo.LogisticPackage">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="com.intellij.persistence.database.editor.DatabaseTableFileEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_40.jdk/Contents/Home/src.zip!/java/util/List.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3325527" vertical-offset="1521" max-vertical-offset="11077">
-          <caret line="118" column="8" selection-start-line="118" selection-start-column="8" selection-end-line="118" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1318,26 +1342,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/DbConnectorLogistic.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="20" max-vertical-offset="874">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/PropertiesReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="93" max-vertical-offset="608">
-          <caret line="15" column="50" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/entities/Item.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="38" max-vertical-offset="1729">
-          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1365">
+          <caret line="7" column="25" selection-start-line="6" selection-start-column="3" selection-end-line="7" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -1350,29 +1358,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/PropertiesReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="93" max-vertical-offset="608">
+          <caret line="15" column="50" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/DbConnectorLogistic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="20" max-vertical-offset="874">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Tests/service/SupplyChainServiceTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.89748204" vertical-offset="394" max-vertical-offset="1026">
-          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="870">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/service/WebServiceResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="230" max-vertical-offset="840">
+          <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#665#666#0" expanded="true" />
+            <element signature="e#693#694#0" expanded="true" />
+            <element signature="e#739#740#0" expanded="true" />
+            <element signature="e#773#774#0" expanded="true" />
+            <element signature="e#806#807#0" expanded="true" />
+            <element signature="e#835#836#0" expanded="true" />
+            <element signature="e#880#881#0" expanded="true" />
+            <element signature="e#916#917#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/service/SupplyChainService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.0671296" vertical-offset="1425" max-vertical-offset="8493">
-          <caret line="169" column="62" selection-start-line="169" selection-start-column="62" selection-end-line="169" selection-end-column="62" />
+        <state vertical-scroll-proportion="1.1306533" vertical-offset="15" max-vertical-offset="7245">
+          <caret line="46" column="18" selection-start-line="46" selection-start-column="18" selection-end-line="46" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getLogisticePackagesContainedInSSCC#0;class#SupplyChainService#0" expanded="false" />
-            <marker date="1417514060000" expanded="true" signature="2808:2906" placeholder="INSERT INTO ..." />
-            <marker date="1417514060000" expanded="true" signature="6120:6167" placeholder="SELECT SSCC ..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="7194:7268" placeholder="SELECT SSCC,..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="8311:8394" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="9857:9960" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="11217:11335" placeholder="SELECT GTINs..SecondaryPackage..." />
-            <marker date="1417514060000" expanded="true" signature="12680:12762" placeholder="SELECT Count..LogisticPackage..." />
-            <marker date="1417514060000" expanded="true" signature="13211:13276" placeholder="SELECT Shipm..LogisticPackage..." />
+            <element signature="e#1557#1563#0" expanded="true" />
+            <element signature="e#6183#6191#0" expanded="true" />
+            <element signature="e#7257#7265#0" expanded="true" />
+            <element signature="e#9190#9196#0" expanded="true" />
+            <marker date="1418119236000" expanded="true" signature="2998:3096" placeholder="INSERT INTO ..." />
+            <marker date="1418119236000" expanded="true" signature="6310:6357" placeholder="SELECT SSCC ..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="7384:7458" placeholder="SELECT SSCC,..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="8501:8584" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="10047:10150" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="11407:11525" placeholder="SELECT GTINs..SecondaryPackage..." />
+            <marker date="1418119236000" expanded="true" signature="12870:12952" placeholder="SELECT Count..LogisticPackage..." />
+            <marker date="1418119236000" expanded="true" signature="13401:13466" placeholder="SELECT Shipm..LogisticPackage..." />
           </folding>
         </state>
       </provider>
@@ -1388,7 +1433,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -1456,7 +1500,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>junit-4.11</last-edited>
+          <last-edited>JAX-WS-Glassfish / JAX-WS 2.2 RI / Metro 1.X / JWSDP 2.2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
