@@ -42,6 +42,7 @@ public class AuthenticatedState extends AuthenticationState {
 	@Override
 	protected void entryState() {
         try {
+            Scanner.initStream();
             //super.context.loadMainPane();
             controller = (MainController) super.context.replaceSceneContent(Navigator.MAIN);
 
@@ -69,6 +70,7 @@ public class AuthenticatedState extends AuthenticationState {
 	 */
 	@Override
 	protected void exitState() {
+        Scanner.endStream();
  //       Scanner.removeScannerListener(controller);
 //        GlobalScreen.unregisterNativeHook();
         storeDataPersistent();

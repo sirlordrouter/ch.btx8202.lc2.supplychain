@@ -21,7 +21,7 @@ public class MainController implements Initializable {
     @FXML
     private StackPane vistaHolder;
 
-    /**
+     /**
      * Replaces the vista displayed in the vista holder with a new vista.
      *
      * @param node the vista node to be swapped in.

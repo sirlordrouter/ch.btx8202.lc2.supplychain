@@ -54,12 +54,14 @@ public class Navigator {
      *
      * @param fxml the fxml file to be loaded.
      */
-    public static void loadVista(String fxml) {
+    public static void loadVista(String fxml, Main context) {
         try {
-            Node node = FXMLLoader.<Node>load(
+            Node node = FXMLLoader.load(
                     Navigator.class.getResource(fxml)
             );
+
             mainController.setVista(node);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

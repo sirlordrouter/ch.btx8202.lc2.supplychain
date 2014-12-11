@@ -30,7 +30,7 @@ public class CheckedInItemsViewController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        setApp(Main.instance);
     }
 
     public void checkOut(ActionEvent actionEvent) {
@@ -46,7 +46,7 @@ public class CheckedInItemsViewController implements Initializable{
         application.userLogout();
     }
     public void backToStockView(ActionEvent event) {
-        Navigator.loadVista(Navigator.STOCK_VIEW);
+        Navigator.loadVista(Navigator.STOCK_VIEW, Main.instance);
     }
 
     /**
@@ -56,7 +56,7 @@ public class CheckedInItemsViewController implements Initializable{
      */
     @FXML
     void nextPane(ActionEvent event) {
-        Navigator.loadVista(Navigator.STOCK_VIEW);
+        Navigator.loadVista(Navigator.STOCK_VIEW, Main.instance);
     }
 
     public void setApp(Main main) {

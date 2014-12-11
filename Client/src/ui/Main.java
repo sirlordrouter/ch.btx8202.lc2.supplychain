@@ -38,7 +38,7 @@ public class Main extends Application {
 
     private model.entities.User loggedUser;
     private AuthenticationState state = null;
-    private static Main instance;
+    public static Main instance;
 
     public static void main(String[] args) {
 
@@ -58,6 +58,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        instance = this;
 
         stage = primaryStage;
         stage.setMinWidth(LOGIN_MINIMUM_WINDOW_WIDTH);
@@ -126,7 +128,7 @@ public class Main extends Application {
             MainController mainController = loader.getController();
 
             Navigator.setMainController(mainController);
-            Navigator.loadVista(Navigator.STOCK_VIEW);
+            Navigator.loadVista(Navigator.STOCK_VIEW, this);
 
         } else {
             scene = new Scene(page, LOGIN_MINIMUM_WINDOW_WIDTH, LOGIN_MINIMUM_WINDOW_HEIGHT);
@@ -157,27 +159,8 @@ public class Main extends Application {
         MainController mainController = loader.getController();
 
         Navigator.setMainController(mainController);
-        Navigator.loadVista(Navigator.STOCK_VIEW);
+        Navigator.loadVista(Navigator.STOCK_VIEW,this);
 
         return mainPane;
-    }
-
-    /**
-     * Creates the main application scene.
-     *
-     * @param mainPane the main application layout.
-     *
-     * @return the created scene.
-     */
-    private Scene createScene(Pane mainPane) {
-        Scene scene = new Scene(
-                mainPane
-        );
-
-//        scene.getStylesheets().setAll(
-//                getClass().getResource("vista.css").toExternalForm()
-//        );
-
-        return scene;
     }
 }

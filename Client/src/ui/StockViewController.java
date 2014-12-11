@@ -23,19 +23,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import model.entities.TradeItem;
-import model.entities.User;
-import services.ErpClient;
-import services.PropertiesReader;
 import services.SwissIndexClient;
 import webservice.erp.Item;
 import webservice.swissindex.PHARMAITEM;
 
-import javax.xml.ws.WebServiceException;
-import java.io.IOException;
-import java.net.ConnectException;
 import java.net.URL;
 import java.util.List;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -104,6 +97,8 @@ public class StockViewController implements ScannerListener, Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        setApp(Main.instance);
+
         final ObservableList columns = medList.getColumns();
         tblColName.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("Name")
@@ -148,26 +143,27 @@ public class StockViewController implements ScannerListener, Initializable {
     public void setApp(Main main) {
 
         this.application = main;
-        Properties prop = null;
-        try {
-            PropertiesReader reader = new PropertiesReader();
-            prop = reader.getPropValues();
-            locationField.setText(prop.getProperty("stationBezeichnung"));
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
-            Scanner.addScannerEventListener(this, "(/",0);
-
-        } catch (ConnectException e ) {
-            locationField.setText("No Connection to ERP WebService");
-        } catch(WebServiceException e) {
-            locationField.setText("No Connection to ERP WebService");
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            locationField.setText("Configuration could not be read!");
-        }
-
-        User loggedUser = application.getLoggedUser();
-        userField.setText(loggedUser.getId());
+        Scanner.addScannerEventListener(this, "(/",0);
+//        Properties prop = null;
+//        try {
+//            PropertiesReader reader = new PropertiesReader();
+//            prop = reader.getPropValues();
+//            locationField.setText(prop.getProperty("stationBezeichnung"));
+//            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+//
+//
+//        } catch (ConnectException e ) {
+//            locationField.setText("No Connection to ERP WebService");
+//        } catch(WebServiceException e) {
+//            locationField.setText("No Connection to ERP WebService");
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//            locationField.setText("Configuration could not be read!");
+//        }
+//
+//        User loggedUser = application.getLoggedUser();
+//        userField.setText(loggedUser.getId());
     }
 
     public void processLogout(ActionEvent event) {
@@ -183,7 +179,8 @@ public class StockViewController implements ScannerListener, Initializable {
     }
 
     public void loadCheckInView(ActionEvent event) {
-        Navigator.loadVista(Navigator.CHECKED_IN_ITEMS_VIEW);
+        Scanner.removeScannerListener(this);
+        Navigator.loadVista(Navigator.CHECKED_IN_ITEMS_VIEW, application);
     }
 
     public void addItem(ActionEvent actionEvent) {
@@ -210,8 +207,6 @@ public class StockViewController implements ScannerListener, Initializable {
         } catch (BarcodeNotDeserializeableException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void clearItemInput() {
