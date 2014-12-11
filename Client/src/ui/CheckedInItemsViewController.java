@@ -46,7 +46,7 @@ public class CheckedInItemsViewController implements Initializable{
         application.userLogout();
     }
     public void backToStockView(ActionEvent event) {
-
+        Navigator.loadVista(Navigator.STOCK_VIEW);
     }
 
     /**
