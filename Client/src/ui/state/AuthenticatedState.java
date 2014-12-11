@@ -3,9 +3,8 @@ package ui.state;
 
 import barcodeHook.Scanner;
 import barcodeHook.ScannerEvent;
-import org.jnativehook.NativeHookException;
 import ui.Main;
-import ui.StockViewController;
+import ui.MainController;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +22,10 @@ import java.util.logging.Logger;
 public class AuthenticatedState extends AuthenticationState {
 
     private Scanner scn;
-    private StockViewController controller;
+    private MainController controller;
+
+
+
     /**
 	 * Constructor for this state implementation.
 	 * 
@@ -41,21 +43,23 @@ public class AuthenticatedState extends AuthenticationState {
 	@Override
 	protected void entryState() {
         try {
-            controller = (StockViewController) super.context.replaceSceneContent("StockView.fxml");
-            controller.setApp(super.context);
+            //super.context.loadMainPane();
+            controller = (MainController) super.context.replaceSceneContent("main.fxml");
 
-            Scanner.addScannerEventListener(controller, "(/",0); //Special character excaped by \\
+//            controller.setApp(super.context);
+//
+//            Scanner.addScannerEventListener(controller, "(/",0); //Special character excaped by \\
             ScannerEvent evt = new ScannerEvent(this, "*¨C100106141410000098764", "(/","",0);
-            controller.handleScannerEvent(evt);
-            //controller.setBarcode("FË07680577870041".substring(3), BarcodeGlobalListener.CODE_IDENTITY.BARCODE,0);
+//            controller.handleScannerEvent(evt);
+//            //controller.setBarcode("FË07680577870041".substring(3), BarcodeGlobalListener.CODE_IDENTITY.BARCODE,0);
 
             loadProtectedUserResources();
             loadProtectedSettingsResources();
 
-        } catch (NativeHookException ex) {
-            System.err.println("There was a problem registering the native hook.");
-            System.err.println(ex.getMessage());
-            System.exit(1);
+//        } catch (NativeHookException ex) {
+//            System.err.println("There was a problem registering the native hook.");
+//            System.err.println(ex.getMessage());
+//            System.exit(1);
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,7 +70,7 @@ public class AuthenticatedState extends AuthenticationState {
 	 */
 	@Override
 	protected void exitState() {
-        Scanner.removeScannerListener(controller);
+ //       Scanner.removeScannerListener(controller);
 //        GlobalScreen.unregisterNativeHook();
         storeDataPersistent();
 	}

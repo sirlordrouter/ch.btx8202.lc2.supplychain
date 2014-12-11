@@ -49,6 +49,16 @@ public class CheckedInItemsViewController implements Initializable{
 
     }
 
+    /**
+     * Event handler fired when the user requests a new vista.
+     *
+     * @param event the event that triggered the handler.
+     */
+    @FXML
+    void nextPane(ActionEvent event) {
+        Navigator.loadVista(Navigator.STOCK_VIEW);
+    }
+
     public void setApp(Main main) {
         this.application = main;
         Properties prop = null;

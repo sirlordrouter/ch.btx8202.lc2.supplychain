@@ -6,12 +6,14 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.entities.User;
 import services.Authenticator;
 import ui.state.AuthenticationState;
 import ui.state.UnauthenticatedState;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -118,8 +120,14 @@ public class Main extends Application {
            in.close();
         }
         Scene scene;
-        if(fxml.equals("StockView.fxml")) {
+        if(fxml.equals("main.fxml")) {
             scene = new Scene(page, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT);
+
+            MainController mainController = loader.getController();
+
+            Navigator.setMainController(mainController);
+            Navigator.loadVista(Navigator.STOCK_VIEW);
+
         } else {
             scene = new Scene(page, LOGIN_MINIMUM_WINDOW_WIDTH, LOGIN_MINIMUM_WINDOW_HEIGHT);
         }
@@ -127,5 +135,49 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.sizeToScene();
         return (Initializable) loader.getController();
+    }
+
+    /**
+     * Loads the main fxml layout.
+     * Sets up the vista switching VistaNavigator.
+     * Loads the first vista into the fxml layout.
+     *
+     * @return the loaded pane.
+     * @throws IOException if the pane could not be loaded.
+     */
+    public Pane loadMainPane() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+
+        Pane mainPane = (Pane) loader.load(
+                getClass().getResourceAsStream(
+                        Navigator.MAIN
+                )
+        );
+
+        MainController mainController = loader.getController();
+
+        Navigator.setMainController(mainController);
+        Navigator.loadVista(Navigator.STOCK_VIEW);
+
+        return mainPane;
+    }
+
+    /**
+     * Creates the main application scene.
+     *
+     * @param mainPane the main application layout.
+     *
+     * @return the created scene.
+     */
+    private Scene createScene(Pane mainPane) {
+        Scene scene = new Scene(
+                mainPane
+        );
+
+//        scene.getStylesheets().setAll(
+//                getClass().getResource("vista.css").toExternalForm()
+//        );
+
+        return scene;
     }
 }
