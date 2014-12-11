@@ -1,11 +1,16 @@
 package ui;
 
 import data.IDataSource;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import services.ErpClient;
 import services.PropertiesReader;
+import webservice.erp.Item;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
@@ -15,9 +20,25 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * Created by ph on 10.12.14.
+ * Berner Fachhochschule</br>
+ * Medizininformatik BSc</br>
+ * BTX8202 (Living Case 2), HS2014</br>
+ *
+ *<p></p>
+ *
+ * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
+ * @version 10-12-2014
  */
 public class CheckedInItemsViewController implements Initializable{
+    public TableView itemList;
+    public javafx.scene.control.TableColumn tableColName;
+    public javafx.scene.control.TableColumn tableColMenge;
+    public javafx.scene.control.TableColumn tableColGTIN;
+    public javafx.scene.control.TableColumn tableColSerial;
+    public javafx.scene.control.TableColumn tableColLot;
+    public javafx.scene.control.TableColumn tableColAblauf;
+    public javafx.scene.control.TableColumn tableColCheckInDate;
+    public ObservableList<Item> data =  FXCollections.observableArrayList();
 
     IDataSource dataSource;
 
