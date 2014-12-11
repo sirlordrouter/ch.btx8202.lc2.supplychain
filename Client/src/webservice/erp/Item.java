@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="ATC" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="beschreibung" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="checkInDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="expiryDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="GTIN" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="lot" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -39,6 +40,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "item", propOrder = {
     "atc",
     "beschreibung",
+    "checkInDate",
     "expiryDate",
     "gtin",
     "lot",
@@ -53,6 +55,7 @@ public class Item {
     @XmlElement(name = "ATC")
     protected String atc;
     protected String beschreibung;
+    protected String checkInDate;
     protected String expiryDate;
     @XmlElement(name = "GTIN")
     protected String gtin;
@@ -109,6 +112,30 @@ public class Item {
      */
     public void setBeschreibung(String value) {
         this.beschreibung = value;
+    }
+
+    /**
+     * Ruft den Wert der checkInDate-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCheckInDate() {
+        return checkInDate;
+    }
+
+    /**
+     * Legt den Wert der checkInDate-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCheckInDate(String value) {
+        this.checkInDate = value;
     }
 
     /**

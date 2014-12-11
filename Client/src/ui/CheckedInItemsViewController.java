@@ -9,17 +9,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import services.ErpClient;
 import services.PropertiesReader;
 import webservice.erp.Item;
-import webservice.swissindex.PHARMAITEM;
+import webservice.erp.WebServiceResult;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
-import java.net.URL;
 import java.net.ConnectException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -45,6 +44,7 @@ public class CheckedInItemsViewController implements Initializable{
     public ObservableList<Item> data =  FXCollections.observableArrayList();
 
     IDataSource dataSource;
+    Properties prop;
 
     private Main application;
 
@@ -86,7 +86,6 @@ public class CheckedInItemsViewController implements Initializable{
 
     public void setApp(Main main) {
         this.application = main;
-        Properties prop = null;
         try {
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
@@ -104,7 +103,8 @@ public class CheckedInItemsViewController implements Initializable{
 
     public void getCheckedInItems() {
         setApp(Main.instance);
-        data = dataSource.getCheckedInItems();
+        WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
+        data.setAll(result.getItems());
 
         final ObservableList columns = itemList.getColumns();
         tableColName.setCellValueFactory(

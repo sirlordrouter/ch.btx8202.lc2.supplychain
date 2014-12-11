@@ -2,8 +2,8 @@ package services;
 
 import data.IDataSource;
 import webservice.erp.Item;
-import webservice.erp.SupplyChainService;
 import webservice.erp.SupplyChainServiceService;
+import webservice.erp.WebServiceResult;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -19,7 +19,7 @@ public class ErpClient implements IDataSource{
 
     private String stationGLN;
     private SupplyChainServiceService supplyChainService;
-    private SupplyChainService supplyChainServicePort;
+    private SupplyChainServicePort supplyChainServicePort;
 
     public ErpClient(String stationGLN) {
 
@@ -64,5 +64,10 @@ public class ErpClient implements IDataSource{
         }
 
         return supplyChainServicePort.getItemsByBatch(gtin, batchLot, tempDate);
+    }
+
+    @Override
+    public WebServiceResult getCheckedInItems(String gln) {
+        return null;
     }
 }

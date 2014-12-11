@@ -2,6 +2,8 @@ package data;
 
 
 import webservice.erp.Item;
+import webservice.erp.WebServiceResult;
+
 import java.util.Date;
 import java.util.List;
 

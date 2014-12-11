@@ -9,6 +9,7 @@ import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Action;
+import javax.xml.ws.FaultAction;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
@@ -43,6 +44,26 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns webservice.erp.WebServiceResult
+     * @throws NoSuchGLNFoundException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getCheckedInItems", targetNamespace = "http://service/", className = "webservice.erp.GetCheckedInItems")
+    @ResponseWrapper(localName = "getCheckedInItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.GetCheckedInItemsResponse")
+    @Action(input = "http://service/SupplyChainService/getCheckedInItemsRequest", output = "http://service/SupplyChainService/getCheckedInItemsResponse", fault = {
+        @FaultAction(className = NoSuchGLNFoundException_Exception.class, value = "http://service/SupplyChainService/getCheckedInItems/Fault/NoSuchGLNFoundException")
+    })
+    public WebServiceResult getCheckedInItems(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0)
+        throws NoSuchGLNFoundException_Exception
+    ;
+
+    /**
+     * 
      * @param arg1
      * @param arg0
      */
@@ -70,6 +91,24 @@ public interface SupplyChainService {
         List<Item> arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "insertTrackingItems", targetNamespace = "http://service/", className = "webservice.erp.InsertTrackingItems")
+    @ResponseWrapper(localName = "insertTrackingItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.InsertTrackingItemsResponse")
+    @Action(input = "http://service/SupplyChainService/insertTrackingItemsRequest", output = "http://service/SupplyChainService/insertTrackingItemsResponse")
+    public void insertTrackingItems(
+        @WebParam(name = "arg0", targetNamespace = "")
+        List<Item> arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        Integer arg2);
 
     /**
      * 
@@ -124,5 +163,20 @@ public interface SupplyChainService {
         String arg1,
         @WebParam(name = "arg2", targetNamespace = "")
         XMLGregorianCalendar arg2);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getOrderForSSCC", targetNamespace = "http://service/", className = "webservice.erp.GetOrderForSSCC")
+    @ResponseWrapper(localName = "getOrderForSSCCResponse", targetNamespace = "http://service/", className = "webservice.erp.GetOrderForSSCCResponse")
+    @Action(input = "http://service/SupplyChainService/getOrderForSSCCRequest", output = "http://service/SupplyChainService/getOrderForSSCCResponse")
+    public String getOrderForSSCC(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
 
 }
