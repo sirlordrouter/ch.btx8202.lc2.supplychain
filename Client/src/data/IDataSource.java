@@ -2,6 +2,7 @@ package data;
 
 
 import webservice.erp.Item;
+import webservice.erp.NoSuchGLNFoundException_Exception;
 import webservice.erp.WebServiceResult;
 
 import java.util.Date;
@@ -17,5 +18,5 @@ public interface IDataSource {
     List<Item> getItemsBySSCC(String sscc);
     Item getItemByIdentifier(String gtin, String serialNumber);
     List<Item> getItemsByBatch(String gtin, String batchLot, Date expiryDate);
-    WebServiceResult getCheckedInItems(String gln);
+    WebServiceResult getCheckedInItems(String gln) throws NoSuchGLNFoundException_Exception;
 }
