@@ -102,10 +102,6 @@ public class StockViewController implements ScannerListener, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String username = "Testuser";
-        userField.setText("User: " + username);
-        dateTimeField.setText("Datum: 11-11-2014, 10:00 Uhr");
-        locationField.setText("Demo Station");
 
         final ObservableList columns = medList.getColumns();
         tblColName.setCellValueFactory(
@@ -179,6 +175,10 @@ public class StockViewController implements ScannerListener, Initializable {
         }
 
         application.userLogout();
+    }
+
+    public void loadCheckInView(ActionEvent event) {
+        Navigator.loadVista(Navigator.CHECKED_IN_ITEMS_VIEW);
     }
 
     public void addItem(ActionEvent actionEvent) {
