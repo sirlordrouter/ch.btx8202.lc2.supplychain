@@ -14,6 +14,7 @@ public class Item {
     private String Zusatz;
     private String ATC;
     private Company producer;
+    private String checkInDate;
 
     public Item() {}
 
@@ -28,6 +29,20 @@ public class Item {
         Zusatz = zusatz;
         this.ATC = ATC;
         this.producer = producer;
+        this.checkInDate=null;
+    }
+    public Item(String name, String menge, String GTIN, String lot, String expiryDate, String serial, String beschreibung, String zusatz, String ATC, Company producer, String checkInDate) {
+        Name = name;
+        Menge = menge;
+        this.GTIN = GTIN;
+        Lot = lot;
+        ExpiryDate = expiryDate;
+        Serial = serial;
+        Beschreibung = beschreibung;
+        Zusatz = zusatz;
+        this.ATC = ATC;
+        this.producer = producer;
+        this.checkInDate = checkInDate;
     }
 
     public String getName() {
@@ -110,6 +125,12 @@ public class Item {
         ExpiryDate = expiryDate;
     }
 
+    public String getCheckInDate() {return checkInDate; }
+
+    public void setCheckInDate(String checkIn) {
+        checkInDate = checkIn;
+    }
+
     @Override
     public String toString() {
         return  "Name: " + Name + '\n' +
@@ -120,6 +141,6 @@ public class Item {
                 "Beschreibung: " + Beschreibung + '\n' +
                 "Zusatz='" + Zusatz + '\n' +
                 "ATC: " + ATC + '\n' +
-                "Hersteller: " + producer;
+                "Hersteller: " + producer + '\n';
     }
 }

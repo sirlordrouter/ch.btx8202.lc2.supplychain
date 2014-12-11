@@ -50,10 +50,36 @@ public class SupplyChainService {
     @WebMethod
     public WebServiceResult getCheckedInItems(String gln) throws NoSuchGLNFoundException {
 
-        ArrayList<Item> checkedInItems = new ArrayList<Item>();
+        List<Item> checkedInItems = null;
         boolean resultState = false;
+        ResultSet rs;
 
-        //Datenbankabfrage
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            String query = "SELECT GTIN,SerialNr,Lot,ExpiryDate,ScanDate FROM TrackedItems WHERE GLNscan=? AND StateNr=?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, gln);
+            ps.setInt(2, 2);
+            rs =  ps.executeQuery();
+
+            checkedInItems = addItemsFromResult(rs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (checkedInItems.size() > 0){
+            //ERROR
+            resultState=true;
+        }
 
         WebServiceResult webServiceResult = new WebServiceResult(checkedInItems, resultState);
 

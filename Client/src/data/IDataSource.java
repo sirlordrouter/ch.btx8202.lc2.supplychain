@@ -2,7 +2,6 @@ package data;
 
 
 import webservice.erp.Item;
-
 import java.util.Date;
 import java.util.List;
 
@@ -16,5 +15,5 @@ public interface IDataSource {
     List<Item> getItemsBySSCC(String sscc);
     Item getItemByIdentifier(String gtin, String serialNumber);
     List<Item> getItemsByBatch(String gtin, String batchLot, Date expiryDate);
-
+    WebServiceResult getCheckedInItems(String gln);
 }

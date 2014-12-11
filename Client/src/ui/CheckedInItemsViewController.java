@@ -1,6 +1,8 @@
 package ui;
 
 import data.IDataSource;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,9 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import services.ErpClient;
 import services.PropertiesReader;
 import webservice.erp.Item;
+import webservice.swissindex.PHARMAITEM;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
@@ -99,6 +103,42 @@ public class CheckedInItemsViewController implements Initializable{
     }
 
     public void getCheckedInItems() {
+        setApp(Main.instance);
+        data = dataSource.getCheckedInItems();
+
+        final ObservableList columns = itemList.getColumns();
+        tableColName.setCellValueFactory(
+                new PropertyValueFactory<Item,String>("Name")
+        );
+        tableColMenge.setCellValueFactory(
+                new PropertyValueFactory<Item,String>("Menge")
+        );
+        tableColGTIN.setCellValueFactory(
+                new PropertyValueFactory<Item,String>("GTIN")
+        );
+        tableColSerial.setCellValueFactory(
+                new PropertyValueFactory<Item,String>("Serial")
+        );
+        tableColLot.setCellValueFactory(
+                new PropertyValueFactory<Item,String>("Lot")
+        );
+        tableColAblauf.setCellValueFactory(
+                new PropertyValueFactory<Item,String>("Ablaufdatum")
+        );
+        tableColCheckInDate.setCellValueFactory(
+                new PropertyValueFactory<Item,String>("Check-In")
+        );
+
+
+        itemList.setItems(data);
+
+        itemList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object o, Object o2) {
+                if (itemList.getSelectionModel().getSelectedItem() != null) {
+                }
+            }
+        });
 
     }
 }
