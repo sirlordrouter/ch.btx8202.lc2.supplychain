@@ -1,0 +1,8 @@
+data
+model.entities
+services
+services.barcoding
+ui
+ui.state
+webservice.erp
+webservice.swissindex
