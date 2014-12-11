@@ -77,7 +77,6 @@ public class SupplyChainService {
         }
 
         if (checkedInItems.size() > 0){
-            //ERROR
             resultState=true;
         }
 

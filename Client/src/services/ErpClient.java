@@ -2,6 +2,7 @@ package services;
 
 import data.IDataSource;
 import webservice.erp.Item;
+import webservice.erp.SupplyChainService;
 import webservice.erp.SupplyChainServiceService;
 import webservice.erp.WebServiceResult;
 
@@ -19,7 +20,7 @@ public class ErpClient implements IDataSource{
 
     private String stationGLN;
     private SupplyChainServiceService supplyChainService;
-    private SupplyChainServicePort supplyChainServicePort;
+    private SupplyChainService supplyChainServicePort;
 
     public ErpClient(String stationGLN) {
 
