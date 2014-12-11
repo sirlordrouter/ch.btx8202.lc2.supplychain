@@ -4,6 +4,7 @@ import barcode.Barcode;
 import barcode.BarcodeDecoder;
 import barcode.BarcodeInformation;
 import barcode.ScannedString;
+import barcodeHook.Scanner;
 import barcodeHook.ScannerEvent;
 import barcodeHook.ScannerListener;
 import data.IDataSource;
@@ -149,6 +150,7 @@ public class StockViewController implements ScannerListener, Initializable {
     }
 
     public void setApp(Main main) {
+
         this.application = main;
         Properties prop = null;
         try {
@@ -156,6 +158,7 @@ public class StockViewController implements ScannerListener, Initializable {
             prop = reader.getPropValues();
             locationField.setText(prop.getProperty("stationBezeichnung"));
             dataSource = new ErpClient(prop.getProperty("stationGLN"));
+            Scanner.addScannerEventListener(this, "(/",0);
 
         } catch (ConnectException e ) {
             locationField.setText("No Connection to ERP WebService");
@@ -172,6 +175,8 @@ public class StockViewController implements ScannerListener, Initializable {
     }
 
     public void processLogout(ActionEvent event) {
+        Scanner.removeScannerListener(this);
+
         if (application == null){
             // We are running in isolated FXML, possibly in Scene Builder.
             // NO-OP.

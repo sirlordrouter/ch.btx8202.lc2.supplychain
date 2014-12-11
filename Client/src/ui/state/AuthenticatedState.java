@@ -5,6 +5,7 @@ import barcodeHook.Scanner;
 import barcodeHook.ScannerEvent;
 import ui.Main;
 import ui.MainController;
+import ui.Navigator;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,8 +25,6 @@ public class AuthenticatedState extends AuthenticationState {
     private Scanner scn;
     private MainController controller;
 
-
-
     /**
 	 * Constructor for this state implementation.
 	 * 
@@ -44,7 +43,7 @@ public class AuthenticatedState extends AuthenticationState {
 	protected void entryState() {
         try {
             //super.context.loadMainPane();
-            controller = (MainController) super.context.replaceSceneContent("main.fxml");
+            controller = (MainController) super.context.replaceSceneContent(Navigator.MAIN);
 
 //            controller.setApp(super.context);
 //

@@ -56,11 +56,10 @@ public class Navigator {
      */
     public static void loadVista(String fxml) {
         try {
-            mainController.setVista(
-                    FXMLLoader.<Node>load(
-                            Navigator.class.getResource(fxml)
-                    )
+            Node node = FXMLLoader.<Node>load(
+                    Navigator.class.getResource(fxml)
             );
+            mainController.setVista(node);
         } catch (IOException e) {
             e.printStackTrace();
         }
