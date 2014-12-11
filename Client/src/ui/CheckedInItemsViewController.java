@@ -10,8 +10,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.entities.TradeItem;
 import services.ErpClient;
 import services.PropertiesReader;
+import services.SwissIndexClient;
 import webservice.erp.Item;
 import webservice.erp.NoSuchGLNFoundException_Exception;
 import webservice.erp.WebServiceResult;
@@ -110,9 +112,24 @@ public class CheckedInItemsViewController implements Initializable{
 
     public void getCheckedInItems() throws NoSuchGLNFoundException_Exception {
         WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
-        data.setAll(result.getItems());
+        ObservableList<Item> tempData =  FXCollections.observableArrayList();
 
-        final ObservableList columns = itemList.getColumns();
+        tempData.setAll(result.getItems());
+
+        for(Item item:tempData){
+            TradeItem tradeItem = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+            TradeItem tradeItem1 = new TradeItem();
+            tradeItem1.setName(tradeItem.getName());
+            tradeItem1.setBeschreibung(tradeItem.getBeschreibung());
+            tradeItem1.setMenge(tradeItem.getMenge());
+            tradeItem1.setGTIN(item.getGTIN());
+            tradeItem1.setExpiryDate(item.getExpiryDate());
+            tradeItem1.setLot(item.getLot());
+            tradeItem1.setSerial(item.getSerial());
+            tradeItem1.setCheckInDate(item.getCheckInDate());
+            data.add(tradeItem1);
+        }
+
         tableColName.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("Name")
         );
@@ -132,7 +149,7 @@ public class CheckedInItemsViewController implements Initializable{
                 new PropertyValueFactory<Item,String>("ExpiryDate")
         );
         tableColCheckInDate.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("checkInDate")
+                new PropertyValueFactory<Item,String>("scanDate")
         );
 
 
