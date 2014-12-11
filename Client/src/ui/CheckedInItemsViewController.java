@@ -56,6 +56,7 @@ public class CheckedInItemsViewController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setApp(Main.instance);
+        getCheckedInItems();
     }
 
     public void checkOut(ActionEvent actionEvent) {
@@ -102,7 +103,6 @@ public class CheckedInItemsViewController implements Initializable{
     }
 
     public void getCheckedInItems() {
-        setApp(Main.instance);
         WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
         data.setAll(result.getItems());
 
