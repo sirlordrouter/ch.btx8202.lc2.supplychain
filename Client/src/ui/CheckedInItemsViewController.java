@@ -31,7 +31,8 @@ import java.util.ResourceBundle;
  * Medizininformatik BSc</br>
  * BTX8202 (Living Case 2), HS2014</br>
  *
- *<p></p>
+ *<p>This class handles the data provided of the TrackedItems Table in the Logistic Database.
+ * The goal is to show all checked in Items of a specific global location number.</p>
  *
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 10-12-2014
@@ -68,8 +69,13 @@ public class CheckedInItemsViewController implements Initializable{
     }
 
     public void checkOut(ActionEvent actionEvent) {
-
+        // TODO?
     }
+
+    /**
+     * log out the registered user
+     * @param event
+     */
     public void processLogout(ActionEvent event) {
         if (application == null){
             // We are running in isolated FXML, possibly in Scene Builder.
@@ -79,6 +85,11 @@ public class CheckedInItemsViewController implements Initializable{
 
         application.userLogout();
     }
+
+    /**
+     * load the stock view fxml and show it.
+     * @param event
+     */
     public void backToStockView(ActionEvent event) {
         Navigator.loadVista(Navigator.STOCK_VIEW, Main.instance);
     }
@@ -110,6 +121,10 @@ public class CheckedInItemsViewController implements Initializable{
 
     }
 
+    /**
+     * get checked in items from the webservice and add product informations from the swissindex webservice
+     * @throws NoSuchGLNFoundException_Exception
+     */
     public void getCheckedInItems() throws NoSuchGLNFoundException_Exception {
         WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
         ObservableList<Item> tempData =  FXCollections.observableArrayList();

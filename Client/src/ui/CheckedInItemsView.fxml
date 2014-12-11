@@ -12,7 +12,8 @@
 * Medizininformatik BSc</br>
 * Modul Living Case 2</br>
 *
-*<p>Class Description</p>
+*<p>Dies View soll einen Überblick über die bereits eingescannten Items einer spezifischen Global Location Number (GLN) bieten.
+Die Daten werden tabellarisch aufbereitet.</p>
 *
 * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
 * @version 10-12-2014
