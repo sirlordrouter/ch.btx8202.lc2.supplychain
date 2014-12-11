@@ -1,10 +1,7 @@
 package services;
 
 import data.IDataSource;
-import webservice.erp.Item;
-import webservice.erp.SupplyChainService;
-import webservice.erp.SupplyChainServiceService;
-import webservice.erp.WebServiceResult;
+import webservice.erp.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -68,7 +65,7 @@ public class ErpClient implements IDataSource{
     }
 
     @Override
-    public WebServiceResult getCheckedInItems(String gln) {
-        return null;
+    public WebServiceResult getCheckedInItems(String gln) throws NoSuchGLNFoundException_Exception {
+        return supplyChainServicePort.getCheckedInItems(gln);
     }
 }

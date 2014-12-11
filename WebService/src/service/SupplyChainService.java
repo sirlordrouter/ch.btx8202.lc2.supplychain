@@ -57,7 +57,7 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
-            String query = "SELECT GTIN,SerialNr,Lot,ExpiryDate,ScanDate FROM TrackedItems WHERE GLNscan=? AND StateNr=?";
+            String query = "SELECT GTIN,SerialNr,Lot,ExpiryDate,ScanDate FROM TrackedItems WHERE GLNscan = ? AND StateNr = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, gln);
             ps.setInt(2, 2);

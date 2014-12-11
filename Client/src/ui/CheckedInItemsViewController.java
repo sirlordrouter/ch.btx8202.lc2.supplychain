@@ -13,7 +13,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import services.ErpClient;
 import services.PropertiesReader;
 import webservice.erp.Item;
+import webservice.erp.NoSuchGLNFoundException_Exception;
 import webservice.erp.WebServiceResult;
+import webservice.swissindex.PHARMAITEM;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
@@ -56,7 +58,11 @@ public class CheckedInItemsViewController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setApp(Main.instance);
-        getCheckedInItems();
+        try {
+            getCheckedInItems();
+        } catch (NoSuchGLNFoundException_Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void checkOut(ActionEvent actionEvent) {
@@ -102,7 +108,7 @@ public class CheckedInItemsViewController implements Initializable{
 
     }
 
-    public void getCheckedInItems() {
+    public void getCheckedInItems() throws NoSuchGLNFoundException_Exception {
         WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
         data.setAll(result.getItems());
 
@@ -123,10 +129,10 @@ public class CheckedInItemsViewController implements Initializable{
                 new PropertyValueFactory<Item,String>("Lot")
         );
         tableColAblauf.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("Ablaufdatum")
+                new PropertyValueFactory<Item,String>("ExpiryDate")
         );
         tableColCheckInDate.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("Check-In")
+                new PropertyValueFactory<Item,String>("checkInDate")
         );
 
 
