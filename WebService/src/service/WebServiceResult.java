@@ -5,13 +5,17 @@ import entities.Item;
 import java.util.List;
 
 /**
+ * Berner Fachhochschule</br>
+ * Medizininformatik BSc</br>
+ * Modul Living Case 2</br>
+ *
+ * <p>Container mit einer Liste von items als Antwort fuer einlesen einer SSCC beim Client.
+ * Info ob Fehler, nicht gefunden oder erfolgreich (boolean)</p>
  *
  * @author Patrizia Zehnder, patriziasusanna.zehnder@students.bfh.ch
  * @version 09-12-2014
- *
- * Container mit einer Liste von items als Antwort fuer einlesen einer SSCC beim Client.
- * Info ob Fehler, nicht gefunden oder erfolgreich (boolean)
  */
+
 public class WebServiceResult {
 
 

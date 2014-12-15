@@ -26,6 +26,7 @@
             <children>
                 <VBox id="VBox" alignment="CENTER" prefHeight="300.0" prefWidth="421.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
                     <children>
+                        <!-- Eingabe Logindaten -->
                         <AnchorPane id="AnchorPane" prefHeight="180.0" prefWidth="430.0">
                             <children>
                                 <Label id="label1" layoutX="14.0" layoutY="67.0" text="Username" />
@@ -34,6 +35,7 @@
                                 <PasswordField id="passwordField" fx:id="password" layoutY="157.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" />
                             </children>
                         </AnchorPane>
+                        <!-- Eingabe Logindaten -->
                     </children>
                 </VBox>
             </children>
