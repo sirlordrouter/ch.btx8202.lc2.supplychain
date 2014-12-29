@@ -18,19 +18,6 @@ public class Item {
 
     public Item() {}
 
-    public Item(String name, String menge, String GTIN, String lot, String expiryDate, String serial, String beschreibung, String zusatz, String ATC, Company producer) {
-        Name = name;
-        Menge = menge;
-        this.GTIN = GTIN;
-        Lot = lot;
-        ExpiryDate = expiryDate;
-        Serial = serial;
-        Beschreibung = beschreibung;
-        Zusatz = zusatz;
-        this.ATC = ATC;
-        this.producer = producer;
-        this.checkInDate=null;
-    }
     public Item(String name, String menge, String GTIN, String lot, String expiryDate, String serial, String beschreibung, String zusatz, String ATC, Company producer, String checkInDate) {
         Name = name;
         Menge = menge;

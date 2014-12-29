@@ -81,7 +81,6 @@ public class SupplyChainService {
         }
 
         WebServiceResult webServiceResult = new WebServiceResult(checkedInItems, resultState);
-
         return webServiceResult;
     }
 
@@ -359,6 +358,7 @@ public class SupplyChainService {
             item.setSerial(rs.getString(2));
             item.setLot(rs.getString(3));
             item.setExpiryDate(rs.getDate(4, new GregorianCalendar()).toString());
+            item.setCheckInDate(rs.getDate(5, new GregorianCalendar()).toString());
             items.add(item);
         }
         return items;

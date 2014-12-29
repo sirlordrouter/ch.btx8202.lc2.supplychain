@@ -164,7 +164,7 @@ public class CheckedInItemsViewController implements Initializable{
                 new PropertyValueFactory<Item,String>("ExpiryDate")
         );
         tableColCheckInDate.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("scanDate")
+                new PropertyValueFactory<Item,String>("checkInDate")
         );
 
 
