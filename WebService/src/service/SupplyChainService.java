@@ -82,13 +82,6 @@ public class SupplyChainService {
 
         WebServiceResult webServiceResult = new WebServiceResult(checkedInItems, resultState);
 
-
-
-        //TrackedItems suchen wo gln = gln
-        //Resultat filtern wo nur bestellt und arrived da ist
-        // allenfalls gleich pro secondaryPackage schreiben wo gelagert als alternative
-
-
         return webServiceResult;
     }
 
@@ -102,9 +95,29 @@ public class SupplyChainService {
      */
     @WebMethod
     public void checkinItems(List<Item> items, String gln) {
+        try {
+            // check for checked-in items
+            WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
+            // check if the request was successful
+            if(checkedInItemsResult.isResult()){
+                List<Item> checkedInItemsList = checkedInItemsResult.getItems();
+                for(Item item:items){
+                    for(Item checkedInItem:checkedInItemsList){
+                        // check for every item if it is already in the checked in list
+                        if(item.getGTIN().equals(checkedInItem.getGTIN()) &&
+                           item.getSerial().equals(checkedInItem.getSerial()) &&
+                           item.getLot().equals(checkedInItem.getLot())){
+                           // item already checked in, remove it from checkin list
+                           items.remove(item);
+                        }
+                    }
+                }
 
-        //Prüfen obn nicht schon eingecheckt
-        //Ev. bi Products no Lagerort GLN als Attribut
+            }
+        } catch (NoSuchGLNFoundException e) {
+            e.printStackTrace();
+        }
+
 
         //State 2: Arrived
         insertTrackingItems(items, gln, 2);
@@ -120,9 +133,29 @@ public class SupplyChainService {
      */
     @WebMethod
     public void checkoutItems(List<Item> items, String gln) {
-        //State 3: Processed
-        // Prüfen ob nicht ausgechcekct
-        System.out.println(items.toArray() + " " + gln);
+        try {
+            // check for checked-in items
+            WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
+            // check if the request was successful
+            if(checkedInItemsResult.isResult()){
+                List<Item> checkedInItemsList = checkedInItemsResult.getItems();
+                for(Item item:items){
+                    for(Item checkedInItem:checkedInItemsList){
+                        // check for every item if it is NOT already in the checked in list
+                        if(!(item.getGTIN().equals(checkedInItem.getGTIN()) &&
+                                item.getSerial().equals(checkedInItem.getSerial()) &&
+                                item.getLot().equals(checkedInItem.getLot()))){
+                            // item not yet checked in, remove it from check out list
+                            items.remove(item);
+                        }
+                    }
+                }
+
+            }
+        } catch (NoSuchGLNFoundException e) {
+            e.printStackTrace();
+        }
+
         insertTrackingItems(items, gln, 3);
     }
 
