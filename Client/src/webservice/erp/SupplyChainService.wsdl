@@ -16,9 +16,6 @@
 <message name="getCheckedInItemsResponse">
 <part name="parameters" element="tns:getCheckedInItemsResponse"/>
 </message>
-<message name="NoSuchGLNFoundException">
-<part name="fault" element="tns:NoSuchGLNFoundException"/>
-</message>
 <message name="checkinItems">
 <part name="parameters" element="tns:checkinItems"/>
 </message>
@@ -61,6 +58,12 @@
 <message name="getOrderForSSCCResponse">
 <part name="parameters" element="tns:getOrderForSSCCResponse"/>
 </message>
+<message name="resetTrackedItems">
+<part name="parameters" element="tns:resetTrackedItems"/>
+</message>
+<message name="resetTrackedItemsResponse">
+<part name="parameters" element="tns:resetTrackedItemsResponse"/>
+</message>
 <portType name="SupplyChainService">
 <operation name="sayHelloWorldFrom">
 <input wsam:Action="http://service/SupplyChainService/sayHelloWorldFromRequest" message="tns:sayHelloWorldFrom"/>
@@ -69,7 +72,6 @@
 <operation name="getCheckedInItems">
 <input wsam:Action="http://service/SupplyChainService/getCheckedInItemsRequest" message="tns:getCheckedInItems"/>
 <output wsam:Action="http://service/SupplyChainService/getCheckedInItemsResponse" message="tns:getCheckedInItemsResponse"/>
-<fault message="tns:NoSuchGLNFoundException" name="NoSuchGLNFoundException" wsam:Action="http://service/SupplyChainService/getCheckedInItems/Fault/NoSuchGLNFoundException"/>
 </operation>
 <operation name="checkinItems">
 <input wsam:Action="http://service/SupplyChainService/checkinItemsRequest" message="tns:checkinItems"/>
@@ -99,6 +101,10 @@
 <input wsam:Action="http://service/SupplyChainService/getOrderForSSCCRequest" message="tns:getOrderForSSCC"/>
 <output wsam:Action="http://service/SupplyChainService/getOrderForSSCCResponse" message="tns:getOrderForSSCCResponse"/>
 </operation>
+<operation name="resetTrackedItems">
+<input wsam:Action="http://service/SupplyChainService/resetTrackedItemsRequest" message="tns:resetTrackedItems"/>
+<output wsam:Action="http://service/SupplyChainService/resetTrackedItemsResponse" message="tns:resetTrackedItemsResponse"/>
+</operation>
 </portType>
 <binding name="SupplyChainServicePortBinding" type="tns:SupplyChainService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
@@ -119,9 +125,6 @@
 <output>
 <soap:body use="literal"/>
 </output>
-<fault name="NoSuchGLNFoundException">
-<soap:fault name="NoSuchGLNFoundException" use="literal"/>
-</fault>
 </operation>
 <operation name="checkinItems">
 <soap:operation soapAction=""/>
@@ -178,6 +181,15 @@
 </output>
 </operation>
 <operation name="getOrderForSSCC">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="resetTrackedItems">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

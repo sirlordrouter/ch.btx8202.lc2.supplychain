@@ -116,7 +116,7 @@ public class ErpClient implements IDataSource{
     }
 
     @Override
-    public WebServiceResult getCheckedInItems(String gln) throws NoSuchGLNFoundException_Exception {
+    public WebServiceResult getCheckedInItems(String gln) {
 
         try{
             return supplyChainServicePort.getCheckedInItems(gln);

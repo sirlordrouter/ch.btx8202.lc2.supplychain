@@ -15,9 +15,7 @@ import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
 import webservice.erp.Item;
-import webservice.erp.NoSuchGLNFoundException_Exception;
 import webservice.erp.WebServiceResult;
-import webservice.swissindex.PHARMAITEM;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
@@ -61,11 +59,9 @@ public class CheckedInItemsViewController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setApp(Main.instance);
-        try {
+
             getCheckedInItems();
-        } catch (NoSuchGLNFoundException_Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void checkOut(ActionEvent actionEvent) {
@@ -123,9 +119,8 @@ public class CheckedInItemsViewController implements Initializable{
 
     /**
      * get checked in items from the webservice and add product informations from the swissindex webservice
-     * @throws NoSuchGLNFoundException_Exception
      */
-    public void getCheckedInItems() throws NoSuchGLNFoundException_Exception {
+    public void getCheckedInItems(){
         WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
         ObservableList<Item> tempData =  FXCollections.observableArrayList();
 

@@ -29,8 +29,8 @@ public class ObjectFactory {
     private final static QName _SayHelloWorldFromResponse_QNAME = new QName("http://service/", "sayHelloWorldFromResponse");
     private final static QName _GetItemByIdentifier_QNAME = new QName("http://service/", "getItemByIdentifier");
     private final static QName _GetOrderForSSCCResponse_QNAME = new QName("http://service/", "getOrderForSSCCResponse");
+    private final static QName _ResetTrackedItems_QNAME = new QName("http://service/", "resetTrackedItems");
     private final static QName _CheckinItems_QNAME = new QName("http://service/", "checkinItems");
-    private final static QName _NoSuchGLNFoundException_QNAME = new QName("http://service/", "NoSuchGLNFoundException");
     private final static QName _InsertTrackingItemsResponse_QNAME = new QName("http://service/", "insertTrackingItemsResponse");
     private final static QName _InsertTrackingItems_QNAME = new QName("http://service/", "insertTrackingItems");
     private final static QName _CheckoutItemsResponse_QNAME = new QName("http://service/", "checkoutItemsResponse");
@@ -38,6 +38,7 @@ public class ObjectFactory {
     private final static QName _GetItemsByBatchResponse_QNAME = new QName("http://service/", "getItemsByBatchResponse");
     private final static QName _GetCheckedInItemsResponse_QNAME = new QName("http://service/", "getCheckedInItemsResponse");
     private final static QName _GetItemsBySSCCResponse_QNAME = new QName("http://service/", "getItemsBySSCCResponse");
+    private final static QName _ResetTrackedItemsResponse_QNAME = new QName("http://service/", "resetTrackedItemsResponse");
     private final static QName _CheckinItemsResponse_QNAME = new QName("http://service/", "checkinItemsResponse");
     private final static QName _GetItemsByBatch_QNAME = new QName("http://service/", "getItemsByBatch");
     private final static QName _GetItemsBySSCC_QNAME = new QName("http://service/", "getItemsBySSCC");
@@ -89,6 +90,14 @@ public class ObjectFactory {
      */
     public GetItemsBySSCC createGetItemsBySSCC() {
         return new GetItemsBySSCC();
+    }
+
+    /**
+     * Create an instance of {@link ResetTrackedItemsResponse }
+     * 
+     */
+    public ResetTrackedItemsResponse createResetTrackedItemsResponse() {
+        return new ResetTrackedItemsResponse();
     }
 
     /**
@@ -148,19 +157,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link NoSuchGLNFoundException }
-     * 
-     */
-    public NoSuchGLNFoundException createNoSuchGLNFoundException() {
-        return new NoSuchGLNFoundException();
-    }
-
-    /**
      * Create an instance of {@link CheckinItems }
      * 
      */
     public CheckinItems createCheckinItems() {
         return new CheckinItems();
+    }
+
+    /**
+     * Create an instance of {@link ResetTrackedItems }
+     * 
+     */
+    public ResetTrackedItems createResetTrackedItems() {
+        return new ResetTrackedItems();
     }
 
     /**
@@ -273,21 +282,21 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResetTrackedItems }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "resetTrackedItems")
+    public JAXBElement<ResetTrackedItems> createResetTrackedItems(ResetTrackedItems value) {
+        return new JAXBElement<ResetTrackedItems>(_ResetTrackedItems_QNAME, ResetTrackedItems.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link CheckinItems }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://service/", name = "checkinItems")
     public JAXBElement<CheckinItems> createCheckinItems(CheckinItems value) {
         return new JAXBElement<CheckinItems>(_CheckinItems_QNAME, CheckinItems.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link NoSuchGLNFoundException }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://service/", name = "NoSuchGLNFoundException")
-    public JAXBElement<NoSuchGLNFoundException> createNoSuchGLNFoundException(NoSuchGLNFoundException value) {
-        return new JAXBElement<NoSuchGLNFoundException>(_NoSuchGLNFoundException_QNAME, NoSuchGLNFoundException.class, null, value);
     }
 
     /**
@@ -351,6 +360,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "getItemsBySSCCResponse")
     public JAXBElement<GetItemsBySSCCResponse> createGetItemsBySSCCResponse(GetItemsBySSCCResponse value) {
         return new JAXBElement<GetItemsBySSCCResponse>(_GetItemsBySSCCResponse_QNAME, GetItemsBySSCCResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResetTrackedItemsResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "resetTrackedItemsResponse")
+    public JAXBElement<ResetTrackedItemsResponse> createResetTrackedItemsResponse(ResetTrackedItemsResponse value) {
+        return new JAXBElement<ResetTrackedItemsResponse>(_ResetTrackedItemsResponse_QNAME, ResetTrackedItemsResponse.class, null, value);
     }
 
     /**

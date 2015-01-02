@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse f\u00fcr checkoutItemsResponse complex type.
+ * <p>Java-Klasse f\u00fcr resetTrackedItemsResponse complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
  * <pre>
- * &lt;complexType name="checkoutItemsResponse">
+ * &lt;complexType name="resetTrackedItemsResponse">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "checkoutItemsResponse")
-public class CheckoutItemsResponse {
+@XmlType(name = "resetTrackedItemsResponse")
+public class ResetTrackedItemsResponse {
 
 
 }

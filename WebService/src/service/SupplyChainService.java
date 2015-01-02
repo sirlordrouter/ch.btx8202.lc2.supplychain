@@ -2,6 +2,7 @@ package service;
 
 import data.DbConnectorLogistic;
 import entities.Item;
+import org.intellij.lang.annotations.Language;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -56,7 +57,14 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
-            String query = "SELECT GTIN,SerialNr,Lot,ExpiryDate,ScanDate FROM TrackedItems WHERE GLNscan = ? AND StateNr = ?";
+            @Language("DB2")
+            String query = "SELECT i.GTIN,i.SerialNr,i.Lot,i.ExpiryDate,i.ScanDate, i.StateNr FROM TrackedItems i \n" +
+                    "where not exists\n" +
+                    "(\n" +
+                    "Select i.GTIN From TrackedItems o\n" +
+                    "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and StateNr = 3\n" +
+                    ") and GLNscan = ? AND StateNr = ?";
+
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, gln);
             ps.setInt(2, 2);

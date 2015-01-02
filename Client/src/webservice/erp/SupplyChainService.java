@@ -9,7 +9,6 @@ import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Action;
-import javax.xml.ws.FaultAction;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
@@ -47,20 +46,15 @@ public interface SupplyChainService {
      * @param arg0
      * @return
      *     returns webservice.erp.WebServiceResult
-     * @throws NoSuchGLNFoundException_Exception
      */
     @WebMethod
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "getCheckedInItems", targetNamespace = "http://service/", className = "webservice.erp.GetCheckedInItems")
     @ResponseWrapper(localName = "getCheckedInItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.GetCheckedInItemsResponse")
-    @Action(input = "http://service/SupplyChainService/getCheckedInItemsRequest", output = "http://service/SupplyChainService/getCheckedInItemsResponse", fault = {
-        @FaultAction(className = NoSuchGLNFoundException_Exception.class, value = "http://service/SupplyChainService/getCheckedInItems/Fault/NoSuchGLNFoundException")
-    })
+    @Action(input = "http://service/SupplyChainService/getCheckedInItemsRequest", output = "http://service/SupplyChainService/getCheckedInItemsResponse")
     public WebServiceResult getCheckedInItems(
         @WebParam(name = "arg0", targetNamespace = "")
-        String arg0)
-        throws NoSuchGLNFoundException_Exception
-    ;
+        String arg0);
 
     /**
      * 
@@ -178,5 +172,14 @@ public interface SupplyChainService {
     public String getOrderForSSCC(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
+
+    /**
+     * 
+     */
+    @WebMethod
+    @RequestWrapper(localName = "resetTrackedItems", targetNamespace = "http://service/", className = "webservice.erp.ResetTrackedItems")
+    @ResponseWrapper(localName = "resetTrackedItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.ResetTrackedItemsResponse")
+    @Action(input = "http://service/SupplyChainService/resetTrackedItemsRequest", output = "http://service/SupplyChainService/resetTrackedItemsResponse")
+    public void resetTrackedItems();
 
 }
