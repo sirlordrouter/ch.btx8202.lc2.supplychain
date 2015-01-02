@@ -23,12 +23,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import model.entities.TradeItem;
+import services.ErpClient;
+import services.PropertiesReader;
 import services.SwissIndexClient;
 import webservice.erp.Item;
 import webservice.swissindex.PHARMAITEM;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -144,23 +148,23 @@ public class StockViewController implements ScannerListener, Initializable {
 
         this.application = main;
         Scanner.addScannerEventListener(this, "(/",0);
-//        Properties prop = null;
-//        try {
-//            PropertiesReader reader = new PropertiesReader();
-//            prop = reader.getPropValues();
-//            locationField.setText(prop.getProperty("stationBezeichnung"));
-//            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+        Properties prop = null;
+        try {
+            PropertiesReader reader = new PropertiesReader();
+            prop = reader.getPropValues();
+            locationField.setText(prop.getProperty("stationBezeichnung"));
+            dataSource = new ErpClient(prop.getProperty("stationGLN"));
 //
 //
 //        } catch (ConnectException e ) {
 //            locationField.setText("No Connection to ERP WebService");
 //        } catch(WebServiceException e) {
 //            locationField.setText("No Connection to ERP WebService");
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//            locationField.setText("Configuration could not be read!");
-//        }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            locationField.setText("Configuration could not be read!");
+        }
 //
 //        User loggedUser = application.getLoggedUser();
 //        userField.setText(loggedUser.getId());
@@ -237,24 +241,32 @@ public class StockViewController implements ScannerListener, Initializable {
 
 
         Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
+
         info =  code.getBarcodeInformation();
+        if(info != null) {
+            txtareaMediInfo.appendText(info.toString());
 
-        txtareaMediInfo.appendText(info.toString());
 
-        if (info.getAI00_SSCC() != null) {
-            items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
-            for (Item item : items) {
-                retrieveItemInformation(item);
+            if (info.getAI00_SSCC() != null) {
+                if(dataSource == null ) {
+                    System.out.println("No Webservice available.");
+                }
+                items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
+                for (Item item : items) {
+                    retrieveItemInformation(item);
+                }
+            } else if(info.getAI01_HANDELSEINHEIT() != null) {
+                Item i = new Item();
+
+                i.setGTIN(info.getAI01_HANDELSEINHEIT());
+
+                retrieveItemInformation(i);
+            } else {
+                //Well then... no idea wwhat to do => there is no usable data stored here...
+                System.out.println("No Data Found for Barcode...");
             }
-        } else if(info.getAI01_HANDELSEINHEIT() != null) {
-            Item i = new Item();
-
-            i.setGTIN(info.getAI01_HANDELSEINHEIT());
-
-            retrieveItemInformation(i);
         } else {
-            //Well then... no idea wwhat to do => there is no usable data stored here...
-            System.out.println("No Data Found for Barcode...");
+            System.out.println("Info was null");
         }
 
     }
