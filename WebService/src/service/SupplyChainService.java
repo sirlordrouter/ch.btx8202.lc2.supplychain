@@ -424,7 +424,6 @@ public class SupplyChainService {
 
     /**
      * Gets all trade items with a specific batch and expiry date
-  (/Dm¨1)01=7680475040157)17=151231)10=ABCDEF123456)21=35722388370DBCDEF
      *
      * @param gtin
      *  gtin to get item
@@ -534,6 +533,29 @@ public class SupplyChainService {
 
         return null;
     }
+
+    /**
+     * Resets the TrackedItems table.
+     */
+    @WebMethod
+    public void resetTrackedItems() {
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            String query = "truncate table TrackedItems";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public static void main(String[] argv) {
     Object implementor = new SupplyChainService();
