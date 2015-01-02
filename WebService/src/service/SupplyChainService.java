@@ -163,7 +163,7 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
-            String query = "INSERT INTO TrackedItems (GTIN, SerialNr, ExpiryDate, GLNscan, Date, StateNr) VALUES (?,?,?,?,?,?)";
+            String query = "INSERT INTO TrackedItems (GTIN, SerialNr, ExpiryDate, GLNscan, ScanDate, StateNr) VALUES (?,?,?,?,?,?)";
             for (Item item : items) {
                 //TODO: Inhalt überprüfen ob stimmt, gerade Datum schwierig, muss auch Zeitstempel beinhalten
                 PreparedStatement ps = connection.prepareStatement(query);

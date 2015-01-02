@@ -152,7 +152,7 @@ public class StockViewController implements ScannerListener, Initializable {
         try {
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
-            locationField.setText(prop.getProperty("stationBezeichnung"));
+//            locationField.setText(prop.getProperty("stationBezeichnung"));
             dataSource = new ErpClient(prop.getProperty("stationGLN"));
 //
 //
