@@ -63,7 +63,7 @@ public class SupplyChainService {
             ps.setInt(2, 2);
             rs =  ps.executeQuery();
 
-            checkedInItems = addItemsFromResult(rs);
+            checkedInItems = addTrackedItemsFromResult(rs);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -351,6 +351,19 @@ public class SupplyChainService {
     }
 
     private List<Item> addItemsFromResult(ResultSet rs) throws SQLException {
+        List<Item> items = new ArrayList<Item>();
+        while (rs.next()) {
+            Item item = new Item();
+            item.setGTIN(rs.getString(1));
+            item.setSerial(rs.getString(2));
+            item.setLot(rs.getString(3));
+            item.setExpiryDate(rs.getDate(4, new GregorianCalendar()).toString());
+            items.add(item);
+        }
+        return items;
+    }
+
+    private List<Item> addTrackedItemsFromResult(ResultSet rs) throws SQLException {
         List<Item> items = new ArrayList<Item>();
         while (rs.next()) {
             Item item = new Item();
