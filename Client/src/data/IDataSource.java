@@ -13,8 +13,8 @@ import java.util.List;
  */
 public interface IDataSource {
 
-    void checkinItems(List<Item> items);
-    void checkoutItems(List<Item> items);
+    boolean checkinItems(List<Item> items);
+    boolean checkoutItems(List<Item> items);
     List<Item> getItemsBySSCC(String sscc);
     Item getItemByIdentifier(String gtin, String serialNumber);
     List<Item> getItemsByBatch(String gtin, String batchLot, Date expiryDate);

@@ -2,8 +2,6 @@ package service;
 
 import data.DbConnectorLogistic;
 import entities.Item;
-import service.exceptions.NoSuchGLNFoundException;
-import service.exceptions.NoSuchSSCCFoundException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -49,7 +47,7 @@ public class SupplyChainService {
   }
 
     @WebMethod
-    public WebServiceResult getCheckedInItems(String gln) throws NoSuchGLNFoundException {
+    public WebServiceResult getCheckedInItems(String gln) {
 
         List<Item> checkedInItems = null;
         boolean resultState = false;
@@ -95,29 +93,25 @@ public class SupplyChainService {
      */
     @WebMethod
     public void checkinItems(List<Item> items, String gln) {
-        try {
-            // check for checked-in items
-            WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
-            List<Item> removedItems = new ArrayList<Item>();
-            // check if the request was successful
-            if(checkedInItemsResult.isResult()){
-                List<Item> checkedInItemsList = checkedInItemsResult.getItems();
-                for(Item item:items){
-                    for(Item checkedInItem:checkedInItemsList){
-                        // check for every item if it is already in the checked in list
-                        if(item.getGTIN().equals(checkedInItem.getGTIN()) &&
-                           item.getSerial().equals(checkedInItem.getSerial()) &&
-                           item.getLot().equals(checkedInItem.getLot())){
-                           // item already checked in, remove it from checkin list
-                            removedItems.add(item);
-                        }
+        // check for checked-in items
+        WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
+        List<Item> removedItems = new ArrayList<Item>();
+        // check if the request was successful
+        if(checkedInItemsResult.isResult()){
+            List<Item> checkedInItemsList = checkedInItemsResult.getItems();
+            for(Item item:items){
+                for(Item checkedInItem:checkedInItemsList){
+                    // check for every item if it is already in the checked in list
+                    if(item.getGTIN().equals(checkedInItem.getGTIN()) &&
+                       item.getSerial().equals(checkedInItem.getSerial()) &&
+                       item.getLot().equals(checkedInItem.getLot())){
+                       // item already checked in, remove it from checkin list
+                        removedItems.add(item);
                     }
                 }
-
-                items.removeAll(removedItems);
             }
-        } catch (NoSuchGLNFoundException e) {
-            e.printStackTrace();
+
+            items.removeAll(removedItems);
         }
 
 
@@ -135,32 +129,28 @@ public class SupplyChainService {
      */
     @WebMethod
     public void checkoutItems(List<Item> items, String gln) {
-        try {
-            // check for checked-in items
-            WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
-            // check if the request was successful
-            if(checkedInItemsResult.isResult()){
-                List<Item> checkedInItemsList = checkedInItemsResult.getItems();
-                for(Item item:items){
-                    //Check if there are all neded properties filled in in both, else handle error
+        // check for checked-in items
+        WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
+        // check if the request was successful
+        if(checkedInItemsResult.isResult()){
+            List<Item> checkedInItemsList = checkedInItemsResult.getItems();
+            for(Item item:items){
+                //Check if there are all neded properties filled in in both, else handle error
 
-                    for(Item checkedInItem:checkedInItemsList){
-                        // check for every item if it is NOT already in the checked in list
-                        if(item.getGTIN().equals(checkedInItem.getGTIN()) &&
-                                item.getSerial().equals(checkedInItem.getSerial()) &&
-                                item.getLot().equals(checkedInItem.getLot())){
-                            // item not yet checked in, remove it from check out list
+                for(Item checkedInItem:checkedInItemsList){
+                    // check for every item if it is NOT already in the checked in list
+                    if(item.getGTIN().equals(checkedInItem.getGTIN()) &&
+                            item.getSerial().equals(checkedInItem.getSerial()) &&
+                            item.getLot().equals(checkedInItem.getLot())){
+                        // item not yet checked in, remove it from check out list
 
-                            List<Item> anItem = new ArrayList<Item>();
-                            anItem.add(item);
-                            insertTrackingItems(anItem, gln, 3);
-                        }
+                        List<Item> anItem = new ArrayList<Item>();
+                        anItem.add(item);
+                        insertTrackingItems(anItem, gln, 3);
                     }
                 }
-
             }
-        } catch (NoSuchGLNFoundException e) {
-            e.printStackTrace();
+
         }
 
 
@@ -212,15 +202,11 @@ public class SupplyChainService {
     @WebMethod
     public List<Item> getItemsBySSCC(String sscc) {
         List<Item> items;
-        try {
-            return getAllItemsBySSCC(sscc);
-        } catch (NoSuchSSCCFoundException ex) {
-            return null;
-        }
+        return getAllItemsBySSCC(sscc);
 
     }
 
-    private List<Item> getAllItemsBySSCC(String sscc) throws NoSuchSSCCFoundException{
+    private List<Item> getAllItemsBySSCC(String sscc) {
         List<Item> items;
 
         /**
@@ -237,18 +223,14 @@ public class SupplyChainService {
             if (getLogisticePackageSSCC(sscc).equals("")) {
                 //there is no such sscc, maybe wrong?
                 //raise Exception which is handled or what to do?
-                throw new NoSuchSSCCFoundException();
+                //throw new NoSuchSSCCFoundException();
             } else { //Its asscc but no items in ith, so probably third-stage upwards.
                 //Gte all sscc which are contained in this one
                 List<String> containedInSSCC = getLogisticePackagesContainedInSSCC(sscc);
                 if (containedInSSCC.size() > 0) {
                     for (String s : containedInSSCC) {
-                       try {
-                           items.addAll(getAllItemsBySSCC(s));
-                           return items;
-                       } catch (NoSuchSSCCFoundException ex) {
-                           return items;
-                       }
+                        items.addAll(getAllItemsBySSCC(s));
+                        return items;
                     }
                 }
             }

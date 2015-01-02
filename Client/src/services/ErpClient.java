@@ -6,12 +6,22 @@ import webservice.erp.*;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.soap.SOAPFaultException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Created by Johannes on 17.11.14.
+ * Berner Fachhochschule</br>
+ * Medizininformatik BSc</br>
+ * BTX8202 (Living Case 2), HS2014</br>
+ *
+ *<p>
+ *     Connection Class to the erp webservice.
+ *</p>
+ *
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 21-10-2014
  */
 public class ErpClient implements IDataSource{
 
@@ -28,26 +38,58 @@ public class ErpClient implements IDataSource{
     }
 
     @Override
-    public void checkinItems(List<Item> items) {
-        supplyChainServicePort.checkinItems(items, stationGLN);
-
+    public boolean checkinItems(List<Item> items) {
+        try{
+            supplyChainServicePort.checkinItems(items, stationGLN);
+            return true;
+        } catch (SOAPFaultException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
-    public void checkoutItems(List<Item> items) {
-        supplyChainServicePort.checkoutItems(items, stationGLN);
+    public boolean checkoutItems(List<Item> items) {
+        try{
+            supplyChainServicePort.checkoutItems(items, stationGLN);
+            return true;
+        } catch (SOAPFaultException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public List<Item> getItemsBySSCC(String sscc) {
 
-        return supplyChainServicePort.getItemsBySSCC(sscc);
+
+        try{
+            return supplyChainServicePort.getItemsBySSCC(sscc);
+        } catch (SOAPFaultException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @Override
     public Item getItemByIdentifier(String gtin, String serialNumber) {
 
-        return supplyChainServicePort.getItemByIdentifier(gtin, serialNumber);
+        try{
+            return supplyChainServicePort.getItemByIdentifier(gtin, serialNumber);
+        } catch (SOAPFaultException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @Override
@@ -61,11 +103,30 @@ public class ErpClient implements IDataSource{
             e.printStackTrace();
         }
 
-        return supplyChainServicePort.getItemsByBatch(gtin, batchLot, tempDate);
+        try{
+            return supplyChainServicePort.getItemsByBatch(gtin, batchLot, tempDate);
+        } catch (SOAPFaultException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @Override
     public WebServiceResult getCheckedInItems(String gln) throws NoSuchGLNFoundException_Exception {
-        return supplyChainServicePort.getCheckedInItems(gln);
+
+        try{
+            return supplyChainServicePort.getCheckedInItems(gln);
+        } catch (SOAPFaultException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }
