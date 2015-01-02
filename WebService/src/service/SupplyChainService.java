@@ -552,7 +552,7 @@ public class SupplyChainService {
         try {
             String query = "truncate table TrackedItems";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.executeQuery();
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

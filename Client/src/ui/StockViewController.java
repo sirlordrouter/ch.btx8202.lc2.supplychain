@@ -272,4 +272,8 @@ public class StockViewController implements ScannerListener, Initializable {
             txtareaMediInfo.setText("Kein Item gefunden.");
         }
     }
+
+    public void resetTrackedItems(ActionEvent actionEvent) {
+        dataSource.resetTrackedItems();
+    }
 }

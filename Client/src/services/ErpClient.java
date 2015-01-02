@@ -129,4 +129,15 @@ public class ErpClient implements IDataSource{
         }
 
     }
+
+    @Override
+    public void resetTrackedItems() {
+
+        try{
+            supplyChainServicePort.resetTrackedItems();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

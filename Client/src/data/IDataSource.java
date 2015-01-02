@@ -18,4 +18,5 @@ public interface IDataSource {
     Item getItemByIdentifier(String gtin, String serialNumber);
     List<Item> getItemsByBatch(String gtin, String batchLot, Date expiryDate);
     WebServiceResult getCheckedInItems(String gln);
+    void resetTrackedItems();
 }

@@ -108,8 +108,9 @@
       </SplitPane>
        <!-- Ende Splitpane mit Listenansicht und manueller Erfassung -->
        <Pane layoutY="346.0" prefHeight="128.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-          <Button mnemonicParsing="false" text="Checked In Items" onAction="#loadCheckInView" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
-      </Pane>
+          <Button layoutX="0.0" layoutY="0.0" mnemonicParsing="false" text="Checked In Items" onAction="#loadCheckInView" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
+           <Button layoutX="0.0" layoutY="31.0" mnemonicParsing="false" text="Reset" onAction="#resetTrackedItems" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
+       </Pane>
    </children>
 </AnchorPane>
 <!-- Ende Hauptfenster -->
