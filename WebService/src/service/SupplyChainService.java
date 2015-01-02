@@ -12,6 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Berner Fachhochschule</br>
@@ -178,7 +179,9 @@ public class SupplyChainService {
                 ps.setString(2, item.getSerial());
                 ps.setString(3, item.getExpiryDate());
                 ps.setString(4, gln);
-                ps.setDate(5, new Date(new java.util.Date().getTime()));
+                GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
+                java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+                ps.setTimestamp(5, timestamp);
                 ps.setInt(6, trackingState);
                 ps.setString(7, null); //ScannedSSCC
                 ps.setString(8, item.getLot());
