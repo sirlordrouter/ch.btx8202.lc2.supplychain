@@ -27,7 +27,6 @@ import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
 import webservice.erp.Item;
-import webservice.swissindex.PHARMAITEM;
 
 import java.io.IOException;
 import java.net.URL;
@@ -81,18 +80,6 @@ public class StockViewController implements ScannerListener, Initializable {
 
     private Main application;
 
-    private void retrieveItemInformation(Item item) {
-        TradeItem i = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
-
-        if (i != null) {
-            txtareaMediInfo.setText(i.toString());
-            data.add(i);
-        }else {
-            txtareaMediInfo.setText("Kein Item gefunden.");
-        }
-    }
-
-
     @FXML
     public void Event(ActionEvent actionEvent) {
         //labelItem.setText("Button clicked...please Scan item..");
@@ -104,6 +91,8 @@ public class StockViewController implements ScannerListener, Initializable {
         setApp(Main.instance);
 
         final ObservableList columns = medList.getColumns();
+
+
         tblColName.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("Name")
         );
@@ -114,7 +103,7 @@ public class StockViewController implements ScannerListener, Initializable {
                 new PropertyValueFactory<Item,String>("GTIN")
         );
         tablColHrst.setCellValueFactory(
-                new PropertyValueFactory<PHARMAITEM,String>("Serial")
+                new PropertyValueFactory<Item,String>("Serial")
         );
 
         medList.setItems(data);
@@ -256,10 +245,8 @@ public class StockViewController implements ScannerListener, Initializable {
                     retrieveItemInformation(item);
                 }
             } else if(info.getAI01_HANDELSEINHEIT() != null) {
-                Item i = new Item();
-
-                i.setGTIN(info.getAI01_HANDELSEINHEIT());
-
+                Item i = dataSource.getItemByIdentifier(info.getAI01_HANDELSEINHEIT(), info.getAI21_SERIAL_NUMBER());
+//                i.setGTIN(info.getAI01_HANDELSEINHEIT());
                 retrieveItemInformation(i);
             } else {
                 //Well then... no idea wwhat to do => there is no usable data stored here...
@@ -269,5 +256,20 @@ public class StockViewController implements ScannerListener, Initializable {
             System.out.println("Info was null");
         }
 
+    }
+
+    private void retrieveItemInformation(Item item) {
+        TradeItem i = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+        i.setSerial(item.getSerial());
+        i.setLot(item.getLot());
+        i.setExpiryDate(item.getExpiryDate());
+        i.setCheckInDate(item.getCheckInDate());
+
+        if (i != null) {
+            txtareaMediInfo.setText(i.toString());
+            data.add(i);
+        }else {
+            txtareaMediInfo.setText("Kein Item gefunden.");
+        }
     }
 }

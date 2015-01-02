@@ -97,6 +97,7 @@ public class SupplyChainService {
         try {
             // check for checked-in items
             WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
+            List<Item> removedItems = new ArrayList<Item>();
             // check if the request was successful
             if(checkedInItemsResult.isResult()){
                 List<Item> checkedInItemsList = checkedInItemsResult.getItems();
@@ -107,11 +108,12 @@ public class SupplyChainService {
                            item.getSerial().equals(checkedInItem.getSerial()) &&
                            item.getLot().equals(checkedInItem.getLot())){
                            // item already checked in, remove it from checkin list
-                           items.remove(item);
+                            removedItems.add(item);
                         }
                     }
                 }
 
+                items.removeAll(removedItems);
             }
         } catch (NoSuchGLNFoundException e) {
             e.printStackTrace();
@@ -139,13 +141,18 @@ public class SupplyChainService {
             if(checkedInItemsResult.isResult()){
                 List<Item> checkedInItemsList = checkedInItemsResult.getItems();
                 for(Item item:items){
+                    //Check if there are all neded properties filled in in both, else handle error
+
                     for(Item checkedInItem:checkedInItemsList){
                         // check for every item if it is NOT already in the checked in list
-                        if(!(item.getGTIN().equals(checkedInItem.getGTIN()) &&
+                        if(item.getGTIN().equals(checkedInItem.getGTIN()) &&
                                 item.getSerial().equals(checkedInItem.getSerial()) &&
-                                item.getLot().equals(checkedInItem.getLot()))){
+                                item.getLot().equals(checkedInItem.getLot())){
                             // item not yet checked in, remove it from check out list
-                            items.remove(item);
+
+                            List<Item> anItem = new ArrayList<Item>();
+                            anItem.add(item);
+                            insertTrackingItems(anItem, gln, 3);
                         }
                     }
                 }
@@ -155,7 +162,7 @@ public class SupplyChainService {
             e.printStackTrace();
         }
 
-        insertTrackingItems(items, gln, 3);
+
     }
 
     public void insertTrackingItems(List<Item> items, String gln, Integer trackingState )
@@ -163,7 +170,7 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
-            String query = "INSERT INTO TrackedItems (GTIN, SerialNr, ExpiryDate, GLNscan, ScanDate, StateNr) VALUES (?,?,?,?,?,?)";
+            String query = "INSERT INTO TrackedItems (GTIN, SerialNr, ExpiryDate, GLNscan, ScanDate, StateNr, ScannedSSCC,Lot) VALUES (?,?,?,?,?,?,?,?)";
             for (Item item : items) {
                 //TODO: Inhalt überprüfen ob stimmt, gerade Datum schwierig, muss auch Zeitstempel beinhalten
                 PreparedStatement ps = connection.prepareStatement(query);
@@ -173,6 +180,8 @@ public class SupplyChainService {
                 ps.setString(4, gln);
                 ps.setDate(5, new Date(new java.util.Date().getTime()));
                 ps.setInt(6, trackingState);
+                ps.setString(7, null); //ScannedSSCC
+                ps.setString(8, item.getLot());
                 int i = ps.executeUpdate();
                 System.out.println(i);
             }
@@ -388,7 +397,7 @@ public class SupplyChainService {
      * @return a Single Item - as identifiers should be unique
      */
     @WebMethod
-    public Item getItemByIdentifier(String gtin, String serialNumber) {
+    public Item getItemByIdentifier(String gtin, String serialNumber) { //noch lot + expiry date hinzufügen
         List<Item> items = null;
         ResultSet rs;
 
@@ -420,13 +429,17 @@ public class SupplyChainService {
         } else if (items.size() > 1){
             //ERROR
             return null;
-        } else {
+        } else if(items.size() == 1) {
             return items.get(0);
+        } else {
+            //ERROR
+            return null;
         }
     }
 
     /**
      * Gets all trade items with a specific batch and expiry date
+  (/Dm¨1)01=7680475040157)17=151231)10=ABCDEF123456)21=35722388370DBCDEF
      *
      * @param gtin
      *  gtin to get item

@@ -16,7 +16,7 @@ public class SupplyChainServiceTest extends TestCase {
         String gln = "1234567890123";
         SupplyChainService service = new SupplyChainService();
         WebServiceResult result = service.getCheckedInItems(gln);
-        //Assert.assertEquals("Count of TrackedItems in db for gln 1234567890123 is 1.", 1, result.getItems().size());
+        Assert.assertEquals("Count of TrackedItems in db for gln 1234567890123 is 4.", 4, result.getItems().size());
     }
 
     public void testCheckinItems() throws Exception {
