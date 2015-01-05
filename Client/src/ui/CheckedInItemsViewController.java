@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import services.ErpClient;
 import services.PropertiesReader;
@@ -127,7 +128,14 @@ public class CheckedInItemsViewController implements Initializable{
         tempData.setAll(result.getItems());
 
         for(Item item:tempData){
-            TradeItem tradeItem = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+            TradeItem tradeItem = null;
+            SwissIndexResult swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+            if(result.isResult()){
+                tradeItem = swissIndexResult.getTradeItems().get(0);
+            }else{
+                System.out.println(swissIndexResult.getMessage());
+                return;
+            }
             TradeItem tradeItem1 = new TradeItem();
             tradeItem1.setName(tradeItem.getName());
             tradeItem1.setBeschreibung(tradeItem.getBeschreibung());

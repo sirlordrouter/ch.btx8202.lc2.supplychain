@@ -22,10 +22,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
+import sun.tools.java.Type;
 import webservice.erp.Item;
 
 import java.io.IOException;
@@ -184,7 +186,14 @@ public class StockViewController implements ScannerListener, Initializable {
                 if(txtInput.getText().trim().startsWith("(/F")) {
                     ScannedString ss = BarcodeDecoder.parseScannedString(txtInput.getText().trim().substring(2));
                     BarcodeInformation bi = BarcodeDecoder.decode(ss.getBarcodeData(), ss.getCodeIdentity());
-                    TradeItem item = SwissIndexClient.getItemInformationFromGTIN(bi.getAI01_HANDELSEINHEIT());
+                    TradeItem item = null;
+                    SwissIndexResult result = SwissIndexClient.getItemInformationFromGTIN(bi.getAI01_HANDELSEINHEIT());
+                    if(result.isResult()){
+                        item = result.getTradeItems().get(0);
+                    }else{
+                        System.out.println(result.getMessage());
+                        return;
+                    }
 
                     if (item != null) {
                         item.setGTIN(txtGTIN.getText());
@@ -286,7 +295,14 @@ public class StockViewController implements ScannerListener, Initializable {
     }
 
     private void retrieveItemInformation(Item item) {
-        TradeItem i = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+        TradeItem i = null;
+        SwissIndexResult result = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+        if(result.isResult()){
+            i = result.getTradeItems().get(0);
+        }else{
+            System.out.println(result.getMessage());
+            return;
+        }
         i.setSerial(item.getSerial());
         i.setLot(item.getLot());
         i.setExpiryDate(item.getExpiryDate());

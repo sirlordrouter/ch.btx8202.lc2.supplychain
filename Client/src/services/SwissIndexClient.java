@@ -1,52 +1,68 @@
 package services;
 
 import model.entities.ProducerCompany;
+import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import webservice.erp.Company;
 import webservice.swissindex.*;
 
 import javax.xml.rpc.ServiceException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * Created by Johannes on 17.11.14.
  */
 public class SwissIndexClient {
 
-    public static TradeItem getItemInformationFromGTIN(String gtin) {
+    public static SwissIndexResult getItemInformationFromGTIN(String gtin) {
 
         Ws_Pharma_V101Locator locator = new Ws_Pharma_V101Locator();
         Ws_Pharma_V101Soap_PortType service = null;
+        SwissIndexResult response = new SwissIndexResult();
+        List<TradeItem> tradeItemList = null;
         try {
-
             service = locator.getws_Pharma_V101Soap();
             PHARMA de = service.getByGTIN(gtin, "de");
+            PHARMARESULT result = de.getRESULT();
 
-            if (de.getITEM() != null) {
-                for (PHARMAITEM pharmaitem : de.getITEM()) {
-
-                    if (pharmaitem != null) {
-                        PHARMAITEMCOMP comp = pharmaitem.getCOMP();
-                        Company c = CompanyConstructor(comp.getNAME(),comp.getGLN(), "ABTEILUNG");
-                        return ItemConstructor(pharmaitem.getDSCR(), pharmaitem.getADDSCR(),gtin, "BATCH/LOT", "SERIAL", "DESC", "Zusatz",
-                                pharmaitem.getATC(), c);
-
-                    } else {
-                        return null;
+            if(result.getNBR_RECORD()==1){
+                if (de.getITEM() != null) {
+                    for (PHARMAITEM pharmaitem : de.getITEM()) {
+                        if (pharmaitem != null) {
+                            PHARMAITEMCOMP comp = pharmaitem.getCOMP();
+                            Company c = CompanyConstructor(comp.getNAME(),comp.getGLN(), "ABTEILUNG");
+                            tradeItemList.add(ItemConstructor(pharmaitem.getDSCR(), pharmaitem.getADDSCR(),gtin, "BATCH/LOT", "SERIAL", "DESC", "Zusatz",
+                                    pharmaitem.getATC(), c));
+                        } else {
+                            response.setResult(false);
+                            return response;
+                        }
                     }
+                    response.setResult(true);
+                    response.setTradeItems(tradeItemList);
+                    response.setMessage("OK");
+                    return response;
+                } else {
+                    response.setResult(false);
+                    return response;
                 }
-            } else {
-                return null;
+            }else{
+                response.setResult(false);
+                response.setMessage("Zu dieser GTIN konnten keine Informationen auf SwissINDEX gefunden werden. Könnte es sich um ein ausländisches Produkt handeln?");
+                return response;
             }
-
-            return null;
 
         } catch (ServiceException e) {
             e.printStackTrace();
-            return null;
+            response.setResult(false);
+            response.setMessage("Fatal Error: Service Exception");
+            return response;
         } catch (RemoteException e) {
             e.printStackTrace();
-            return null;
+            response.setResult(false);
+            response.setMessage("Fatal Error: Remote Exception");
+            return response;
         }
     }
 
