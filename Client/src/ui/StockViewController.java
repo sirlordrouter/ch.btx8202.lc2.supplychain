@@ -178,21 +178,51 @@ public class StockViewController implements ScannerListener, Initializable {
 
     public void addItem(ActionEvent actionEvent) {
         try {
+            List<Item> items;
+            BarcodeInformation info = null;
             if (!txtInput.getText().equals("")) {
-                ScannedString ss = BarcodeDecoder.parseScannedString(txtInput.getText().trim().substring(2));
-                BarcodeInformation bi = BarcodeDecoder.decode(ss.getBarcodeData(), ss.getCodeIdentity());
-                TradeItem item = SwissIndexClient.getItemInformationFromGTIN(bi.getAI01_HANDELSEINHEIT());
+                if(txtInput.getText().trim().startsWith("(/F")) {
+                    ScannedString ss = BarcodeDecoder.parseScannedString(txtInput.getText().trim().substring(2));
+                    BarcodeInformation bi = BarcodeDecoder.decode(ss.getBarcodeData(), ss.getCodeIdentity());
+                    TradeItem item = SwissIndexClient.getItemInformationFromGTIN(bi.getAI01_HANDELSEINHEIT());
 
-                if (item != null) {
-                    item.setGTIN(txtGTIN.getText());
-                    item.setSerial(txtSeriennummer.getText());
-                    item.setLot(txtBatch.getText());
-                    //Set Expiry Date when Service updated
-                    txtareaMediInfo.setText(item.toString());
-                    data.add(item);
-                    clearItemInput();
-                } else {
-                    txtareaMediInfo.setText("Kein Item gefunden.");
+                    if (item != null) {
+                        item.setGTIN(txtGTIN.getText());
+                        item.setSerial(txtSeriennummer.getText());
+                        item.setLot(txtBatch.getText());
+                        //Set Expiry Date when Service updated
+                        txtareaMediInfo.setText(item.toString());
+                        data.add(item);
+                        clearItemInput();
+                    } else {
+                        txtareaMediInfo.setText("Kein Item gefunden.");
+                    }
+                }else if(txtInput.getText().trim().startsWith("(/D")){
+                    ScannerEvent evt = new ScannerEvent(this,null,null,null,0);
+                    evt.setBarCode(txtInput.getText().trim().substring(2));
+                    Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
+                    info =  code.getBarcodeInformation();
+                    if (info.getAI01_HANDELSEINHEIT() != null) {
+                        Item i = dataSource.getItemByIdentifier(info.getAI01_HANDELSEINHEIT(), info.getAI21_SERIAL_NUMBER());
+                        retrieveItemInformation(i);
+                        }
+
+
+                }else if(txtInput.getText().trim().startsWith("(/*")){
+                    ScannerEvent evt = new ScannerEvent(this,null,null,null,0);
+                    evt.setBarCode(txtInput.getText().trim().substring(2));
+                    Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
+                    info =  code.getBarcodeInformation();
+                    if (info.getAI00_SSCC() != null) {
+                        if(dataSource == null ) {
+                            System.out.println("No Webservice available.");
+                        }
+                        items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
+                        for (Item item : items) {
+                            retrieveItemInformation(item);
+                        }
+                    }
+
                 }
             }
         } catch (NotImplementedBarcodeTypeException e) {
@@ -227,10 +257,7 @@ public class StockViewController implements ScannerListener, Initializable {
         BarcodeInformation info = null;
 
         txtareaMediInfo.setText("Barcode " + evt.getBarCode() + " gescannt.");
-
-
         Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
-
         info =  code.getBarcodeInformation();
         if(info != null) {
             txtareaMediInfo.appendText(info.toString());

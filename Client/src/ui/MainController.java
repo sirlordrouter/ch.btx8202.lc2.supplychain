@@ -5,8 +5,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import services.PropertiesReader;
 
+import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -32,10 +38,28 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String username = "Testuser";
-        userField.setText("User: " + username);
-        dateTimeField.setText("Datum: 11-11-2014, 10:00 Uhr");
-        locationField.setText("Demo Station");
+
+        Properties prop = null;
+        try {
+            // read properties
+            PropertiesReader reader = new PropertiesReader();
+            prop = reader.getPropValues();
+
+            // get current date
+            DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            Date date = new Date();
+
+            // setup status bar
+            String username = "Testuser";
+            userField.setText("User: " + username);
+            dateTimeField.setText("Datum: "+ dateFormat.format(date));
+            locationField.setText(prop.getProperty("stationBezeichnung"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            locationField.setText("Configuration could not be read!");
+        }
+
 
     }
 
