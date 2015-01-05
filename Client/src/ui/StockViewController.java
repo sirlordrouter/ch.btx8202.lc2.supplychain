@@ -17,11 +17,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import services.ErpClient;
@@ -44,6 +49,7 @@ import java.util.ResourceBundle;
  *<p></p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 21-10-2014
  */
 public class StockViewController implements ScannerListener, Initializable {
@@ -191,7 +197,8 @@ public class StockViewController implements ScannerListener, Initializable {
                     if(result.isResult()){
                         item = result.getTradeItems().get(0);
                     }else{
-                        System.out.println(result.getMessage());
+                        UserInformationPopup popup = new UserInformationPopup(result.getMessage(), "Achtung");
+                        popup.show();
                         return;
                     }
 
@@ -234,6 +241,7 @@ public class StockViewController implements ScannerListener, Initializable {
 
                 }
             }
+            txtInput.setText("");
         } catch (NotImplementedBarcodeTypeException e) {
             System.out.println("hello world");
         } catch (BarcodeNotDeserializeableException e) {
@@ -300,7 +308,8 @@ public class StockViewController implements ScannerListener, Initializable {
         if(result.isResult()){
             i = result.getTradeItems().get(0);
         }else{
-            System.out.println(result.getMessage());
+            UserInformationPopup popup = new UserInformationPopup(result.getMessage(), "Achtung");
+            popup.show();
             return;
         }
         i.setSerial(item.getSerial());

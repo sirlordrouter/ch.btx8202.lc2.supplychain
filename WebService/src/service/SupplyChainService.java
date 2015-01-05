@@ -32,6 +32,7 @@ import java.util.TimeZone;
  * </p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 29-11-2014
  */
 @WebService()

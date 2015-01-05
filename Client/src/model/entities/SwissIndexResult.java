@@ -3,7 +3,15 @@ package model.entities;
 import java.util.List;
 
 /**
- * Created by ph on 05.01.15.
+ * Berner Fachhochschule</br>
+ * Medizininformatik BSc</br>
+ * BTX8202 (Living Case 2), HS2014</br>
+ *
+ *<p>This class is used to handle the results of a request to the SwissINDEX Webservice.
+ * A List of TradeItems, a result (boolean) and a message (String) can be specified.</p>
+ *
+ * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
+ * @version 05-01-2015
  */
 public class SwissIndexResult {
     private List<TradeItem> tradeItems;

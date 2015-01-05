@@ -21,6 +21,7 @@ import java.util.List;
  *</p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 21-10-2014
  */
 public class ErpClient implements IDataSource{

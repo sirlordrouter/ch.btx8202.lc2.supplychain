@@ -11,7 +11,15 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * Created by Johannes on 17.11.14.
+ * Berner Fachhochschule</br>
+ * Medizininformatik BSc</br>
+ * BTX8202 (Living Case 2), HS2014</br>
+ *
+ *<p>Connection Class for the SwissINDEX Webservice.</p>
+ *
+ * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 05-01-2015
  */
 public class SwissIndexClient {
 
@@ -49,7 +57,7 @@ public class SwissIndexClient {
                 }
             }else{
                 response.setResult(false);
-                response.setMessage("Zu dieser GTIN konnten keine Informationen auf SwissINDEX gefunden werden. Könnte es sich um ein ausländisches Produkt handeln?");
+                response.setMessage("Zur GTIN: " + gtin +" konnten keine Informationen auf SwissINDEX gefunden werden. \n");
                 return response;
             }
 
