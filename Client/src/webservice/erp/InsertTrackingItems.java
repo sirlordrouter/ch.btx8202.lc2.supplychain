@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse f\u00fcr insertTrackingItems complex type.
+ * <p>Java class for insertTrackingItems complex type.
  * 
- * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="insertTrackingItems">
@@ -71,7 +71,7 @@ public class InsertTrackingItems {
     }
 
     /**
-     * Ruft den Wert der arg1-Eigenschaft ab.
+     * Gets the value of the arg1 property.
      * 
      * @return
      *     possible object is
@@ -83,7 +83,7 @@ public class InsertTrackingItems {
     }
 
     /**
-     * Legt den Wert der arg1-Eigenschaft fest.
+     * Sets the value of the arg1 property.
      * 
      * @param value
      *     allowed object is
@@ -95,7 +95,7 @@ public class InsertTrackingItems {
     }
 
     /**
-     * Ruft den Wert der arg2-Eigenschaft ab.
+     * Gets the value of the arg2 property.
      * 
      * @return
      *     possible object is
@@ -107,7 +107,7 @@ public class InsertTrackingItems {
     }
 
     /**
-     * Legt den Wert der arg2-Eigenschaft fest.
+     * Sets the value of the arg2 property.
      * 
      * @param value
      *     allowed object is

@@ -8,6 +8,7 @@ import webservice.swissindex.*;
 
 import javax.xml.rpc.ServiceException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ public class SwissIndexClient {
 
             if(result.getNBR_RECORD()==1){
                 if (de.getITEM() != null) {
+                    tradeItemList = new ArrayList<TradeItem>();
                     for (PHARMAITEM pharmaitem : de.getITEM()) {
                         if (pharmaitem != null) {
                             PHARMAITEMCOMP comp = pharmaitem.getCOMP();

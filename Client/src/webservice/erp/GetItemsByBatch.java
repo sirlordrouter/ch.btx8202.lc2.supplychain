@@ -9,9 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java-Klasse f\u00fcr getItemsByBatch complex type.
+ * <p>Java class for getItemsByBatch complex type.
  * 
- * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="getItemsByBatch">
@@ -43,7 +43,7 @@ public class GetItemsByBatch {
     protected XMLGregorianCalendar arg2;
 
     /**
-     * Ruft den Wert der arg0-Eigenschaft ab.
+     * Gets the value of the arg0 property.
      * 
      * @return
      *     possible object is
@@ -55,7 +55,7 @@ public class GetItemsByBatch {
     }
 
     /**
-     * Legt den Wert der arg0-Eigenschaft fest.
+     * Sets the value of the arg0 property.
      * 
      * @param value
      *     allowed object is
@@ -67,7 +67,7 @@ public class GetItemsByBatch {
     }
 
     /**
-     * Ruft den Wert der arg1-Eigenschaft ab.
+     * Gets the value of the arg1 property.
      * 
      * @return
      *     possible object is
@@ -79,7 +79,7 @@ public class GetItemsByBatch {
     }
 
     /**
-     * Legt den Wert der arg1-Eigenschaft fest.
+     * Sets the value of the arg1 property.
      * 
      * @param value
      *     allowed object is
@@ -91,7 +91,7 @@ public class GetItemsByBatch {
     }
 
     /**
-     * Ruft den Wert der arg2-Eigenschaft ab.
+     * Gets the value of the arg2 property.
      * 
      * @return
      *     possible object is
@@ -103,7 +103,7 @@ public class GetItemsByBatch {
     }
 
     /**
-     * Legt den Wert der arg2-Eigenschaft fest.
+     * Sets the value of the arg2 property.
      * 
      * @param value
      *     allowed object is

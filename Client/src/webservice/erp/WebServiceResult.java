@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse f\u00fcr webServiceResult complex type.
+ * <p>Java class for webServiceResult complex type.
  * 
- * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="webServiceResult">
@@ -70,7 +70,7 @@ public class WebServiceResult {
     }
 
     /**
-     * Ruft den Wert der result-Eigenschaft ab.
+     * Gets the value of the result property.
      * 
      */
     public boolean isResult() {
@@ -78,7 +78,7 @@ public class WebServiceResult {
     }
 
     /**
-     * Legt den Wert der result-Eigenschaft fest.
+     * Sets the value of the result property.
      * 
      */
     public void setResult(boolean value) {

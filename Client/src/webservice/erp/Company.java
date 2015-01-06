@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse f\u00fcr company complex type.
+ * <p>Java class for company complex type.
  * 
- * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="company">
@@ -42,7 +42,7 @@ public class Company {
     protected String name;
 
     /**
-     * Ruft den Wert der abteilung-Eigenschaft ab.
+     * Gets the value of the abteilung property.
      * 
      * @return
      *     possible object is
@@ -54,7 +54,7 @@ public class Company {
     }
 
     /**
-     * Legt den Wert der abteilung-Eigenschaft fest.
+     * Sets the value of the abteilung property.
      * 
      * @param value
      *     allowed object is
@@ -66,7 +66,7 @@ public class Company {
     }
 
     /**
-     * Ruft den Wert der gln-Eigenschaft ab.
+     * Gets the value of the gln property.
      * 
      * @return
      *     possible object is
@@ -78,7 +78,7 @@ public class Company {
     }
 
     /**
-     * Legt den Wert der gln-Eigenschaft fest.
+     * Sets the value of the gln property.
      * 
      * @param value
      *     allowed object is
@@ -90,7 +90,7 @@ public class Company {
     }
 
     /**
-     * Ruft den Wert der name-Eigenschaft ab.
+     * Gets the value of the name property.
      * 
      * @return
      *     possible object is
@@ -102,7 +102,7 @@ public class Company {
     }
 
     /**
-     * Legt den Wert der name-Eigenschaft fest.
+     * Sets the value of the name property.
      * 
      * @param value
      *     allowed object is
