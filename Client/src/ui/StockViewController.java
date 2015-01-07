@@ -34,6 +34,7 @@ import services.PropertiesReader;
 import services.SwissIndexClient;
 import sun.tools.java.Type;
 import webservice.erp.Item;
+import webservice.erp.WebServiceResult;
 
 import java.io.IOException;
 import java.net.URL;
@@ -128,17 +129,39 @@ public class StockViewController implements ScannerListener, Initializable {
     }
 
     public void checkOut(ActionEvent actionEvent) {
-        dataSource.checkoutItems(data);
+        WebServiceResult result = dataSource.checkoutItems(data);
         //clear list
         data.clear();
         //Ev. Log Information
+        if(!result.getItems().isEmpty()){
+            String userInformation = "Folgende Produkte konnten nicht ausgecheckt werden, da " +
+                    "sie bis anhin nicht eingecheckt wurden:";
+            for(Item item:result.getItems()){
+                userInformation = userInformation + "\n";
+                userInformation = userInformation + "GTIN: " + item.getGTIN();
+                userInformation = userInformation + " - Serial: " + item.getSerial();
+            }
+            UserInformationPopup popup = new UserInformationPopup(userInformation, "Achtung.");
+            popup.show();
+        }
+
     }
 
     public void checkIn(ActionEvent actionEvent) {
-        dataSource.checkinItems(data);
+        WebServiceResult result = dataSource.checkinItems(data);
         //clear list
         data.clear();
         //Ev. Log Information
+        if(!result.getItems().isEmpty()){
+            String userInformation = "Folgende Produkte konnten nicht eingecheckt werden, da keine Bestellung für sie vorliegt:";
+            for(Item item:result.getItems()){
+                userInformation = userInformation + "\n";
+                userInformation = userInformation + "GTIN: " + item.getGTIN();
+                userInformation = userInformation + " - Serial: " + item.getSerial();
+            }
+            UserInformationPopup popup = new UserInformationPopup(userInformation, "Achtung.");
+            popup.show();
+        }
     }
 
     public void setApp(Main main) {
@@ -324,6 +347,8 @@ public class StockViewController implements ScannerListener, Initializable {
             txtareaMediInfo.setText("Kein Item gefunden.");
         }
     }
+
+
 
     public void resetTrackedItems(ActionEvent actionEvent) {
         dataSource.resetTrackedItems();

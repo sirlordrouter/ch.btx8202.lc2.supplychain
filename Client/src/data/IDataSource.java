@@ -12,8 +12,8 @@ import java.util.List;
  */
 public interface IDataSource {
 
-    boolean checkinItems(List<Item> items);
-    boolean checkoutItems(List<Item> items);
+    WebServiceResult checkinItems(List<Item> items);
+    WebServiceResult checkoutItems(List<Item> items);
     List<Item> getItemsBySSCC(String sscc);
     Item getItemByIdentifier(String gtin, String serialNumber);
     List<Item> getItemsByBatch(String gtin, String batchLot, Date expiryDate);

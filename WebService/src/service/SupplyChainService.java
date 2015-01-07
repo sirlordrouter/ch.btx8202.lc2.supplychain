@@ -94,14 +94,12 @@ public class SupplyChainService {
 
     /**
      * checkinItems
-     *
-     * @param items
+     *  @param items
      *  a List of items to checkin by the webservice
      * @param gln
-     *  GLN of Station
      */
     @WebMethod
-    public void checkinItems(List<Item> items, String gln) {
+    public WebServiceResult checkinItems(List<Item> items, String gln) {
         // check for checked-in items
         WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
         List<Item> removedItems = new ArrayList<Item>();
@@ -126,18 +124,18 @@ public class SupplyChainService {
 
         //State 2: Arrived
         insertTrackingItems(items, gln, 2);
+        return new WebServiceResult(removedItems,true);
     }
 
     /**
      * checkoutItems
-     *
-     * @param items
+     *  @param items
      *  a List of items to checkout by the webservice
      * @param gln
-     *  GLN of Station
      */
     @WebMethod
-    public void checkoutItems(List<Item> items, String gln) {
+    public WebServiceResult checkoutItems(List<Item> items, String gln) {
+        List<Item> notCheckedInItems= new ArrayList<Item>();
         // check for checked-in items
         WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
         // check if the request was successful
@@ -147,20 +145,23 @@ public class SupplyChainService {
                 //Check if there are all neded properties filled in in both, else handle error
 
                 for(Item checkedInItem:checkedInItemsList){
-                    // check for every item if it is NOT already in the checked in list
+                    // check for every item if it is  already in the checked in list
                     if(item.getGTIN().equals(checkedInItem.getGTIN()) &&
                             item.getSerial().equals(checkedInItem.getSerial()) &&
                             item.getLot().equals(checkedInItem.getLot())){
-                        // item not yet checked in, remove it from check out list
+                        // item checked in, ready to be checked out
 
                         List<Item> anItem = new ArrayList<Item>();
                         anItem.add(item);
                         insertTrackingItems(anItem, gln, 3);
+                    }else{
+                        notCheckedInItems.add(item);
                     }
                 }
             }
 
         }
+        return new WebServiceResult(notCheckedInItems, true);
 
 
     }

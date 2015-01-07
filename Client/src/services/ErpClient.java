@@ -39,27 +39,27 @@ public class ErpClient implements IDataSource{
     }
 
     @Override
-    public boolean checkinItems(List<Item> items) {
+    public WebServiceResult checkinItems(List<Item> items) {
         try{
-            supplyChainServicePort.checkinItems(items, stationGLN);
-            return true;
+            return supplyChainServicePort.checkinItems(items, stationGLN);
         } catch (SOAPFaultException e) {
-            return false;
+            e.printStackTrace();
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override
-    public boolean checkoutItems(List<Item> items) {
+    public WebServiceResult checkoutItems(List<Item> items) {
         try{
-            supplyChainServicePort.checkoutItems(items, stationGLN);
-            return true;
+            return supplyChainServicePort.checkoutItems(items, stationGLN);
         } catch (SOAPFaultException e) {
-            return false;
+            e.printStackTrace();
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override
