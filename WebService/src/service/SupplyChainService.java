@@ -139,8 +139,12 @@ public class SupplyChainService {
         // check for checked-in items
         WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
         // check if the request was successful
+
         if(checkedInItemsResult.isResult()){
             List<Item> checkedInItemsList = checkedInItemsResult.getItems();
+
+            List<Item> foundCheckedIn = new ArrayList<Item>();
+
             for(Item item:items){
                 //Check if there are all neded properties filled in in both, else handle error
 
@@ -150,18 +154,17 @@ public class SupplyChainService {
                             item.getSerial().equals(checkedInItem.getSerial()) &&
                             item.getLot().equals(checkedInItem.getLot())){
                         // item checked in, ready to be checked out
+                        foundCheckedIn.add(item);
 
-                        List<Item> anItem = new ArrayList<Item>();
-                        anItem.add(item);
-                        insertTrackingItems(anItem, gln, 3);
-                    }else{
-                        notCheckedInItems.add(item);
                     }
                 }
             }
+            insertTrackingItems(foundCheckedIn, gln, 3);
+            items.removeAll(foundCheckedIn);
+
 
         }
-        return new WebServiceResult(notCheckedInItems, true);
+        return new WebServiceResult(items, true);
 
 
     }
@@ -552,7 +555,49 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
-            String query = "truncate table TrackedItems";
+            String query = "truncate table TrackedItems" +
+                    " INSERT INTO [dbo].[TrackedItems]\n" +
+                    "           ([GTIN]\n" +
+                    "           ,[SerialNr]\n" +
+                    "           ,[ExpiryDate]\n" +
+                    "           ,[GLNscan]\n" +
+                    "           ,[ScanDate]\n" +
+                    "           ,[StateNr]\n" +
+                    "           ,[ScannedSSCC]\n" +
+                    "           ,[Lot])\n" +
+                    "     VALUES\n" +
+                    "           ('7680475040157'\n" +
+                    "           ,'35722388370ABCDEF'\n" +
+                    "           ,convert(datetime,'31-12-15 00:00:00 AM',5)\n" +
+                    "           ,'7601001010703',\n" +
+                    "           convert(datetime,'1-1-15 05:40:00 PM',5)\n" +
+                    "           ,3\n" +
+                    "           ,NULL\n" +
+                    "           ,'ABCDEF123456'), --2. Item\n" +
+                    "('7680475040157'\n" +
+                    ",'35722388370BBCDEF'\n" +
+                    ",convert(datetime,'31-12-15 00:00:00 AM',5)\n" +
+                    ",'7601001010703'\n" +
+                    ",convert(datetime,'1-1-15 05:40:00 PM',5)\n" +
+                    ",3\n" +
+                    ",NULL\n" +
+                    ",'ABCDEF123456'),   --3. Item\n" +
+                    "('7680475040157'\n" +
+                    ",'35722388370CBCDEF'\n" +
+                    ",convert(datetime,'31-12-15 00:00:00 AM',5)\n" +
+                    ",'7601001010703'\n" +
+                    ",convert(datetime,'1-1-15 05:40:00 PM',5)\n" +
+                    ",3\n" +
+                    ",NULL\n" +
+                    ",'ABCDEF123456'),  --4. Item\n" +
+                    "('7680475040157'\n" +
+                    ",'35722388370DBCDEF'\n" +
+                    ",convert(datetime,'31-12-15 00:00:00 AM',5)\n" +
+                    ",'7601001010703'\n" +
+                    ",convert(datetime,'1-1-15 05:40:00 PM',5)\n" +
+                    ",3\n" +
+                    ",NULL\n" +
+                    ",'ABCDEF123456')\n";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.executeUpdate();
         } catch (SQLException e) {
