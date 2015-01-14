@@ -63,12 +63,13 @@ public class SupplyChainService {
                     "where not exists\n" +
                     "(\n" +
                     "Select i.GTIN From TrackedItems o\n" +
-                    "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and StateNr = 3\n" +
+                    "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and GLNscan = ? and StateNr = 3\n" +
                     ") and GLNscan = ? AND StateNr = ?";
 
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, gln);
-            ps.setInt(2, 2);
+            ps.setString(2, gln);
+            ps.setInt(3, 2);
             rs =  ps.executeQuery();
 
             checkedInItems = addTrackedItemsFromResult(rs);
