@@ -12,9 +12,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * BTX8202 (Living Case 2), HS2014</br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
  *<p>
  *     Connection Class to the erp webservice.
@@ -37,7 +37,11 @@ public class ErpClient implements IDataSource{
         supplyChainService = new SupplyChainServiceService();
         supplyChainServicePort = supplyChainService.getSupplyChainServicePort();
     }
-
+    /*
+     * Makes an entry in the TrackedItems table (state arrived) for every item specified in the list.
+     * @param items A List of Items that has to be checked in.
+     * @return WebServiceResult
+     */
     @Override
     public WebServiceResult checkinItems(List<Item> items) {
         try{
@@ -49,7 +53,11 @@ public class ErpClient implements IDataSource{
         }
         return null;
     }
-
+    /*
+     * Makes an entry in the TrackedItems table (state processed) for every item specified in the list.
+     * @param items A List of Items that has to be checked in.
+     * @return WebServiceResult
+     */
     @Override
     public WebServiceResult checkoutItems(List<Item> items) {
         try{
@@ -61,11 +69,13 @@ public class ErpClient implements IDataSource{
         }
         return null;
     }
-
+    /*
+     * Returns a list of items referring to the specified sscc.
+     * @param sscc A Serial Shipping Container Code.
+     * @return List<Item>
+     */
     @Override
     public List<Item> getItemsBySSCC(String sscc) {
-
-
         try{
             return supplyChainServicePort.getItemsBySSCC(sscc);
         } catch (SOAPFaultException e) {
@@ -77,10 +87,14 @@ public class ErpClient implements IDataSource{
         }
 
     }
-
+    /*
+     * Returns the item with the corresponding gtin and serial number.
+     * @param gtin A global trade item number (GTIN).
+     * @param serialNumber A Serial Number.
+     * @return Item
+     */
     @Override
     public Item getItemByIdentifier(String gtin, String serialNumber) {
-
         try{
             return supplyChainServicePort.getItemByIdentifier(gtin, serialNumber);
         } catch (SOAPFaultException e) {
@@ -92,7 +106,13 @@ public class ErpClient implements IDataSource{
         }
 
     }
-
+    /*
+    * Returns a List of items with the corresponding gtin, batch/lot and expiry date.
+    * @param gtin A global trade item number (GTIN).
+    * @param batchLot A BatchLot.
+    * @param expiryDate An Expiry Date.
+    * @return List<Item>
+    */
     @Override
     public List<Item> getItemsByBatch(String gtin, String batchLot, Date expiryDate) {
         GregorianCalendar c = new GregorianCalendar();
@@ -115,7 +135,11 @@ public class ErpClient implements IDataSource{
         }
 
     }
-
+    /*
+    * Returns a WebServiceResult with a list of all checked in items of the corresponding gln and a boolean.
+    * @param gln A global location number (GLN).
+    * @return WebServiceResult
+    */
     @Override
     public WebServiceResult getCheckedInItems(String gln) {
 
@@ -130,15 +154,15 @@ public class ErpClient implements IDataSource{
         }
 
     }
-
+    /*
+    * Resets all entries in the TrackedItems table.
+    */
     @Override
     public void resetTrackedItems() {
-
         try{
             supplyChainServicePort.resetTrackedItems();
         }catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

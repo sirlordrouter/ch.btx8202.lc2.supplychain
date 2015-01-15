@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * BTX8202 (Living Case 2), HS2014</br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
  *<p>Connection Class for the SwissINDEX Webservice.</p>
  *

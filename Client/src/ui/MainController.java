@@ -16,8 +16,14 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * @author
- * https://gist.github.com/jewelsea/6460130
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
+ *
+ *<p>Controller class for the main view.</p>
+ * @credits https://gist.github.com/jewelsea/6460130
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 21-10-2014
  */
 public class MainController implements Initializable {
     public Label dateTimeField;

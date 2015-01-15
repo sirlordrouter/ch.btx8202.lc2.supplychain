@@ -26,9 +26,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * BTX8202 (Living Case 2), HS2014</br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
  *<p>This class handles the data provided of the TrackedItems Table in the Logistic Database.
  * The goal is to show all checked in Items of a specific global location number.</p>

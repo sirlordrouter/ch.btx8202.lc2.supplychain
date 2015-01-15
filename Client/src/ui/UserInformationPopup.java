@@ -14,9 +14,9 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * BTX8202 (Living Case 2), HS2014</br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
  *<p>This class provides the possibility to generate popup windows with a message and a title.</p>
  *

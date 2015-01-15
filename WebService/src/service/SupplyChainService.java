@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.TimeZone;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * Modul </br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
  *<p>
  * Provides a Service similar to an ERP. Checkin/out of items, searching items and orders
@@ -47,7 +47,11 @@ public class SupplyChainService {
     System.out.println(result);
     return result;
   }
-
+    /**
+     *  Returns a WebServiceResult object with a boolean and a list of all checked in items of a specific global location number (GLN).
+     *  @param gln A Global Location Number (String)
+     *  @return a WebServiceResult
+     */
     @WebMethod
     public WebServiceResult getCheckedInItems(String gln) {
 
@@ -205,8 +209,7 @@ public class SupplyChainService {
     }
 
     /**
-     * Gibt eine Liste von Items zurück,
-     * welche sich in dem LogisticPackge oder den darin enthaltenen LogisticPackages befinden.
+     * Returns a list of items referring to a SSCC.
      *
      * @param sscc
      *  an SSCC for Search Items in

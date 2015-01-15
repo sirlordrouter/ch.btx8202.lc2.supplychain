@@ -5,12 +5,11 @@ import entities.Item;
 import java.util.List;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * Modul Living Case 2</br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
- * <p>Container mit einer Liste von items als Antwort fuer einlesen einer SSCC beim Client.
- * Info ob Fehler, nicht gefunden oder erfolgreich (boolean)</p>
+ * <p>Container with a List of Items and a Boolean for the state. (true = is result, false = no result)</p>
  *
  * @author Patrizia Zehnder, patriziasusanna.zehnder@students.bfh.ch
  * @version 09-12-2014
@@ -24,8 +23,8 @@ public class WebServiceResult {
 
     /**
      * Constructor
-     * @param items
-     * @param result
+     * @param items A List of items
+     * @param result A Boolean to mark the state
      */
     public WebServiceResult(List<Item> items, boolean result){
         this.items = items;

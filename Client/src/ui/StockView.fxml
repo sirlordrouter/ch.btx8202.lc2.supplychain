@@ -8,20 +8,20 @@
 <?import javafx.scene.control.*?>
 
 <!--
-* Berner Fachhochschule</br>
-* Medizininformatik BSc</br>
-* Modul Living Case 2</br>
+* Bern University of Applied Sciences</br>
+* BSc Medical Informatics</br>
+* Module Living Case 2</br>
 *
-*<p>GUI des Clients in der Station sowie der Spitalapotheke</p>
+*<p>Stock View for the Java Client.</p>
 *
 * @author Patrizia Zehnder, patriziasusanna.zehnder@students.bfh.ch
 * @version 04-11-2014
 -->
 
-<!-- Start Hauptfenster -->
+<!-- Start Main Window -->
 <AnchorPane id="AnchorPane" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StockViewController">
    <children>
-       <!-- Start Statusleiste oben -->
+       <!-- Start Status Bar -->
        <AnchorPane layoutY="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="681.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="2.0">
@@ -31,14 +31,14 @@
             </ImageView>
          </children>
       </AnchorPane>
-       <!-- Ende  Statusleiste oben -->
+       <!-- End  Status Bar -->
        <SplitPane dividerPositions="0.6850152905198776" layoutY="40.0" prefHeight="310.0" prefWidth="656.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="254.0">
                <children>
                   <SplitPane dividerPositions="0.4419642857142857" prefHeight="306.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                        <!-- Start Pane mit Medikamentenfoto -->
+                        <!-- Start medicine info -->
                         <AnchorPane fx:id="mediInfoPane" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="201.0" style="-fx-background-color: aliceblue;">
                            <children>
                               <ImageView fx:id="mediPicture" fitHeight="120.0" fitWidth="173.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -48,16 +48,13 @@
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <!-- Ende Pane mit Medikamentenfoto -->
-                        <!-- Start Pane mit Medikamenteninformationen -->
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="259.0">
                            <children>
                               <TextArea fx:id="txtareaMediInfo" editable="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
-                        <!-- Ende Pane mit Medikamenteninformationen -->
+                        <!-- End medicine info -->
                     </items>
-                      <!-- Start Splitpane mit Listenansicht und manueller Erfassung -->
                   </SplitPane>
                </children>
             </AnchorPane>
@@ -67,7 +64,6 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="162.0" prefWidth="199.0">
                            <children>
-                               <!-- Start Liste eingelesener Produkte -->
                                <TableView id="listData" fx:id="medList" layoutX="-1.0" prefHeight="246.0" prefWidth="199.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
                                   <TableColumn id="listScannedItems" fx:id="tblColName" prefWidth="250.0" text="Name" />
@@ -76,14 +72,12 @@
                                     <TableColumn fx:id="tablColHrst" prefWidth="200.0" text="Serial" />
                                 </columns>
                               </TableView>
-                               <!-- Ende Liste eingelesener Produkte -->
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="26.0" prefWidth="199.0" style="-fx-background-color: aliceblue;">
                            <children>
                               <Button id="btnCheckOut" fx:id="checkOutButton" layoutX="7.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkOut" text="check out" AnchorPane.topAnchor="11.0" />
                               <Button id="btnCheckIn" fx:id="CheckInButton" layoutX="93.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkIn" text="check in" AnchorPane.topAnchor="11.0" />
-                               <!-- Start Pane 'manuelle Erfassung' -->
                                <AnchorPane layoutY="59.0" prefHeight="251.0" prefWidth="294.0">
                                  <children>
                                     <Label layoutX="24.0" text="Manuelle Erfassung" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="0.0" />
@@ -95,7 +89,6 @@
                                     <TextField fx:id="txtInput" style="-fx-text-inner-color: white;" layoutX="14.0" layoutY="30.0" prefHeight="26.0" prefWidth="267.0" promptText="Input" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                  </children>
                               </AnchorPane>
-                               <!-- Ende Pane 'manuelle Erfassung' -->
                                <Button layoutX="248.0" layoutY="11.0" mnemonicParsing="false" onAction="#clearList" text="Clear" AnchorPane.topAnchor="11.0" />
                               <Button layoutX="170.0" layoutY="11.0" mnemonicParsing="false" onAction="#deleteItem" text="Löschen" AnchorPane.topAnchor="11.0" />
                            </children>
@@ -106,12 +99,10 @@
             </AnchorPane>
         </items>
       </SplitPane>
-       <!-- Ende Splitpane mit Listenansicht und manueller Erfassung -->
        <Pane layoutY="346.0" prefHeight="126.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
           <Button layoutX="0.0" layoutY="0.0" mnemonicParsing="false" text="Checked In Items" onAction="#loadCheckInView" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
            <Button layoutX="0.0" layoutY="31.0" mnemonicParsing="false" text="Reset" onAction="#resetTrackedItems" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
        </Pane>
    </children>
 </AnchorPane>
-<!-- Ende Hauptfenster -->
 

@@ -7,9 +7,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * Modul 8081, HS2013</br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
  *<p>Class describes the unathenticated State of the Application</p>
  *
