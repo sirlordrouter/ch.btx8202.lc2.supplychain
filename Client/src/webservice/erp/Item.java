@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for item complex type.
+ * <p>Java-Klasse f\u00fcr item complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
  * <pre>
  * &lt;complexType name="item">
@@ -67,7 +67,7 @@ public class Item {
     protected String zusatz;
 
     /**
-     * Gets the value of the atc property.
+     * Ruft den Wert der atc-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -79,7 +79,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the atc property.
+     * Legt den Wert der atc-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -91,7 +91,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the beschreibung property.
+     * Ruft den Wert der beschreibung-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -103,7 +103,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the beschreibung property.
+     * Legt den Wert der beschreibung-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -115,7 +115,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the checkInDate property.
+     * Ruft den Wert der checkInDate-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -127,7 +127,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the checkInDate property.
+     * Legt den Wert der checkInDate-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -139,7 +139,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the expiryDate property.
+     * Ruft den Wert der expiryDate-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -151,7 +151,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the expiryDate property.
+     * Legt den Wert der expiryDate-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -163,7 +163,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the gtin property.
+     * Ruft den Wert der gtin-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -175,7 +175,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the gtin property.
+     * Legt den Wert der gtin-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -187,7 +187,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the lot property.
+     * Ruft den Wert der lot-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -199,7 +199,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the lot property.
+     * Legt den Wert der lot-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -211,7 +211,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the menge property.
+     * Ruft den Wert der menge-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -223,7 +223,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the menge property.
+     * Legt den Wert der menge-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -235,7 +235,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the name property.
+     * Ruft den Wert der name-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -247,7 +247,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the name property.
+     * Legt den Wert der name-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -259,7 +259,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the producer property.
+     * Ruft den Wert der producer-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -271,7 +271,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the producer property.
+     * Legt den Wert der producer-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -283,7 +283,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the serial property.
+     * Ruft den Wert der serial-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -295,7 +295,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the serial property.
+     * Legt den Wert der serial-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
@@ -307,7 +307,7 @@ public class Item {
     }
 
     /**
-     * Gets the value of the zusatz property.
+     * Ruft den Wert der zusatz-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -319,7 +319,7 @@ public class Item {
     }
 
     /**
-     * Sets the value of the zusatz property.
+     * Legt den Wert der zusatz-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is

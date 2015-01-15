@@ -13,7 +13,7 @@ public class SupplyChainServiceTest extends TestCase {
     }
 
     public void testGetCheckedInItems() throws Exception {
-        String gln = "1234567890123";
+        String gln = "1234567890124";
         SupplyChainService service = new SupplyChainService();
         WebServiceResult result = service.getCheckedInItems(gln);
         Assert.assertEquals("Count of TrackedItems in db for gln 1234567890123 is 4.", 4, result.getItems().size());
@@ -32,7 +32,7 @@ public class SupplyChainServiceTest extends TestCase {
     }
 
     public void testGetItemsBySSCC() throws Exception {
-        String sscc = "106141410000098764";
+        String sscc = "106141410000098765";
         List<Item> itemList;
         SupplyChainService service = new SupplyChainService();
         itemList = service.getItemsBySSCC(sscc);
