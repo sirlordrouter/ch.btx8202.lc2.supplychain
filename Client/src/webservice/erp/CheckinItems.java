@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for checkinItems complex type.
+ * <p>Java-Klasse f\u00fcr checkinItems complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
  * <pre>
  * &lt;complexType name="checkinItems">
@@ -68,7 +68,7 @@ public class CheckinItems {
     }
 
     /**
-     * Gets the value of the arg1 property.
+     * Ruft den Wert der arg1-Eigenschaft ab.
      * 
      * @return
      *     possible object is
@@ -80,7 +80,7 @@ public class CheckinItems {
     }
 
     /**
-     * Sets the value of the arg1 property.
+     * Legt den Wert der arg1-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
