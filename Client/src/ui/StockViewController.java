@@ -48,7 +48,7 @@ import java.util.Properties;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class StockViewController extends ChangeableView implements ScannerListener, IAuthenticationStateChanger {
+public class StockViewController extends VBox implements ScannerListener, IAuthenticationStateChanger {
 
     public Label dateTimeField;
     public VBox mainFrame;
@@ -193,7 +193,7 @@ public class StockViewController extends ChangeableView implements ScannerListen
 
     public void loadCheckInView(ActionEvent event) {
         Scanner.removeScannerListener(this);
-        Navigator.getInstance().loadVista(Navigator.CHECKED_IN_ITEMS_VIEW);
+        Navigator.getInstance().loadVista(Navigator.CHECKED_IN_ITEMS_VIEW, application);
     }
 
     public void addItem(ActionEvent actionEvent) {
@@ -345,6 +345,6 @@ public class StockViewController extends ChangeableView implements ScannerListen
 
     @Override
     public void setApp(IAuthenticationStateContext context) {
-        this.application = context;
+        application = context;
     }
 }

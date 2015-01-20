@@ -2,6 +2,9 @@ package ui;
 
 
 import javafx.scene.Node;
+import javafx.scene.layout.VBox;
+import ui.state.IAuthenticationStateChanger;
+import ui.state.IAuthenticationStateContext;
 
 import java.util.HashMap;
 
@@ -11,7 +14,7 @@ import java.util.HashMap;
  * All methods on the navigator are static to facilitate
  * simple access from anywhere in the application.
  *
- * To use this navigator class, every view made accessible through the views-list must extend the class {@link ui.ChangeableView}.
+ * To use this navigator class, every view made accessible through the views-list must implement the interface {@link ui.state.IAuthenticationStateChanger}.
  *
  * @author
  *  https://gist.github.com/jewelsea/6460130
@@ -27,7 +30,7 @@ public class Navigator {
     public static final String CHECKED_IN_ITEMS_VIEW = "CheckedInItemsView.fxml";
     public static final String STOCK_VIEW = "StockView.fxml";
 
-    private HashMap<String, ChangeableView> views;
+    private HashMap<String, VBox> views;
 
     /** The main application layout controller. */
     private MainController mainController;
@@ -49,7 +52,7 @@ public class Navigator {
     }
 
     private Navigator() {
-        views = new HashMap<String, ChangeableView>();
+        views = new HashMap<String, VBox>();
         views.put(STOCK_VIEW, new StockViewController(STOCK_VIEW));
         views.put(CHECKED_IN_ITEMS_VIEW, new CheckedInItemsViewController(CHECKED_IN_ITEMS_VIEW));
     }
@@ -80,10 +83,19 @@ public class Navigator {
      *
      * @param fxml the fxml file to be loaded.
      */
-    public void loadVista(String fxml) {
+    public void loadVista(String fxml, IAuthenticationStateContext context) {
 
-       Node node = views.get(fxml);
-       mainController.setVista(node);
+        //Do type checking
+        VBox partialView = views.get(fxml);
+        if (partialView instanceof IAuthenticationStateChanger) {
+            IAuthenticationStateChanger view = (IAuthenticationStateChanger)partialView;
+            view.setApp(context);
+        }
+
+        Node node = partialView;
+        mainController.setVista(node);
+
 
     }
+
 }

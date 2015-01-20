@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import services.ErpClient;
@@ -39,7 +40,7 @@ import java.util.ResourceBundle;
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 10-12-2014
  */
-public class CheckedInItemsViewController extends ChangeableView implements Initializable, IAuthenticationStateChanger {
+public class CheckedInItemsViewController extends VBox implements Initializable, IAuthenticationStateChanger {
     public TableView itemList;
     public javafx.scene.control.TableColumn tableColName;
     public javafx.scene.control.TableColumn tableColMenge;
@@ -66,6 +67,19 @@ public class CheckedInItemsViewController extends ChangeableView implements Init
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        try {
+            PropertiesReader reader = new PropertiesReader();
+            prop = reader.getPropValues();
+            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+
+        } catch (ConnectException e ) {
+            e.printStackTrace();
+        } catch(WebServiceException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -76,7 +90,7 @@ public class CheckedInItemsViewController extends ChangeableView implements Init
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-            getCheckedInItems();
+
 
     }
 
@@ -103,7 +117,7 @@ public class CheckedInItemsViewController extends ChangeableView implements Init
      * @param event
      */
     public void backToStockView(ActionEvent event) {
-        Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
+        Navigator.getInstance().loadVista(Navigator.STOCK_VIEW, application);
     }
 
     /**
@@ -113,7 +127,7 @@ public class CheckedInItemsViewController extends ChangeableView implements Init
      */
     @FXML
     void nextPane(ActionEvent event) {
-         Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
+         Navigator.getInstance().loadVista(Navigator.STOCK_VIEW, application);
     }
 
     /**
@@ -183,19 +197,8 @@ public class CheckedInItemsViewController extends ChangeableView implements Init
 
     @Override
     public void setApp(IAuthenticationStateContext context) {
-        this.application = context;
+        application = context;
 
-        try {
-            PropertiesReader reader = new PropertiesReader();
-            prop = reader.getPropValues();
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
-
-        } catch (ConnectException e ) {
-            e.printStackTrace();
-        } catch(WebServiceException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        getCheckedInItems();
     }
 }
