@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import model.entities.User;
 import services.Authenticator;
 import ui.state.AuthenticationState;
-import ui.state.IAuthenticatedStateContext;
 import ui.state.UnauthenticatedState;
 
 import java.io.IOException;
@@ -28,7 +27,7 @@ import java.io.InputStream;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class Main extends Application implements IAuthenticatedStateContext {
+public class Main extends Application {
 
     private final double LOGIN_MINIMUM_WINDOW_WIDTH = 500.0;
     private final double LOGIN_MINIMUM_WINDOW_HEIGHT = 320.0;
@@ -111,7 +110,7 @@ public class Main extends Application implements IAuthenticatedStateContext {
     /*
      * at the end of a session the user can logout properly and receives an infomation about the successful logout
      */
-    void userLogout(){
+    public void userLogout(){
         stage.setMinWidth(LOGIN_MINIMUM_WINDOW_WIDTH);
         stage.setMinHeight(LOGIN_MINIMUM_WINDOW_HEIGHT);
         loggedUser = null;
@@ -132,13 +131,13 @@ public class Main extends Application implements IAuthenticatedStateContext {
            in.close();
         }
         Scene scene;
-        if(fxml.equals("main.fxml")) {
+        if(fxml.equals(Navigator.MAIN)) {
             scene = new Scene(page, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT);
 
             MainController mainController = loader.getController();
 
-            Navigator.setMainController(mainController);
-            Navigator.loadVista(Navigator.STOCK_VIEW, this);
+            Navigator.getInstance().setMainController(mainController);
+            Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
 
         } else {
             scene = new Scene(page, LOGIN_MINIMUM_WINDOW_WIDTH, LOGIN_MINIMUM_WINDOW_HEIGHT);
@@ -168,8 +167,8 @@ public class Main extends Application implements IAuthenticatedStateContext {
 
         MainController mainController = loader.getController();
 
-        Navigator.setMainController(mainController);
-        Navigator.loadVista(Navigator.STOCK_VIEW,this);
+        Navigator.getInstance().setMainController(mainController);
+        Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
 
         return mainPane;
     }

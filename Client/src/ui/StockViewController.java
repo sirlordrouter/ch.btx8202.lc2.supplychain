@@ -28,6 +28,8 @@ import model.entities.TradeItem;
 import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
+import ui.state.IAuthenticationStateChanger;
+import ui.state.IAuthenticationStateContext;
 import webservice.erp.Item;
 import webservice.erp.WebServiceResult;
 
@@ -46,7 +48,7 @@ import java.util.Properties;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class StockViewController extends ChangeableView implements ScannerListener {
+public class StockViewController extends ChangeableView implements ScannerListener, IAuthenticationStateChanger {
 
     public Label dateTimeField;
     public VBox mainFrame;
@@ -80,11 +82,9 @@ public class StockViewController extends ChangeableView implements ScannerListen
     public ObservableList<Item> data =  FXCollections.observableArrayList();
     IDataSource dataSource;
 
-    private Main application;
+    private IAuthenticationStateContext application;
 
-    public StockViewController(Main main, String fxml) {
-
-        this.application = main;
+    public StockViewController(String fxml) {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         fxmlLoader.setRoot(this);
@@ -101,14 +101,7 @@ public class StockViewController extends ChangeableView implements ScannerListen
         try {
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
-//            locationField.setText(prop.getProperty("stationBezeichnung"));
             dataSource = new ErpClient(prop.getProperty("stationGLN"));
-//
-//
-//        } catch (ConnectException e ) {
-//            locationField.setText("No Connection to ERP WebService");
-//        } catch(WebServiceException e) {
-//            locationField.setText("No Connection to ERP WebService");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -348,5 +341,10 @@ public class StockViewController extends ChangeableView implements ScannerListen
 
     public void resetTrackedItems(ActionEvent actionEvent) {
         dataSource.resetTrackedItems();
+    }
+
+    @Override
+    public void setApp(IAuthenticationStateContext context) {
+        this.application = context;
     }
 }

@@ -53,7 +53,6 @@ public class UnauthenticatedState extends AuthenticationState {
      */
     @Override
     public void handleLogin() {
-
         super.context.setState(new AuthenticatedState(context));
     }
 }

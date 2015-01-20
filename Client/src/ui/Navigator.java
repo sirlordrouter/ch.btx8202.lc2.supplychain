@@ -2,8 +2,6 @@ package ui;
 
 
 import javafx.scene.Node;
-import javafx.scene.layout.VBox;
-import ui.state.IAuthenticatedStateContext;
 
 import java.util.HashMap;
 
@@ -12,6 +10,8 @@ import java.util.HashMap;
  *
  * All methods on the navigator are static to facilitate
  * simple access from anywhere in the application.
+ *
+ * To use this navigator class, every view made accessible through the views-list must extend the class {@link ui.ChangeableView}.
  *
  * @author
  *  https://gist.github.com/jewelsea/6460130
@@ -31,23 +31,27 @@ public class Navigator {
 
     /** The main application layout controller. */
     private MainController mainController;
-    private IAuthenticatedStateContext context;
 
     /** Singleton **/
 
-    private static Navigator ourInstance = new Navigator();
+    private static Navigator ourInstance;
 
     /***
      * Interface to get the instance of this navigator.
-     * @return
+     * @return the instance of the navigator
      */
     public static Navigator getInstance() {
+
+        if (ourInstance == null) {
+            ourInstance = new Navigator();
+        }
         return ourInstance;
     }
+
     private Navigator() {
         views = new HashMap<String, ChangeableView>();
-        views.put(STOCK_VIEW, new StockViewController(Main.instance, STOCK_VIEW));
-        views.put(CHECKED_IN_ITEMS_VIEW, new CheckedInItemsViewController(Main.instance, CHECKED_IN_ITEMS_VIEW));
+        views.put(STOCK_VIEW, new StockViewController(STOCK_VIEW));
+        views.put(CHECKED_IN_ITEMS_VIEW, new CheckedInItemsViewController(CHECKED_IN_ITEMS_VIEW));
     }
 
     /**
@@ -78,10 +82,7 @@ public class Navigator {
      */
     public void loadVista(String fxml) {
 
-
-        StockViewController ui = new StockViewController(Main.instance, STOCK_VIEW);
-        Node node = (Node) ui;
-
+       Node node = views.get(fxml);
        mainController.setVista(node);
 
     }

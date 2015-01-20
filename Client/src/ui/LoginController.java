@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import ui.state.IStateChanger;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,7 +22,7 @@ import java.util.ResourceBundle;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 14-11-2014
  */
-public class LoginController extends AnchorPane implements Initializable, IStateChanger {
+public class LoginController extends AnchorPane implements Initializable {
 
     @FXML
     TextField userId;

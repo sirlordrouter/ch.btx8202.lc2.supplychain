@@ -16,6 +16,8 @@ import model.entities.TradeItem;
 import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
+import ui.state.IAuthenticationStateChanger;
+import ui.state.IAuthenticationStateContext;
 import webservice.erp.Item;
 import webservice.erp.WebServiceResult;
 
@@ -37,7 +39,7 @@ import java.util.ResourceBundle;
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 10-12-2014
  */
-public class CheckedInItemsViewController extends ChangeableView implements Initializable {
+public class CheckedInItemsViewController extends ChangeableView implements Initializable, IAuthenticationStateChanger {
     public TableView itemList;
     public javafx.scene.control.TableColumn tableColName;
     public javafx.scene.control.TableColumn tableColMenge;
@@ -51,11 +53,9 @@ public class CheckedInItemsViewController extends ChangeableView implements Init
     IDataSource dataSource;
     Properties prop;
 
-    private Main application;
+    private IAuthenticationStateContext application;
 
-    public CheckedInItemsViewController(Main mainApplication, String fxml) {
-
-        this.application = mainApplication;
+    public CheckedInItemsViewController(String fxml) {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         fxmlLoader.setRoot(this);
@@ -75,7 +75,6 @@ public class CheckedInItemsViewController extends ChangeableView implements Init
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setApp(Main.instance);
 
             getCheckedInItems();
 
@@ -115,23 +114,6 @@ public class CheckedInItemsViewController extends ChangeableView implements Init
     @FXML
     void nextPane(ActionEvent event) {
          Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
-    }
-
-    public void setApp(Main main) {
-        this.application = main;
-        try {
-            PropertiesReader reader = new PropertiesReader();
-            prop = reader.getPropValues();
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
-
-        } catch (ConnectException e ) {
-            e.printStackTrace();
-        } catch(WebServiceException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     /**
@@ -197,5 +179,23 @@ public class CheckedInItemsViewController extends ChangeableView implements Init
             }
         });
 
+    }
+
+    @Override
+    public void setApp(IAuthenticationStateContext context) {
+        this.application = context;
+
+        try {
+            PropertiesReader reader = new PropertiesReader();
+            prop = reader.getPropValues();
+            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+
+        } catch (ConnectException e ) {
+            e.printStackTrace();
+        } catch(WebServiceException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
