@@ -9,24 +9,24 @@
 <?import javafx.scene.paint.*?>
 
 <!--
-* Berner Fachhochschule</br>
-* Medizininformatik BSc</br>
-* Modul Living Case 2</br>
+* Bern University of Applied Sciences</br>
+* BSc Medical Informatics</br>
+* Module Living Case 2</br>
 *
-*<p>GUI des Loginfensters fuer den Stations- und den Spitalapothekenclient</p>
+*<p>Login View for the Java Client.</p>
 *
 * @author Patrizia Zehnder, patriziasusanna.zehnder@students.bfh.ch
 * @version 04-11-2014
 -->
 
-<!-- Start Loginfenster -->
+<!-- Start Login Window -->
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="316.0" prefWidth="500.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="ui.LoginController">
     <children>
         <AnchorPane id="anchorPane2" prefHeight="300.0" prefWidth="500.0" styleClass="top-segment" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <VBox id="VBox" alignment="CENTER" prefHeight="300.0" prefWidth="421.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <!-- Eingabe Logindaten -->
+                        <!-- Input Login Values -->
                         <AnchorPane id="AnchorPane" prefHeight="180.0" prefWidth="430.0">
                             <children>
                                 <Label id="label1" layoutX="14.0" layoutY="67.0" text="Username" />
@@ -35,7 +35,6 @@
                                 <PasswordField id="passwordField" fx:id="password" layoutY="157.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" />
                             </children>
                         </AnchorPane>
-                        <!-- Eingabe Logindaten -->
                     </children>
                 </VBox>
             </children>
@@ -48,4 +47,4 @@
         </HBox>
     </children>
 </AnchorPane>
-<!-- Ende Loginfenster -->
+<!-- End Login Window -->

@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * Modul 8081, HS2013</br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
  *<p>
  * A class used to now about the current logged in user.
@@ -14,6 +14,7 @@ import java.util.Map;
  *</p>
  *
   * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+  * @author Patrizia Zehnder, patriziasusanna.zehnder@students.bfh.ch
   * @version 06-11-2014
  */
 public class User {

@@ -13,11 +13,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * Modul </br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
- *<p>Class Description</p>
+ *<p>Controller Class for the login view. Provides the method of the login button, to validate the user input.</p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 14-11-2014

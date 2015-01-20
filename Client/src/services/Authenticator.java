@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * Modul </br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
- *<p>Class Description</p>
+ *<p>Authenticator Class that validates the username and password specified by the user.</p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 14-11-2014
@@ -20,7 +20,12 @@ public class Authenticator {
             USERS.put("test", "test");
         }
     }
-
+    /*
+     * Validates the login credentials of the user.
+     * @param user String Username
+     * @param password String Password
+     * @return boolean True if credentials are valid.
+     */
     public static boolean validate(String user, String password){
         String validUserPassword = USERS.get(user);
         return validUserPassword != null && validUserPassword.equals(password);

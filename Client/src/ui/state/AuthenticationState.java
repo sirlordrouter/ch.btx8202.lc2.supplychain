@@ -3,9 +3,9 @@ package ui.state;
 import ui.Main;
 
 /**
- * Berner Fachhochschule</br>
- * Medizininformatik BSc</br>
- * Modul 8081, HS2013</br>
+ * Bern University of Applied Sciences</br>
+ * BSc Medical Informatics</br>
+ * Module Living Case 2</br>
  *
  *<p>
  * Describes an abstract class for the different Authentication states the Application goes through.

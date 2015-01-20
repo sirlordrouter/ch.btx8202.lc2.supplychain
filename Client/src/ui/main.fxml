@@ -3,7 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?scenebuilder-stylesheet vista.css?>
-
+<!--
+* Bern University of Applied Sciences</br>
+* BSc Medical Informatics</br>
+* Module Living Case 2</br>
+*
+*<p>Main Window of the application with a stack pane to load views and a statusbar.</p>
+*
+* @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
+* @version 04-11-2014
+-->
 <AnchorPane prefHeight="200.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml" fx:controller="ui.MainController">
     <children>
         <Label id="lblUserName" fx:id="userField" layoutX="721.0" layoutY="2.0" prefHeight="31.0" prefWidth="159.0" text="User: zehnp1" textFill="#2b5bae" AnchorPane.rightAnchor="79.0" AnchorPane.topAnchor="2.0" />
