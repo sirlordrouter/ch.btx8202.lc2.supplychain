@@ -19,6 +19,6 @@
         <Button mnemonicParsing="false" text="Logout" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
         <Label id="lblCurrentDate" fx:id="dateTimeField" layoutX="286.0" layoutY="5.0" prefHeight="31.0" prefWidth="235.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" AnchorPane.leftAnchor="286.0" AnchorPane.topAnchor="5.0" />
         <Label id="lblLocationInfo" fx:id="locationField" prefHeight="31.0" prefWidth="135.0" text="StationA" textFill="#2b5bae" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="5.0" />
-        <StackPane fx:id="vistaHolder" VBox.vgrow="ALWAYS" />
+        <VBox fx:id="vistaHolder" VBox.vgrow="ALWAYS" />
     </children>
 </AnchorPane>

@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,7 +37,7 @@ import java.util.ResourceBundle;
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 10-12-2014
  */
-public class CheckedInItemsViewController implements Initializable{
+public class CheckedInItemsViewController extends ChangeableView implements Initializable {
     public TableView itemList;
     public javafx.scene.control.TableColumn tableColName;
     public javafx.scene.control.TableColumn tableColMenge;
@@ -51,6 +52,21 @@ public class CheckedInItemsViewController implements Initializable{
     Properties prop;
 
     private Main application;
+
+    public CheckedInItemsViewController(Main mainApplication, String fxml) {
+
+        this.application = mainApplication;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 
     @FXML
     public void Event(ActionEvent actionEvent) {
@@ -88,7 +104,7 @@ public class CheckedInItemsViewController implements Initializable{
      * @param event
      */
     public void backToStockView(ActionEvent event) {
-        Navigator.loadVista(Navigator.STOCK_VIEW, Main.instance);
+        Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
     }
 
     /**
@@ -98,7 +114,7 @@ public class CheckedInItemsViewController implements Initializable{
      */
     @FXML
     void nextPane(ActionEvent event) {
-        Navigator.loadVista(Navigator.STOCK_VIEW, Main.instance);
+         Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
     }
 
     public void setApp(Main main) {

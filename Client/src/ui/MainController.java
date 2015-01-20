@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import services.PropertiesReader;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class MainController implements Initializable {
     public Label locationField;
     /** Holder of a switchable vista. */
     @FXML
-    private StackPane vistaHolder;
+    private VBox vistaHolder;
 
      /**
      * Replaces the vista displayed in the vista holder with a new vista.
@@ -39,6 +39,7 @@ public class MainController implements Initializable {
      * @param node the vista node to be swapped in.
      */
     public void setVista(Node node) {
+
         vistaHolder.getChildren().setAll(node);
     }
 

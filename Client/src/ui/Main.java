@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import model.entities.User;
 import services.Authenticator;
 import ui.state.AuthenticationState;
+import ui.state.IAuthenticatedStateContext;
 import ui.state.UnauthenticatedState;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ import java.io.InputStream;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class Main extends Application {
+public class Main extends Application implements IAuthenticatedStateContext {
 
     private final double LOGIN_MINIMUM_WINDOW_WIDTH = 500.0;
     private final double LOGIN_MINIMUM_WINDOW_HEIGHT = 320.0;
@@ -42,6 +43,8 @@ public class Main extends Application {
     public static Main instance;
 
     public static void main(String[] args) {
+        System.out.println("javafx.runtime.version: " + System.getProperties().get("javafx.runtime.version"));
+
 
         System.setProperty("javafx.macosx.embedded", "true");
         java.awt.Toolkit.getDefaultToolkit();

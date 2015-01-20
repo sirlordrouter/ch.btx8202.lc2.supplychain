@@ -16,31 +16,24 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Group;
-import javafx.scene.Scene;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.layout.VBox;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import services.ErpClient;
 import services.PropertiesReader;
 import services.SwissIndexClient;
-import sun.tools.java.Type;
 import webservice.erp.Item;
 import webservice.erp.WebServiceResult;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 /**
  * Bern University of Applied Sciences</br>
@@ -53,10 +46,10 @@ import java.util.ResourceBundle;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class StockViewController implements ScannerListener, Initializable {
+public class StockViewController extends ChangeableView implements ScannerListener {
 
     public Label dateTimeField;
-    public AnchorPane mainFrame;
+    public VBox mainFrame;
     public Pane infoPane;
     public Label userField;
     public Label locationField;
@@ -89,15 +82,38 @@ public class StockViewController implements ScannerListener, Initializable {
 
     private Main application;
 
-    @FXML
-    public void Event(ActionEvent actionEvent) {
-        //labelItem.setText("Button clicked...please Scan item..");
-    }
+    public StockViewController(Main main, String fxml) {
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.application = main;
 
-        setApp(Main.instance);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+
+        Scanner.addScannerEventListener(this, "(/", 0);
+        Properties prop = null;
+        try {
+            PropertiesReader reader = new PropertiesReader();
+            prop = reader.getPropValues();
+//            locationField.setText(prop.getProperty("stationBezeichnung"));
+            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+//
+//
+//        } catch (ConnectException e ) {
+//            locationField.setText("No Connection to ERP WebService");
+//        } catch(WebServiceException e) {
+//            locationField.setText("No Connection to ERP WebService");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            locationField.setText("Configuration could not be read!");
+        }
 
         final ObservableList columns = medList.getColumns();
 
@@ -127,6 +143,12 @@ public class StockViewController implements ScannerListener, Initializable {
         });
         txtInput.requestFocus();
     }
+
+    @FXML
+    public void Event(ActionEvent actionEvent) {
+        //labelItem.setText("Button clicked...please Scan item..");
+    }
+
 
     public void checkOut(ActionEvent actionEvent) {
         WebServiceResult result = dataSource.checkoutItems(data);
@@ -164,32 +186,6 @@ public class StockViewController implements ScannerListener, Initializable {
         }
     }
 
-    public void setApp(Main main) {
-
-        this.application = main;
-        Scanner.addScannerEventListener(this, "(/",0);
-        Properties prop = null;
-        try {
-            PropertiesReader reader = new PropertiesReader();
-            prop = reader.getPropValues();
-//            locationField.setText(prop.getProperty("stationBezeichnung"));
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
-//
-//
-//        } catch (ConnectException e ) {
-//            locationField.setText("No Connection to ERP WebService");
-//        } catch(WebServiceException e) {
-//            locationField.setText("No Connection to ERP WebService");
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            locationField.setText("Configuration could not be read!");
-        }
-//
-//        User loggedUser = application.getLoggedUser();
-//        userField.setText(loggedUser.getId());
-    }
-
     public void processLogout(ActionEvent event) {
         Scanner.removeScannerListener(this);
 
@@ -204,7 +200,7 @@ public class StockViewController implements ScannerListener, Initializable {
 
     public void loadCheckInView(ActionEvent event) {
         Scanner.removeScannerListener(this);
-        Navigator.loadVista(Navigator.CHECKED_IN_ITEMS_VIEW, application);
+        Navigator.getInstance().loadVista(Navigator.CHECKED_IN_ITEMS_VIEW);
     }
 
     public void addItem(ActionEvent actionEvent) {

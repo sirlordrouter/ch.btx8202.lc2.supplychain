@@ -1,10 +1,11 @@
 package ui;
 
 
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.layout.VBox;
+import ui.state.IAuthenticatedStateContext;
 
-import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Utility class for controlling navigation between vistas.
@@ -14,6 +15,7 @@ import java.io.IOException;
  *
  * @author
  *  https://gist.github.com/jewelsea/6460130
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  *
  *
  */
@@ -25,16 +27,36 @@ public class Navigator {
     public static final String CHECKED_IN_ITEMS_VIEW = "CheckedInItemsView.fxml";
     public static final String STOCK_VIEW = "StockView.fxml";
 
+    private HashMap<String, ChangeableView> views;
+
     /** The main application layout controller. */
-    private static MainController mainController;
+    private MainController mainController;
+    private IAuthenticatedStateContext context;
+
+    /** Singleton **/
+
+    private static Navigator ourInstance = new Navigator();
+
+    /***
+     * Interface to get the instance of this navigator.
+     * @return
+     */
+    public static Navigator getInstance() {
+        return ourInstance;
+    }
+    private Navigator() {
+        views = new HashMap<String, ChangeableView>();
+        views.put(STOCK_VIEW, new StockViewController(Main.instance, STOCK_VIEW));
+        views.put(CHECKED_IN_ITEMS_VIEW, new CheckedInItemsViewController(Main.instance, CHECKED_IN_ITEMS_VIEW));
+    }
 
     /**
      * Stores the main controller for later use in navigation tasks.
      *
      * @param mainController the main application layout controller.
      */
-    public static void setMainController(MainController mainController) {
-        Navigator.mainController = mainController;
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     /**
@@ -54,16 +76,13 @@ public class Navigator {
      *
      * @param fxml the fxml file to be loaded.
      */
-    public static void loadVista(String fxml, Main context) {
-        try {
-            Node node = FXMLLoader.load(
-                    Navigator.class.getResource(fxml)
-            );
+    public void loadVista(String fxml) {
 
-            mainController.setVista(node);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        StockViewController ui = new StockViewController(Main.instance, STOCK_VIEW);
+        Node node = (Node) ui;
+
+       mainController.setVista(node);
+
     }
 }

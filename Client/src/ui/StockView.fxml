@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
-
+<?import javafx.scene.layout.*?>
 <!--
 * Bern University of Applied Sciences</br>
 * BSc Medical Informatics</br>
@@ -19,7 +15,7 @@
 -->
 
 <!-- Start Main Window -->
-<AnchorPane id="AnchorPane" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StockViewController">
+<fx:root type="javafx.scene.layout.VBox" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml">
    <children>
        <!-- Start Status Bar -->
        <AnchorPane layoutY="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -104,5 +100,5 @@
            <Button layoutX="0.0" layoutY="31.0" mnemonicParsing="false" text="Reset" onAction="#resetTrackedItems" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
        </Pane>
    </children>
-</AnchorPane>
+</fx:root>
 
