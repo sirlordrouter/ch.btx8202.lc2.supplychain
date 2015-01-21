@@ -1,12 +1,15 @@
 package ui;
 
+import barcodeHook.Scanner;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.entities.User;
 import services.Authenticator;
 import ui.state.AuthenticationState;
@@ -47,14 +50,6 @@ public class Main extends Application implements IAuthenticationStateContext {
         System.setProperty("javafx.macosx.embedded", "true");
         java.awt.Toolkit.getDefaultToolkit();
 
-//        if (!GlobalScreen.isNativeHookRegistered()) {
-//            try {
-//                GlobalScreen.registerNativeHook();
-//            } catch (NativeHookException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
         launch(args);
     }
 
@@ -67,6 +62,14 @@ public class Main extends Application implements IAuthenticationStateContext {
         stage.setMinWidth(LOGIN_MINIMUM_WINDOW_WIDTH);
         stage.setMinHeight(LOGIN_MINIMUM_WINDOW_HEIGHT);
         primaryStage.setTitle("ERP-Sim");
+
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                Scanner.endStream();
+                System.out.println("Scanner has been unregistered");
+            }
+        });
 
         setState(new UnauthenticatedState(this));
         primaryStage.show();

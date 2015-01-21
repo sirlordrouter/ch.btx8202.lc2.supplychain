@@ -2,7 +2,6 @@ package ui.state;
 
 
 import barcodeHook.Scanner;
-import org.jnativehook.GlobalScreen;
 import ui.Main;
 import ui.MainController;
 import ui.Navigator;
@@ -24,7 +23,6 @@ import java.util.logging.Logger;
  */
 public class AuthenticatedState extends AuthenticationState {
 
-    private Scanner scn;
     private MainController controller;
 
     /**
@@ -72,9 +70,7 @@ public class AuthenticatedState extends AuthenticationState {
 	 */
 	@Override
 	protected void exitState() {
-        if (GlobalScreen.isNativeHookRegistered()) {
-            Scanner.endStream();
-        }
+
 
         storeDataPersistent();
 	}
