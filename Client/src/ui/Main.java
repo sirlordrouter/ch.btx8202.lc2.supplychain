@@ -119,6 +119,15 @@ public class Main extends Application implements IAuthenticationStateContext {
         this.state.handleLogout();
     }
 
+    /**
+     * Needed to replace the login view with the Main container view, when switching states.
+     * @param fxml
+     *  new fxml to place into the whole container
+     * @return
+     *  an initializable Item
+     * @throws Exception
+     *  when Anchor pain could not load the fxml
+     */
     public Initializable replaceSceneContent(String fxml) throws Exception {
 
         FXMLLoader loader = new FXMLLoader();
@@ -136,8 +145,9 @@ public class Main extends Application implements IAuthenticationStateContext {
             scene = new Scene(page, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT);
 
             MainController mainController = loader.getController();
-
+            mainController.setApp(this);
             Navigator.getInstance().setMainController(mainController);
+
             Navigator.getInstance().loadVista(Navigator.STOCK_VIEW, this);
 
         } else {

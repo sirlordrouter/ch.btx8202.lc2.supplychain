@@ -1,11 +1,15 @@
 package ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import services.PropertiesReader;
+import ui.state.IAuthenticationStateChanger;
+import ui.state.IAuthenticationStateContext;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,13 +29,16 @@ import java.util.ResourceBundle;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class MainController implements Initializable {
+public class MainController implements Initializable, IAuthenticationStateChanger {
     public Label dateTimeField;
     public Label userField;
     public Label locationField;
+    public Image imgProfilePicture;
     /** Holder of a switchable vista. */
     @FXML
     private VBox vistaHolder;
+
+    private IAuthenticationStateContext application;
 
      /**
      * Replaces the vista displayed in the vista holder with a new vista.
@@ -67,7 +74,29 @@ public class MainController implements Initializable {
             locationField.setText("Configuration could not be read!");
         }
 
+    }
+
+
+    public void openCheckedinView(ActionEvent actionEvent) {
+        Navigator.getInstance().loadVista(Navigator.CHECKED_IN_ITEMS_VIEW,application);
+    }
+
+    public void openStockView(ActionEvent actionEvent) {
+    }
+
+    public void openOrderView(ActionEvent actionEvent) {
+    }
+
+    public void openPendingOrdersView(ActionEvent actionEvent) {
 
     }
 
+    @Override
+    public void setApp(IAuthenticationStateContext context) {
+        application = context;
+    }
+
+    public void logout(ActionEvent actionEvent) {
+        application.userLogout();
+    }
 }

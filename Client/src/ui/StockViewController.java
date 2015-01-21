@@ -7,7 +7,7 @@ import barcode.ScannedString;
 import barcodeHook.Scanner;
 import barcodeHook.ScannerEvent;
 import barcodeHook.ScannerListener;
-import data.IDataSource;
+import services.IDataSource;
 import exceptions.BarcodeNotDeserializeableException;
 import exceptions.NotImplementedBarcodeTypeException;
 import javafx.beans.value.ChangeListener;

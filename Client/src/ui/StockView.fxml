@@ -17,17 +17,6 @@
 <!-- Start Main Window -->
 <fx:root type="javafx.scene.layout.VBox" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml">
    <children>
-       <!-- Start Status Bar -->
-       <AnchorPane layoutY="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <ImageView fitHeight="31.0" fitWidth="32.0" layoutX="681.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="2.0">
-               <image>
-                  <Image url="@../media/Profilbild.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-       <!-- End  Status Bar -->
        <SplitPane dividerPositions="0.6850152905198776" layoutY="40.0" prefHeight="310.0" prefWidth="656.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="254.0">
@@ -96,7 +85,6 @@
         </items>
       </SplitPane>
        <Pane layoutY="346.0" prefHeight="126.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-          <Button layoutX="0.0" layoutY="0.0" mnemonicParsing="false" text="Checked In Items" onAction="#loadCheckInView" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
            <Button layoutX="0.0" layoutY="31.0" mnemonicParsing="false" text="Reset" onAction="#resetTrackedItems" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
        </Pane>
    </children>

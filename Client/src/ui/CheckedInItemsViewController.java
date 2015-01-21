@@ -1,6 +1,6 @@
 package ui;
 
-import data.IDataSource;
+import services.IDataSource;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -199,6 +199,6 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
     public void setApp(IAuthenticationStateContext context) {
         application = context;
 
-        getCheckedInItems();
+
     }
 }

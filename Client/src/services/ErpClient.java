@@ -1,6 +1,5 @@
 package services;
 
-import data.IDataSource;
 import webservice.erp.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -37,7 +36,7 @@ public class ErpClient implements IDataSource{
         supplyChainService = new SupplyChainServiceService();
         supplyChainServicePort = supplyChainService.getSupplyChainServicePort();
     }
-    /*
+    /**
      * Makes an entry in the TrackedItems table (state arrived) for every item specified in the list.
      * @param items A List of Items that has to be checked in.
      * @return WebServiceResult
@@ -53,7 +52,7 @@ public class ErpClient implements IDataSource{
         }
         return null;
     }
-    /*
+    /**
      * Makes an entry in the TrackedItems table (state processed) for every item specified in the list.
      * @param items A List of Items that has to be checked in.
      * @return WebServiceResult
@@ -69,7 +68,7 @@ public class ErpClient implements IDataSource{
         }
         return null;
     }
-    /*
+    /**
      * Returns a list of items referring to the specified sscc.
      * @param sscc A Serial Shipping Container Code.
      * @return List<Item>
@@ -87,7 +86,7 @@ public class ErpClient implements IDataSource{
         }
 
     }
-    /*
+    /**
      * Returns the item with the corresponding gtin and serial number.
      * @param gtin A global trade item number (GTIN).
      * @param serialNumber A Serial Number.
@@ -106,7 +105,7 @@ public class ErpClient implements IDataSource{
         }
 
     }
-    /*
+    /**
     * Returns a List of items with the corresponding gtin, batch/lot and expiry date.
     * @param gtin A global trade item number (GTIN).
     * @param batchLot A BatchLot.
@@ -135,7 +134,8 @@ public class ErpClient implements IDataSource{
         }
 
     }
-    /*
+
+    /**
     * Returns a WebServiceResult with a list of all checked in items of the corresponding gln and a boolean.
     * @param gln A global location number (GLN).
     * @return WebServiceResult
@@ -154,7 +154,7 @@ public class ErpClient implements IDataSource{
         }
 
     }
-    /*
+    /**
     * Resets all entries in the TrackedItems table.
     */
     @Override
