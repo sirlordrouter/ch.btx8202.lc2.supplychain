@@ -3,7 +3,6 @@ package ui;
 
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
-import ui.state.IAuthenticationStateChanger;
 import ui.state.IAuthenticationStateContext;
 
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import java.util.HashMap;
  * All methods on the navigator are static to facilitate
  * simple access from anywhere in the application.
  *
- * To use this navigator class, every view made accessible through the views-list must implement the interface {@link ui.state.IAuthenticationStateChanger}.
+ * To use this navigator class, every view made accessible through the views-list must derive from {@link javafx.scene.layout.VBox}.
  *
  * @author
  *  https://gist.github.com/jewelsea/6460130
@@ -34,10 +33,12 @@ public class Navigator {
 
     /** The main application layout controller. */
     private MainController mainController;
+    private IAuthenticationStateContext contex;
 
     /** Singleton **/
 
     private static Navigator ourInstance;
+    private IPartialView currentView;
 
     /***
      * Interface to get the instance of this navigator.
@@ -66,6 +67,10 @@ public class Navigator {
         this.mainController = mainController;
     }
 
+    public void setNavigationContext(IAuthenticationStateContext context) {
+        this.contex = context;
+    }
+
     /**
      * Loads the vista specified by the fxml file into the
      * vistaHolder pane of the main application layout.
@@ -83,19 +88,31 @@ public class Navigator {
      *
      * @param fxml the fxml file to be loaded.
      */
-    public void loadVista(String fxml, IAuthenticationStateContext context) {
+    public void loadVista(String fxml) {
 
-        //Do type checking
         VBox partialView = views.get(fxml);
-        if (partialView instanceof IAuthenticationStateChanger) {
-            IAuthenticationStateChanger view = (IAuthenticationStateChanger)partialView;
-            view.setApp(context);
+        if (partialView instanceof IPartialView) {
+            if (currentView != null) { //On first run always null
+                currentView.beforeLeaving();
+            }
+            ((IPartialView)partialView).beforeOpen();
+            currentView = (IPartialView)partialView;
+        } else {
+            System.out.println("This is no partial view.");
         }
 
         Node node = partialView;
         mainController.setVista(node);
-
-
     }
 
+    /**
+     * Logout from the Main Windows. Remove listeners to Barcodescanner eventually set up in a view
+     */
+    public void logout() {
+        currentView.beforeLeaving();
+        this.contex.userLogout();
+    }
+
+    private class NoPartialViewException extends Throwable {
+    }
 }

@@ -2,7 +2,7 @@ package ui.state;
 
 
 import barcodeHook.Scanner;
-import barcodeHook.ScannerEvent;
+import org.jnativehook.GlobalScreen;
 import ui.Main;
 import ui.MainController;
 import ui.Navigator;
@@ -45,23 +45,23 @@ public class AuthenticatedState extends AuthenticationState {
 	protected void entryState() {
         try {
             Scanner.initStream();
-            //super.context.loadMainPane();
-            controller = (MainController) super.context.replaceSceneContent(Navigator.MAIN);
 
-//            controller.setApp(super.context);
-//
-//            Scanner.addScannerEventListener(controller, "(/",0); //Special character excaped by \\
-            ScannerEvent evt = new ScannerEvent(this, "*¨C100106141410000098764", "(/","",0);
-//            controller.handleScannerEvent(evt);
-//            //controller.setBarcode("FË07680577870041".substring(3), BarcodeGlobalListener.CODE_IDENTITY.BARCODE,0);
+            controller = (MainController) super.context.replaceSceneContent(Navigator.MAIN);
+            /**
+             * Set up Navigator
+             * - MainCOntroller (Changable view holder)
+             * - Application context for login state change
+             */
+            Navigator.getInstance().setMainController(controller);
+            Navigator.getInstance().setNavigationContext(super.context);
+            Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
+
+            //For Testing Purposes: ScannerEvent evt = new ScannerEvent(this, "*¨C100106141410000098764", "(/","",0);
+
 
             loadProtectedUserResources();
             loadProtectedSettingsResources();
 
-//        } catch (NativeHookException ex) {
-//            System.err.println("There was a problem registering the native hook.");
-//            System.err.println(ex.getMessage());
-//            System.exit(1);
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -72,9 +72,10 @@ public class AuthenticatedState extends AuthenticationState {
 	 */
 	@Override
 	protected void exitState() {
-        Scanner.endStream();
- //       Scanner.removeScannerListener(controller);
-//        GlobalScreen.unregisterNativeHook();
+        if (GlobalScreen.isNativeHookRegistered()) {
+            Scanner.endStream();
+        }
+
         storeDataPersistent();
 	}
 

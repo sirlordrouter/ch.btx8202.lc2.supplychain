@@ -7,7 +7,6 @@ import barcode.ScannedString;
 import barcodeHook.Scanner;
 import barcodeHook.ScannerEvent;
 import barcodeHook.ScannerListener;
-import services.IDataSource;
 import exceptions.BarcodeNotDeserializeableException;
 import exceptions.NotImplementedBarcodeTypeException;
 import javafx.beans.value.ChangeListener;
@@ -26,9 +25,9 @@ import javafx.scene.layout.VBox;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import services.ErpClient;
+import services.IDataSource;
 import services.PropertiesReader;
 import services.SwissIndexClient;
-import ui.state.IAuthenticationStateChanger;
 import ui.state.IAuthenticationStateContext;
 import webservice.erp.Item;
 import webservice.erp.WebServiceResult;
@@ -48,7 +47,7 @@ import java.util.Properties;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class StockViewController extends VBox implements ScannerListener, IAuthenticationStateChanger {
+public class StockViewController extends VBox implements ScannerListener,IPartialView {
 
     public Label dateTimeField;
     public VBox mainFrame;
@@ -96,7 +95,7 @@ public class StockViewController extends VBox implements ScannerListener, IAuthe
             throw new RuntimeException(exception);
         }
 
-        Scanner.addScannerEventListener(this, "(/", 0);
+
         Properties prop = null;
         try {
             PropertiesReader reader = new PropertiesReader();
@@ -179,23 +178,10 @@ public class StockViewController extends VBox implements ScannerListener, IAuthe
         }
     }
 
-    public void processLogout(ActionEvent event) {
-        Scanner.removeScannerListener(this);
-
-        if (application == null){
-            // We are running in isolated FXML, possibly in Scene Builder.
-            // NO-OP.
-            return;
-        }
-
-        application.userLogout();
-    }
-
-    public void loadCheckInView(ActionEvent event) {
-        Scanner.removeScannerListener(this);
-        Navigator.getInstance().loadVista(Navigator.CHECKED_IN_ITEMS_VIEW, application);
-    }
-
+    /**
+     * Adds an item to the list f scanned items
+     * @param actionEvent
+     */
     public void addItem(ActionEvent actionEvent) {
         try {
             List<Item> items;
@@ -269,17 +255,32 @@ public class StockViewController extends VBox implements ScannerListener, IAuthe
         txtInput.setText("");
     }
 
+    /**
+     * Clears the list with scanned items
+     * @param actionEvent
+     *  button event
+     */
     public void clearList(ActionEvent actionEvent) {
         data.clear();
         txtareaMediInfo.setText("Keine Einträge.");
     }
 
+    /**
+     * Deletes a specific item from the list of scanned items
+     * @param actionEvent
+     *  button event
+     */
     public void deleteItem(ActionEvent actionEvent) {
         if (medList.getSelectionModel().getSelectedItem() != null) {
             data.remove(medList.getSelectionModel().getSelectedItem());
         }
     }
 
+    /**
+     *
+     * @param evt
+     *  an event generated from the scanner listening for barcodes.
+     */
     @Override
     public void handleScannerEvent(ScannerEvent evt) {
         List<Item> items;
@@ -337,14 +338,21 @@ public class StockViewController extends VBox implements ScannerListener, IAuthe
         }
     }
 
-
-
+    /**
+     * Resets the Database for a new Demonstration of the whole supply chain process
+     * @param actionEvent
+     */
     public void resetTrackedItems(ActionEvent actionEvent) {
         dataSource.resetTrackedItems();
     }
 
     @Override
-    public void setApp(IAuthenticationStateContext context) {
-        application = context;
+    public void beforeLeaving() {
+        Scanner.removeScannerListener(this);
+    }
+
+    @Override
+    public void beforeOpen() {
+        Scanner.addScannerEventListener(this, "(/", 0);
     }
 }

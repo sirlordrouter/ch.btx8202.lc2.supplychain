@@ -6,7 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.entities.User;
 import services.Authenticator;
@@ -14,7 +13,6 @@ import ui.state.AuthenticationState;
 import ui.state.IAuthenticationStateContext;
 import ui.state.UnauthenticatedState;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -33,8 +31,8 @@ public class Main extends Application implements IAuthenticationStateContext {
     private final double LOGIN_MINIMUM_WINDOW_WIDTH = 500.0;
     private final double LOGIN_MINIMUM_WINDOW_HEIGHT = 320.0;
 
-    private final double MINIMUM_WINDOW_WIDTH = 1000;
-    private final double MINIMUM_WINDOW_HEIGHT = 800.0;
+    private final double MINIMUM_WINDOW_WIDTH = 1300;
+    private final double MINIMUM_WINDOW_HEIGHT = 900.0;
 
     private Stage stage;
 
@@ -143,13 +141,6 @@ public class Main extends Application implements IAuthenticationStateContext {
         Scene scene;
         if(fxml.equals(Navigator.MAIN)) {
             scene = new Scene(page, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT);
-
-            MainController mainController = loader.getController();
-            mainController.setApp(this);
-            Navigator.getInstance().setMainController(mainController);
-
-            Navigator.getInstance().loadVista(Navigator.STOCK_VIEW, this);
-
         } else {
             scene = new Scene(page, LOGIN_MINIMUM_WINDOW_WIDTH, LOGIN_MINIMUM_WINDOW_HEIGHT);
         }
@@ -157,30 +148,5 @@ public class Main extends Application implements IAuthenticationStateContext {
         stage.setScene(scene);
         stage.sizeToScene();
         return (Initializable) loader.getController();
-    }
-
-    /**
-     * Loads the main fxml layout.
-     * Sets up the vista switching VistaNavigator.
-     * Loads the first vista into the fxml layout.
-     *
-     * @return the loaded pane.
-     * @throws IOException if the pane could not be loaded.
-     */
-    public Pane loadMainPane() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-
-        Pane mainPane = (Pane) loader.load(
-                getClass().getResourceAsStream(
-                        Navigator.MAIN
-                )
-        );
-
-        MainController mainController = loader.getController();
-
-        Navigator.getInstance().setMainController(mainController);
-        Navigator.getInstance().loadVista(Navigator.STOCK_VIEW, this);
-
-        return mainPane;
     }
 }

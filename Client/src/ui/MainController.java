@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import services.PropertiesReader;
-import ui.state.IAuthenticationStateChanger;
 import ui.state.IAuthenticationStateContext;
 
 import java.io.IOException;
@@ -29,7 +28,7 @@ import java.util.ResourceBundle;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class MainController implements Initializable, IAuthenticationStateChanger {
+public class MainController implements Initializable {
     public Label dateTimeField;
     public Label userField;
     public Label locationField;
@@ -78,7 +77,7 @@ public class MainController implements Initializable, IAuthenticationStateChange
 
 
     public void openCheckedinView(ActionEvent actionEvent) {
-        Navigator.getInstance().loadVista(Navigator.CHECKED_IN_ITEMS_VIEW,application);
+        Navigator.getInstance().loadVista(Navigator.CHECKED_IN_ITEMS_VIEW);
     }
 
     public void openStockView(ActionEvent actionEvent) {
@@ -91,12 +90,7 @@ public class MainController implements Initializable, IAuthenticationStateChange
 
     }
 
-    @Override
-    public void setApp(IAuthenticationStateContext context) {
-        application = context;
-    }
-
     public void logout(ActionEvent actionEvent) {
-        application.userLogout();
+        Navigator.getInstance().logout();
     }
 }

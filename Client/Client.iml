@@ -21,7 +21,9 @@
           <root url="jar://$MODULE_DIR$/../Libraries/BarcodeHook.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../ScannerHook/src" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

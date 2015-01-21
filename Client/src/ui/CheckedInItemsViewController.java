@@ -1,6 +1,5 @@
 package ui;
 
-import services.IDataSource;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,10 +14,9 @@ import javafx.scene.layout.VBox;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import services.ErpClient;
+import services.IDataSource;
 import services.PropertiesReader;
 import services.SwissIndexClient;
-import ui.state.IAuthenticationStateChanger;
-import ui.state.IAuthenticationStateContext;
 import webservice.erp.Item;
 import webservice.erp.WebServiceResult;
 
@@ -40,7 +38,7 @@ import java.util.ResourceBundle;
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 10-12-2014
  */
-public class CheckedInItemsViewController extends VBox implements Initializable, IAuthenticationStateChanger {
+public class CheckedInItemsViewController extends VBox implements Initializable,IPartialView {
     public TableView itemList;
     public javafx.scene.control.TableColumn tableColName;
     public javafx.scene.control.TableColumn tableColMenge;
@@ -53,8 +51,6 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
 
     IDataSource dataSource;
     Properties prop;
-
-    private IAuthenticationStateContext application;
 
     public CheckedInItemsViewController(String fxml) {
 
@@ -98,26 +94,13 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
         // TODO?
     }
 
-    /**
-     * log out the registered user
-     * @param event
-     */
-    public void processLogout(ActionEvent event) {
-        if (application == null){
-            // We are running in isolated FXML, possibly in Scene Builder.
-            // NO-OP.
-            return;
-        }
-
-        application.userLogout();
-    }
 
     /**
      * load the stock view fxml and show it.
      * @param event
      */
     public void backToStockView(ActionEvent event) {
-        Navigator.getInstance().loadVista(Navigator.STOCK_VIEW, application);
+        Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
     }
 
     /**
@@ -127,7 +110,7 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
      */
     @FXML
     void nextPane(ActionEvent event) {
-         Navigator.getInstance().loadVista(Navigator.STOCK_VIEW, application);
+         Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
     }
 
     /**
@@ -196,9 +179,12 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
     }
 
     @Override
-    public void setApp(IAuthenticationStateContext context) {
-        application = context;
+    public void beforeLeaving() {
 
+    }
+
+    @Override
+    public void beforeOpen() {
 
     }
 }

@@ -17,28 +17,32 @@
 * @version 04-11-2014
 -->
 
-<AnchorPane minHeight="130.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainController">
+<AnchorPane minHeight="880.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainController">
     <children>
-      <AnchorPane layoutX="9.0" layoutY="5.0" minHeight="120.0" prefHeight="120.0" prefWidth="823.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="navigationHolderPane" maxHeight="130.0" minHeight="130.0" prefHeight="130.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-              <Button fx:id="logoutBtn" layoutX="756.0" layoutY="2.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
-              <Label id="lblLocationInfo" fx:id="locationField" layoutX="239.0" layoutY="1.0" prefHeight="31.0" prefWidth="135.0" text="StationA" textFill="#2b5bae" AnchorPane.leftAnchor="248.0" AnchorPane.topAnchor="6.0" />
-              <Label id="lblUserName" fx:id="userField" layoutX="71.0" prefHeight="31.0" prefWidth="159.0" text="User: zehnp1" textFill="#2b5bae" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="5.0" />
-              <Label id="lblCurrentDate" fx:id="dateTimeField" layoutX="71.0" layoutY="31.0" prefHeight="31.0" prefWidth="235.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="36.0" />
-      
-            <ImageView fitHeight="63.0" fitWidth="60.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="8.0">
-               <image>
-                  <Image fx:id="imgProfilePicture" url="@../media/Profilbild.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-      <AnchorPane id="NavigationBar" layoutX="9.0" layoutY="76.0" prefHeight="31.0" prefWidth="823.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-         <children>
-            <Button fx:id="openCheckinViewBtn" layoutX="26.0" layoutY="3.0" mnemonicParsing="false" onAction="#openCheckedinView" text="Checkin" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="3.0" />
-            <Button fx:id="openStockViewBtn" layoutX="127.0" layoutY="3.0" mnemonicParsing="false" onAction="#openStockView" prefHeight="26.0" prefWidth="67.0" text="Stock" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="3.0" />
-            <Button fx:id="openOrderViewBtn" layoutX="231.0" layoutY="3.0" mnemonicParsing="false" onAction="#openOrderView" prefHeight="26.0" prefWidth="67.0" text="Order" AnchorPane.bottomAnchor="31.0" AnchorPane.topAnchor="3.0" />
-            <Button fx:id="openPendingOrdersViewBtn" layoutX="335.0" layoutY="3.0" mnemonicParsing="false" onAction="#openPendingOrdersView" prefHeight="26.0" prefWidth="119.0" text="Pending Orders" AnchorPane.bottomAnchor="31.0" AnchorPane.topAnchor="3.0" />
+            <AnchorPane minHeight="120.0" prefHeight="120.0" prefWidth="823.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                    <Button fx:id="logoutBtn" layoutX="756.0" layoutY="2.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
+                    <Label id="lblLocationInfo" fx:id="locationField" layoutX="239.0" layoutY="1.0" prefHeight="31.0" prefWidth="135.0" text="StationA" textFill="#2b5bae" AnchorPane.leftAnchor="248.0" AnchorPane.topAnchor="6.0" />
+                    <Label id="lblUserName" fx:id="userField" layoutX="71.0" prefHeight="31.0" prefWidth="159.0" text="User: zehnp1" textFill="#2b5bae" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="5.0" />
+                    <Label id="lblCurrentDate" fx:id="dateTimeField" layoutX="71.0" layoutY="31.0" prefHeight="31.0" prefWidth="235.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="36.0" />
+            
+                  <ImageView fitHeight="63.0" fitWidth="60.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="8.0">
+                     <image>
+                        <Image fx:id="imgProfilePicture" url="@../media/Profilbild.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="NavigationBar" layoutY="76.0" prefHeight="31.0" prefWidth="823.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Button fx:id="openCheckinViewBtn" layoutX="26.0" layoutY="3.0" mnemonicParsing="false" onAction="#openCheckedinView" text="Checkin" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="3.0" />
+                  <Button fx:id="openStockViewBtn" layoutX="127.0" layoutY="3.0" mnemonicParsing="false" onAction="#openStockView" prefHeight="26.0" prefWidth="67.0" text="Stock" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="3.0" />
+                  <Button fx:id="openOrderViewBtn" layoutX="231.0" layoutY="3.0" mnemonicParsing="false" onAction="#openOrderView" prefHeight="26.0" prefWidth="67.0" text="Order" AnchorPane.bottomAnchor="31.0" AnchorPane.topAnchor="3.0" />
+                  <Button fx:id="openPendingOrdersViewBtn" layoutX="335.0" layoutY="3.0" mnemonicParsing="false" onAction="#openPendingOrdersView" prefHeight="26.0" prefWidth="119.0" text="Pending Orders" AnchorPane.bottomAnchor="31.0" AnchorPane.topAnchor="3.0" />
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
         <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">

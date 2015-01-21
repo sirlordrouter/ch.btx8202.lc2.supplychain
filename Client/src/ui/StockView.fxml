@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <!--
 * Bern University of Applied Sciences</br>
 * BSc Medical Informatics</br>
@@ -13,11 +15,11 @@
 * @author Patrizia Zehnder, patriziasusanna.zehnder@students.bfh.ch
 * @version 04-11-2014
 -->
-
 <!-- Start Main Window -->
-<fx:root type="javafx.scene.layout.VBox" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml">
+
+<fx:root fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-       <SplitPane dividerPositions="0.6850152905198776" layoutY="40.0" prefHeight="310.0" prefWidth="656.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+       <SplitPane dividerPositions="0.6850152905198776" layoutY="40.0" minHeight="700.0" prefHeight="750.0" prefWidth="999.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="254.0">
                <children>
@@ -71,7 +73,7 @@
                                     <TextField fx:id="txtBatch" layoutX="14.0" layoutY="131.0" prefHeight="26.0" prefWidth="267.0" promptText="Batch / Lot" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtSeriennummer" layoutX="14.0" layoutY="97.0" prefHeight="26.0" prefWidth="267.0" promptText="Seriennummer" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtGTIN" layoutX="14.0" layoutY="63.0" prefHeight="26.0" prefWidth="267.0" promptText="GTIN" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
-                                    <TextField fx:id="txtInput" style="-fx-text-inner-color: white;" layoutX="14.0" layoutY="30.0" prefHeight="26.0" prefWidth="267.0" promptText="Input" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
+                                    <TextField fx:id="txtInput" layoutX="14.0" layoutY="30.0" prefHeight="26.0" prefWidth="267.0" promptText="Input" style="-fx-text-inner-color: white;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                  </children>
                               </AnchorPane>
                                <Button layoutX="248.0" layoutY="11.0" mnemonicParsing="false" onAction="#clearList" text="Clear" AnchorPane.topAnchor="11.0" />
@@ -85,8 +87,9 @@
         </items>
       </SplitPane>
        <Pane layoutY="346.0" prefHeight="126.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-           <Button layoutX="0.0" layoutY="31.0" mnemonicParsing="false" text="Reset" onAction="#resetTrackedItems" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
+          <children>
+              <Button layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#resetTrackedItems" text="Reset" textAlignment="RIGHT" AnchorPane.rightAnchor="932.9939002990723" AnchorPane.topAnchor="20.0" />
+          </children>
        </Pane>
    </children>
 </fx:root>
-
