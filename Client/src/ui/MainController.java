@@ -81,6 +81,7 @@ public class MainController implements Initializable {
     }
 
     public void openStockView(ActionEvent actionEvent) {
+        Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
     }
 
     public void openOrderView(ActionEvent actionEvent) {
