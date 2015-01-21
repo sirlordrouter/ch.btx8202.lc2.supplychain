@@ -1,18 +1,31 @@
 #big-yellow-button {
     -fx-background-color:
-    #ecebe9,
-    rgba(0,0,0,0.05),
+    #6e6e6e,
+    rgba(199, 11, 10, 0.05),
     linear-gradient(#dcca8a, #c7a740),
     linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),
     linear-gradient(#f6ebbe, #e6c34d);
-    -fx-background-insets: 0,9 9 8 9,9,10,11;
-    -fx-background-radius: 50;
-    -fx-padding: 15 30 15 30;
+    -fx-padding: 5 10 5 10;
     -fx-font-family: "Helvetica";
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-text-fill: #311c09;
-    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);
 }
 #big-yellow-button Text {
+    -fx-effect: dropshadow( one-pass-box , rgba(255,255,255,0.5) , 0, 0.0 , 0 , 1);
+}
+#default-button {
+    -fx-background-color:
+    #6e6e6e,
+    rgba(199, 11, 10, 0.05),
+    linear-gradient(#c6c5c5, #939193),
+    linear-gradient(#f2edee 0%, #c1c2bc 20%, #aba8aa 80%, #696565 100%),
+    linear-gradient(#d1ccce, #c6c1c2);
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 12px;
+    -fx-text-fill: #311c09;
+    -fx-font-weight: bold;
+}
+#default-button Text {
     -fx-effect: dropshadow( one-pass-box , rgba(255,255,255,0.5) , 0, 0.0 , 0 , 1);
 }

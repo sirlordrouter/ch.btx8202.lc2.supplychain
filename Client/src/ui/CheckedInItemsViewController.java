@@ -96,11 +96,12 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
 
 
     /**
-     * load the stock view fxml and show it.
+     * update the checked in items list.
      * @param event
      */
-    public void backToStockView(ActionEvent event) {
-        Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
+    public void searchCheckedInItems(ActionEvent event) {
+        data.removeAll(data);
+        getCheckedInItems();
     }
 
     /**
@@ -141,6 +142,11 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
             tradeItem1.setSerial(item.getSerial());
             tradeItem1.setCheckInDate(item.getCheckInDate());
             data.add(tradeItem1);
+        }
+
+        if(data.isEmpty()){
+            UserInformationPopup popup = new UserInformationPopup("Aktuell sind keine Objekte eingecheckt.", "Keine Objekte gefunden.");
+            popup.show();
         }
 
         tableColName.setCellValueFactory(
