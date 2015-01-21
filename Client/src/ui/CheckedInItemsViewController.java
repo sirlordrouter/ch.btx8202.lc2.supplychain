@@ -41,11 +41,11 @@ import java.util.ResourceBundle;
 public class CheckedInItemsViewController extends VBox implements Initializable,IPartialView {
     public TableView itemList;
     public javafx.scene.control.TableColumn tableColName;
-    public javafx.scene.control.TableColumn tableColMenge;
+    public javafx.scene.control.TableColumn tableColQuantity;
     public javafx.scene.control.TableColumn tableColGTIN;
     public javafx.scene.control.TableColumn tableColSerial;
     public javafx.scene.control.TableColumn tableColLot;
-    public javafx.scene.control.TableColumn tableColAblauf;
+    public javafx.scene.control.TableColumn tableColExpDate;
     public javafx.scene.control.TableColumn tableColCheckInDate;
     public ObservableList<Item> data =  FXCollections.observableArrayList();
 
@@ -152,7 +152,7 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
         tableColName.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("Name")
         );
-        tableColMenge.setCellValueFactory(
+        tableColQuantity.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("Menge")
         );
         tableColGTIN.setCellValueFactory(
@@ -164,7 +164,7 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
         tableColLot.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("Lot")
         );
-        tableColAblauf.setCellValueFactory(
+        tableColExpDate.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("ExpiryDate")
         );
         tableColCheckInDate.setCellValueFactory(

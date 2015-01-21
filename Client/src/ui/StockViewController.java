@@ -68,13 +68,13 @@ public class StockViewController extends VBox implements ScannerListener,IPartia
     public ImageView stationImage;
     public ImageView bettImage;
     public TextArea txtareaMediInfo;
-    public javafx.scene.control.TableColumn tblColName;
-    public javafx.scene.control.TableColumn tblColMenge;
-    public javafx.scene.control.TableColumn tableColGLN;
-    public javafx.scene.control.TableColumn tablColHrst;
+    public javafx.scene.control.TableColumn tableColName;
+    public javafx.scene.control.TableColumn tableColQuantity;
+    public javafx.scene.control.TableColumn tableColGTIN;
+    public javafx.scene.control.TableColumn tableColSerial;
     public TextField txtExpiryDate;
     public TextField txtBatch;
-    public TextField txtSeriennummer;
+    public TextField txtSerial;
     public TextField txtGTIN;
     public TextField txtInput;
 
@@ -110,16 +110,16 @@ public class StockViewController extends VBox implements ScannerListener,IPartia
         final ObservableList columns = medList.getColumns();
 
 
-        tblColName.setCellValueFactory(
+        tableColName.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("Name")
         );
-        tblColMenge.setCellValueFactory(
+        tableColQuantity.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("Menge")
         );
-        tableColGLN.setCellValueFactory(
+        tableColGTIN.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("GTIN")
         );
-        tablColHrst.setCellValueFactory(
+        tableColSerial.setCellValueFactory(
                 new PropertyValueFactory<Item,String>("Serial")
         );
 
@@ -202,7 +202,7 @@ public class StockViewController extends VBox implements ScannerListener,IPartia
 
                     if (item != null) {
                         item.setGTIN(txtGTIN.getText());
-                        item.setSerial(txtSeriennummer.getText());
+                        item.setSerial(txtSerial.getText());
                         item.setLot(txtBatch.getText());
                         //Set Expiry Date when Service updated
                         txtareaMediInfo.setText(item.toString());
@@ -238,8 +238,33 @@ public class StockViewController extends VBox implements ScannerListener,IPartia
                     }
 
                 }
+
+            }
+            if (!txtGTIN.getText().equals("")) {
+                TradeItem item = null;
+                SwissIndexResult result = SwissIndexClient.getItemInformationFromGTIN(txtGTIN.getText());
+                if(result.isResult()){
+                    item = result.getTradeItems().get(0);
+                }else{
+                    UserInformationPopup popup = new UserInformationPopup(result.getMessage(), "Achtung");
+                    popup.show();
+                    return;
+                }
+
+                if (item != null) {
+                    item.setGTIN(txtGTIN.getText());
+                    item.setSerial(txtSerial.getText());
+                    item.setLot(txtBatch.getText());
+                    txtareaMediInfo.setText(item.toString());
+                    data.add(item);
+                    clearItemInput();
+                } else {
+                    txtareaMediInfo.setText("Kein Item gefunden.");
+                }
+
             }
             txtInput.setText("");
+            txtGTIN.setText("");
         } catch (NotImplementedBarcodeTypeException e) {
             System.out.println("hello world");
         } catch (BarcodeNotDeserializeableException e) {
@@ -249,7 +274,7 @@ public class StockViewController extends VBox implements ScannerListener,IPartia
 
     private void clearItemInput() {
         txtGTIN.setText("");
-        txtSeriennummer.setText("");
+        txtSerial.setText("");
         txtBatch.setText("");
         txtExpiryDate.setText("");
         txtInput.setText("");

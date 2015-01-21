@@ -54,10 +54,10 @@
                            <children>
                                <TableView id="listData" fx:id="medList" layoutX="-1.0" prefHeight="246.0" prefWidth="199.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TableColumn id="listScannedItems" fx:id="tblColName" prefWidth="250.0" text="Name" />
-                                  <TableColumn fx:id="tblColMenge" prefWidth="100.0" text="Menge" />
-                                    <TableColumn fx:id="tableColGLN" prefWidth="150.0" text="GTIN" />
-                                    <TableColumn fx:id="tablColHrst" prefWidth="200.0" text="Serial" />
+                                  <TableColumn id="listScannedItems" fx:id="tableColName" prefWidth="250.0" text="Name" />
+                                  <TableColumn fx:id="tableColQuantity" prefWidth="100.0" text="Quantity" />
+                                    <TableColumn fx:id="tableColGTIN" prefWidth="150.0" text="GTIN" />
+                                    <TableColumn fx:id="tableColSerial" prefWidth="200.0" text="Serial" />
                                 </columns>
                               </TableView>
                            </children>
@@ -68,17 +68,17 @@
                               <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="CheckInButton" layoutX="93.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkIn" text="Check in" AnchorPane.topAnchor="11.0" />
                                <AnchorPane layoutY="59.0" prefHeight="251.0" prefWidth="294.0">
                                  <children>
-                                    <Label layoutX="24.0" text="Manuelle Erfassung" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="0.0" />
-                                    <Button layoutX="205.0" prefWidth="80" prefHeight="35" id="default-button" layoutY="208.0" mnemonicParsing="false" onAction="#addItem" text="OK" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="14.0" /> <!--defaultButton="true" excludec because of globallistener adds enter to barcoe -->
+                                    <Label layoutX="24.0" text="Manual Input" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="0.0" />
+                                    <Button layoutX="205.0" prefWidth="80" prefHeight="35" id="default-button" layoutY="208.0" mnemonicParsing="false" onAction="#addItem" text="Add" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="14.0" /> <!--defaultButton="true" excludec because of globallistener adds enter to barcoe -->
                                      <TextField fx:id="txtExpiryDate" layoutX="14.0" layoutY="165.0" prefHeight="26.0" prefWidth="267.0" promptText="Ablaufdatum" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtBatch" layoutX="14.0" layoutY="131.0" prefHeight="26.0" prefWidth="267.0" promptText="Batch / Lot" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
-                                    <TextField fx:id="txtSeriennummer" layoutX="14.0" layoutY="97.0" prefHeight="26.0" prefWidth="267.0" promptText="Seriennummer" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
+                                    <TextField fx:id="txtSerial" layoutX="14.0" layoutY="97.0" prefHeight="26.0" prefWidth="267.0" promptText="Seriennummer" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtGTIN" layoutX="14.0" layoutY="63.0" prefHeight="26.0" prefWidth="267.0" promptText="GTIN" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtInput" layoutX="14.0" layoutY="30.0" prefHeight="26.0" prefWidth="267.0" promptText="Input" style="-fx-text-inner-color: white;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                  </children>
                               </AnchorPane>
                                <Button layoutX="265.0" layoutY="11.0" id="default-button" prefWidth="80" prefHeight="35" mnemonicParsing="false" onAction="#clearList" text="Clear" AnchorPane.topAnchor="11.0" />
-                              <Button layoutX="179.0" layoutY="11.0" id="default-button" prefWidth="80" prefHeight="35" mnemonicParsing="false" onAction="#deleteItem" text="Löschen" AnchorPane.topAnchor="11.0" />
+                              <Button layoutX="179.0" layoutY="11.0" id="default-button" prefWidth="80" prefHeight="35" mnemonicParsing="false" onAction="#deleteItem" text="Remove" AnchorPane.topAnchor="11.0" />
                            </children>
                         </AnchorPane>
                     </items>
