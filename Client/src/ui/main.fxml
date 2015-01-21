@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -17,17 +18,18 @@
 * @version 04-11-2014
 -->
 
-<?import java.net.URL?>
 <AnchorPane minHeight="880.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainController">
     <children>
-      <AnchorPane fx:id="navigationHolderPane" maxHeight="150.0" minHeight="150.0" prefHeight="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="navigationHolderPane" maxHeight="165.0" minHeight="165.0" prefHeight="165.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane minHeight="150.0" prefHeight="150.0" prefWidth="823.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="823.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                    <Button fx:id="logoutBtn" id="big-yellow-button" contentDisplay="TOP" layoutX="756.0" layoutY="2.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
+                    <Button id="big-yellow-button" fx:id="logoutBtn" contentDisplay="TOP" layoutX="756.0" layoutY="2.0" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
                         <graphic>
                             <ImageView>
-                                <Image url="@../media/logout.png" />
+                               <image>
+                                   <Image url="@../media/logout.png" />
+                               </image>
                             </ImageView>
                         </graphic>
                     </Button>
@@ -42,33 +44,41 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <AnchorPane id="NavigationBar" layoutY="76.0" minHeight="51.0" prefWidth="823.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <AnchorPane id="NavigationBar" layoutX="-6.0" layoutY="76.0" maxHeight="90.0" minHeight="90.0" prefHeight="90.0" prefWidth="823.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                 <children>
-                    <Button fx:id="openStockViewBtn" id="big-yellow-button" contentDisplay="TOP" layoutX="26.0" layoutY="3.0" mnemonicParsing="false" onAction="#openStockView" prefHeight="26.0" prefWidth="67.0" text="Stock" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="3.0">
+                    <Button id="big-yellow-button" fx:id="openStockViewBtn" contentDisplay="TOP" layoutX="144.0" layoutY="3.0" maxHeight="80.0" maxWidth="120.0" minHeight="80.0" minWidth="120.0" mnemonicParsing="false" onAction="#openStockView" prefHeight="80.0" prefWidth="120.0" text="Stock" AnchorPane.leftAnchor="144.0">
                         <graphic>
                             <ImageView>
-                                <Image url="@../media/stockview.png" />
+                               <image>
+                                   <Image url="@../media/stockview.png" />
+                               </image>
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button fx:id="openCheckinViewBtn" id="big-yellow-button" contentDisplay="TOP" layoutX="127.0" layoutY="3.0" mnemonicParsing="false" onAction="#openCheckedinView" text="Checkin" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="3.0">
+                    <Button id="big-yellow-button" fx:id="openCheckinViewBtn" contentDisplay="TOP" layoutX="14.0" layoutY="3.0" maxHeight="80.0" maxWidth="120.0" minHeight="80.0" minWidth="120.0" mnemonicParsing="false" onAction="#openCheckedinView" prefHeight="80.0" prefWidth="120.0" text="Checkin" AnchorPane.leftAnchor="14.0">
                         <graphic>
                             <ImageView>
-                                <Image url="@../media/checkedin.png" />
+                               <image>
+                                   <Image url="@../media/checkedin.png" />
+                               </image>
                             </ImageView>
                         </graphic>
                   </Button>
-                  <Button fx:id="openOrderViewBtn" id="big-yellow-button" contentDisplay="TOP" layoutX="231.0" layoutY="3.0" mnemonicParsing="false" onAction="#openOrderView" prefHeight="26.0" prefWidth="67.0" text="Order" AnchorPane.bottomAnchor="31.0" AnchorPane.topAnchor="3.0">
+                  <Button id="big-yellow-button" fx:id="openOrderViewBtn" contentDisplay="TOP" layoutX="272.0" layoutY="3.0" maxHeight="80.0" maxWidth="120.0" minHeight="80.0" minWidth="120.0" mnemonicParsing="false" onAction="#openOrderView" prefHeight="80.0" prefWidth="120.0" text="Order">
                       <graphic>
                           <ImageView>
-                              <Image url="@../media/order.png" />
+                             <image>
+                                 <Image url="@../media/order.png" />
+                             </image>
                           </ImageView>
                       </graphic>
                   </Button>
-                  <Button fx:id="openPendingOrdersViewBtn" id="big-yellow-button" contentDisplay="TOP" layoutX="335.0" layoutY="3.0" mnemonicParsing="false" onAction="#openPendingOrdersView" prefHeight="26.0" prefWidth="119.0" text="Pending Orders" AnchorPane.bottomAnchor="31.0" AnchorPane.topAnchor="3.0">
+                  <Button id="big-yellow-button" fx:id="openPendingOrdersViewBtn" contentDisplay="TOP" layoutX="400.0" layoutY="2.0" mnemonicParsing="false" onAction="#openPendingOrdersView" prefHeight="82.0" prefWidth="159.0" text="Pending Orders">
                       <graphic>
                           <ImageView>
-                              <Image url="@../media/pendingorder.png" />
+                             <image>
+                                 <Image url="@../media/pendingorder.png" />
+                             </image>
                           </ImageView>
                       </graphic>
                   </Button>
@@ -76,9 +86,10 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-        <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <AnchorPane minHeight="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="165.0">
            <children>
-               <VBox fx:id="vistaHolder" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS" />
+            <Label text="A label text" />
+               <VBox fx:id="vistaHolder" minHeight="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS" />
            </children>
         </AnchorPane>
     </children>
