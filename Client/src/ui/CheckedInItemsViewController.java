@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -9,8 +10,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import model.entities.StockTreeItem;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import services.ErpClient;
@@ -24,6 +29,8 @@ import javax.xml.ws.WebServiceException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -39,14 +46,7 @@ import java.util.ResourceBundle;
  * @version 10-12-2014
  */
 public class CheckedInItemsViewController extends VBox implements Initializable,IPartialView {
-    public TableView itemList;
-    public javafx.scene.control.TableColumn tableColName;
-    public javafx.scene.control.TableColumn tableColQuantity;
-    public javafx.scene.control.TableColumn tableColGTIN;
-    public javafx.scene.control.TableColumn tableColSerial;
-    public javafx.scene.control.TableColumn tableColLot;
-    public javafx.scene.control.TableColumn tableColExpDate;
-    public javafx.scene.control.TableColumn tableColCheckInDate;
+    public TreeTableView itemList;
     public ObservableList<Item> data =  FXCollections.observableArrayList();
 
     IDataSource dataSource;
@@ -144,43 +144,90 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
             data.add(tradeItem1);
         }
 
+        ArrayList<String> groupnames = new ArrayList<String>();
+        List<StockTreeItem> groups = null;
+        final TreeItem<StockTreeItem> root =
+                new TreeItem<StockTreeItem>(new StockTreeItem("Stock", "", "", "", "", ""));
+        for(Item i:data){
+            if(!groupnames.contains(i.getName())){
+                groupnames.add(i.getName());
+                StockTreeItem treeGroup = new StockTreeItem(i.getName(), "", "", "", "", "");
+                root.getChildren().add(new TreeItem<StockTreeItem>(treeGroup));
+            }
+            for(TreeItem<StockTreeItem> item:root.getChildren()){
+                if(i.getName().equals(item.getValue().getDescription())){
+                    StockTreeItem treeItem = new StockTreeItem(i.getName(), i.getMenge(), i.getGTIN(), i.getExpiryDate(), i.getLot(), i.getSerial());
+                    item.getChildren().add(new TreeItem<StockTreeItem>(treeItem));
+                }
+            }
+        }
+        for(TreeItem<StockTreeItem> item:root.getChildren()){
+            item.getValue().setQuantity(Integer.toString(item.getChildren().size())+ " pc.");
+        }
+
         if(data.isEmpty()){
             UserInformationPopup popup = new UserInformationPopup("Aktuell sind keine Objekte eingecheckt.", "Keine Objekte gefunden.");
             popup.show();
         }
 
-        tableColName.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("Name")
-        );
-        tableColQuantity.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("Menge")
-        );
-        tableColGTIN.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("GTIN")
-        );
-        tableColSerial.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("Serial")
-        );
-        tableColLot.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("Lot")
-        );
-        tableColExpDate.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("ExpiryDate")
-        );
-        tableColCheckInDate.setCellValueFactory(
-                new PropertyValueFactory<Item,String>("checkInDate")
+        /*
+        ***************************COLUMNS********************************************************
+         */
+
+        TreeTableColumn<StockTreeItem, String> nameColumn =
+                new TreeTableColumn<>("Name");
+        nameColumn.setPrefWidth(200);
+        nameColumn.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getDescription())
         );
 
+        TreeTableColumn<StockTreeItem, String> quantityColumn =
+                new TreeTableColumn<>("Quantity");
+        quantityColumn.setPrefWidth(80);
+        quantityColumn.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getQuantity())
+        );
 
-        itemList.setItems(data);
+        TreeTableColumn<StockTreeItem, String> gtinColumn =
+                new TreeTableColumn<>("GTIN");
+        gtinColumn.setPrefWidth(150);
+        gtinColumn.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getGtin())
+        );
 
-        itemList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object o, Object o2) {
-                if (itemList.getSelectionModel().getSelectedItem() != null) {
-                }
-            }
-        });
+        TreeTableColumn<StockTreeItem, String> expColumn =
+                new TreeTableColumn<>("Expiry Date");
+        expColumn.setPrefWidth(150);
+        expColumn.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getExpdate())
+        );
+
+        TreeTableColumn<StockTreeItem, String> batchlotColumn =
+                new TreeTableColumn<>("Batch/Lot");
+        batchlotColumn.setPrefWidth(150);
+        batchlotColumn.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getBatchlot())
+        );
+
+        TreeTableColumn<StockTreeItem, String> serialColumn =
+                new TreeTableColumn<>("Serial");
+        serialColumn.setPrefWidth(150);
+        serialColumn.setCellValueFactory(
+                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                        new ReadOnlyStringWrapper(param.getValue().getValue().getSerial())
+        );
+        /*
+        ***************************************************************************************
+         */
+
+        itemList.getColumns().setAll(nameColumn, quantityColumn,gtinColumn,expColumn,batchlotColumn,serialColumn);
+        itemList.setRoot(root);
+        itemList.setShowRoot(false);
 
     }
 

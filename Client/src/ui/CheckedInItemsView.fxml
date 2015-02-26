@@ -35,17 +35,8 @@ The data is shown in a table.</p>
                     </children>
                 </AnchorPane>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="400.0">
-                                        <TableView id="itemListData" fx:id="itemList" layoutX="-1.0" prefHeight="246.0" prefWidth="199.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <columns>
-                                                <TableColumn fx:id="tableColName" prefWidth="170.0" text="Name" />
-                                                <TableColumn fx:id="tableColQuantity" prefWidth="80.0" text="Quantity" />
-                                                <TableColumn fx:id="tableColGTIN" prefWidth="130.0" text="GTIN" />
-                                                <TableColumn fx:id="tableColSerial" prefWidth="130.0" text="Serial" />
-                                                <TableColumn fx:id="tableColLot" prefWidth="110.0" text="Lot" />
-                                                <TableColumn fx:id="tableColExpDate" prefWidth="100.0" text="Expiry Date" />
-                                                <TableColumn fx:id="tableColCheckInDate" prefWidth="100.0" text="CheckIn Date" />
-                                            </columns>
-                                        </TableView>
+                        <TreeTableView id="itemListData" fx:id="itemList" layoutX="-1.0" prefHeight="246.0" prefWidth="199.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        </TreeTableView>
                     </AnchorPane>
             </items>
         </SplitPane>
