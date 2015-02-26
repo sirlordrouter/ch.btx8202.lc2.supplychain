@@ -118,11 +118,13 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
      * get checked in items from the webservice and add product informations from the swissindex webservice
      */
     public void getCheckedInItems(){
+        // fetch checkedin items from the supply chain service
         WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
         ObservableList<Item> tempData =  FXCollections.observableArrayList();
 
         tempData.setAll(result.getItems());
 
+        // iterate over all checked in items and get item information from swissindex
         for(Item item:tempData){
             TradeItem tradeItem = null;
             SwissIndexResult swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
@@ -145,15 +147,17 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
         }
 
         ArrayList<String> groupnames = new ArrayList<String>();
-        List<StockTreeItem> groups = null;
+        // set an invisible root element as a container
         final TreeItem<StockTreeItem> root =
                 new TreeItem<StockTreeItem>(new StockTreeItem("Stock", "", "", "", "", ""));
         for(Item i:data){
+            // create a new group, if the item name is a new one
             if(!groupnames.contains(i.getName())){
                 groupnames.add(i.getName());
                 StockTreeItem treeGroup = new StockTreeItem(i.getName(), "", "", "", "", "");
                 root.getChildren().add(new TreeItem<StockTreeItem>(treeGroup));
             }
+            // fill all elements in the corresponding group
             for(TreeItem<StockTreeItem> item:root.getChildren()){
                 if(i.getName().equals(item.getValue().getDescription())){
                     StockTreeItem treeItem = new StockTreeItem(i.getName(), i.getMenge(), i.getGTIN(), i.getExpiryDate(), i.getLot(), i.getSerial());
@@ -161,19 +165,20 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
                 }
             }
         }
+        // count the items for each group
         for(TreeItem<StockTreeItem> item:root.getChildren()){
             item.getValue().setQuantity(Integer.toString(item.getChildren().size())+ " pc.");
         }
-
+        // if there are no checkedin items, alert user!
         if(data.isEmpty()){
             UserInformationPopup popup = new UserInformationPopup("Aktuell sind keine Objekte eingecheckt.", "Keine Objekte gefunden.");
             popup.show();
         }
 
         /*
-        ***************************COLUMNS********************************************************
+        ***************************SETUP TABLE COLUMNS********************************************************
          */
-
+        // Name Column
         TreeTableColumn<StockTreeItem, String> nameColumn =
                 new TreeTableColumn<>("Name");
         nameColumn.setPrefWidth(200);
@@ -181,7 +186,7 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
                 (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getDescription())
         );
-
+        // Quantity Column
         TreeTableColumn<StockTreeItem, String> quantityColumn =
                 new TreeTableColumn<>("Quantity");
         quantityColumn.setPrefWidth(80);
@@ -189,7 +194,7 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
                 (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getQuantity())
         );
-
+        // GTIN Column
         TreeTableColumn<StockTreeItem, String> gtinColumn =
                 new TreeTableColumn<>("GTIN");
         gtinColumn.setPrefWidth(150);
@@ -197,7 +202,7 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
                 (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getGtin())
         );
-
+        // ExpiryDate Column
         TreeTableColumn<StockTreeItem, String> expColumn =
                 new TreeTableColumn<>("Expiry Date");
         expColumn.setPrefWidth(150);
@@ -205,7 +210,7 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
                 (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getExpdate())
         );
-
+        // Batch Lot Column
         TreeTableColumn<StockTreeItem, String> batchlotColumn =
                 new TreeTableColumn<>("Batch/Lot");
         batchlotColumn.setPrefWidth(150);
@@ -213,7 +218,7 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
                 (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getBatchlot())
         );
-
+        // Serial Column
         TreeTableColumn<StockTreeItem, String> serialColumn =
                 new TreeTableColumn<>("Serial");
         serialColumn.setPrefWidth(150);
@@ -225,8 +230,10 @@ public class CheckedInItemsViewController extends VBox implements Initializable,
         ***************************************************************************************
          */
 
+        // add the columns to the treetable
         itemList.getColumns().setAll(nameColumn, quantityColumn,gtinColumn,expColumn,batchlotColumn,serialColumn);
         itemList.setRoot(root);
+        // dont show the root element (invisible container)
         itemList.setShowRoot(false);
 
     }
