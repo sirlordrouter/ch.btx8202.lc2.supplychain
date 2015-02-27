@@ -26,8 +26,8 @@ public class Navigator {
      * Convenience constants for fxml layouts managed by the navigator.
      */
     public static final String MAIN = "main.fxml";
-    public static final String CHECKED_IN_ITEMS_VIEW = "CheckedInItemsView.fxml";
-    public static final String STOCK_VIEW = "StockView.fxml";
+    public static final String CHECKED_IN_ITEMS_VIEW = "StockView.fxml";
+    public static final String STOCK_VIEW = "HomeView.fxml";
 
     private HashMap<String, VBox> views;
 
@@ -54,8 +54,8 @@ public class Navigator {
 
     private Navigator() {
         views = new HashMap<String, VBox>();
-        views.put(STOCK_VIEW, new StockViewController(STOCK_VIEW));
-        views.put(CHECKED_IN_ITEMS_VIEW, new CheckedInItemsViewController(CHECKED_IN_ITEMS_VIEW));
+        views.put(STOCK_VIEW, new HomeViewController(STOCK_VIEW));
+        views.put(CHECKED_IN_ITEMS_VIEW, new StockViewController(CHECKED_IN_ITEMS_VIEW));
     }
 
     /**
