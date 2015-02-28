@@ -1,19 +1,15 @@
 package ui;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import model.entities.StockTreeItem;
 import model.entities.SwissIndexResult;
@@ -30,7 +26,6 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -111,7 +106,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
      */
     @FXML
     void nextPane(ActionEvent event) {
-         Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
+         Navigator.getInstance().loadVista(Navigator.HOME_VIEW);
     }
 
     /**

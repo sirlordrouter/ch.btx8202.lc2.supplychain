@@ -52,7 +52,7 @@ public class AuthenticatedState extends AuthenticationState {
              */
             Navigator.getInstance().setMainController(controller);
             Navigator.getInstance().setNavigationContext(super.context);
-            Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
+            Navigator.getInstance().loadVista(Navigator.HOME_VIEW);
 
             //For Testing Purposes: ScannerEvent evt = new ScannerEvent(this, "*¨C100106141410000098764", "(/","",0);
 
