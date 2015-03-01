@@ -2,11 +2,13 @@ package service;
 
 import data.DbConnectorLogistic;
 import entities.Item;
+import entities.Order;
+import entities.Position;
 import org.intellij.lang.annotations.Language;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -130,6 +132,88 @@ public class SupplyChainService {
         //State 2: Arrived
         insertTrackingItems(items, gln, 2);
         return new WebServiceResult(removedItems,true);
+    }
+
+    /**
+     * setOrder
+     *  @param order
+     *  An order to be created in the database.
+     *  @param glnOrd
+     *  GLN of the initiating location.
+     *  @param glnDest
+     *  GLN of the destination.
+     */
+    @WebMethod
+    public boolean setOrder(Order order, String glnOrd,String glnDest) {
+        boolean success=false;
+
+        ResultSet rs;
+
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            @Language("DB2")
+            String query = "SELECT TOP 1 [OrderNr]\n" +
+                    "  FROM [dbo].[Order]\n" +
+                    "  ORDER BY OrderNr\n" +
+                    "  DESC";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            rs =  ps.executeQuery();
+            rs.next();
+            int lastIndex = (int)(long)(Long)rs.getObject(1);
+
+            query = "INSERT INTO [dbo].[Order]\n" +
+                    "           ([OrderNr]\n" +
+                    "           ,[StateNr]\n" +
+                    "           ,[GLNorderer]\n" +
+                    "           ,[GLNdest])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,1\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1,lastIndex+1);
+            ps.setString(2,glnOrd);
+            ps.setString(3,glnDest);
+            int update =  ps.executeUpdate();
+            query = "INSERT INTO [dbo].[Positions]\n" +
+                    "           ([OrderNr]\n" +
+                    "           ,[GTIN]\n" +
+                    "           ,[Description]\n" +
+                    "           ,[Quantity])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+            int answer=0;
+            for(Position pos:order.getPositions()){
+                ps = connection.prepareStatement(query);
+                ps.setInt(1,lastIndex+1);
+                ps.setString(2,pos.getGtin());
+                ps.setString(3,pos.getDescription());
+                ps.setInt(4,pos.getQuantity());
+                answer =  ps.executeUpdate();
+            }
+            if(update==1&&answer==1){
+                success=true;
+            }else{success=false;}
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            success = false;
+            return success;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return success;
     }
 
     /**
