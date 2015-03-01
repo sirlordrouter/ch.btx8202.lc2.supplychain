@@ -165,4 +165,20 @@ public class ErpClient implements IDataSource{
             e.printStackTrace();
         }
     }
+
+    /**
+     * Sets the order in the database.
+     */
+    @Override
+    public boolean setOrder(Order order, String glnOrd, String glnDest) {
+        try{
+            boolean success = supplyChainServicePort.setOrder(order, glnOrd, glnDest);
+            if(success){
+                return true;
+            }else return false;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

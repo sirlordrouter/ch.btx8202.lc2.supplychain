@@ -1,10 +1,8 @@
 package ui;
 
 
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,11 +15,9 @@ import javafx.scene.layout.VBox;
 import model.entities.Order;
 import model.entities.OrderTreeItem;
 import model.entities.Position;
-import model.entities.StockTreeItem;
 import services.ErpClient;
 import services.IDataSource;
 import services.PropertiesReader;
-import webservice.erp.Item;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
@@ -41,7 +37,7 @@ import java.util.*;
  */
 public class OrderViewController extends VBox implements Initializable,IPartialView {
     public TreeTableView orderTable;
-    public Button editButton,addButton,removeButton;
+    public Button editButton,addButton,removeButton,sendButton;
 
 
     IDataSource dataSource;
@@ -230,6 +226,34 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
             {
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
                 selectedItem.getParent().getChildren().remove(selectedItem);
+
+            }
+
+        } );
+        sendButton.setOnAction( new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle( final ActionEvent event )
+            {
+                final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
+                if(selectedItem.getValue().getDescription()!=null){
+                    ObservableList<Position> positions = FXCollections.observableArrayList();
+                    Order order = new Order("Order",null,true);
+                    for(TreeItem<OrderTreeItem> item:selectedItem.getChildren()){
+                        positions.add(new Position(item.getValue().getGtin(),item.getValue().getDescription(),Integer.parseInt(item.getValue().getQuantity())));
+                    }
+                    order.setPositions(positions);
+                    if(dataSource.setOrder((webservice.erp.Order)order,prop.getProperty("stationGLN"),"")){
+                        UserInformationPopup popup = new UserInformationPopup("The order is successfully sent.","Error");
+                        popup.show();
+                    }else{
+                        UserInformationPopup popup = new UserInformationPopup("The order could not been sent. Please check your input data.","Error");
+                        popup.show();
+                    }
+                }else{
+                    UserInformationPopup popup = new UserInformationPopup("You can only send whole orders, not single positions.","Error");
+                    popup.show();
+                }
 
             }
 
