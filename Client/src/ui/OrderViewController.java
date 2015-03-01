@@ -257,6 +257,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                     order.getPositions().addAll(positions);
                     boolean request = dataSource.setOrder(order,null,null);
                     if(request){
+                        selectedItem.getParent().getChildren().remove(selectedItem);
                         UserInformationPopup popup = new UserInformationPopup("The order is successfully sent.","Information");
                         popup.show();
                     }else{
