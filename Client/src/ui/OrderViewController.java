@@ -12,9 +12,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.layout.VBox;
-import model.entities.Order;
+import webservice.erp.Order;
 import model.entities.OrderTreeItem;
-import model.entities.Position;
+import webservice.erp.Position;
 import services.ErpClient;
 import services.IDataSource;
 import services.PropertiesReader;
@@ -104,15 +104,21 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         List<Order> orderList=new ArrayList<>();
         ObservableList<Position> positions1 = FXCollections.observableArrayList();
         ObservableList<Position> positions2 = FXCollections.observableArrayList();
-        Order order1 = new Order("Order 1",null,false);
-        positions1.add(new Position("21342431", "Aspirin", 10));
-        positions1.add(new Position("2341341355", "Dafalgan", 10));
-        order1.setPositions(positions1);
-        Order order2 = new Order("Order 2",null,false);
-        positions2.add(new Position("9981283919", "Demesta", 20));
-        order2.setPositions(positions2);
+        Order order1 = new Order();
+        order1.setName("Order 1");
+        order1.setOrdered(false);
+        Position pos1 = new Position();
+        Position pos2 = new Position();
+        pos1.setGtin("21342431");
+        pos1.setDescription("Aspirin");
+        pos1.setQuantity(10);
+        positions1.add(pos1);
+        pos2.setGtin("2341341355");
+        pos2.setDescription("Dafalgan");
+        pos2.setQuantity(20);
+        positions1.add(pos2);
+        order1.getPositions().addAll(positions1);
         orderList.add(order1);
-        orderList.add(order2);
         final TreeItem<OrderTreeItem> root =
         new TreeItem<OrderTreeItem>(new OrderTreeItem("Orders", null, null));
 
@@ -236,15 +242,22 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
             public void handle( final ActionEvent event )
             {
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
-                if(selectedItem.getValue().getDescription()!=null){
+                if(selectedItem.getValue().getDescription()==null){
                     ObservableList<Position> positions = FXCollections.observableArrayList();
-                    Order order = new Order("Order",null,true);
+                    Order order = new Order();
+                    order.setName("Order");
+                    order.setOrdered(true);
                     for(TreeItem<OrderTreeItem> item:selectedItem.getChildren()){
-                        positions.add(new Position(item.getValue().getGtin(),item.getValue().getDescription(),Integer.parseInt(item.getValue().getQuantity())));
+                        Position pos = new Position();
+                        pos.setGtin(item.getValue().getGtin());
+                        pos.setDescription(item.getValue().getDescription());
+                        pos.setQuantity(Integer.parseInt(item.getValue().getQuantity()));
+                        positions.add(pos);
                     }
-                    order.setPositions(positions);
-                    if(dataSource.setOrder((webservice.erp.Order)order,prop.getProperty("stationGLN"),"")){
-                        UserInformationPopup popup = new UserInformationPopup("The order is successfully sent.","Error");
+                    order.getPositions().addAll(positions);
+                    boolean request = dataSource.setOrder(order,null,null);
+                    if(request){
+                        UserInformationPopup popup = new UserInformationPopup("The order is successfully sent.","Information");
                         popup.show();
                     }else{
                         UserInformationPopup popup = new UserInformationPopup("The order could not been sent. Please check your input data.","Error");

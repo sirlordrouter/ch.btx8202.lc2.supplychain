@@ -1,9 +1,8 @@
 package entities;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
+
+import java.util.List;
 
 /**
  * Bern University of Applied Sciences</br>
@@ -16,52 +15,40 @@ import javafx.collections.ObservableList;
  * @version 28-02-2015
  */
 public class Order {
-    private SimpleStringProperty name;
-    private SimpleListProperty<Position> positions;
-    private SimpleBooleanProperty ordered;
+    private String name;
+    private List<Position> positions;
+    private boolean ordered;
 
     public Order(String aName, ObservableList<Position> aPositionList, boolean state){
-        this.name = new SimpleStringProperty(aName);
-        this.positions = new SimpleListProperty(aPositionList);
-        this.ordered=new SimpleBooleanProperty(state);
+        this.name = aName;
+        this.positions = aPositionList;
+        this.ordered=state;
     }
     public Order(){
 
     }
 
-    public ObservableList<Position> getPositions() {
-        return positions.get();
+    public String getName() {
+        return name;
     }
 
-    public SimpleListProperty<Position> positionsProperty() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Position> getPositions() {
         return positions;
     }
 
-    public void setPositions(ObservableList<Position> positionList) {
-        this.positions.set(positionList);
+    public void setPositions(List<Position> positions) {
+        this.positions = positions;
     }
 
-    public boolean getOrdered() {
-        return ordered.get();
-    }
-
-    public SimpleBooleanProperty orderedProperty() {
+    public boolean isOrdered() {
         return ordered;
     }
 
     public void setOrdered(boolean ordered) {
-        this.ordered.set(ordered);
-    }
-
-    public String getName() {
-        return name.get();
-    }
-
-    public SimpleStringProperty nameProperty() {
-        return name;
-    }
-
-    public void setName(String aName) {
-        this.name.set(aName);
+        this.ordered = ordered;
     }
 }

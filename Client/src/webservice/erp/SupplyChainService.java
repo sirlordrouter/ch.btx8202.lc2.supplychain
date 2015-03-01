@@ -51,21 +51,6 @@ public interface SupplyChainService {
      * 
      * @param arg0
      * @return
-     *     returns webservice.erp.WebServiceResult
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getCheckedInItems", targetNamespace = "http://service/", className = "webservice.erp.GetCheckedInItems")
-    @ResponseWrapper(localName = "getCheckedInItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.GetCheckedInItemsResponse")
-    @Action(input = "http://service/SupplyChainService/getCheckedInItemsRequest", output = "http://service/SupplyChainService/getCheckedInItemsResponse")
-    public WebServiceResult getCheckedInItems(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
      *     returns java.lang.String
      */
     @WebMethod
@@ -74,6 +59,21 @@ public interface SupplyChainService {
     @ResponseWrapper(localName = "sayHelloWorldFromResponse", targetNamespace = "http://service/", className = "webservice.erp.SayHelloWorldFromResponse")
     @Action(input = "http://service/SupplyChainService/sayHelloWorldFromRequest", output = "http://service/SupplyChainService/sayHelloWorldFromResponse")
     public String sayHelloWorldFrom(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns webservice.erp.WebServiceResult
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getCheckedInItems", targetNamespace = "http://service/", className = "webservice.erp.GetCheckedInItems")
+    @ResponseWrapper(localName = "getCheckedInItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.GetCheckedInItemsResponse")
+    @Action(input = "http://service/SupplyChainService/getCheckedInItemsRequest", output = "http://service/SupplyChainService/getCheckedInItemsResponse")
+    public WebServiceResult getCheckedInItems(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
 

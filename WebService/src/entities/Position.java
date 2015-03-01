@@ -14,52 +14,40 @@ import javafx.beans.property.SimpleStringProperty;
  * @version 28-02-2015
  */
 public class Position {
-    private SimpleStringProperty gtin, description;
-    private SimpleIntegerProperty quantity;
+    private String gtin, description;
+    private int quantity;
 
     public Position(String aGtin, String aDescription, int aQuantity){
-        this.gtin=new SimpleStringProperty(aGtin);
-        this.description=new SimpleStringProperty(aDescription);
-        this.quantity=new SimpleIntegerProperty(aQuantity);
+        this.gtin=aGtin;
+        this.description=aDescription;
+        this.quantity=aQuantity;
     }
     public Position(){
 
     }
 
     public String getGtin() {
-        return gtin.get();
-    }
-
-    public SimpleStringProperty gtinProperty() {
         return gtin;
     }
 
     public void setGtin(String gtin) {
-        this.gtin.set(gtin);
+        this.gtin = gtin;
     }
 
     public String getDescription() {
-        return description.get();
-    }
-
-    public SimpleStringProperty descriptionProperty() {
         return description;
     }
 
     public void setDescription(String description) {
-        this.description.set(description);
+        this.description = description;
     }
 
     public int getQuantity() {
-        return quantity.get();
-    }
-
-    public SimpleIntegerProperty quantityProperty() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
-        this.quantity.set(quantity);
+        this.quantity = quantity;
     }
 }
 
