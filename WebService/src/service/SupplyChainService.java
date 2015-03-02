@@ -146,12 +146,11 @@ public class SupplyChainService {
     @WebMethod
     public boolean setOrder(Order order, String glnOrd,String glnDest) {
         boolean success=false;
-
         ResultSet rs;
-
         Connection connection = connectorLogistic.getConnection();
 
         try {
+            // get the identifier of the latest order entry in the database
             @Language("DB2")
             String query = "SELECT TOP 1 [OrderNr]\n" +
                     "  FROM [dbo].[Order]\n" +
@@ -163,6 +162,7 @@ public class SupplyChainService {
             rs.next();
             int lastIndex = (int)(long)(Long)rs.getObject(1);
 
+            // make a new order entry in the database at position lastindex + 1
             query = "INSERT INTO [dbo].[Order]\n" +
                     "           ([OrderNr]\n" +
                     "           ,[StateNr]\n" +
@@ -178,6 +178,7 @@ public class SupplyChainService {
             ps.setString(2,glnOrd);
             ps.setString(3,glnDest);
             int update =  ps.executeUpdate();
+            // fill all positions of the given order in the positions table
             query = "INSERT INTO [dbo].[Positions]\n" +
                     "           ([OrderNr]\n" +
                     "           ,[GTIN]\n" +

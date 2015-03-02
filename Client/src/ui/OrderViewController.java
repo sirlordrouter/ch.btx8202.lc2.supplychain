@@ -30,7 +30,8 @@ import java.util.*;
  * BSc Medical Informatics</br>
  * Module Bachelorthesis</br>
  *
- *<p>.</p>
+ *<p>This class handles the gui elements of the OrderView.fxml. Based on database tables, order suggestions for medicaments are generated
+ * in a treetableview. The entries are editable and removable.</p>
  *
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 28-02-2015
@@ -56,8 +57,10 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         }
 
         try {
+            // get the properties
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
+            // get a connection object to the webservice
             dataSource = new ErpClient(prop.getProperty("stationGLN"));
 
         } catch (ConnectException e ) {
@@ -72,9 +75,8 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+            // fill the treetable view with corresponding data
            setOrderTable();
-
-
     }
 
 
@@ -101,9 +103,12 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
     }
 
     public void setOrderTable(){
+        /*
+         * *************************************************
+         * Test data.
+         */
         List<Order> orderList=new ArrayList<>();
         ObservableList<Position> positions1 = FXCollections.observableArrayList();
-        ObservableList<Position> positions2 = FXCollections.observableArrayList();
         Order order1 = new Order();
         order1.setName("Order 1");
         order1.setOrdered(false);
@@ -119,9 +124,14 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         positions1.add(pos2);
         order1.getPositions().addAll(positions1);
         orderList.add(order1);
+        /*
+         * *********************SETUP TREE NODES*****************************
+         */
+        // empty root element (will be set to invisible)
         final TreeItem<OrderTreeItem> root =
         new TreeItem<OrderTreeItem>(new OrderTreeItem("Orders", null, null));
 
+        // iterate over the orders and fill the empty root element with tree items
         for(Order order:orderList){
             TreeItem<OrderTreeItem> tempItem = new TreeItem<OrderTreeItem>(new OrderTreeItem(order.getName(), null, null));
             for(Position position:order.getPositions()){
@@ -134,7 +144,8 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         /*
         ***************************SETUP TABLE COLUMNS********************************************************
          */
-        // Name Column
+
+        // GTIN Column
         TreeTableColumn<OrderTreeItem, String> gtinColumn =
                 new TreeTableColumn<>("GTIN");
         gtinColumn.setPrefWidth(200);
@@ -144,6 +155,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 (TreeTableColumn.CellDataFeatures<OrderTreeItem, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getGtin())
         );
+        // provide modification functionality
         gtinColumn.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<OrderTreeItem, String>>()  {
             @Override
             public void handle(final TreeTableColumn.CellEditEvent<OrderTreeItem, String> event) {
@@ -162,6 +174,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 (TreeTableColumn.CellDataFeatures<OrderTreeItem, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getDescription())
         );
+        // provide modification functionality
         descColumn.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<OrderTreeItem, String>>()  {
             @Override
             public void handle(final TreeTableColumn.CellEditEvent<OrderTreeItem, String> event) {
@@ -179,6 +192,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 (TreeTableColumn.CellDataFeatures<OrderTreeItem, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getQuantity())
         );
+        // provide modification functionality
         quantityColumn.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<OrderTreeItem, String>>()  {
             @Override
             public void handle(final TreeTableColumn.CellEditEvent<OrderTreeItem, String> event) {
@@ -188,18 +202,21 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         });
 
         /*
-        ***************************************************************************************
+        *******************************SETUP BUTTONS********************************************************
          */
 
+        // add button to add more positions to an existing order
         addButton.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
             public void handle( final ActionEvent event )
             {
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
+                // check if the selected item is an order
                 if(selectedItem.getValue().getDescription()==null){
                     final TreeItem<OrderTreeItem> newItem =
                     new TreeItem<>( new OrderTreeItem("", "","" ) );
+                    // add an empty treeitem
                     selectedItem.getChildren().add( newItem );
                     selectedItem.expandedProperty().set( true );
                     final int rowIndex = orderTable.getRow(newItem);
@@ -208,16 +225,19 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
             }
 
         } );
+        // edit button to modify existing tree items (no input validation)
         editButton.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
             public void handle( final ActionEvent event )
             {
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
+                // check that the selected item isnt an order
                 if(selectedItem.getValue().getDescription()!=null){
                     final int rowIndex = orderTable.getRow(selectedItem);
                     orderTable.edit(rowIndex, quantityColumn );
                 }else{
+                    // error popup
                     UserInformationPopup popup = new UserInformationPopup("You can only edit the quantity of an existing position.","Error");
                     popup.show();
                 }
@@ -225,6 +245,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
             }
 
         } );
+        // remove button to remove entries of the tree table.
         removeButton.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
@@ -232,17 +253,18 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
             {
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
                 selectedItem.getParent().getChildren().remove(selectedItem);
-
             }
-
         } );
+        // send button to accept the order suggestion and add it to the database
         sendButton.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
             public void handle( final ActionEvent event )
             {
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
+                // check if the selected item is an order
                 if(selectedItem.getValue().getDescription()==null){
+                    // convert back from treeitems to an order object
                     ObservableList<Position> positions = FXCollections.observableArrayList();
                     Order order = new Order();
                     order.setName("Order");
@@ -255,6 +277,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                         positions.add(pos);
                     }
                     order.getPositions().addAll(positions);
+                    // send the order object to the webservice
                     boolean request = dataSource.setOrder(order,null,null);
                     if(request){
                         selectedItem.getParent().getChildren().remove(selectedItem);
@@ -268,13 +291,13 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                     UserInformationPopup popup = new UserInformationPopup("You can only send whole orders, not single positions.","Error");
                     popup.show();
                 }
-
             }
-
         } );
         // add the columns to the treetable
         orderTable.getColumns().setAll(gtinColumn, descColumn,quantityColumn);
+        // set the root element
         orderTable.setRoot(root);
+        // make the treetable editable
         orderTable.setEditable(true);
         // dont show the root element (invisible container)
         orderTable.setShowRoot(false);
