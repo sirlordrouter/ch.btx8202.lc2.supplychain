@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
 import services.ErpClient;
@@ -77,6 +78,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
     public TextField txtSerial;
     public TextField txtGTIN;
     public TextField txtInput;
+    public WebView medicationWebView;
 
     public ObservableList<Item> data =  FXCollections.observableArrayList();
     IDataSource dataSource;
@@ -207,6 +209,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                         //Set Expiry Date when Service updated
                         txtareaMediInfo.setText(item.toString());
                         data.add(item);
+                        medicationWebView.
                         clearItemInput();
                     } else {
                         txtareaMediInfo.setText("Kein Item gefunden.");

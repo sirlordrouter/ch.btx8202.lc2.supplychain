@@ -18,6 +18,7 @@
 <!-- Start Main Window -->
 
 <?import java.net.URL?>
+<?import javafx.scene.web.WebView?>
 <fx:root fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
        <SplitPane dividerPositions="0.6850152905198776" layoutY="40.0" minHeight="700.0" prefHeight="750.0" prefWidth="999.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
@@ -34,6 +35,11 @@
                                     <Image url="@../media/mephadolor.png" />
                                  </image>
                               </ImageView>
+                               <WebView fx:id="medicationWebView" >
+
+                               </WebView>
+
+
                            </children>
                         </AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="259.0">
