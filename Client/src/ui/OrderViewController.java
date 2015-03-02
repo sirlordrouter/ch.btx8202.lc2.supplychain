@@ -12,9 +12,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.layout.VBox;
-import webservice.erp.Order;
+import model.entities.StockTreeItem;
+import model.entities.SwissIndexResult;
+import model.entities.TradeItem;
+import services.SwissIndexClient;
+import webservice.erp.*;
 import model.entities.OrderTreeItem;
-import webservice.erp.Position;
 import services.ErpClient;
 import services.IDataSource;
 import services.PropertiesReader;
@@ -38,7 +41,9 @@ import java.util.*;
  */
 public class OrderViewController extends VBox implements Initializable,IPartialView {
     public TreeTableView orderTable;
-    public Button editButton,addButton,removeButton,sendButton;
+    public Button editButton,addButton,removeButton,sendButton,refreshButton;
+    public ObservableList<Item> data =  FXCollections.observableArrayList();
+
 
 
     IDataSource dataSource;
@@ -75,8 +80,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-            // fill the treetable view with corresponding data
-           setOrderTable();
+
     }
 
 
@@ -108,22 +112,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
          * Test data.
          */
         List<Order> orderList=new ArrayList<>();
-        ObservableList<Position> positions1 = FXCollections.observableArrayList();
-        Order order1 = new Order();
-        order1.setName("Order 1");
-        order1.setOrdered(false);
-        Position pos1 = new Position();
-        Position pos2 = new Position();
-        pos1.setGtin("21342431");
-        pos1.setDescription("Aspirin");
-        pos1.setQuantity(10);
-        positions1.add(pos1);
-        pos2.setGtin("2341341355");
-        pos2.setDescription("Dafalgan");
-        pos2.setQuantity(20);
-        positions1.add(pos2);
-        order1.getPositions().addAll(positions1);
-        orderList.add(order1);
+        orderList.add(getOrderSuggestion());
         /*
          * *********************SETUP TREE NODES*****************************
          */
@@ -299,5 +288,81 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         // dont show the root element (invisible container)
         orderTable.setShowRoot(false);
 
+    }
+
+    /**
+     * get order suggestion
+     */
+    public Order getOrderSuggestion() {
+        Order order = new Order();
+        order.setName("Order Suggestion");
+        order.setOrdered(false);
+        // fetch checkedin items from the supply chain service
+        WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
+        ObservableList<Item> tempData = FXCollections.observableArrayList();
+        tempData.setAll(result.getItems());
+
+        // iterate over all checked in items and get item information from swissindex
+        for(Item item:tempData){
+            TradeItem tradeItem = null;
+            SwissIndexResult swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+            if(result.isResult()){
+                tradeItem = swissIndexResult.getTradeItems().get(0);
+            }else{
+                System.out.println(swissIndexResult.getMessage());
+            }
+            TradeItem tradeItem1 = new TradeItem();
+            tradeItem1.setName(tradeItem.getName());
+            tradeItem1.setBeschreibung(tradeItem.getBeschreibung());
+            tradeItem1.setMenge(tradeItem.getMenge());
+            tradeItem1.setGTIN(item.getGTIN());
+            tradeItem1.setExpiryDate(item.getExpiryDate());
+            tradeItem1.setLot(item.getLot());
+            tradeItem1.setSerial(item.getSerial());
+            tradeItem1.setCheckInDate(item.getCheckInDate());
+            data.add(tradeItem1);
+        }
+
+
+        ArrayList<String> groupnames = new ArrayList<String>();
+        // set an invisible root element as a container
+        final TreeItem<StockTreeItem> root =
+                new TreeItem<StockTreeItem>(new StockTreeItem("Stock", "", "", "", "", ""));
+        for (Item i : data) {
+            // create a new group, if the item name is a new one
+            if (!groupnames.contains(i.getName())) {
+                groupnames.add(i.getName());
+                StockTreeItem treeGroup = new StockTreeItem(i.getName(), "", "", "", "", "");
+                root.getChildren().add(new TreeItem<StockTreeItem>(treeGroup));
+            }
+            // fill all elements in the corresponding group
+            for (TreeItem<StockTreeItem> item : root.getChildren()) {
+                if (i.getName().equals(item.getValue().getDescription())) {
+                    StockTreeItem treeItem = new StockTreeItem(i.getName(), i.getMenge(), i.getGTIN(), i.getExpiryDate(), i.getLot(), i.getSerial());
+                    item.getChildren().add(new TreeItem<StockTreeItem>(treeItem));
+                }
+            }
+        }
+        // count the items for each group
+        List<Quantity> quantities = dataSource.getQuantities(prop.getProperty("stationGLN"));
+
+        for (TreeItem<StockTreeItem> item : root.getChildren()) {
+            int count = item.getChildren().size();
+            item.getValue().setQuantity(Integer.toString(count) + " pc.");
+                for(Quantity quantity:quantities){
+                    if(item.getChildren().get(0).getValue().getGtin().equals(quantity.getGtin())){
+                        if(count<quantity.getMinQuantity()){
+                            int orderQuantity = quantity.getOptQuantity() -count;
+                            Position pos = new Position();
+                            pos.setGtin(item.getChildren().get(0).getValue().getGtin());
+                            pos.setDescription(item.getChildren().get(0).getValue().getDescription());
+                            pos.setQuantity(orderQuantity);
+                            order.getPositions().add(pos);
+                        }
+                    }
+                }
+
+        }
+        return order;
     }
 }
