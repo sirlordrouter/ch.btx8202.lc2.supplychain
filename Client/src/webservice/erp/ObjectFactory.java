@@ -32,6 +32,7 @@ public class ObjectFactory {
     private final static QName _GetItemsByBatch_QNAME = new QName("http://service/", "getItemsByBatch");
     private final static QName _GetOrderForSSCC_QNAME = new QName("http://service/", "getOrderForSSCC");
     private final static QName _CheckoutItemsResponse_QNAME = new QName("http://service/", "checkoutItemsResponse");
+    private final static QName _GetQuantitiesResponse_QNAME = new QName("http://service/", "getQuantitiesResponse");
     private final static QName _CheckoutItems_QNAME = new QName("http://service/", "checkoutItems");
     private final static QName _InsertTrackingItemsResponse_QNAME = new QName("http://service/", "insertTrackingItemsResponse");
     private final static QName _CheckinItemsResponse_QNAME = new QName("http://service/", "checkinItemsResponse");
@@ -44,6 +45,7 @@ public class ObjectFactory {
     private final static QName _SetOrderResponse_QNAME = new QName("http://service/", "setOrderResponse");
     private final static QName _GetOrderForSSCCResponse_QNAME = new QName("http://service/", "getOrderForSSCCResponse");
     private final static QName _SetOrder_QNAME = new QName("http://service/", "setOrder");
+    private final static QName _GetQuantities_QNAME = new QName("http://service/", "getQuantities");
     private final static QName _CheckinItems_QNAME = new QName("http://service/", "checkinItems");
     private final static QName _InsertTrackingItems_QNAME = new QName("http://service/", "insertTrackingItems");
 
@@ -68,6 +70,14 @@ public class ObjectFactory {
      */
     public CheckoutItemsResponse createCheckoutItemsResponse() {
         return new CheckoutItemsResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetQuantitiesResponse }
+     * 
+     */
+    public GetQuantitiesResponse createGetQuantitiesResponse() {
+        return new GetQuantitiesResponse();
     }
 
     /**
@@ -231,6 +241,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetQuantities }
+     * 
+     */
+    public GetQuantities createGetQuantities() {
+        return new GetQuantities();
+    }
+
+    /**
      * Create an instance of {@link WebServiceResult }
      * 
      */
@@ -260,6 +278,14 @@ public class ObjectFactory {
      */
     public Item createItem() {
         return new Item();
+    }
+
+    /**
+     * Create an instance of {@link Quantity }
+     * 
+     */
+    public Quantity createQuantity() {
+        return new Quantity();
     }
 
     /**
@@ -340,6 +366,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "checkoutItemsResponse")
     public JAXBElement<CheckoutItemsResponse> createCheckoutItemsResponse(CheckoutItemsResponse value) {
         return new JAXBElement<CheckoutItemsResponse>(_CheckoutItemsResponse_QNAME, CheckoutItemsResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetQuantitiesResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getQuantitiesResponse")
+    public JAXBElement<GetQuantitiesResponse> createGetQuantitiesResponse(GetQuantitiesResponse value) {
+        return new JAXBElement<GetQuantitiesResponse>(_GetQuantitiesResponse_QNAME, GetQuantitiesResponse.class, null, value);
     }
 
     /**
@@ -448,6 +483,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "setOrder")
     public JAXBElement<SetOrder> createSetOrder(SetOrder value) {
         return new JAXBElement<SetOrder>(_SetOrder_QNAME, SetOrder.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetQuantities }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getQuantities")
+    public JAXBElement<GetQuantities> createGetQuantities(GetQuantities value) {
+        return new JAXBElement<GetQuantities>(_GetQuantities_QNAME, GetQuantities.class, null, value);
     }
 
     /**

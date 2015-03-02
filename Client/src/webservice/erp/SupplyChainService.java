@@ -148,6 +148,21 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<webservice.erp.Quantity>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getQuantities", targetNamespace = "http://service/", className = "webservice.erp.GetQuantities")
+    @ResponseWrapper(localName = "getQuantitiesResponse", targetNamespace = "http://service/", className = "webservice.erp.GetQuantitiesResponse")
+    @Action(input = "http://service/SupplyChainService/getQuantitiesRequest", output = "http://service/SupplyChainService/getQuantitiesResponse")
+    public List<Quantity> getQuantities(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
      * @param arg1
      * @param arg0
      * @return

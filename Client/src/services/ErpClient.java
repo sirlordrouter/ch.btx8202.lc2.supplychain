@@ -181,4 +181,15 @@ public class ErpClient implements IDataSource{
             return false;
         }
     }
+
+    @Override
+    public List<Quantity> getQuantities(String gln) {
+        try{
+            List<Quantity> quantities = supplyChainServicePort.getQuantities(gln);
+            return quantities;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

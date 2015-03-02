@@ -4,6 +4,7 @@ import data.DbConnectorLogistic;
 import entities.Item;
 import entities.Order;
 import entities.Position;
+import entities.Quantity;
 import org.intellij.lang.annotations.Language;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -306,6 +307,51 @@ public class SupplyChainService {
         List<Item> items;
         return getAllItemsBySSCC(sscc);
 
+    }
+
+    /**
+     * Returns a list of quantity objects.
+     *
+     * @param gln
+     *  a global location number
+     * @return
+     *  List of quantity objects
+     */
+    @WebMethod
+    public List<Quantity> getQuantities(String gln) {
+        List<Quantity> quantities=new ArrayList<Quantity>();
+
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            @Language("DB2")
+            String query = "SELECT [GTIN]\n" +
+                    "      ,[Description]\n" +
+                    "      ,[MinQuantity]\n" +
+                    "      ,[OptQuantity]\n" +
+                    "  FROM [dbo].[StockQuantities]\n" +
+                    "  WHERE [GLN] = ?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1,gln);
+            rs =  ps.executeQuery();
+
+            while(rs.next()){
+                quantities.add(new Quantity(rs.getString(1),rs.getString(2),rs.getInt(3),rs.getInt(4)));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return quantities;
     }
 
     private List<Item> getAllItemsBySSCC(String sscc) {

@@ -254,17 +254,15 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
                 selectedItem.getParent().getChildren().remove(selectedItem);
             }
+
         } );
-        // send button to accept the order suggestion and add it to the database
         sendButton.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
             public void handle( final ActionEvent event )
             {
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
-                // check if the selected item is an order
                 if(selectedItem.getValue().getDescription()==null){
-                    // convert back from treeitems to an order object
                     ObservableList<Position> positions = FXCollections.observableArrayList();
                     Order order = new Order();
                     order.setName("Order");
@@ -277,7 +275,6 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                         positions.add(pos);
                     }
                     order.getPositions().addAll(positions);
-                    // send the order object to the webservice
                     boolean request = dataSource.setOrder(order,null,null);
                     if(request){
                         selectedItem.getParent().getChildren().remove(selectedItem);

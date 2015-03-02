@@ -11,6 +11,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.VBox;
+import model.entities.Order;
 import model.entities.StockTreeItem;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
@@ -19,15 +20,16 @@ import services.IDataSource;
 import services.PropertiesReader;
 import services.SwissIndexClient;
 import webservice.erp.Item;
+import webservice.erp.Position;
+import webservice.erp.Quantity;
 import webservice.erp.WebServiceResult;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.ConnectException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Bern University of Applied Sciences</br>
@@ -153,6 +155,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
                 root.getChildren().add(new TreeItem<StockTreeItem>(treeGroup));
             }
             // fill all elements in the corresponding group
+            // TODO:  evtl nicht durch alle iterieren
             for(TreeItem<StockTreeItem> item:root.getChildren()){
                 if(i.getName().equals(item.getValue().getDescription())){
                     StockTreeItem treeItem = new StockTreeItem(i.getName(), i.getMenge(), i.getGTIN(), i.getExpiryDate(), i.getLot(), i.getSerial());
@@ -161,8 +164,11 @@ public class StockViewController extends VBox implements Initializable,IPartialV
             }
         }
         // count the items for each group
+        List<Quantity> quantities = dataSource.getQuantities(prop.getProperty("stationGLN"));
+
         for(TreeItem<StockTreeItem> item:root.getChildren()){
-            item.getValue().setQuantity(Integer.toString(item.getChildren().size())+ " pc.");
+            int count = item.getChildren().size();
+            item.getValue().setQuantity(Integer.toString(count)+ " pc.");
         }
         // if there are no checkedin items, alert user!
         if(data.isEmpty()){
@@ -221,6 +227,9 @@ public class StockViewController extends VBox implements Initializable,IPartialV
                 (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
                         new ReadOnlyStringWrapper(param.getValue().getValue().getSerial())
         );
+
+
+
         /*
         ***************************************************************************************
          */

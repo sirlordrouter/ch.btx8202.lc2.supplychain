@@ -31,6 +31,9 @@ public class Order {
         this.positions = new SimpleListProperty<>(aPositionList);
         this.ordered=new SimpleBooleanProperty(state);
     }
+    public Order(){
+
+    }
     // getter and setter
     public ObservableList<Position> getPositions() {
         return positions.get();

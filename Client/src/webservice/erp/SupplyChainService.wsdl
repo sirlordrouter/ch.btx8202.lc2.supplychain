@@ -46,6 +46,12 @@
 <message name="getItemsBySSCCResponse">
 <part name="parameters" element="tns:getItemsBySSCCResponse"/>
 </message>
+<message name="getQuantities">
+<part name="parameters" element="tns:getQuantities"/>
+</message>
+<message name="getQuantitiesResponse">
+<part name="parameters" element="tns:getQuantitiesResponse"/>
+</message>
 <message name="getItemByIdentifier">
 <part name="parameters" element="tns:getItemByIdentifier"/>
 </message>
@@ -98,6 +104,10 @@
 <operation name="getItemsBySSCC">
 <input wsam:Action="http://service/SupplyChainService/getItemsBySSCCRequest" message="tns:getItemsBySSCC"/>
 <output wsam:Action="http://service/SupplyChainService/getItemsBySSCCResponse" message="tns:getItemsBySSCCResponse"/>
+</operation>
+<operation name="getQuantities">
+<input wsam:Action="http://service/SupplyChainService/getQuantitiesRequest" message="tns:getQuantities"/>
+<output wsam:Action="http://service/SupplyChainService/getQuantitiesResponse" message="tns:getQuantitiesResponse"/>
 </operation>
 <operation name="getItemByIdentifier">
 <input wsam:Action="http://service/SupplyChainService/getItemByIdentifierRequest" message="tns:getItemByIdentifier"/>
@@ -173,6 +183,15 @@
 </output>
 </operation>
 <operation name="getItemsBySSCC">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getQuantities">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
