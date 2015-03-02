@@ -349,6 +349,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         for (TreeItem<StockTreeItem> item : root.getChildren()) {
             int count = item.getChildren().size();
             item.getValue().setQuantity(Integer.toString(count) + " pc.");
+            // check for order suggestions
                 for(Quantity quantity:quantities){
                     if(item.getChildren().get(0).getValue().getGtin().equals(quantity.getGtin())){
                         if(count<quantity.getMinQuantity()){
