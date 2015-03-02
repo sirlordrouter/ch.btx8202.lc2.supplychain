@@ -1,10 +1,13 @@
 package services;
 
 
+import java.util.Date;
+
 import webservice.erp.Item;
+import webservice.erp.Order;
+import webservice.erp.Quantity;
 import webservice.erp.WebServiceResult;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,4 +29,6 @@ public interface IDataSource {
     List<Item> getItemsByBatch(String gtin, String batchLot, Date expiryDate);
     WebServiceResult getCheckedInItems(String gln);
     void resetTrackedItems();
+    boolean setOrder(Order order, String glnOrd, String glnDest);
+    List<Quantity> getQuantities(String gln);
 }

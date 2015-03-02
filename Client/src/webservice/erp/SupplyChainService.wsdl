@@ -4,6 +4,12 @@
 <xsd:import namespace="http://service/" schemaLocation="http://localhost:8080/services/SupplyChainService?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="setOrder">
+<part name="parameters" element="tns:setOrder"/>
+</message>
+<message name="setOrderResponse">
+<part name="parameters" element="tns:setOrderResponse"/>
+</message>
 <message name="sayHelloWorldFrom">
 <part name="parameters" element="tns:sayHelloWorldFrom"/>
 </message>
@@ -40,6 +46,12 @@
 <message name="getItemsBySSCCResponse">
 <part name="parameters" element="tns:getItemsBySSCCResponse"/>
 </message>
+<message name="getQuantities">
+<part name="parameters" element="tns:getQuantities"/>
+</message>
+<message name="getQuantitiesResponse">
+<part name="parameters" element="tns:getQuantitiesResponse"/>
+</message>
 <message name="getItemByIdentifier">
 <part name="parameters" element="tns:getItemByIdentifier"/>
 </message>
@@ -65,6 +77,10 @@
 <part name="parameters" element="tns:resetTrackedItemsResponse"/>
 </message>
 <portType name="SupplyChainService">
+<operation name="setOrder">
+<input wsam:Action="http://service/SupplyChainService/setOrderRequest" message="tns:setOrder"/>
+<output wsam:Action="http://service/SupplyChainService/setOrderResponse" message="tns:setOrderResponse"/>
+</operation>
 <operation name="sayHelloWorldFrom">
 <input wsam:Action="http://service/SupplyChainService/sayHelloWorldFromRequest" message="tns:sayHelloWorldFrom"/>
 <output wsam:Action="http://service/SupplyChainService/sayHelloWorldFromResponse" message="tns:sayHelloWorldFromResponse"/>
@@ -89,6 +105,10 @@
 <input wsam:Action="http://service/SupplyChainService/getItemsBySSCCRequest" message="tns:getItemsBySSCC"/>
 <output wsam:Action="http://service/SupplyChainService/getItemsBySSCCResponse" message="tns:getItemsBySSCCResponse"/>
 </operation>
+<operation name="getQuantities">
+<input wsam:Action="http://service/SupplyChainService/getQuantitiesRequest" message="tns:getQuantities"/>
+<output wsam:Action="http://service/SupplyChainService/getQuantitiesResponse" message="tns:getQuantitiesResponse"/>
+</operation>
 <operation name="getItemByIdentifier">
 <input wsam:Action="http://service/SupplyChainService/getItemByIdentifierRequest" message="tns:getItemByIdentifier"/>
 <output wsam:Action="http://service/SupplyChainService/getItemByIdentifierResponse" message="tns:getItemByIdentifierResponse"/>
@@ -108,6 +128,15 @@
 </portType>
 <binding name="SupplyChainServicePortBinding" type="tns:SupplyChainService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="setOrder">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="sayHelloWorldFrom">
 <soap:operation soapAction=""/>
 <input>
@@ -154,6 +183,15 @@
 </output>
 </operation>
 <operation name="getItemsBySSCC">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getQuantities">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

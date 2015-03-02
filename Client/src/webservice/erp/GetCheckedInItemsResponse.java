@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse f\u00fcr getCheckedInItemsResponse complex type.
+ * <p>Java-Klasse für getCheckedInItemsResponse complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 

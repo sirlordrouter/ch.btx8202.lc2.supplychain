@@ -76,15 +76,16 @@ public class MainController implements Initializable {
     }
 
 
-    public void openCheckedinView(ActionEvent actionEvent) {
-        Navigator.getInstance().loadVista(Navigator.CHECKED_IN_ITEMS_VIEW);
-    }
-
     public void openStockView(ActionEvent actionEvent) {
         Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
     }
 
+    public void openHomeView(ActionEvent actionEvent) {
+        Navigator.getInstance().loadVista(Navigator.HOME_VIEW);
+    }
+
     public void openOrderView(ActionEvent actionEvent) {
+        Navigator.getInstance().loadVista(Navigator.ORDER_VIEW);
     }
 
     public void openPendingOrdersView(ActionEvent actionEvent) {

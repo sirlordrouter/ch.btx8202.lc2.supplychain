@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse f\u00fcr resetTrackedItemsResponse complex type.
+ * <p>Java-Klasse für resetTrackedItemsResponse complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
