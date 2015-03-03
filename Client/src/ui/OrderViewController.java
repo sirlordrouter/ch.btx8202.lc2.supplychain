@@ -156,7 +156,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         // Description Column
         TreeTableColumn<OrderTreeItem, String> descColumn =
                 new TreeTableColumn<>("Description");
-        descColumn.setPrefWidth(80);
+        descColumn.setPrefWidth(200);
         descColumn.setEditable(true);
         descColumn.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
         descColumn.setCellValueFactory(
@@ -264,7 +264,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                         positions.add(pos);
                     }
                     order.getPositions().addAll(positions);
-                    boolean request = dataSource.setOrder(order,null,null);
+                    boolean request = dataSource.setOrder(order,prop.getProperty("stationGLN"),prop.getProperty("manufacturerGLN"));
                     if(request){
                         selectedItem.getParent().getChildren().remove(selectedItem);
                         UserInformationPopup popup = new UserInformationPopup("The order is successfully sent.","Information");
