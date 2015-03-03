@@ -82,6 +82,15 @@
                           </ImageView>
                       </graphic>
                   </Button>
+                  <Button id="big-yellow-button" fx:id="openShipmentViewBtn" prefWidth="90" prefHeight="70" contentDisplay="TOP" layoutX="414.0" layoutY="8.0" mnemonicParsing="false" onAction="#openShipmentView" text="Shipment"  AnchorPane.leftAnchor="414.0">
+                        <graphic>
+                            <ImageView>
+                                <image>
+                                    <Image url="@../media/shipment.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                  </Button>
                </children>
             </AnchorPane>
          </children>

@@ -29,6 +29,7 @@ public class Navigator {
     public static final String STOCK_VIEW = "StockView.fxml";
     public static final String HOME_VIEW = "HomeView.fxml";
     public static final String ORDER_VIEW = "OrderView.fxml";
+    public static final String SHIPMENT_VIEW = "ShipmentView.fxml";
 
     private HashMap<String, VBox> views;
 
@@ -58,6 +59,7 @@ public class Navigator {
         views.put(HOME_VIEW, new HomeViewController(HOME_VIEW));
         views.put(STOCK_VIEW, new StockViewController(STOCK_VIEW));
         views.put(ORDER_VIEW, new OrderViewController(ORDER_VIEW));
+        views.put(SHIPMENT_VIEW, new OrderViewController(SHIPMENT_VIEW));
     }
 
     /**

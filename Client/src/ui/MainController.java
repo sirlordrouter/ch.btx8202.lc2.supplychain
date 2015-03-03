@@ -95,4 +95,6 @@ public class MainController implements Initializable {
     public void logout(ActionEvent actionEvent) {
         Navigator.getInstance().logout();
     }
+
+    public void openShipmentView(ActionEvent actionEvent) {Navigator.getInstance().loadVista(Navigator.SHIPMENT_VIEW);}
 }
