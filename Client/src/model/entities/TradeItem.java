@@ -2,6 +2,8 @@ package model.entities;
 
 import webservice.erp.Item;
 
+import java.math.BigInteger;
+
 /**
  * Bern University of Applied Sciences</br>
  * BSc Medical Informatics</br>
@@ -15,9 +17,21 @@ import webservice.erp.Item;
  */
 public class TradeItem extends Item {
 
+    public BigInteger getPharmaCode() {
+        return pharmaCode;
+    }
+
+    public void setPharmaCode(BigInteger pharmaCode) {
+        this.pharmaCode = pharmaCode;
+    }
+
+    private BigInteger pharmaCode;
+
     public TradeItem() {
         super();
     }
+
+
 
     @Override
     public String toString() {

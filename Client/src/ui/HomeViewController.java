@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
@@ -42,7 +43,11 @@ import java.util.Properties;
  * BSc Medical Informatics</br>
  * Module Living Case 2</br>
  *
- *<p>Controller class for the StockView.</p>
+ *<p>
+ *     Controller class for the StockView.
+ *     Webview: http://docs.oracle.com/javafx/2/webview/jfxpub-webview.htm (Medication Pictures from Compendium)
+ *
+ * </p>
  *
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
@@ -136,6 +141,8 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
             }
         });
         txtInput.requestFocus();
+
+
     }
 
     @FXML
@@ -209,7 +216,10 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                         //Set Expiry Date when Service updated
                         txtareaMediInfo.setText(item.toString());
                         data.add(item);
-                        medicationWebView.
+
+                        WebEngine webEngine =medicationWebView.getEngine();
+                        webEngine.load("http://pictures.documed.ch/wa_getphoto/wv_getPhoto.aspx?lang=de&query=pharmacode=" + item.getPharmaCode());
+
                         clearItemInput();
                     } else {
                         txtareaMediInfo.setText("Kein Item gefunden.");
@@ -222,7 +232,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                     if (info.getAI01_HANDELSEINHEIT() != null) {
                         Item i = dataSource.getItemByIdentifier(info.getAI01_HANDELSEINHEIT(), info.getAI21_SERIAL_NUMBER());
                         retrieveItemInformation(i);
-                        }
+                    }
 
 
                 }else if(txtInput.getText().trim().startsWith("(/*")){
@@ -237,6 +247,9 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                         items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
                         for (Item item : items) {
                             retrieveItemInformation(item);
+
+                            WebEngine webEngine =medicationWebView.getEngine();
+                            webEngine.load("http://pictures.documed.ch/wa_getphoto/wv_getPhoto.aspx?lang=de&query=pharmacode=" + ((TradeItem)data.get(0)).getPharmaCode());
                         }
                     }
 

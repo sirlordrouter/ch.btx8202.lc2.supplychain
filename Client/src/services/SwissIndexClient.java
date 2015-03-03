@@ -7,6 +7,7 @@ import webservice.erp.Company;
 import webservice.swissindex.*;
 
 import javax.xml.rpc.ServiceException;
+import java.math.BigInteger;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class SwissIndexClient {
                             PHARMAITEMCOMP comp = pharmaitem.getCOMP();
                             Company c = CompanyConstructor(comp.getNAME(),comp.getGLN(), "ABTEILUNG");
                             tradeItemList.add(ItemConstructor(pharmaitem.getDSCR(), pharmaitem.getADDSCR(),gtin, "BATCH/LOT", "SERIAL", "DESC", "Zusatz",
-                                    pharmaitem.getATC(), c));
+                                    pharmaitem.getATC(), c, pharmaitem.getPHAR()));
                         } else {
                             response.setResult(false);
                             return response;
@@ -77,10 +78,11 @@ public class SwissIndexClient {
     }
 
     public static TradeItem ItemConstructor(String name, String menge, String gtin, String lot,
-                                       String serial, String beschreibung, String zusatz, String atc, Company company) {
+                                       String serial, String beschreibung, String zusatz, String atc, Company company, BigInteger pharmaCode) {
         TradeItem i = new TradeItem();
         i.setName(name);
         i.setATC(atc);
+        i.setPharmaCode(pharmaCode);
         i.setBeschreibung(beschreibung);
         i.setGTIN(gtin);
         i.setLot(lot);
@@ -88,6 +90,7 @@ public class SwissIndexClient {
         i.setProducer(company);
         i.setSerial(serial);
         i.setZusatz(zusatz);
+
 
         return i;
     }

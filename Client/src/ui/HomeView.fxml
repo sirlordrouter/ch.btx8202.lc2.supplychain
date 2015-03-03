@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
+<?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
@@ -19,30 +21,23 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.web.WebView?>
+
 <fx:root fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
        <SplitPane dividerPositions="0.6850152905198776" layoutY="40.0" minHeight="700.0" prefHeight="750.0" prefWidth="999.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="254.0">
                <children>
-                  <SplitPane dividerPositions="0.4419642857142857" prefHeight="306.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.6" prefHeight="306.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                         <!-- Start medicine info -->
-                        <AnchorPane fx:id="mediInfoPane" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="201.0" style="-fx-background-color: aliceblue;">
+                        <AnchorPane fx:id="mediInfoPane" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="301.0" style="-fx-background-color: aliceblue;">
                            <children>
-                              <ImageView fx:id="mediPicture" fitHeight="120.0" fitWidth="173.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/mephadolor.png" />
-                                 </image>
-                              </ImageView>
-                               <WebView fx:id="medicationWebView" >
-
+                               <WebView fx:id="medicationWebView">
                                </WebView>
-
-
                            </children>
                         </AnchorPane>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="259.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="150.0">
                            <children>
                               <TextArea fx:id="txtareaMediInfo" editable="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
@@ -54,7 +49,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <SplitPane dividerPositions="0.5294117647058824" orientation="VERTICAL" prefHeight="304.0" prefWidth="201.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.4" orientation="VERTICAL" prefHeight="304.0" prefWidth="201.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="162.0" prefWidth="199.0">
                            <children>
@@ -70,12 +65,12 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="26.0" prefWidth="199.0" style="-fx-background-color: aliceblue;">
                            <children>
-                              <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="checkOutButton" layoutX="7.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkOut" text="Check out" AnchorPane.topAnchor="11.0" />
-                              <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="CheckInButton" layoutX="93.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkIn" text="Check in" AnchorPane.topAnchor="11.0" />
+                              <Button id="default-button" fx:id="checkOutButton" layoutX="7.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkOut" prefHeight="35" prefWidth="80" text="Check out" AnchorPane.topAnchor="11.0" />
+                              <Button id="default-button" fx:id="CheckInButton" layoutX="93.0" layoutY="11.0" mnemonicParsing="false" onAction="#checkIn" prefHeight="35" prefWidth="80" text="Check in" AnchorPane.topAnchor="11.0" />
                                <AnchorPane layoutY="59.0" prefHeight="251.0" prefWidth="294.0">
                                  <children>
                                     <Label layoutX="24.0" text="Manual Input" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="0.0" />
-                                    <Button layoutX="205.0" prefWidth="80" prefHeight="35" id="default-button" layoutY="208.0" mnemonicParsing="false" onAction="#addItem" text="Add" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="14.0" /> <!--defaultButton="true" excludec because of globallistener adds enter to barcoe -->
+                                    <Button id="default-button" layoutX="205.0" layoutY="208.0" mnemonicParsing="false" onAction="#addItem" prefHeight="35" prefWidth="80" text="Add" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="14.0" /> <!--defaultButton="true" excludec because of globallistener adds enter to barcoe -->
                                      <TextField fx:id="txtExpiryDate" layoutX="14.0" layoutY="165.0" prefHeight="26.0" prefWidth="267.0" promptText="Ablaufdatum" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtBatch" layoutX="14.0" layoutY="131.0" prefHeight="26.0" prefWidth="267.0" promptText="Batch / Lot" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                     <TextField fx:id="txtSerial" layoutX="14.0" layoutY="97.0" prefHeight="26.0" prefWidth="267.0" promptText="Seriennummer" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
@@ -83,8 +78,8 @@
                                     <TextField fx:id="txtInput" layoutX="14.0" layoutY="30.0" prefHeight="26.0" prefWidth="267.0" promptText="Input" style="-fx-text-inner-color: white;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
                                  </children>
                               </AnchorPane>
-                               <Button layoutX="265.0" layoutY="11.0" id="default-button" prefWidth="80" prefHeight="35" mnemonicParsing="false" onAction="#clearList" text="Clear" AnchorPane.topAnchor="11.0" />
-                              <Button layoutX="179.0" layoutY="11.0" id="default-button" prefWidth="80" prefHeight="35" mnemonicParsing="false" onAction="#deleteItem" text="Remove" AnchorPane.topAnchor="11.0" />
+                               <Button id="default-button" layoutX="265.0" layoutY="11.0" mnemonicParsing="false" onAction="#clearList" prefHeight="35" prefWidth="80" text="Clear" AnchorPane.topAnchor="11.0" />
+                              <Button id="default-button" layoutX="179.0" layoutY="11.0" mnemonicParsing="false" onAction="#deleteItem" prefHeight="35" prefWidth="80" text="Remove" AnchorPane.topAnchor="11.0" />
                            </children>
                         </AnchorPane>
                     </items>
@@ -95,7 +90,7 @@
       </SplitPane>
        <Pane layoutY="346.0" prefHeight="126.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
           <children>
-              <Button prefWidth="80" prefHeight="35" layoutX="14.0" layoutY="20.0" id="default-button" mnemonicParsing="false" onAction="#resetTrackedItems" text="Reset" textAlignment="RIGHT" AnchorPane.rightAnchor="932.9939002990723" AnchorPane.topAnchor="20.0" />
+              <Button id="default-button" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#resetTrackedItems" prefHeight="35" prefWidth="80" text="Reset" textAlignment="RIGHT" AnchorPane.rightAnchor="932.9939002990723" AnchorPane.topAnchor="20.0" />
           </children>
        </Pane>
    </children>
