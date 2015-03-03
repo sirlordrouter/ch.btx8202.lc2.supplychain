@@ -26,11 +26,12 @@ import java.util.ResourceBundle;
  * BSc Medical Informatics</br>
  * Module Bachelorthesis</br>
  *
- *<p>This class handles the gui elements of the OrderView.fxml. Based on database tables, order suggestions for medicaments are generated
- * in a treetableview. The entries are editable and removable.</p>
+ *<p>This class handles the gui elements of the ShipmentView.fxml.
+ * Manufacturer has the possibility to process an open order (generate identifiers for products and
+ * initialize them in the database.</p>
  *
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
- * @version 28-02-2015
+ * @version 03-03-2015
  */
 public class ShipmentViewController extends VBox implements Initializable,IPartialView {
     public TreeTableView orderTable;
