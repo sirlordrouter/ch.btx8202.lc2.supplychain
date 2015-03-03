@@ -97,4 +97,7 @@ public class MainController implements Initializable {
     }
 
     public void openShipmentView(ActionEvent actionEvent) {Navigator.getInstance().loadVista(Navigator.SHIPMENT_VIEW);}
+
+    public void openTrackerView(ActionEvent actionEvent) {Navigator.getInstance().loadVista(Navigator.TRACKER_VIEW);
+    }
 }

@@ -91,6 +91,15 @@
                             </ImageView>
                         </graphic>
                   </Button>
+                    <Button id="big-yellow-button" fx:id="openTrackerViewBtn" prefWidth="90" prefHeight="70" contentDisplay="TOP" layoutX="756.0" layoutY="8.0" mnemonicParsing="false" onAction="#openTrackerView" text="Tracker"  AnchorPane.rightAnchor="7.0">
+                        <graphic>
+                            <ImageView>
+                                <image>
+                                    <Image url="@../media/tracker.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
                </children>
             </AnchorPane>
          </children>
