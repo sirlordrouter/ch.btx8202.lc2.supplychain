@@ -192,4 +192,15 @@ public class ErpClient implements IDataSource{
             return null;
         }
     }
+
+    @Override
+    public List<Order> getOpenOrdersByGLN(String gln) {
+        try{
+            List<Order> orderList = supplyChainServicePort.getOpenOrdersByGLN(gln);
+            return orderList;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

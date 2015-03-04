@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -24,8 +25,7 @@ import java.util.ResourceBundle;
  */
 public class TrackerViewController extends VBox implements Initializable,IPartialView {
     public WebView trackerWebView;
-    public WebEngine trackerWebEngine;
-
+    public Button trackButton;
 
 
 
@@ -46,8 +46,7 @@ public class TrackerViewController extends VBox implements Initializable,IPartia
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        WebEngine engine = trackerWebView.getEngine();
-        engine.load("http://localhost/phpTracker/index.php");
+
     }
 
 
@@ -70,9 +69,13 @@ public class TrackerViewController extends VBox implements Initializable,IPartia
 
     @Override
     public void beforeOpen() {
+
+
+    }
+
+    public void setTracker(){
         WebEngine engine = trackerWebView.getEngine();
         engine.load("http://localhost/phpTracker/index.php");
-
     }
 
 }

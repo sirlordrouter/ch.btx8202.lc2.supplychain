@@ -163,6 +163,21 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<webservice.erp.Order>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getOpenOrdersByGLN", targetNamespace = "http://service/", className = "webservice.erp.GetOpenOrdersByGLN")
+    @ResponseWrapper(localName = "getOpenOrdersByGLNResponse", targetNamespace = "http://service/", className = "webservice.erp.GetOpenOrdersByGLNResponse")
+    @Action(input = "http://service/SupplyChainService/getOpenOrdersByGLNRequest", output = "http://service/SupplyChainService/getOpenOrdersByGLNResponse")
+    public List<Order> getOpenOrdersByGLN(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
      * @param arg1
      * @param arg0
      * @return

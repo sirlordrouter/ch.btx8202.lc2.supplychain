@@ -61,8 +61,8 @@ public class Navigator {
         views.put(HOME_VIEW, new HomeViewController(HOME_VIEW));
         views.put(STOCK_VIEW, new StockViewController(STOCK_VIEW));
         views.put(ORDER_VIEW, new OrderViewController(ORDER_VIEW));
-        views.put(SHIPMENT_VIEW, new OrderViewController(SHIPMENT_VIEW));
-        views.put(TRACKER_VIEW, new OrderViewController(TRACKER_VIEW));
+        views.put(SHIPMENT_VIEW, new ShipmentViewController(SHIPMENT_VIEW));
+        views.put(TRACKER_VIEW, new TrackerViewController(TRACKER_VIEW));
     }
 
     /**

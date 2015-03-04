@@ -5,6 +5,8 @@ import entities.Item;
 import entities.Order;
 import entities.Position;
 import entities.Quantity;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.intellij.lang.annotations.Language;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -168,16 +170,21 @@ public class SupplyChainService {
                     "           ([OrderNr]\n" +
                     "           ,[StateNr]\n" +
                     "           ,[GLNorderer]\n" +
-                    "           ,[GLNdest])\n" +
+                    "           ,[GLNdest]\n" +
+                    "           ,[OrderDate])\n" +
                     "     VALUES\n" +
                     "           (?\n" +
                     "           ,1\n" +
+                    "           ,?\n" +
                     "           ,?\n" +
                     "           ,?)";
             ps = connection.prepareStatement(query);
             ps.setInt(1,lastIndex+1);
             ps.setString(2,glnOrd);
             ps.setString(3,glnDest);
+            GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
+            java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+            ps.setTimestamp(4, timestamp);
             int update =  ps.executeUpdate();
             // fill all positions of the given order in the positions table
             query = "INSERT INTO [dbo].[Positions]\n" +
@@ -197,6 +204,7 @@ public class SupplyChainService {
                 ps.setString(2,pos.getGtin());
                 ps.setString(3,pos.getDescription());
                 ps.setInt(4,pos.getQuantity());
+
                 answer =  ps.executeUpdate();
             }
             if(update==1&&answer==1){
@@ -420,6 +428,56 @@ public class SupplyChainService {
 
             return null;
         }
+    }
+
+    /**
+     * returns a list of order objects for the specified gln with state 1
+     * @param gln
+     * a global location number
+     * @return list of orders
+     */
+    @WebMethod
+    public List<Order> getOpenOrdersByGLN(String gln) {
+
+        List<Order> orders = new ArrayList();
+
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        String query = "SELECT [Order].[OrderNr]\n" +
+                "      ,[StateNr]\n" +
+                "      ,[GLNorderer]\n" +
+                "      ,[GLNdest]\n" +
+                "\t  ,[GTIN]\n" +
+                "\t  ,[Description]\n" +
+                "\t  ,[Quantity]\n" +
+                "  FROM [dbo].[Order] INNER JOIN [dbo].[Positions] on [dbo].[Order].OrderNr=[dbo].[Positions].OrderNr\n" +
+                "  WHERE [dbo].[Order].GLNdest = ? AND [dbo].[Order].StateNr = 1\n" +
+                "  ORDER BY [Order].[OrderNr] ASC";
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, gln);
+            rs =  ps.executeQuery();
+            Order order = new Order("",null,false);
+            while(rs.next()){
+                String orderNr = Integer.toString((int) (long) (Long) rs.getObject(1));
+                if(!order.getName().equals(orderNr)){
+                    orders.add(order);
+                    ObservableList<Position> positions = FXCollections.observableArrayList();
+                    order = new Order("",positions,false);
+                    order.setName(Integer.toString((int) (long) (Long) rs.getObject(1)));
+                }
+                order.getPositions().add(new Position(rs.getString(5),rs.getString(6),rs.getInt(7)));
+            }
+            orders.add(order);
+            orders.remove(0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return orders;
     }
 
     /**

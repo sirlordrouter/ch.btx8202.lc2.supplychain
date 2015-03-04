@@ -20,9 +20,10 @@
     <children>
         <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="999.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-                <WebView fx:id="trackerWebView" scaleX="0.8"
-                        scaleY="0.8">
+                <WebView fx:id="trackerWebView" scaleX="1.6"
+                        scaleY="0.9">
                 </WebView>
+                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="trackButton" onAction="#setTracker" mnemonicParsing="false" text="Track" textAlignment="RIGHT"/>
             </children>
         </AnchorPane>
     </children>

@@ -38,7 +38,7 @@
         <AnchorPane layoutY="546.0" prefHeight="128.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
                 <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="processButton" mnemonicParsing="false" text="Process" textAlignment="RIGHT" AnchorPane.rightAnchor="307.0" AnchorPane.topAnchor="7.0" ></Button>
-                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="refreshButton" mnemonicParsing="false" onAction="#setOrderTable" text="Refresh" textAlignment="RIGHT" AnchorPane.rightAnchor="407.0" AnchorPane.topAnchor="7.0" />
+                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="refreshOrdersButton" onAction="#setOpenOrderTable" mnemonicParsing="false" text="Refresh" textAlignment="RIGHT" AnchorPane.rightAnchor="407.0" AnchorPane.topAnchor="7.0" />
             </children>
         </AnchorPane>
     </children>

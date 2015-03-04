@@ -52,6 +52,12 @@
 <message name="getQuantitiesResponse">
 <part name="parameters" element="tns:getQuantitiesResponse"/>
 </message>
+<message name="getOpenOrdersByGLN">
+<part name="parameters" element="tns:getOpenOrdersByGLN"/>
+</message>
+<message name="getOpenOrdersByGLNResponse">
+<part name="parameters" element="tns:getOpenOrdersByGLNResponse"/>
+</message>
 <message name="getItemByIdentifier">
 <part name="parameters" element="tns:getItemByIdentifier"/>
 </message>
@@ -108,6 +114,10 @@
 <operation name="getQuantities">
 <input wsam:Action="http://service/SupplyChainService/getQuantitiesRequest" message="tns:getQuantities"/>
 <output wsam:Action="http://service/SupplyChainService/getQuantitiesResponse" message="tns:getQuantitiesResponse"/>
+</operation>
+<operation name="getOpenOrdersByGLN">
+<input wsam:Action="http://service/SupplyChainService/getOpenOrdersByGLNRequest" message="tns:getOpenOrdersByGLN"/>
+<output wsam:Action="http://service/SupplyChainService/getOpenOrdersByGLNResponse" message="tns:getOpenOrdersByGLNResponse"/>
 </operation>
 <operation name="getItemByIdentifier">
 <input wsam:Action="http://service/SupplyChainService/getItemByIdentifierRequest" message="tns:getItemByIdentifier"/>
@@ -192,6 +202,15 @@
 </output>
 </operation>
 <operation name="getQuantities">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getOpenOrdersByGLN">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
