@@ -65,6 +65,10 @@ public class Navigator {
         views.put(TRACKER_VIEW, new TrackerViewController(TRACKER_VIEW));
     }
 
+    public MainController getMainController() {
+        return mainController;
+    }
+
     /**
      * Stores the main controller for later use in navigation tasks.
      *

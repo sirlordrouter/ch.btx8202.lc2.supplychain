@@ -44,8 +44,6 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
     public Button editButton,addButton,removeButton,sendButton,refreshButton;
     public ObservableList<Item> data =  FXCollections.observableArrayList();
 
-
-
     IDataSource dataSource;
     Properties prop;
 
@@ -250,6 +248,9 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
             @Override
             public void handle( final ActionEvent event )
             {
+                Navigator.getInstance().getMainController().setStatusbarWaiting("send orders...");
+
+
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
                 if(selectedItem.getValue().getDescription()==null){
                     ObservableList<Position> positions = FXCollections.observableArrayList();
@@ -267,13 +268,16 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                     boolean request = dataSource.setOrder(order,prop.getProperty("stationGLN"),prop.getProperty("manufacturerGLN"));
                     if(request){
                         selectedItem.getParent().getChildren().remove(selectedItem);
+                        Navigator.getInstance().getMainController().setStatusbarEmpty();
                         UserInformationPopup popup = new UserInformationPopup("The order is successfully sent.","Information");
                         popup.show();
                     }else{
+                        Navigator.getInstance().getMainController().setStatusbarEmpty();
                         UserInformationPopup popup = new UserInformationPopup("The order could not been sent. Please check your input data.","Error");
                         popup.show();
                     }
                 }else{
+                    Navigator.getInstance().getMainController().setStatusbarEmpty();
                     UserInformationPopup popup = new UserInformationPopup("You can only send whole orders, not single positions.","Error");
                     popup.show();
                 }
@@ -294,6 +298,10 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
      * get order suggestion
      */
     public Order getOrderSuggestion() {
+
+        Navigator.getInstance().getMainController().setStatusbarWaiting("getting order suggestions...");
+
+
         Order order = new Order();
         order.setName("Order Suggestion");
         order.setOrdered(false);
@@ -309,6 +317,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
             if(result.isResult()){
                 tradeItem = swissIndexResult.getTradeItems().get(0);
             }else{
+                Navigator.getInstance().getMainController().setStatusbarEmpty();
                 System.out.println(swissIndexResult.getMessage());
             }
             TradeItem tradeItem1 = new TradeItem();
@@ -364,6 +373,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 }
 
         }
+        Navigator.getInstance().getMainController().setStatusbarEmpty();
         return order;
     }
 }

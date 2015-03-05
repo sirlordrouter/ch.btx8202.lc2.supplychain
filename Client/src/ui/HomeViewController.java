@@ -152,6 +152,9 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
 
 
     public void checkOut(ActionEvent actionEvent) {
+
+        Navigator.getInstance().getMainController().setStatusbarWaiting("checking out items...");
+
         WebServiceResult result = dataSource.checkoutItems(data);
         //clear list
         data.clear();
@@ -164,13 +167,18 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                 userInformation = userInformation + "GTIN: " + item.getGTIN();
                 userInformation = userInformation + " - Serial: " + item.getSerial();
             }
+            Navigator.getInstance().getMainController().setStatusbarEmpty();
+
             UserInformationPopup popup = new UserInformationPopup(userInformation, "Achtung.");
             popup.show();
         }
+        Navigator.getInstance().getMainController().setStatusbarEmpty();
 
     }
 
     public void checkIn(ActionEvent actionEvent) {
+        Navigator.getInstance().getMainController().setStatusbarWaiting("checking in items...");
+
         WebServiceResult result = dataSource.checkinItems(data);
         //clear list
         data.clear();
@@ -182,9 +190,11 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                 userInformation = userInformation + "GTIN: " + item.getGTIN();
                 userInformation = userInformation + " - Serial: " + item.getSerial();
             }
+            Navigator.getInstance().getMainController().setStatusbarEmpty();
             UserInformationPopup popup = new UserInformationPopup(userInformation, "Achtung.");
             popup.show();
         }
+        Navigator.getInstance().getMainController().setStatusbarEmpty();
     }
 
     /**
@@ -192,6 +202,8 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
      * @param actionEvent
      */
     public void addItem(ActionEvent actionEvent) {
+        Navigator.getInstance().getMainController().setStatusbarWaiting("adding found items...");
+
         try {
             List<Item> items;
             BarcodeInformation info = null;
@@ -204,6 +216,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                     if(result.isResult()){
                         item = result.getTradeItems().get(0);
                     }else{
+                        Navigator.getInstance().getMainController().setStatusbarEmpty();
                         UserInformationPopup popup = new UserInformationPopup(result.getMessage(), "Achtung");
                         popup.show();
                         return;
@@ -262,6 +275,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                 if(result.isResult()){
                     item = result.getTradeItems().get(0);
                 }else{
+                    Navigator.getInstance().getMainController().setStatusbarEmpty();
                     UserInformationPopup popup = new UserInformationPopup(result.getMessage(), "Achtung");
                     popup.show();
                     return;
@@ -282,10 +296,13 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
             txtInput.setText("");
             txtGTIN.setText("");
         } catch (NotImplementedBarcodeTypeException e) {
+            Navigator.getInstance().getMainController().setStatusbarEmpty();
             System.out.println("hello world");
         } catch (BarcodeNotDeserializeableException e) {
+            Navigator.getInstance().getMainController().setStatusbarEmpty();
             e.printStackTrace();
         }
+        Navigator.getInstance().getMainController().setStatusbarEmpty();
     }
 
     private void clearItemInput() {
@@ -324,6 +341,8 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
      */
     @Override
     public void handleScannerEvent(ScannerEvent evt) {
+        Navigator.getInstance().getMainController().setStatusbarWaiting("scanned item is evaluated...");
+
         List<Item> items;
         BarcodeInformation info = null;
 
@@ -347,12 +366,15 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
 //                i.setGTIN(info.getAI01_HANDELSEINHEIT());
                 retrieveItemInformation(i);
             } else {
+                Navigator.getInstance().getMainController().setStatusbarEmpty();
                 //Well then... no idea wwhat to do => there is no usable data stored here...
                 System.out.println("No Data Found for Barcode...");
             }
         } else {
+            Navigator.getInstance().getMainController().setStatusbarEmpty();
             System.out.println("Info was null");
         }
+        Navigator.getInstance().getMainController().setStatusbarEmpty();
 
     }
 

@@ -11,7 +11,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.VBox;
-import model.entities.Order;
 import model.entities.StockTreeItem;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
@@ -20,16 +19,17 @@ import services.IDataSource;
 import services.PropertiesReader;
 import services.SwissIndexClient;
 import webservice.erp.Item;
-import webservice.erp.Position;
 import webservice.erp.Quantity;
 import webservice.erp.WebServiceResult;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.ConnectException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * Bern University of Applied Sciences</br>
@@ -115,6 +115,9 @@ public class StockViewController extends VBox implements Initializable,IPartialV
      * get checked in items from the webservice and add product informations from the swissindex webservice
      */
     public void getCheckedInItems(){
+        Navigator.getInstance().getMainController().setStatusbarWaiting("Get current stock...");
+
+
         // fetch checkedin items from the supply chain service
         WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
         ObservableList<Item> tempData =  FXCollections.observableArrayList();
@@ -128,6 +131,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
             if(result.isResult()){
                 tradeItem = swissIndexResult.getTradeItems().get(0);
             }else{
+                Navigator.getInstance().getMainController().setStatusbarEmpty();
                 System.out.println(swissIndexResult.getMessage());
                 return;
             }
@@ -172,6 +176,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
         }
         // if there are no checkedin items, alert user!
         if(data.isEmpty()){
+            Navigator.getInstance().getMainController().setStatusbarEmpty();
             UserInformationPopup popup = new UserInformationPopup("Aktuell sind keine Objekte eingecheckt.", "Keine Objekte gefunden.");
             popup.show();
         }
@@ -239,6 +244,8 @@ public class StockViewController extends VBox implements Initializable,IPartialV
         itemList.setRoot(root);
         // dont show the root element (invisible container)
         itemList.setShowRoot(false);
+
+        Navigator.getInstance().getMainController().setStatusbarEmpty();
 
     }
 

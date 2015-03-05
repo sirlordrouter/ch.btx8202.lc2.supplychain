@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import services.PropertiesReader;
@@ -33,6 +34,10 @@ public class MainController implements Initializable {
     public Label userField;
     public Label locationField;
     public Image imgProfilePicture;
+
+    public Label statusLineLabel;
+    public ProgressIndicator statusLineIndicator;
+
     /** Holder of a switchable vista. */
     @FXML
     private VBox vistaHolder;
@@ -51,6 +56,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        setStatusbarEmpty();
 
         Properties prop = null;
         try {
@@ -98,6 +105,19 @@ public class MainController implements Initializable {
 
     public void openShipmentView(ActionEvent actionEvent) {Navigator.getInstance().loadVista(Navigator.SHIPMENT_VIEW);}
 
-    public void openTrackerView(ActionEvent actionEvent) {Navigator.getInstance().loadVista(Navigator.TRACKER_VIEW);
+    public void openTrackerView(ActionEvent actionEvent) {Navigator.getInstance().loadVista(Navigator.TRACKER_VIEW);}
+
+    public void setStatusbarWaiting(String infotext) {
+        statusLineIndicator.setVisible(true);
+        statusLineLabel.setText(infotext);
+    }
+
+    public void setStatusbarEmpty() {
+        statusLineIndicator.setVisible(false);
+        statusLineLabel.setText("");
+    }
+
+    public void setStatusbarText(String infotext) {
+        statusLineLabel.setText(infotext);
     }
 }

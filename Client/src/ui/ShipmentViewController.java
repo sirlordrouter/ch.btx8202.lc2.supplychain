@@ -26,7 +26,6 @@ import javax.xml.ws.WebServiceException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -47,8 +46,6 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
     public TreeTableView orderTable;
     public Button processButton,refreshOrdersButton;
     public ObservableList<Item> data =  FXCollections.observableArrayList();
-
-
 
     IDataSource dataSource;
     Properties prop;
@@ -178,6 +175,7 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
             @Override
             public void handle( final ActionEvent event )
             {
+
                 // convert selected treeitem back to an order object
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
                 if(selectedItem.getValue().getDescription()==null){

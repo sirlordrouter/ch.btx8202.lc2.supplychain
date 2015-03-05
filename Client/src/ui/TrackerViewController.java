@@ -27,8 +27,6 @@ public class TrackerViewController extends VBox implements Initializable,IPartia
     public WebView trackerWebView;
     public Button trackButton;
 
-
-
     public TrackerViewController(String fxml) {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
