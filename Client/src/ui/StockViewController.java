@@ -256,6 +256,6 @@ public class StockViewController extends VBox implements Initializable,IPartialV
 
     @Override
     public void beforeOpen() {
-
+        Navigator.getInstance().getMainController().setStatusbarWaiting("Hello to Stock View ....");
     }
 }

@@ -41,6 +41,11 @@ public class LoginController extends AnchorPane implements Initializable {
         errorMessage.setText("");
         userId.setPromptText("username");
         password.setPromptText("password");
+
+        //TODO: Remove to enable login input
+        userId.setText("test");
+        password.setText("test");
+
     }
 
     public void processLogin(ActionEvent event) {
@@ -57,5 +62,6 @@ public class LoginController extends AnchorPane implements Initializable {
 
     public void setApp(Main main) {
         this.application = main;
+        this.processLogin(new ActionEvent());
     }
 }

@@ -108,6 +108,7 @@ public class MainController implements Initializable {
     public void openTrackerView(ActionEvent actionEvent) {Navigator.getInstance().loadVista(Navigator.TRACKER_VIEW);}
 
     public void setStatusbarWaiting(String infotext) {
+        statusLineIndicator.setProgress(-1);
         statusLineIndicator.setVisible(true);
         statusLineLabel.setText(infotext);
     }
