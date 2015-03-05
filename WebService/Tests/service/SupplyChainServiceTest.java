@@ -52,11 +52,7 @@ public class SupplyChainServiceTest extends TestCase {
     public void testGetItemsByBatch() throws Exception {
 
     }
-    public void testGetBatch() throws Exception {
-        SupplyChainService service = new SupplyChainService();
-        System.out.println(service.getBatch());
 
-    }
 //    public void testSetOrder() throws Exception {
 //        SupplyChainService service = new SupplyChainService();
 //        Order order = new Order("Order",null,true);

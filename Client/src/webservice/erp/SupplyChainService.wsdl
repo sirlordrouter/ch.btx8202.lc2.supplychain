@@ -52,48 +52,6 @@
 <message name="processOrderResponse">
 <part name="parameters" element="tns:processOrderResponse"/>
 </message>
-<message name="insertShipment">
-<part name="parameters" element="tns:insertShipment"/>
-</message>
-<message name="insertShipmentResponse">
-<part name="parameters" element="tns:insertShipmentResponse"/>
-</message>
-<message name="insertLogisticPackage">
-<part name="parameters" element="tns:insertLogisticPackage"/>
-</message>
-<message name="insertLogisticPackageResponse">
-<part name="parameters" element="tns:insertLogisticPackageResponse"/>
-</message>
-<message name="setOrderState">
-<part name="parameters" element="tns:setOrderState"/>
-</message>
-<message name="setOrderStateResponse">
-<part name="parameters" element="tns:setOrderStateResponse"/>
-</message>
-<message name="insertSecondaryPackagesFromOrder">
-<part name="parameters" element="tns:insertSecondaryPackagesFromOrder"/>
-</message>
-<message name="insertSecondaryPackagesFromOrderResponse">
-<part name="parameters" element="tns:insertSecondaryPackagesFromOrderResponse"/>
-</message>
-<message name="getBatch">
-<part name="parameters" element="tns:getBatch"/>
-</message>
-<message name="getBatchResponse">
-<part name="parameters" element="tns:getBatchResponse"/>
-</message>
-<message name="getSerial">
-<part name="parameters" element="tns:getSerial"/>
-</message>
-<message name="getSerialResponse">
-<part name="parameters" element="tns:getSerialResponse"/>
-</message>
-<message name="getExpDate">
-<part name="parameters" element="tns:getExpDate"/>
-</message>
-<message name="getExpDateResponse">
-<part name="parameters" element="tns:getExpDateResponse"/>
-</message>
 <message name="getQuantities">
 <part name="parameters" element="tns:getQuantities"/>
 </message>
@@ -162,34 +120,6 @@
 <operation name="processOrder">
 <input wsam:Action="http://service/SupplyChainService/processOrderRequest" message="tns:processOrder"/>
 <output wsam:Action="http://service/SupplyChainService/processOrderResponse" message="tns:processOrderResponse"/>
-</operation>
-<operation name="insertShipment">
-<input wsam:Action="http://service/SupplyChainService/insertShipmentRequest" message="tns:insertShipment"/>
-<output wsam:Action="http://service/SupplyChainService/insertShipmentResponse" message="tns:insertShipmentResponse"/>
-</operation>
-<operation name="insertLogisticPackage">
-<input wsam:Action="http://service/SupplyChainService/insertLogisticPackageRequest" message="tns:insertLogisticPackage"/>
-<output wsam:Action="http://service/SupplyChainService/insertLogisticPackageResponse" message="tns:insertLogisticPackageResponse"/>
-</operation>
-<operation name="setOrderState">
-<input wsam:Action="http://service/SupplyChainService/setOrderStateRequest" message="tns:setOrderState"/>
-<output wsam:Action="http://service/SupplyChainService/setOrderStateResponse" message="tns:setOrderStateResponse"/>
-</operation>
-<operation name="insertSecondaryPackagesFromOrder">
-<input wsam:Action="http://service/SupplyChainService/insertSecondaryPackagesFromOrderRequest" message="tns:insertSecondaryPackagesFromOrder"/>
-<output wsam:Action="http://service/SupplyChainService/insertSecondaryPackagesFromOrderResponse" message="tns:insertSecondaryPackagesFromOrderResponse"/>
-</operation>
-<operation name="getBatch">
-<input wsam:Action="http://service/SupplyChainService/getBatchRequest" message="tns:getBatch"/>
-<output wsam:Action="http://service/SupplyChainService/getBatchResponse" message="tns:getBatchResponse"/>
-</operation>
-<operation name="getSerial">
-<input wsam:Action="http://service/SupplyChainService/getSerialRequest" message="tns:getSerial"/>
-<output wsam:Action="http://service/SupplyChainService/getSerialResponse" message="tns:getSerialResponse"/>
-</operation>
-<operation name="getExpDate">
-<input wsam:Action="http://service/SupplyChainService/getExpDateRequest" message="tns:getExpDate"/>
-<output wsam:Action="http://service/SupplyChainService/getExpDateResponse" message="tns:getExpDateResponse"/>
 </operation>
 <operation name="getQuantities">
 <input wsam:Action="http://service/SupplyChainService/getQuantitiesRequest" message="tns:getQuantities"/>
@@ -282,69 +212,6 @@
 </output>
 </operation>
 <operation name="processOrder">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="insertShipment">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="insertLogisticPackage">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="setOrderState">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="insertSecondaryPackagesFromOrder">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getBatch">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getSerial">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getExpDate">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
