@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.web.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
@@ -14,16 +16,17 @@
 * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
 * @version 28-02-2015
 -->
+
 <?import java.net.URL?>
 <?import javafx.scene.web.WebView?>
-<fx:root type="javafx.scene.layout.VBox" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml">
+
+<fx:root fx:id="mainFrame" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="999.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-                <WebView fx:id="trackerWebView" scaleX="1.6"
-                        scaleY="0.9">
+                <WebView fx:id="trackerWebView" layoutX="194.0" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 </WebView>
-                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="trackButton" onAction="#setTracker" mnemonicParsing="false" text="Track" textAlignment="RIGHT"/>
+                <Button id="default-button" fx:id="trackButton" mnemonicParsing="false" onAction="#setTracker" prefHeight="35" prefWidth="80" text="Track" textAlignment="RIGHT" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </children>
         </AnchorPane>
     </children>
