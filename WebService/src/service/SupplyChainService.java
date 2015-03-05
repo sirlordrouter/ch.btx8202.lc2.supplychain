@@ -13,10 +13,10 @@ import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.TimeZone;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Bern University of Applied Sciences</br>
@@ -316,6 +316,221 @@ public class SupplyChainService {
         return getAllItemsBySSCC(sscc);
 
     }
+
+    /**
+     * Processes a given order and generates all identifiers for the
+     * positions specified in the order.
+     *
+     * @param order
+     *  an order to be processed
+     * @param glnMan
+     *  global location number of the manufacturer
+     * @param glnStation
+     *  global location number of the orderer
+     * @return
+     *  a boolean. (success=1)
+     */
+    @WebMethod
+    public boolean processOrder(Order order,String glnMan, String glnStation) {
+        // extract digits from order name to get the order number
+        String orderNr = order.getName().replaceAll("\\D+", "");
+
+
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            insertShipment(Integer.parseInt(orderNr),glnStation,glnMan);
+            // get the identifier of the latest order entry in the database
+            @Language("DB2")
+            String query = "SELECT TOP 1 [ShipmentIdGSIN]\n" +
+                    "  FROM [dbo].[Shipment]\n" +
+                    "  ORDER BY ShipmentIdGSIN DESC";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            rs =  ps.executeQuery();
+            rs.next();
+            int lastShipmentId = (int)(long)(Long)rs.getObject(1);
+            insertLogisticPackage(order,lastShipmentId, Integer.parseInt(orderNr));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        setOrderState(orderNr,3);
+        return true;
+    }
+
+    public void insertShipment(int orderNr, String glnDest, String glnSender)
+    {
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            // get the identifier of the latest order entry in the database
+            @Language("DB2")
+            String query = "INSERT INTO [dbo].[Shipment]\n" +
+                    "           ([OrderNr]\n" +
+                    "           ,[GLNdest]\n" +
+                    "           ,[GLNsender])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?)";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1,orderNr);
+            ps.setString(2,glnDest);
+            ps.setString(3,glnSender);
+            int success =  ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void insertLogisticPackage(Order order,int shipmentID, int orderNr)
+    {
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+             // get the identifier of the latest order entry in the database
+            @Language("DB2")
+            String query = "SELECT TOP 1 [SSCC]\n" +
+                    "  FROM [SupplyChainLogistic].[dbo].[LogisticPackage] \n" +
+                    "  ORDER BY SSCC DESC";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            rs =  ps.executeQuery();
+            rs.next();
+            long lastSSCC = Long.parseLong((String) rs.getObject(1));
+
+            query = "INSERT INTO [dbo].[LogisticPackage]\n" +
+                    "           ([SSCC]\n" +
+                    "           ,[ShipmentIdGSIN]\n" +
+                    "           ,[OrderNr]\n" +
+                    "           ,[ContainedInSSCC])\n" +
+                    "     VALUES\n" +
+                    "           (?\n" +
+                    "           ,?\n" +
+                    "           ,?\n" +
+                    "           ,null)";
+
+            ps = connection.prepareStatement(query);
+            ps.setString(1, Long.toString(lastSSCC + 1));
+            ps.setInt(2, shipmentID);
+            ps.setInt(3, orderNr);
+            int success =  ps.executeUpdate();
+            insertSecondaryPackagesFromOrder(order,Long.toString(lastSSCC+1));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    public void setOrderState(String orderNr, int state)
+    {
+        Connection connection = connectorLogistic.getConnection();
+        try {
+            // get the identifier of the latest order entry in the database
+            @Language("DB2")
+            String query = "UPDATE [dbo].[Order]\n" +
+                    "   SET [StateNr] = ?\n" +
+                    " WHERE OrderNr=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, state);
+            ps.setInt(2, Integer.parseInt(orderNr));
+            int success =  ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void insertSecondaryPackagesFromOrder(Order order, String sscc)
+    {
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            // get the identifier of the latest order entry in the database
+            String batch = getBatch();
+            Timestamp expdate = getExpDate();
+            for(Position pos:order.getPositions()){
+                for(int i= 0;i<pos.getQuantity();i++){
+                    @Language("DB2")
+                    String query = "INSERT INTO [dbo].[SecondaryPackage]\n" +
+                            "           ([GTINsek]\n" +
+                            "           ,[SerialNr]\n" +
+                            "           ,[BatchLot]\n" +
+                            "           ,[ExpiryDate]\n" +
+                            "           ,[GTINtert]\n" +
+                            "           ,[SSCC])\n" +
+                            "     VALUES\n" +
+                            "           (?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,null\n" +
+                            "           ,?)";
+                    PreparedStatement ps = connection.prepareStatement(query);
+                    ps.setString(1,pos.getGtin());
+                    ps.setString(2,getSerial(batch,i+1));
+                    ps.setString(3,batch);
+                    ps.setTimestamp(4,expdate);
+                    ps.setString(5,sscc);
+                    int success =  ps.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String getBatch(){
+        java.util.Date date = new java.util.Date();
+        DateFormat formatter = new SimpleDateFormat("ddMMyyHHmm");
+        return "BFH"+formatter.format(date);
+    }
+    public String getSerial(String batch, int objectNumber){
+        return batch+"0000000"+Integer.toString(objectNumber);
+    }
+    public Timestamp getExpDate(){
+        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
+        cal.add((GregorianCalendar.YEAR), 1);
+        java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+        return timestamp;
+    }
+
+
 
     /**
      * Returns a list of quantity objects.

@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _GetItemsBySSCC_QNAME = new QName("http://service/", "getItemsBySSCC");
+    private final static QName _InsertShipment_QNAME = new QName("http://service/", "insertShipment");
     private final static QName _GetCheckedInItemsResponse_QNAME = new QName("http://service/", "getCheckedInItemsResponse");
     private final static QName _GetItemsByBatch_QNAME = new QName("http://service/", "getItemsByBatch");
     private final static QName _InsertTrackingItemsResponse_QNAME = new QName("http://service/", "insertTrackingItemsResponse");
@@ -32,24 +33,39 @@ public class ObjectFactory {
     private final static QName _SayHelloWorldFromResponse_QNAME = new QName("http://service/", "sayHelloWorldFromResponse");
     private final static QName _GetCheckedInItems_QNAME = new QName("http://service/", "getCheckedInItems");
     private final static QName _GetItemsByBatchResponse_QNAME = new QName("http://service/", "getItemsByBatchResponse");
+    private final static QName _InsertLogisticPackageResponse_QNAME = new QName("http://service/", "insertLogisticPackageResponse");
+    private final static QName _GetBatch_QNAME = new QName("http://service/", "getBatch");
+    private final static QName _SetOrderState_QNAME = new QName("http://service/", "setOrderState");
     private final static QName _GetOrderForSSCCResponse_QNAME = new QName("http://service/", "getOrderForSSCCResponse");
+    private final static QName _GetSerial_QNAME = new QName("http://service/", "getSerial");
+    private final static QName _InsertShipmentResponse_QNAME = new QName("http://service/", "insertShipmentResponse");
+    private final static QName _ProcessOrder_QNAME = new QName("http://service/", "processOrder");
     private final static QName _SetOrder_QNAME = new QName("http://service/", "setOrder");
+    private final static QName _SetOrderStateResponse_QNAME = new QName("http://service/", "setOrderStateResponse");
     private final static QName _GetQuantities_QNAME = new QName("http://service/", "getQuantities");
+    private final static QName _GetExpDateResponse_QNAME = new QName("http://service/", "getExpDateResponse");
     private final static QName _GetOpenOrdersByGLNResponse_QNAME = new QName("http://service/", "getOpenOrdersByGLNResponse");
     private final static QName _InsertTrackingItems_QNAME = new QName("http://service/", "insertTrackingItems");
+    private final static QName _InsertSecondaryPackagesFromOrderResponse_QNAME = new QName("http://service/", "insertSecondaryPackagesFromOrderResponse");
+    private final static QName _GetExpDate_QNAME = new QName("http://service/", "getExpDate");
     private final static QName _GetItemByIdentifierResponse_QNAME = new QName("http://service/", "getItemByIdentifierResponse");
     private final static QName _ResetTrackedItemsResponse_QNAME = new QName("http://service/", "resetTrackedItemsResponse");
     private final static QName _GetOpenOrdersByGLN_QNAME = new QName("http://service/", "getOpenOrdersByGLN");
     private final static QName _ResetTrackedItems_QNAME = new QName("http://service/", "resetTrackedItems");
     private final static QName _GetOrderForSSCC_QNAME = new QName("http://service/", "getOrderForSSCC");
+    private final static QName _ProcessOrderResponse_QNAME = new QName("http://service/", "processOrderResponse");
     private final static QName _CheckoutItemsResponse_QNAME = new QName("http://service/", "checkoutItemsResponse");
     private final static QName _GetQuantitiesResponse_QNAME = new QName("http://service/", "getQuantitiesResponse");
     private final static QName _CheckoutItems_QNAME = new QName("http://service/", "checkoutItems");
     private final static QName _CheckinItemsResponse_QNAME = new QName("http://service/", "checkinItemsResponse");
+    private final static QName _InsertSecondaryPackagesFromOrder_QNAME = new QName("http://service/", "insertSecondaryPackagesFromOrder");
     private final static QName _SayHelloWorldFrom_QNAME = new QName("http://service/", "sayHelloWorldFrom");
     private final static QName _GetItemsBySSCCResponse_QNAME = new QName("http://service/", "getItemsBySSCCResponse");
+    private final static QName _InsertLogisticPackage_QNAME = new QName("http://service/", "insertLogisticPackage");
     private final static QName _SetOrderResponse_QNAME = new QName("http://service/", "setOrderResponse");
+    private final static QName _GetSerialResponse_QNAME = new QName("http://service/", "getSerialResponse");
     private final static QName _CheckinItems_QNAME = new QName("http://service/", "checkinItems");
+    private final static QName _GetBatchResponse_QNAME = new QName("http://service/", "getBatchResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: webservice.erp
@@ -91,6 +107,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ProcessOrderResponse }
+     * 
+     */
+    public ProcessOrderResponse createProcessOrderResponse() {
+        return new ProcessOrderResponse();
+    }
+
+    /**
      * Create an instance of {@link ResetTrackedItems }
      * 
      */
@@ -104,6 +128,14 @@ public class ObjectFactory {
      */
     public GetOpenOrdersByGLN createGetOpenOrdersByGLN() {
         return new GetOpenOrdersByGLN();
+    }
+
+    /**
+     * Create an instance of {@link GetExpDate }
+     * 
+     */
+    public GetExpDate createGetExpDate() {
+        return new GetExpDate();
     }
 
     /**
@@ -131,6 +163,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InsertLogisticPackage }
+     * 
+     */
+    public InsertLogisticPackage createInsertLogisticPackage() {
+        return new InsertLogisticPackage();
+    }
+
+    /**
      * Create an instance of {@link SayHelloWorldFrom }
      * 
      */
@@ -139,11 +179,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InsertSecondaryPackagesFromOrder }
+     * 
+     */
+    public InsertSecondaryPackagesFromOrder createInsertSecondaryPackagesFromOrder() {
+        return new InsertSecondaryPackagesFromOrder();
+    }
+
+    /**
      * Create an instance of {@link CheckinItemsResponse }
      * 
      */
     public CheckinItemsResponse createCheckinItemsResponse() {
         return new CheckinItemsResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetSerialResponse }
+     * 
+     */
+    public GetSerialResponse createGetSerialResponse() {
+        return new GetSerialResponse();
     }
 
     /**
@@ -163,6 +219,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetBatchResponse }
+     * 
+     */
+    public GetBatchResponse createGetBatchResponse() {
+        return new GetBatchResponse();
+    }
+
+    /**
      * Create an instance of {@link GetCheckedInItemsResponse }
      * 
      */
@@ -176,6 +240,14 @@ public class ObjectFactory {
      */
     public GetItemsByBatch createGetItemsByBatch() {
         return new GetItemsByBatch();
+    }
+
+    /**
+     * Create an instance of {@link InsertShipment }
+     * 
+     */
+    public InsertShipment createInsertShipment() {
+        return new InsertShipment();
     }
 
     /**
@@ -211,6 +283,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ProcessOrder }
+     * 
+     */
+    public ProcessOrder createProcessOrder() {
+        return new ProcessOrder();
+    }
+
+    /**
      * Create an instance of {@link SetOrder }
      * 
      */
@@ -219,11 +299,59 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link SetOrderStateResponse }
+     * 
+     */
+    public SetOrderStateResponse createSetOrderStateResponse() {
+        return new SetOrderStateResponse();
+    }
+
+    /**
      * Create an instance of {@link GetOrderForSSCCResponse }
      * 
      */
     public GetOrderForSSCCResponse createGetOrderForSSCCResponse() {
         return new GetOrderForSSCCResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetSerial }
+     * 
+     */
+    public GetSerial createGetSerial() {
+        return new GetSerial();
+    }
+
+    /**
+     * Create an instance of {@link InsertShipmentResponse }
+     * 
+     */
+    public InsertShipmentResponse createInsertShipmentResponse() {
+        return new InsertShipmentResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetBatch }
+     * 
+     */
+    public GetBatch createGetBatch() {
+        return new GetBatch();
+    }
+
+    /**
+     * Create an instance of {@link SetOrderState }
+     * 
+     */
+    public SetOrderState createSetOrderState() {
+        return new SetOrderState();
+    }
+
+    /**
+     * Create an instance of {@link InsertLogisticPackageResponse }
+     * 
+     */
+    public InsertLogisticPackageResponse createInsertLogisticPackageResponse() {
+        return new InsertLogisticPackageResponse();
     }
 
     /**
@@ -240,6 +368,22 @@ public class ObjectFactory {
      */
     public GetCheckedInItems createGetCheckedInItems() {
         return new GetCheckedInItems();
+    }
+
+    /**
+     * Create an instance of {@link InsertSecondaryPackagesFromOrderResponse }
+     * 
+     */
+    public InsertSecondaryPackagesFromOrderResponse createInsertSecondaryPackagesFromOrderResponse() {
+        return new InsertSecondaryPackagesFromOrderResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetExpDateResponse }
+     * 
+     */
+    public GetExpDateResponse createGetExpDateResponse() {
+        return new GetExpDateResponse();
     }
 
     /**
@@ -275,14 +419,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Company }
-     * 
-     */
-    public Company createCompany() {
-        return new Company();
-    }
-
-    /**
      * Create an instance of {@link Order }
      * 
      */
@@ -299,19 +435,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Quantity }
-     * 
-     */
-    public Quantity createQuantity() {
-        return new Quantity();
-    }
-
-    /**
      * Create an instance of {@link Position }
      * 
      */
     public Position createPosition() {
         return new Position();
+    }
+
+    /**
+     * Create an instance of {@link Company }
+     * 
+     */
+    public Company createCompany() {
+        return new Company();
+    }
+
+    /**
+     * Create an instance of {@link Timestamp }
+     * 
+     */
+    public Timestamp createTimestamp() {
+        return new Timestamp();
+    }
+
+    /**
+     * Create an instance of {@link Quantity }
+     * 
+     */
+    public Quantity createQuantity() {
+        return new Quantity();
     }
 
     /**
@@ -321,6 +473,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "getItemsBySSCC")
     public JAXBElement<GetItemsBySSCC> createGetItemsBySSCC(GetItemsBySSCC value) {
         return new JAXBElement<GetItemsBySSCC>(_GetItemsBySSCC_QNAME, GetItemsBySSCC.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertShipment }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "insertShipment")
+    public JAXBElement<InsertShipment> createInsertShipment(InsertShipment value) {
+        return new JAXBElement<InsertShipment>(_InsertShipment_QNAME, InsertShipment.class, null, value);
     }
 
     /**
@@ -387,12 +548,66 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertLogisticPackageResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "insertLogisticPackageResponse")
+    public JAXBElement<InsertLogisticPackageResponse> createInsertLogisticPackageResponse(InsertLogisticPackageResponse value) {
+        return new JAXBElement<InsertLogisticPackageResponse>(_InsertLogisticPackageResponse_QNAME, InsertLogisticPackageResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetBatch }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getBatch")
+    public JAXBElement<GetBatch> createGetBatch(GetBatch value) {
+        return new JAXBElement<GetBatch>(_GetBatch_QNAME, GetBatch.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SetOrderState }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "setOrderState")
+    public JAXBElement<SetOrderState> createSetOrderState(SetOrderState value) {
+        return new JAXBElement<SetOrderState>(_SetOrderState_QNAME, SetOrderState.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetOrderForSSCCResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://service/", name = "getOrderForSSCCResponse")
     public JAXBElement<GetOrderForSSCCResponse> createGetOrderForSSCCResponse(GetOrderForSSCCResponse value) {
         return new JAXBElement<GetOrderForSSCCResponse>(_GetOrderForSSCCResponse_QNAME, GetOrderForSSCCResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetSerial }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getSerial")
+    public JAXBElement<GetSerial> createGetSerial(GetSerial value) {
+        return new JAXBElement<GetSerial>(_GetSerial_QNAME, GetSerial.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertShipmentResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "insertShipmentResponse")
+    public JAXBElement<InsertShipmentResponse> createInsertShipmentResponse(InsertShipmentResponse value) {
+        return new JAXBElement<InsertShipmentResponse>(_InsertShipmentResponse_QNAME, InsertShipmentResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ProcessOrder }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "processOrder")
+    public JAXBElement<ProcessOrder> createProcessOrder(ProcessOrder value) {
+        return new JAXBElement<ProcessOrder>(_ProcessOrder_QNAME, ProcessOrder.class, null, value);
     }
 
     /**
@@ -405,12 +620,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SetOrderStateResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "setOrderStateResponse")
+    public JAXBElement<SetOrderStateResponse> createSetOrderStateResponse(SetOrderStateResponse value) {
+        return new JAXBElement<SetOrderStateResponse>(_SetOrderStateResponse_QNAME, SetOrderStateResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetQuantities }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://service/", name = "getQuantities")
     public JAXBElement<GetQuantities> createGetQuantities(GetQuantities value) {
         return new JAXBElement<GetQuantities>(_GetQuantities_QNAME, GetQuantities.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetExpDateResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getExpDateResponse")
+    public JAXBElement<GetExpDateResponse> createGetExpDateResponse(GetExpDateResponse value) {
+        return new JAXBElement<GetExpDateResponse>(_GetExpDateResponse_QNAME, GetExpDateResponse.class, null, value);
     }
 
     /**
@@ -429,6 +662,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "insertTrackingItems")
     public JAXBElement<InsertTrackingItems> createInsertTrackingItems(InsertTrackingItems value) {
         return new JAXBElement<InsertTrackingItems>(_InsertTrackingItems_QNAME, InsertTrackingItems.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertSecondaryPackagesFromOrderResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "insertSecondaryPackagesFromOrderResponse")
+    public JAXBElement<InsertSecondaryPackagesFromOrderResponse> createInsertSecondaryPackagesFromOrderResponse(InsertSecondaryPackagesFromOrderResponse value) {
+        return new JAXBElement<InsertSecondaryPackagesFromOrderResponse>(_InsertSecondaryPackagesFromOrderResponse_QNAME, InsertSecondaryPackagesFromOrderResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetExpDate }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getExpDate")
+    public JAXBElement<GetExpDate> createGetExpDate(GetExpDate value) {
+        return new JAXBElement<GetExpDate>(_GetExpDate_QNAME, GetExpDate.class, null, value);
     }
 
     /**
@@ -477,6 +728,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ProcessOrderResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "processOrderResponse")
+    public JAXBElement<ProcessOrderResponse> createProcessOrderResponse(ProcessOrderResponse value) {
+        return new JAXBElement<ProcessOrderResponse>(_ProcessOrderResponse_QNAME, ProcessOrderResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link CheckoutItemsResponse }{@code >}}
      * 
      */
@@ -513,6 +773,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertSecondaryPackagesFromOrder }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "insertSecondaryPackagesFromOrder")
+    public JAXBElement<InsertSecondaryPackagesFromOrder> createInsertSecondaryPackagesFromOrder(InsertSecondaryPackagesFromOrder value) {
+        return new JAXBElement<InsertSecondaryPackagesFromOrder>(_InsertSecondaryPackagesFromOrder_QNAME, InsertSecondaryPackagesFromOrder.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SayHelloWorldFrom }{@code >}}
      * 
      */
@@ -531,6 +800,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InsertLogisticPackage }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "insertLogisticPackage")
+    public JAXBElement<InsertLogisticPackage> createInsertLogisticPackage(InsertLogisticPackage value) {
+        return new JAXBElement<InsertLogisticPackage>(_InsertLogisticPackage_QNAME, InsertLogisticPackage.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SetOrderResponse }{@code >}}
      * 
      */
@@ -540,12 +818,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetSerialResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getSerialResponse")
+    public JAXBElement<GetSerialResponse> createGetSerialResponse(GetSerialResponse value) {
+        return new JAXBElement<GetSerialResponse>(_GetSerialResponse_QNAME, GetSerialResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link CheckinItems }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://service/", name = "checkinItems")
     public JAXBElement<CheckinItems> createCheckinItems(CheckinItems value) {
         return new JAXBElement<CheckinItems>(_CheckinItems_QNAME, CheckinItems.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetBatchResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getBatchResponse")
+    public JAXBElement<GetBatchResponse> createGetBatchResponse(GetBatchResponse value) {
+        return new JAXBElement<GetBatchResponse>(_GetBatchResponse_QNAME, GetBatchResponse.class, null, value);
     }
 
 }

@@ -28,27 +28,6 @@ public interface SupplyChainService {
 
     /**
      * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "setOrder", targetNamespace = "http://service/", className = "webservice.erp.SetOrder")
-    @ResponseWrapper(localName = "setOrderResponse", targetNamespace = "http://service/", className = "webservice.erp.SetOrderResponse")
-    @Action(input = "http://service/SupplyChainService/setOrderRequest", output = "http://service/SupplyChainService/setOrderResponse")
-    public boolean setOrder(
-        @WebParam(name = "arg0", targetNamespace = "")
-        Order arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2);
-
-    /**
-     * 
      * @param arg0
      * @return
      *     returns java.lang.String
@@ -94,6 +73,27 @@ public interface SupplyChainService {
         List<Item> arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "setOrder", targetNamespace = "http://service/", className = "webservice.erp.SetOrder")
+    @ResponseWrapper(localName = "setOrderResponse", targetNamespace = "http://service/", className = "webservice.erp.SetOrderResponse")
+    @Action(input = "http://service/SupplyChainService/setOrderRequest", output = "http://service/SupplyChainService/setOrderResponse")
+    public boolean setOrder(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Order arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
 
     /**
      * 
@@ -145,6 +145,135 @@ public interface SupplyChainService {
     public List<Item> getItemsBySSCC(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "processOrder", targetNamespace = "http://service/", className = "webservice.erp.ProcessOrder")
+    @ResponseWrapper(localName = "processOrderResponse", targetNamespace = "http://service/", className = "webservice.erp.ProcessOrderResponse")
+    @Action(input = "http://service/SupplyChainService/processOrderRequest", output = "http://service/SupplyChainService/processOrderResponse")
+    public boolean processOrder(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Order arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "insertShipment", targetNamespace = "http://service/", className = "webservice.erp.InsertShipment")
+    @ResponseWrapper(localName = "insertShipmentResponse", targetNamespace = "http://service/", className = "webservice.erp.InsertShipmentResponse")
+    @Action(input = "http://service/SupplyChainService/insertShipmentRequest", output = "http://service/SupplyChainService/insertShipmentResponse")
+    public void insertShipment(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "insertLogisticPackage", targetNamespace = "http://service/", className = "webservice.erp.InsertLogisticPackage")
+    @ResponseWrapper(localName = "insertLogisticPackageResponse", targetNamespace = "http://service/", className = "webservice.erp.InsertLogisticPackageResponse")
+    @Action(input = "http://service/SupplyChainService/insertLogisticPackageRequest", output = "http://service/SupplyChainService/insertLogisticPackageResponse")
+    public void insertLogisticPackage(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Order arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        int arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        int arg2);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "setOrderState", targetNamespace = "http://service/", className = "webservice.erp.SetOrderState")
+    @ResponseWrapper(localName = "setOrderStateResponse", targetNamespace = "http://service/", className = "webservice.erp.SetOrderStateResponse")
+    @Action(input = "http://service/SupplyChainService/setOrderStateRequest", output = "http://service/SupplyChainService/setOrderStateResponse")
+    public void setOrderState(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        int arg1);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "insertSecondaryPackagesFromOrder", targetNamespace = "http://service/", className = "webservice.erp.InsertSecondaryPackagesFromOrder")
+    @ResponseWrapper(localName = "insertSecondaryPackagesFromOrderResponse", targetNamespace = "http://service/", className = "webservice.erp.InsertSecondaryPackagesFromOrderResponse")
+    @Action(input = "http://service/SupplyChainService/insertSecondaryPackagesFromOrderRequest", output = "http://service/SupplyChainService/insertSecondaryPackagesFromOrderResponse")
+    public void insertSecondaryPackagesFromOrder(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Order arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
+
+    /**
+     * 
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getBatch", targetNamespace = "http://service/", className = "webservice.erp.GetBatch")
+    @ResponseWrapper(localName = "getBatchResponse", targetNamespace = "http://service/", className = "webservice.erp.GetBatchResponse")
+    @Action(input = "http://service/SupplyChainService/getBatchRequest", output = "http://service/SupplyChainService/getBatchResponse")
+    public String getBatch();
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getSerial", targetNamespace = "http://service/", className = "webservice.erp.GetSerial")
+    @ResponseWrapper(localName = "getSerialResponse", targetNamespace = "http://service/", className = "webservice.erp.GetSerialResponse")
+    @Action(input = "http://service/SupplyChainService/getSerialRequest", output = "http://service/SupplyChainService/getSerialResponse")
+    public String getSerial(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        int arg1);
+
+    /**
+     * 
+     * @return
+     *     returns webservice.erp.Timestamp
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getExpDate", targetNamespace = "http://service/", className = "webservice.erp.GetExpDate")
+    @ResponseWrapper(localName = "getExpDateResponse", targetNamespace = "http://service/", className = "webservice.erp.GetExpDateResponse")
+    @Action(input = "http://service/SupplyChainService/getExpDateRequest", output = "http://service/SupplyChainService/getExpDateResponse")
+    public Timestamp getExpDate();
 
     /**
      * 

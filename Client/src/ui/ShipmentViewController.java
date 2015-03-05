@@ -182,7 +182,7 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
                 if(selectedItem.getValue().getDescription()==null){
                     ObservableList<Position> positions = FXCollections.observableArrayList();
                     Order order = new Order();
-                    order.setName("Order");
+                    order.setName(selectedItem.getValue().getGtin());
                     order.setOrdered(true);
                     for(TreeItem<OrderTreeItem> item:selectedItem.getChildren()){
                         Position pos = new Position();
@@ -192,15 +192,15 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
                         positions.add(pos);
                     }
                     order.getPositions().addAll(positions);
-                   // boolean request = dataSource.processOrder(order,prop.getProperty("manufacturerGLN"),prop.getProperty("stationGLN"));
-                   // if(request){
-                    //    selectedItem.getParent().getChildren().remove(selectedItem);
-                       // UserInformationPopup popup = new UserInformationPopup("The order is successfully processed.","Information");
-                       // popup.show();
-                   // }else{
-                      //  UserInformationPopup popup = new UserInformationPopup("The order could not been processed. Please check your input data.","Error");
-                      //  popup.show();
-                    //}
+                   boolean request = dataSource.processOrder(order,prop.getProperty("manufacturerGLN"),prop.getProperty("stationGLN"));
+                   if(request){
+                        selectedItem.getParent().getChildren().remove(selectedItem);
+                       UserInformationPopup popup = new UserInformationPopup("The order is successfully processed.","Information");
+                       popup.show();
+                   }else{
+                        UserInformationPopup popup = new UserInformationPopup("The order could not been processed. Please check your input data.","Error");
+                        popup.show();
+                    }
                 }else{
                     UserInformationPopup popup = new UserInformationPopup("You can only process whole orders, not single positions.","Error");
                     popup.show();

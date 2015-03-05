@@ -32,4 +32,5 @@ public interface IDataSource {
     boolean setOrder(Order order, String glnOrd, String glnDest);
     List<Quantity> getQuantities(String gln);
     List<Order> getOpenOrdersByGLN(String gln);
+    boolean processOrder(Order order,String glnMan, String glnStation);
 }
