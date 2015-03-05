@@ -341,7 +341,7 @@ public class SupplyChainService {
 
         try {
             insertShipment(Integer.parseInt(orderNr),glnStation,glnMan);
-            // get the identifier of the latest order entry in the database
+            // get the shipment identifier of the latest order entry in the database
             @Language("DB2")
             String query = "SELECT TOP 1 [ShipmentIdGSIN]\n" +
                     "  FROM [dbo].[Shipment]\n" +
@@ -363,17 +363,17 @@ public class SupplyChainService {
                 return false;
             }
         }
-
+// set order state to 3 (processed)
         setOrderState(orderNr,3);
         return true;
     }
 
-    public void insertShipment(int orderNr, String glnDest, String glnSender)
+    private void insertShipment(int orderNr, String glnDest, String glnSender)
     {
         Connection connection = connectorLogistic.getConnection();
 
         try {
-            // get the identifier of the latest order entry in the database
+            // insert a new shipment in the table
             @Language("DB2")
             String query = "INSERT INTO [dbo].[Shipment]\n" +
                     "           ([OrderNr]\n" +
@@ -400,7 +400,7 @@ public class SupplyChainService {
             }
         }
     }
-    public void insertLogisticPackage(Order order,int shipmentID, int orderNr)
+    private void insertLogisticPackage(Order order,int shipmentID, int orderNr)
     {
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
@@ -445,11 +445,11 @@ public class SupplyChainService {
         }
 
     }
-    public void setOrderState(String orderNr, int state)
+    private void setOrderState(String orderNr, int state)
     {
         Connection connection = connectorLogistic.getConnection();
         try {
-            // get the identifier of the latest order entry in the database
+            // update the order to state 3
             @Language("DB2")
             String query = "UPDATE [dbo].[Order]\n" +
                     "   SET [StateNr] = ?\n" +
@@ -470,7 +470,7 @@ public class SupplyChainService {
             }
         }
     }
-    public void insertSecondaryPackagesFromOrder(Order order, String sscc)
+    private void insertSecondaryPackagesFromOrder(Order order, String sscc)
     {
         Connection connection = connectorLogistic.getConnection();
 
@@ -515,15 +515,15 @@ public class SupplyChainService {
         }
     }
 
-    public String getBatch(){
+    private String getBatch(){
         java.util.Date date = new java.util.Date();
         DateFormat formatter = new SimpleDateFormat("ddMMyyHHmm");
         return "BFH"+formatter.format(date);
     }
-    public String getSerial(String batch, int objectNumber){
+    private String getSerial(String batch, int objectNumber){
         return batch+"0000000"+Integer.toString(objectNumber);
     }
-    public Timestamp getExpDate(){
+    private Timestamp getExpDate(){
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
         cal.add((GregorianCalendar.YEAR), 1);
         java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());

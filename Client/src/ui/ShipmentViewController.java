@@ -178,6 +178,7 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
             @Override
             public void handle( final ActionEvent event )
             {
+                // convert selected treeitem back to an order object
                 final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
                 if(selectedItem.getValue().getDescription()==null){
                     ObservableList<Position> positions = FXCollections.observableArrayList();
@@ -192,8 +193,10 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
                         positions.add(pos);
                     }
                     order.getPositions().addAll(positions);
+                    // start webservice request
                    boolean request = dataSource.processOrder(order,prop.getProperty("manufacturerGLN"),prop.getProperty("stationGLN"));
-                   if(request){
+                   // user information popups
+                    if(request){
                         selectedItem.getParent().getChildren().remove(selectedItem);
                        UserInformationPopup popup = new UserInformationPopup("The order is successfully processed.","Information");
                        popup.show();
