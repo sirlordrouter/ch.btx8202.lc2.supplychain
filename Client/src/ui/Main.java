@@ -34,8 +34,8 @@ public class Main extends Application implements IAuthenticationStateContext {
     private final double LOGIN_MINIMUM_WINDOW_WIDTH = 500.0;
     private final double LOGIN_MINIMUM_WINDOW_HEIGHT = 320.0;
 
-    private final double MINIMUM_WINDOW_WIDTH = 1300;
-    private final double MINIMUM_WINDOW_HEIGHT = 900.0;
+    private final double MINIMUM_WINDOW_WIDTH = 1228;
+    private final double MINIMUM_WINDOW_HEIGHT = 850.0;
 
     private Stage stage;
 
