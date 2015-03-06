@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,7 +45,7 @@ import java.util.ResourceBundle;
  */
 public class StockViewController extends VBox implements Initializable,IPartialView {
     public TreeTableView itemList;
-    public ObservableList<Item> data =  FXCollections.observableArrayList();
+    public final ObservableList<Item> data =  FXCollections.observableArrayList();
 
     IDataSource dataSource;
     Properties prop;
@@ -97,7 +98,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
      * @param event
      */
     public void searchCheckedInItems(ActionEvent event) {
-        data.removeAll(data);
+        data.clear();
         getCheckedInItems();
     }
 
@@ -117,121 +118,137 @@ public class StockViewController extends VBox implements Initializable,IPartialV
     public void getCheckedInItems(){
         Navigator.getInstance().getMainController().setStatusbarWaiting("Get current stock...");
 
+        final ObservableList<Item> tempData =  FXCollections.observableArrayList();
 
         // fetch checkedin items from the supply chain service
-        WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
-        ObservableList<Item> tempData =  FXCollections.observableArrayList();
 
-        tempData.setAll(result.getItems());
+        // loads the items at another thread, asynchronously
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        // iterate over all checked in items and get item information from swissindex
-        for(Item item:tempData){
-            TradeItem tradeItem = null;
-            SwissIndexResult swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
-            if(result.isResult()){
-                tradeItem = swissIndexResult.getTradeItems().get(0);
-            }else{
-                Navigator.getInstance().getMainController().setStatusbarEmpty();
-                System.out.println(swissIndexResult.getMessage());
-                return;
-            }
-            TradeItem tradeItem1 = new TradeItem();
-            tradeItem1.setName(tradeItem.getName());
-            tradeItem1.setBeschreibung(tradeItem.getBeschreibung());
-            tradeItem1.setMenge(tradeItem.getMenge());
-            tradeItem1.setGTIN(item.getGTIN());
-            tradeItem1.setExpiryDate(item.getExpiryDate());
-            tradeItem1.setLot(item.getLot());
-            tradeItem1.setSerial(item.getSerial());
-            tradeItem1.setCheckInDate(item.getCheckInDate());
-            data.add(tradeItem1);
-        }
+                WebServiceResult result = null;
+                try {
+                    result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
+                    tempData.setAll(result.getItems());
 
-        ArrayList<String> groupnames = new ArrayList<String>();
-        // set an invisible root element as a container
-        final TreeItem<StockTreeItem> root =
-                new TreeItem<StockTreeItem>(new StockTreeItem("Stock", "", "", "", "", ""));
-        for(Item i:data){
-            // create a new group, if the item name is a new one
-            if(!groupnames.contains(i.getName())){
-                groupnames.add(i.getName());
-                StockTreeItem treeGroup = new StockTreeItem(i.getName(), "", "", "", "", "");
-                root.getChildren().add(new TreeItem<StockTreeItem>(treeGroup));
-            }
-            // fill all elements in the corresponding group
-            // TODO:  evtl nicht durch alle iterieren
-            for(TreeItem<StockTreeItem> item:root.getChildren()){
-                if(i.getName().equals(item.getValue().getDescription())){
-                    StockTreeItem treeItem = new StockTreeItem(i.getName(), i.getMenge(), i.getGTIN(), i.getExpiryDate(), i.getLot(), i.getSerial());
-                    item.getChildren().add(new TreeItem<StockTreeItem>(treeItem));
-                }
-            }
-        }
-        // count the items for each group
-        List<Quantity> quantities = dataSource.getQuantities(prop.getProperty("stationGLN"));
 
-        for(TreeItem<StockTreeItem> item:root.getChildren()){
-            int count = item.getChildren().size();
-            item.getValue().setQuantity(Integer.toString(count)+ " pc.");
-        }
-        // if there are no checkedin items, alert user!
-        if(data.isEmpty()){
-            Navigator.getInstance().getMainController().setStatusbarEmpty();
-            UserInformationPopup popup = new UserInformationPopup("Aktuell sind keine Objekte eingecheckt.", "Keine Objekte gefunden.");
-            popup.show();
-        }
+                    // iterate over all checked in items and get item information from swissindex
+                    for(Item item:tempData){
+                        TradeItem tradeItem = null;
+                        SwissIndexResult swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+                        if(result.isResult()){
+                            tradeItem = swissIndexResult.getTradeItems().get(0);
+                        }else{
+                            System.out.println(swissIndexResult.getMessage());
+                            return;
+                        }
+                        TradeItem tradeItem1 = new TradeItem();
+                        tradeItem1.setName(tradeItem.getName());
+                        tradeItem1.setBeschreibung(tradeItem.getBeschreibung());
+                        tradeItem1.setMenge(tradeItem.getMenge());
+                        tradeItem1.setGTIN(item.getGTIN());
+                        tradeItem1.setExpiryDate(item.getExpiryDate());
+                        tradeItem1.setLot(item.getLot());
+                        tradeItem1.setSerial(item.getSerial());
+                        tradeItem1.setCheckInDate(item.getCheckInDate());
+                        data.add(tradeItem1);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    // just updates the list view items at the
+                    // Application Thread
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            ArrayList<String> groupnames = new ArrayList<String>();
+                            // set an invisible root element as a container
+                            final TreeItem<StockTreeItem> root =
+                                    new TreeItem<StockTreeItem>(new StockTreeItem("Stock", "", "", "", "", ""));
+                            for(Item i:data){
+                                // create a new group, if the item name is a new one
+                                if(!groupnames.contains(i.getName())){
+                                    groupnames.add(i.getName());
+                                    StockTreeItem treeGroup = new StockTreeItem(i.getName(), "", "", "", "", "");
+                                    root.getChildren().add(new TreeItem<StockTreeItem>(treeGroup));
+                                }
+                                // fill all elements in the corresponding group
+                                // TODO:  evtl nicht durch alle iterieren
+                                for(TreeItem<StockTreeItem> item:root.getChildren()){
+                                    if(i.getName().equals(item.getValue().getDescription())){
+                                        StockTreeItem treeItem = new StockTreeItem(i.getName(), i.getMenge(), i.getGTIN(), i.getExpiryDate(), i.getLot(), i.getSerial());
+                                        item.getChildren().add(new TreeItem<StockTreeItem>(treeItem));
+                                    }
+                                }
+                            }
+                            // count the items for each group
+                            List<Quantity> quantities = dataSource.getQuantities(prop.getProperty("stationGLN"));
+
+                            for(TreeItem<StockTreeItem> item:root.getChildren()){
+                                int count = item.getChildren().size();
+                                item.getValue().setQuantity(Integer.toString(count)+ " pc.");
+                            }
+                            // if there are no checkedin items, alert user!
+                            if(data.isEmpty()){
+                                Navigator.getInstance().getMainController().setStatusbarEmpty();
+                                UserInformationPopup popup = new UserInformationPopup("Aktuell sind keine Objekte eingecheckt.", "Keine Objekte gefunden.");
+                                popup.show();
+                            }
 
         /*
         ***************************SETUP TABLE COLUMNS********************************************************
          */
-        // Name Column
-        TreeTableColumn<StockTreeItem, String> nameColumn =
-                new TreeTableColumn<>("Name");
-        nameColumn.setPrefWidth(200);
-        nameColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getDescription())
-        );
-        // Quantity Column
-        TreeTableColumn<StockTreeItem, String> quantityColumn =
-                new TreeTableColumn<>("Quantity");
-        quantityColumn.setPrefWidth(80);
-        quantityColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getQuantity())
-        );
-        // GTIN Column
-        TreeTableColumn<StockTreeItem, String> gtinColumn =
-                new TreeTableColumn<>("GTIN");
-        gtinColumn.setPrefWidth(150);
-        gtinColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getGtin())
-        );
-        // ExpiryDate Column
-        TreeTableColumn<StockTreeItem, String> expColumn =
-                new TreeTableColumn<>("Expiry Date");
-        expColumn.setPrefWidth(150);
-        expColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getExpdate())
-        );
-        // Batch Lot Column
-        TreeTableColumn<StockTreeItem, String> batchlotColumn =
-                new TreeTableColumn<>("Batch/Lot");
-        batchlotColumn.setPrefWidth(150);
-        batchlotColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getBatchlot())
-        );
-        // Serial Column
-        TreeTableColumn<StockTreeItem, String> serialColumn =
-                new TreeTableColumn<>("Serial");
-        serialColumn.setPrefWidth(150);
-        serialColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getSerial())
-        );
+                            // Name Column
+                            TreeTableColumn<StockTreeItem, String> nameColumn =
+                                    new TreeTableColumn<>("Name");
+                            nameColumn.setPrefWidth(200);
+                            nameColumn.setCellValueFactory(
+                                    (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                                            new ReadOnlyStringWrapper(param.getValue().getValue().getDescription())
+                            );
+                            // Quantity Column
+                            TreeTableColumn<StockTreeItem, String> quantityColumn =
+                                    new TreeTableColumn<>("Quantity");
+                            quantityColumn.setPrefWidth(80);
+                            quantityColumn.setCellValueFactory(
+                                    (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                                            new ReadOnlyStringWrapper(param.getValue().getValue().getQuantity())
+                            );
+                            // GTIN Column
+                            TreeTableColumn<StockTreeItem, String> gtinColumn =
+                                    new TreeTableColumn<>("GTIN");
+                            gtinColumn.setPrefWidth(150);
+                            gtinColumn.setCellValueFactory(
+                                    (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                                            new ReadOnlyStringWrapper(param.getValue().getValue().getGtin())
+                            );
+                            // ExpiryDate Column
+                            TreeTableColumn<StockTreeItem, String> expColumn =
+                                    new TreeTableColumn<>("Expiry Date");
+                            expColumn.setPrefWidth(150);
+                            expColumn.setCellValueFactory(
+                                    (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                                            new ReadOnlyStringWrapper(param.getValue().getValue().getExpdate())
+                            );
+                            // Batch Lot Column
+                            TreeTableColumn<StockTreeItem, String> batchlotColumn =
+                                    new TreeTableColumn<>("Batch/Lot");
+                            batchlotColumn.setPrefWidth(150);
+                            batchlotColumn.setCellValueFactory(
+                                    (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                                            new ReadOnlyStringWrapper(param.getValue().getValue().getBatchlot())
+                            );
+                            // Serial Column
+                            TreeTableColumn<StockTreeItem, String> serialColumn =
+                                    new TreeTableColumn<>("Serial");
+                            serialColumn.setPrefWidth(150);
+                            serialColumn.setCellValueFactory(
+                                    (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
+                                            new ReadOnlyStringWrapper(param.getValue().getValue().getSerial())
+                            );
 
 
 
@@ -239,13 +256,18 @@ public class StockViewController extends VBox implements Initializable,IPartialV
         ***************************************************************************************
          */
 
-        // add the columns to the treetable
-        itemList.getColumns().setAll(nameColumn, quantityColumn,gtinColumn,expColumn,batchlotColumn,serialColumn);
-        itemList.setRoot(root);
-        // dont show the root element (invisible container)
-        itemList.setShowRoot(false);
+                            // add the columns to the treetable
+                            itemList.getColumns().setAll(nameColumn, quantityColumn,gtinColumn,expColumn,batchlotColumn,serialColumn);
+                            itemList.setRoot(root);
+                            // dont show the root element (invisible container)
+                            itemList.setShowRoot(false);
 
-        Navigator.getInstance().getMainController().setStatusbarEmpty();
+                            Navigator.getInstance().getMainController().setStatusbarEmpty();
+                        }
+                    });
+                }
+            }
+        }).start();
 
     }
 
@@ -256,6 +278,6 @@ public class StockViewController extends VBox implements Initializable,IPartialV
 
     @Override
     public void beforeOpen() {
-        Navigator.getInstance().getMainController().setStatusbarWaiting("Hello to Stock View ....");
+
     }
 }

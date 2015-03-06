@@ -1,5 +1,8 @@
 package ui;
 
+import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,6 +41,16 @@ public class MainController implements Initializable {
     public Label statusLineLabel;
     public ProgressIndicator statusLineIndicator;
 
+    public ObservableValue<Boolean> getIsShowing() {
+        return isShowing;
+    }
+
+    public void SetisShowingProperty(SimpleBooleanProperty val) {
+        isShowing = val;
+    }
+
+    private ObservableValue<Boolean> isShowing = new SimpleBooleanProperty(false);
+
     /** Holder of a switchable vista. */
     @FXML
     private VBox vistaHolder;
@@ -57,7 +70,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        setStatusbarEmpty();
+        Platform.runLater(() -> this.setStatusbarEmpty());
 
         Properties prop = null;
         try {
@@ -108,8 +121,8 @@ public class MainController implements Initializable {
     public void openTrackerView(ActionEvent actionEvent) {Navigator.getInstance().loadVista(Navigator.TRACKER_VIEW);}
 
     public void setStatusbarWaiting(String infotext) {
-        statusLineIndicator.setProgress(-1);
         statusLineIndicator.setVisible(true);
+        //SetisShowingProperty(new SimpleBooleanProperty(true));
         statusLineLabel.setText(infotext);
     }
 
@@ -119,6 +132,8 @@ public class MainController implements Initializable {
     }
 
     public void setStatusbarText(String infotext) {
+
+        SetisShowingProperty(new SimpleBooleanProperty(false));
         statusLineLabel.setText(infotext);
     }
 }
