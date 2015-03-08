@@ -1,8 +1,12 @@
 package bartender;
 
 import services.PropertiesReader;
+import webservice.erp.Item;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -39,17 +43,19 @@ public class BartenderGenerator {
         fileNameLieferschein=prop.getProperty("triggerTextFileNameLieferschein");
     }
 
-    public void createSSCCtriggerFile(){
+    public void createSSCCtriggerFile(String glnOrigin, String descOrigin, String glnDestination, String descDestination, String sscc){
         // build the trigger text field at the specified location
         try{
+            java.util.Date date = new java.util.Date();
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            String dateString = formatter.format(date);
             Writer output = null;
             File file = new File(fileNameSSCC);
             output = new BufferedWriter(new FileWriter(file));
             output.write("%BTW% /AF="+labelTemplateSSCC+" /D=%Trigger File" +
                     " Name% /PRN=\""+printerNameSSCC+"\" /R=3 /P /DD\n" +
-                    "%END%\n");
-
-
+                    "%END%\n"+glnOrigin+","+descOrigin+","+glnDestination+","
+                    +descDestination+","+dateString+","+sscc);
             output.close();
             System.out.println("File has been written");
         }catch(Exception e){
@@ -58,7 +64,7 @@ public class BartenderGenerator {
 
 
     }
-    public void createDataMatrixtriggerFile(){
+    public void createDataMatrixtriggerFile(List<Item> items){
         // build the trigger text field at the specified location
         try{
             Writer output = null;
@@ -66,8 +72,11 @@ public class BartenderGenerator {
             output = new BufferedWriter(new FileWriter(file));
             output.write("%BTW% /AF="+labelTemplateDataMatrix+" /D=%Trigger File" +
                     " Name% /PRN=\""+printerNameDataMatrix+"\" /R=3 /P /DD\n" +
-                    "%END%\n");
-
+                    "%END%");
+            for(Item item:items){
+                output.append("\n"+item.getGTIN()+","+item.getExpiryDate()+","+item.getLot()+
+                ","+item.getSerial()+","+item.getBeschreibung());
+            }
 
             output.close();
             System.out.println("File has been written");
