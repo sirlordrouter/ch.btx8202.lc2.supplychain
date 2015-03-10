@@ -18,8 +18,8 @@ import java.util.List;
  */
 public class BartenderGeneratorTest extends TestCase {
     public void testGenerator() throws Exception {
-        BartenderGenerator gen = new BartenderGenerator();
-        gen.createSSCCtriggerFile("1234","Station","12345","BFH","12343523525");
+        //BartenderGenerator gen = new BartenderGenerator();
+        //gen.createSSCCtriggerFile("1234","Station","12345","BFH","12343523525");
 
         List<Item> items=new ArrayList<>();
         Item item1 = new Item();
@@ -37,6 +37,6 @@ public class BartenderGeneratorTest extends TestCase {
         items.add(item1);
         items.add(item2);
 
-        gen.createDataMatrixtriggerFile(items);
+        //gen.createDataMatrixtriggerFile(items);
     }
 }

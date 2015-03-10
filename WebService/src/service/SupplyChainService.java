@@ -1,10 +1,7 @@
 package service;
 
 import data.DbConnectorLogistic;
-import entities.Item;
-import entities.Order;
-import entities.Position;
-import entities.Quantity;
+import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.intellij.lang.annotations.Language;
@@ -331,7 +328,9 @@ public class SupplyChainService {
      *  a boolean. (success=1)
      */
     @WebMethod
-    public boolean processOrder(Order order,String glnMan, String glnStation) {
+    public Production processOrder(Order order,String glnMan, String glnStation) {
+        List<Item> items = new ArrayList<Item>();
+        Production production = new Production();
         // extract digits from order name to get the order number
         String orderNr = order.getName().replaceAll("\\D+", "");
 
@@ -351,21 +350,28 @@ public class SupplyChainService {
             rs =  ps.executeQuery();
             rs.next();
             int lastShipmentId = (int)(long)(Long)rs.getObject(1);
-            insertLogisticPackage(order,lastShipmentId, Integer.parseInt(orderNr));
+            items=insertLogisticPackage(order,lastShipmentId, Integer.parseInt(orderNr));
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            production.setSuccess(false);
+            return production;
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
-                return false;
+                production.setSuccess(false);
+                return production;
             }
         }
 // set order state to 3 (processed)
         setOrderState(orderNr,3);
-        return true;
+        // build production output object
+        production.setPositions(order.getPositions());
+        production.setItems(items);
+        production.setShipment(getProductionData(orderNr));
+        production.setSuccess(true);
+        return production;
     }
 
     private void insertShipment(int orderNr, String glnDest, String glnSender)
@@ -400,8 +406,9 @@ public class SupplyChainService {
             }
         }
     }
-    private void insertLogisticPackage(Order order,int shipmentID, int orderNr)
+    private List<Item> insertLogisticPackage(Order order,int shipmentID, int orderNr)
     {
+        List<Item> items = new ArrayList<Item>();
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
 
@@ -433,16 +440,19 @@ public class SupplyChainService {
             ps.setInt(2, shipmentID);
             ps.setInt(3, orderNr);
             int success =  ps.executeUpdate();
-            insertSecondaryPackagesFromOrder(order,Long.toString(lastSSCC+1));
+            items=insertSecondaryPackagesFromOrder(order,Long.toString(lastSSCC+1));
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+                return null;
             }
         }
+        return items;
 
     }
     private void setOrderState(String orderNr, int state)
@@ -470,9 +480,10 @@ public class SupplyChainService {
             }
         }
     }
-    private void insertSecondaryPackagesFromOrder(Order order, String sscc)
+    private List<Item> insertSecondaryPackagesFromOrder(Order order, String sscc)
     {
         Connection connection = connectorLogistic.getConnection();
+        List<Item> items = new ArrayList<Item>();
 
         try {
             // get the identifier of the latest order entry in the database
@@ -480,6 +491,7 @@ public class SupplyChainService {
             Timestamp expdate = getExpDate();
             for(Position pos:order.getPositions()){
                 for(int i= 0;i<pos.getQuantity();i++){
+                    Item item = new Item();
                     @Language("DB2")
                     String query = "INSERT INTO [dbo].[SecondaryPackage]\n" +
                             "           ([GTINsek]\n" +
@@ -497,22 +509,34 @@ public class SupplyChainService {
                             "           ,?)";
                     PreparedStatement ps = connection.prepareStatement(query);
                     ps.setString(1,pos.getGtin());
-                    ps.setString(2,getSerial(batch,i+1));
+                    String serial = getSerial(batch,i+1);
+                    ps.setString(2,serial);
                     ps.setString(3,batch);
                     ps.setTimestamp(4,expdate);
                     ps.setString(5,sscc);
+                    item.setGTIN(pos.getGtin());
+                    item.setSerial(serial);
+                    item.setLot(batch);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
+                    String expDate  = dateFormat.format(expdate);
+                    item.setExpiryDate(expDate);
+                    item.setBeschreibung(pos.getDescription());
+                    items.add(item);
                     int success =  ps.executeUpdate();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+                return null;
             }
         }
+        return items;
     }
 
     private String getBatch(){
@@ -576,6 +600,60 @@ public class SupplyChainService {
         }
         return quantities;
     }
+
+    /**
+     * Returns a list of quantity objects.
+     *
+     * @param orderNumber
+     *  a valid order number
+     * @return
+     *  a production object
+     */
+    private Shipment getProductionData(String orderNumber) {
+        Shipment shipment = new Shipment();
+
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            @Language("DB2")
+            String query = "SELECT a.[GLNdest]\n" +
+                    "\t  ,d1.Name as 'DescDest'\n" +
+                    "      ,a.[GLNsender]\n" +
+                    "\t  ,d2.Name as 'DescSend'\n" +
+                    "\t  ,p.SSCC\n" +
+                    "  FROM [dbo].[Shipment] a\n" +
+                    "  INNER JOIN LogisticPackage p On \n" +
+                    "  p.OrderNr=a.OrderNr and \n" +
+                    "  a.ShipmentIdGSIN = p.ShipmentIdGSIN\n" +
+                    "  inner join Division d1 on d1.GLNdiv = a.GLNdest\n" +
+                    "  inner join Division d2 on d2.GLNdiv = a.GLNsender\n" +
+                    "Where p.OrderNr = ?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1,Integer.parseInt(orderNumber));
+            rs =  ps.executeQuery();
+            rs.next();
+            shipment.setOrderNr(orderNumber);
+            shipment.setGlnDestination(rs.getString(1));
+            shipment.setDescDestination(rs.getString(2));
+            shipment.setGlnOrigin(rs.getString(3));
+            shipment.setDescOrigin(rs.getString(4));
+            shipment.setSscc(rs.getString(5));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return shipment;
+    }
+
 
     private List<Item> getAllItemsBySSCC(String sscc) {
         List<Item> items;

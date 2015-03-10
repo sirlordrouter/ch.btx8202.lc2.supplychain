@@ -205,12 +205,12 @@ public class ErpClient implements IDataSource{
     }
 
     @Override
-    public boolean processOrder(Order order, String glnMan, String glnStation) {
+    public Production processOrder(Order order, String glnMan, String glnStation) {
         try{
             return supplyChainServicePort.processOrder(order,glnMan,glnStation);
         }catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

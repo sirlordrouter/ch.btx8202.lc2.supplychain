@@ -2,6 +2,8 @@ package bartender;
 
 import services.PropertiesReader;
 import webservice.erp.Item;
+import webservice.erp.Position;
+import webservice.erp.Production;
 
 import java.io.*;
 import java.text.DateFormat;
@@ -23,8 +25,10 @@ import java.util.Properties;
 public class BartenderGenerator {
     private String printerNameSSCC, printerNameDataMatrix,printerNameLieferschein,labelTemplateSSCC, labelTemplateDataMatrix,labelTemplateLieferschein, fileNameSSCC, fileNameDataMatrix, fileNameLieferschein;
     Properties prop;
+    private Production production;
 
-    public BartenderGenerator(){
+    public BartenderGenerator(Production prod){
+        this.production=prod;
         PropertiesReader reader = new PropertiesReader();
         try {
             prop = reader.getPropValues();
@@ -43,7 +47,7 @@ public class BartenderGenerator {
         fileNameLieferschein=prop.getProperty("triggerTextFileNameLieferschein");
     }
 
-    public void createSSCCtriggerFile(String glnOrigin, String descOrigin, String glnDestination, String descDestination, String sscc){
+    public void createSSCCtriggerFile(){
         // build the trigger text field at the specified location
         try{
             java.util.Date date = new java.util.Date();
@@ -54,8 +58,11 @@ public class BartenderGenerator {
             output = new BufferedWriter(new FileWriter(file));
             output.write("%BTW% /AF="+labelTemplateSSCC+" /D=%Trigger File" +
                     " Name% /PRN=\""+printerNameSSCC+"\" /R=3 /P /DD\n" +
-                    "%END%\n"+glnOrigin+","+descOrigin+","+glnDestination+","
-                    +descDestination+","+dateString+","+sscc);
+                    "%END%\n"+production.getShipment().getGlnOrigin()+","+
+                    production.getShipment().getDescOrigin()+","+
+                    production.getShipment().getGlnDestination()+","
+                    +production.getShipment().getDescDestination()+","+dateString+","+
+                    production.getShipment().getSscc());
             output.close();
             System.out.println("File has been written");
         }catch(Exception e){
@@ -64,7 +71,7 @@ public class BartenderGenerator {
 
 
     }
-    public void createDataMatrixtriggerFile(List<Item> items){
+    public void createDataMatrixtriggerFile(){
         // build the trigger text field at the specified location
         try{
             Writer output = null;
@@ -73,7 +80,7 @@ public class BartenderGenerator {
             output.write("%BTW% /AF="+labelTemplateDataMatrix+" /D=%Trigger File" +
                     " Name% /PRN=\""+printerNameDataMatrix+"\" /R=3 /P /DD\n" +
                     "%END%");
-            for(Item item:items){
+            for(Item item:production.getItems()){
                 output.append("\n"+item.getGTIN()+","+item.getExpiryDate()+","+item.getLot()+
                 ","+item.getSerial()+","+item.getBeschreibung());
             }
@@ -87,14 +94,27 @@ public class BartenderGenerator {
     public void createShipmenttriggerFile(){
         // build the trigger text field at the specified location
         try{
+            java.util.Date date = new java.util.Date();
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            String dateString = formatter.format(date);
             Writer output = null;
             File file = new File(fileNameLieferschein);
             output = new BufferedWriter(new FileWriter(file));
             output.write("%BTW% /AF="+labelTemplateLieferschein+" /D=%Trigger File" +
                     " Name% /PRN=\""+printerNameLieferschein+"\" /R=3 /P /DD\n" +
-                    "%END%\n");
-
-
+                    "%END%");
+            output.append("\n"+production.getShipment().getOrderNr()+","+
+            production.getShipment().getDescOrigin()+","+
+            production.getShipment().getGlnOrigin()+","+
+            production.getShipment().getDescDestination()+","+
+            production.getShipment().getGlnDestination()+","+
+            dateString + ","+production.getShipment().getSscc());
+            int count = 1;
+            for(Position pos:production.getPositions()){
+                output.append(","+Integer.toString(count)+","+pos.getGtin()+","+
+                pos.getDescription()+","+pos.getQuantity());
+                count++;
+            }
             output.close();
             System.out.println("File has been written");
         }catch(Exception e){

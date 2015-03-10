@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="return" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="return" type="{http://service/}production" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -33,21 +33,29 @@ import javax.xml.bind.annotation.XmlType;
 public class ProcessOrderResponse {
 
     @XmlElement(name = "return")
-    protected boolean _return;
+    protected Production _return;
 
     /**
      * Ruft den Wert der return-Eigenschaft ab.
      * 
+     * @return
+     *     possible object is
+     *     {@link Production }
+     *     
      */
-    public boolean isReturn() {
+    public Production getReturn() {
         return _return;
     }
 
     /**
      * Legt den Wert der return-Eigenschaft fest.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Production }
+     *     
      */
-    public void setReturn(boolean value) {
+    public void setReturn(Production value) {
         this._return = value;
     }
 

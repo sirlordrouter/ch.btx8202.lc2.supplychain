@@ -1,5 +1,6 @@
 package ui;
 
+import bartender.BartenderGenerator;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,7 @@ import services.PropertiesReader;
 import webservice.erp.Item;
 import webservice.erp.Order;
 import webservice.erp.Position;
+import webservice.erp.Production;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
@@ -192,9 +194,13 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
                     }
                     order.getPositions().addAll(positions);
                     // start webservice request
-                   boolean request = dataSource.processOrder(order,prop.getProperty("manufacturerGLN"),prop.getProperty("stationGLN"));
+                   Production productionObject = dataSource.processOrder(order,prop.getProperty("manufacturerGLN"),prop.getProperty("stationGLN"));
+                   BartenderGenerator gen = new BartenderGenerator(productionObject);
+                    gen.createDataMatrixtriggerFile();
+                    gen.createShipmenttriggerFile();
+                    gen.createSSCCtriggerFile();
                    // user information popups
-                    if(request){
+                    if(productionObject.isSuccess()){
                         selectedItem.getParent().getChildren().remove(selectedItem);
                        UserInformationPopup popup = new UserInformationPopup("The order is successfully processed.","Information");
                        popup.show();
