@@ -626,8 +626,8 @@ public class SupplyChainService {
                     "  INNER JOIN LogisticPackage p On \n" +
                     "  p.OrderNr=a.OrderNr and \n" +
                     "  a.ShipmentIdGSIN = p.ShipmentIdGSIN\n" +
-                    "  inner join Division d1 on d1.GLNdiv = a.GLNdest\n" +
-                    "  inner join Division d2 on d2.GLNdiv = a.GLNsender\n" +
+                    "  inner join [dbo].[Location] d1 on d1.GLN = a.GLNdest\n" +
+                    "  inner join [dbo].[Location] d2 on d2.GLN = a.GLNsender\n" +
                     "Where p.OrderNr = ?";
 
             PreparedStatement ps = connection.prepareStatement(query);

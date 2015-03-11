@@ -1,0 +1,3 @@
+%BTW% /AF="\\psf\Home\Desktop\Bachelorthesis\Lieferschein.btw" /D=%Trigger File Name% /PRN="Print to PDF (Mac Desktop)" /R=3 /P /DD
+%END%
+2,Bristol-Myers Squibb SA,7601001010703,Klinik Höheweg Station A,7640166731078,11-03-2015,106141410000098766,1,7680475040157,DAFALGAN Tabl 500 mg,6
