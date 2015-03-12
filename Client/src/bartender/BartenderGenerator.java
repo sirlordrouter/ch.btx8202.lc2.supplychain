@@ -24,11 +24,12 @@ import java.util.Properties;
  * @version 24-02-2015
  */
 public class BartenderGenerator {
-    private String printerNameSSCC, printerNameDataMatrix,printerNameLieferschein,labelTemplateSSCC, labelTemplateDataMatrix,labelTemplateLieferschein, fileNameSSCC, fileNameDataMatrix, fileNameLieferschein;
+    private String printerNameSSCC, printerNameDataMatrix,printerNameLieferschein,labelTemplateSSCC, labelTemplateDataMatrix,labelTemplateLieferschein, fileNameSSCC, fileNameDataMatrix, fileNameLieferschein, separator;
     Properties prop;
     private Production production;
 
     public BartenderGenerator(Production prod){
+        this.separator=System.getProperty("line.separator");
         this.production=prod;
         PropertiesReader reader = new PropertiesReader();
         try {
@@ -58,8 +59,8 @@ public class BartenderGenerator {
             File file = new File(fileNameSSCC);
             output = new BufferedWriter(new FileWriter(file));
             output.write("%BTW% /AF="+labelTemplateSSCC+" /D=<Trigger File" +
-                    " Name> /PRN=\""+printerNameSSCC+"\" /R=3 /P /DD\r\n" +
-                    "%END%\r\n"+production.getShipment().getGlnOrigin()+","+
+                    " Name> /PRN=\""+printerNameSSCC+"\" /R=3 /P /DD" + separator+
+                    "%END%"+separator+ production.getShipment().getGlnOrigin()+","+
                     production.getShipment().getDescOrigin()+","+
                     production.getShipment().getGlnDestination()+","
                     +production.getShipment().getDescDestination()+","+dateString+","+
@@ -79,10 +80,10 @@ public class BartenderGenerator {
             File file = new File(fileNameDataMatrix);
             output = new BufferedWriter(new FileWriter(file));
             output.write("%BTW% /AF="+labelTemplateDataMatrix+" /D=<Trigger File" +
-                    " Name> /PRN=\""+printerNameDataMatrix+"\" /R=3 /P /DD\r\n" +
+                    " Name> /PRN=\""+printerNameDataMatrix+"\" /R=3 /P /DD" +separator+
                     "%END%");
             for(Item item:production.getItems()){
-                output.append("\r\n"+item.getGTIN()+","+item.getExpiryDate()+","+item.getLot()+
+                output.append(separator+item.getGTIN()+","+item.getExpiryDate()+","+item.getLot()+
                 ","+item.getSerial()+","+item.getBeschreibung());
             }
 
@@ -102,9 +103,9 @@ public class BartenderGenerator {
             File file = new File(fileNameLieferschein);
             output = new BufferedWriter(new FileWriter(file));
             output.write("%BTW% /AF="+labelTemplateLieferschein+" /D=<Trigger File" +
-                    " Name> /PRN=\""+printerNameLieferschein+"\" /R=3 /P /DD\r\n" +
+                    " Name> /PRN=\""+printerNameLieferschein+"\" /R=3 /P /DD" +separator+
                     "%END%");
-            output.append("\r\n"+production.getShipment().getOrderNr()+","+
+            output.append(separator+production.getShipment().getOrderNr()+","+
             production.getShipment().getDescOrigin()+","+
             production.getShipment().getGlnOrigin()+","+
             production.getShipment().getDescDestination()+","+
