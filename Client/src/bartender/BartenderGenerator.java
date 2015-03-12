@@ -6,6 +6,7 @@ import webservice.erp.Position;
 import webservice.erp.Production;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -56,9 +57,9 @@ public class BartenderGenerator {
             Writer output = null;
             File file = new File(fileNameSSCC);
             output = new BufferedWriter(new FileWriter(file));
-            output.write("%BTW% /AF="+labelTemplateSSCC+" /D=%Trigger File" +
-                    " Name% /PRN=\""+printerNameSSCC+"\" /R=3 /P /DD\n" +
-                    "%END%\n"+production.getShipment().getGlnOrigin()+","+
+            output.write("%BTW% /AF="+labelTemplateSSCC+" /D=<Trigger File" +
+                    " Name> /PRN=\""+printerNameSSCC+"\" /R=3 /P /DD\r\n" +
+                    "%END%\r\n"+production.getShipment().getGlnOrigin()+","+
                     production.getShipment().getDescOrigin()+","+
                     production.getShipment().getGlnDestination()+","
                     +production.getShipment().getDescDestination()+","+dateString+","+
@@ -77,11 +78,11 @@ public class BartenderGenerator {
             Writer output = null;
             File file = new File(fileNameDataMatrix);
             output = new BufferedWriter(new FileWriter(file));
-            output.write("%BTW% /AF="+labelTemplateDataMatrix+" /D=%Trigger File" +
-                    " Name% /PRN=\""+printerNameDataMatrix+"\" /R=3 /P /DD\n" +
+            output.write("%BTW% /AF="+labelTemplateDataMatrix+" /D=<Trigger File" +
+                    " Name> /PRN=\""+printerNameDataMatrix+"\" /R=3 /P /DD\r\n" +
                     "%END%");
             for(Item item:production.getItems()){
-                output.append("\n"+item.getGTIN()+","+item.getExpiryDate()+","+item.getLot()+
+                output.append("\r\n"+item.getGTIN()+","+item.getExpiryDate()+","+item.getLot()+
                 ","+item.getSerial()+","+item.getBeschreibung());
             }
 
@@ -100,10 +101,10 @@ public class BartenderGenerator {
             Writer output = null;
             File file = new File(fileNameLieferschein);
             output = new BufferedWriter(new FileWriter(file));
-            output.write("%BTW% /AF="+labelTemplateLieferschein+" /D=%Trigger File" +
-                    " Name% /PRN=\""+printerNameLieferschein+"\" /R=3 /P /DD\n" +
+            output.write("%BTW% /AF="+labelTemplateLieferschein+" /D=<Trigger File" +
+                    " Name> /PRN=\""+printerNameLieferschein+"\" /R=3 /P /DD\r\n" +
                     "%END%");
-            output.append("\n"+production.getShipment().getOrderNr()+","+
+            output.append("\r\n"+production.getShipment().getOrderNr()+","+
             production.getShipment().getDescOrigin()+","+
             production.getShipment().getGlnOrigin()+","+
             production.getShipment().getDescDestination()+","+
