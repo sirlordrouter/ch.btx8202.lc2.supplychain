@@ -3,10 +3,7 @@ package services;
 
 import java.util.Date;
 
-import webservice.erp.Item;
-import webservice.erp.Order;
-import webservice.erp.Quantity;
-import webservice.erp.WebServiceResult;
+import webservice.erp.*;
 
 import java.util.List;
 
@@ -32,5 +29,5 @@ public interface IDataSource {
     boolean setOrder(Order order, String glnOrd, String glnDest);
     List<Quantity> getQuantities(String gln);
     List<Order> getOpenOrdersByGLN(String gln);
-    boolean processOrder(Order order,String glnMan, String glnStation);
+    Production processOrder(Order order,String glnMan, String glnStation);
 }

@@ -285,6 +285,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Production }
+     * 
+     */
+    public Production createProduction() {
+        return new Production();
+    }
+
+    /**
      * Create an instance of {@link WebServiceResult }
      * 
      */
@@ -314,6 +322,14 @@ public class ObjectFactory {
      */
     public Item createItem() {
         return new Item();
+    }
+
+    /**
+     * Create an instance of {@link Shipment }
+     * 
+     */
+    public Shipment createShipment() {
+        return new Shipment();
     }
 
     /**

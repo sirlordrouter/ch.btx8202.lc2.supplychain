@@ -152,14 +152,14 @@ public interface SupplyChainService {
      * @param arg1
      * @param arg0
      * @return
-     *     returns boolean
+     *     returns webservice.erp.Production
      */
     @WebMethod
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "processOrder", targetNamespace = "http://service/", className = "webservice.erp.ProcessOrder")
     @ResponseWrapper(localName = "processOrderResponse", targetNamespace = "http://service/", className = "webservice.erp.ProcessOrderResponse")
     @Action(input = "http://service/SupplyChainService/processOrderRequest", output = "http://service/SupplyChainService/processOrderResponse")
-    public boolean processOrder(
+    public Production processOrder(
         @WebParam(name = "arg0", targetNamespace = "")
         Order arg0,
         @WebParam(name = "arg1", targetNamespace = "")
