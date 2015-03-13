@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="webservice" default="all">
+  
+  
+  <property file="webservice.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <include name="**/*?.class"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="lib/ant-javafx.jar"/>
+      <include name="lib/dt.jar"/>
+      <include name="lib/javafx-mx.jar"/>
+      <include name="lib/jconsole.jar"/>
+      <include name="lib/sa-jdi.jar"/>
+      <include name="lib/tools.jar"/>
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/htmlconverter.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.jax-ws-glassfish_/_jax-ws_2.2_ri_/_metro_1.x_/_jwsdp_2.2.classpath">
+    <pathelement location="${basedir}/lib/FastInoset.jar"/>
+    <pathelement location="${basedir}/lib/gmbal-api-only.jar"/>
+    <pathelement location="${basedir}/lib/ha-api.jar"/>
+    <pathelement location="${basedir}/lib/javax.annotation.jar"/>
+    <pathelement location="${basedir}/lib/jaxb-api.jar"/>
+    <pathelement location="${basedir}/lib/jaxb-impl.jar"/>
+    <pathelement location="${basedir}/lib/jaxb-xjc.jar"/>
+    <pathelement location="${basedir}/lib/jaxws-api.jar"/>
+    <pathelement location="${basedir}/lib/jaxws-rt.jar"/>
+    <pathelement location="${basedir}/lib/jaxws-tools.jar"/>
+    <pathelement location="${basedir}/lib/jsr181-api.jar"/>
+    <pathelement location="${basedir}/lib/mail.jar"/>
+    <pathelement location="${basedir}/lib/management-api.jar"/>
+    <pathelement location="${basedir}/lib/mimepull.jar"/>
+    <pathelement location="${basedir}/lib/policy.jar"/>
+    <pathelement location="${basedir}/lib/saaj-api.jar"/>
+    <pathelement location="${basedir}/lib/saaj-impl.jar"/>
+    <pathelement location="${basedir}/lib/stax-ex.jar"/>
+    <pathelement location="${basedir}/lib/stax2-api.jar"/>
+    <pathelement location="${basedir}/lib/streambuffer.jar"/>
+    <pathelement location="${basedir}/lib/woodstox-core-asl.jar"/>
+  </path>
+  
+  
+  <!-- Global Libraries -->
+  
+  
+  <!-- Application Server Libraries -->
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  <import file="${basedir}/module_webservice.xml"/>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.webservice, clean.artifact.webservice:war_exploded" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.webservice" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.supplychainservice" value="${basedir}/out/artifacts/SupplyChainService"/>
+    <property name="artifact.output.webservice:war_exploded" value="${basedir}/out/artifacts/WebService_war_exploded"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.SupplyChainService.war" value="${artifacts.temp.dir}/SupplyChainService.war"/>
+  </target>
+  
+  <target name="clean.artifact.webservice:war_exploded" description="clean WebService:war exploded artifact output">
+    <delete dir="${artifact.output.webservice:war_exploded}"/>
+  </target>
+  
+  <target name="artifact.supplychainservice" depends="init.artifacts, compile.module.webservice" description="Build &#39;SupplyChainService&#39; artifact">
+    <property name="artifact.temp.output.supplychainservice" value="${artifacts.temp.dir}/SupplyChainService"/>
+    <mkdir dir="${artifact.temp.output.supplychainservice}"/>
+    <zip destfile="${temp.jar.path.SupplyChainService.war}">
+      <zipfileset dir="${webservice.output.dir}" prefix="WEB-INF/classes"/>
+      <zipfileset file="${basedir}/lib/javax.annotation.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/gmbal-api-only.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/ha-api.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/jaxws-api.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/jaxb-api.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/jsr181-api.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/FastInoset.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/management-api.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/mimepull.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/saaj-api.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/policy.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/mail.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/stax-ex.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/stax2-api.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/jaxb-impl.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/streambuffer.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/saaj-impl.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/jaxws-tools.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/woodstox-core-asl.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/jaxb-xjc.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/lib/jaxws-rt.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${idea.home}/lib/junit-4.11.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${basedir}/../Libraries/jtds-1/jtds-1.3.1.jar" prefix="WEB-INF/lib"/>
+      <zipfileset file="${idea.home}/lib/annotations.jar" prefix="WEB-INF/lib"/>
+      <zipfileset dir="${basedir}/web"/>
+      <zipfileset file="${basedir}/web/WEB-INF/web.xml" prefix="WEB-INF"/>
+    </zip>
+    <copy file="${temp.jar.path.SupplyChainService.war}" tofile="${artifact.temp.output.supplychainservice}/SupplyChainService.war"/>
+  </target>
+  
+  <target name="artifact.webservice:war_exploded" depends="init.artifacts, compile.module.webservice" description="Build &#39;WebService:war exploded&#39; artifact">
+    <mkdir dir="${artifact.output.webservice:war_exploded}"/>
+    <copy todir="${artifact.output.webservice:war_exploded}">
+      <fileset dir="${basedir}/web"/>
+    </copy>
+    <mkdir dir="${artifact.output.webservice:war_exploded}/WEB-INF"/>
+    <copy file="${basedir}/web/WEB-INF/web.xml" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/web.xml"/>
+    <mkdir dir="${artifact.output.webservice:war_exploded}/WEB-INF"/>
+    <mkdir dir="${artifact.output.webservice:war_exploded}/WEB-INF/classes"/>
+    <copy todir="${artifact.output.webservice:war_exploded}/WEB-INF/classes">
+      <fileset dir="${webservice.output.dir}"/>
+    </copy>
+    <mkdir dir="${artifact.output.webservice:war_exploded}/WEB-INF/lib"/>
+    <copy file="${basedir}/lib/javax.annotation.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/javax.annotation.jar"/>
+    <copy file="${basedir}/lib/gmbal-api-only.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/gmbal-api-only.jar"/>
+    <copy file="${basedir}/lib/ha-api.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/ha-api.jar"/>
+    <copy file="${basedir}/lib/jaxws-api.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/jaxws-api.jar"/>
+    <copy file="${basedir}/lib/jaxb-api.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/jaxb-api.jar"/>
+    <copy file="${basedir}/lib/jsr181-api.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/jsr181-api.jar"/>
+    <copy file="${basedir}/lib/FastInoset.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/FastInoset.jar"/>
+    <copy file="${basedir}/lib/management-api.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/management-api.jar"/>
+    <copy file="${basedir}/lib/mimepull.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/mimepull.jar"/>
+    <copy file="${basedir}/lib/saaj-api.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/saaj-api.jar"/>
+    <copy file="${basedir}/lib/policy.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/policy.jar"/>
+    <copy file="${basedir}/lib/mail.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/mail.jar"/>
+    <copy file="${basedir}/lib/stax-ex.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/stax-ex.jar"/>
+    <copy file="${basedir}/lib/stax2-api.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/stax2-api.jar"/>
+    <copy file="${basedir}/lib/jaxb-impl.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/jaxb-impl.jar"/>
+    <copy file="${basedir}/lib/streambuffer.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/streambuffer.jar"/>
+    <copy file="${basedir}/lib/saaj-impl.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/saaj-impl.jar"/>
+    <copy file="${basedir}/lib/jaxws-tools.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/jaxws-tools.jar"/>
+    <copy file="${basedir}/lib/woodstox-core-asl.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/woodstox-core-asl.jar"/>
+    <copy file="${basedir}/lib/jaxb-xjc.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/jaxb-xjc.jar"/>
+    <copy file="${basedir}/lib/jaxws-rt.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/jaxws-rt.jar"/>
+    <copy file="${basedir}/../Libraries/jtds-1/jtds-1.3.1.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/jtds-1.3.1.jar"/>
+    <copy file="${idea.home}/lib/junit-4.11.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/junit-4.11.jar"/>
+    <copy file="${idea.home}/lib/annotations.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/annotations.jar"/>
+    <copy file="${basedir}/../Libraries/jtds-1/jtds-1.3.1.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/jtds-1.3.1.jar"/>
+    <copy file="${idea.home}/lib/junit-4.11.jar" tofile="${artifact.output.webservice:war_exploded}/WEB-INF/lib/junit-4.11.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.supplychainservice, artifact.webservice:war_exploded" description="Build all artifacts">
+    <mkdir dir="${artifact.output.supplychainservice}"/>
+    <copy todir="${artifact.output.supplychainservice}">
+      <fileset dir="${artifact.temp.output.supplychainservice}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

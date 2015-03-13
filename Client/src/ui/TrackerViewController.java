@@ -73,7 +73,7 @@ public class TrackerViewController extends VBox implements Initializable,IPartia
 
     public void setTracker(){
         WebEngine engine = trackerWebView.getEngine();
-        engine.load("http://localhost/phpTracker/index.php");
+        engine.load("http://supplychain.i4mi.bfh.ch/tracker/");
     }
 
 }
