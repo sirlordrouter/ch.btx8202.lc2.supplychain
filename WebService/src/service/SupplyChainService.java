@@ -545,7 +545,7 @@ public class SupplyChainService {
         return "BFH"+formatter.format(date);
     }
     private String getSerial(String batch, int objectNumber){
-        return batch+"0000000"+Integer.toString(objectNumber);
+        return batch+"00000"+Integer.toString(objectNumber);
     }
     private Timestamp getExpDate(){
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
