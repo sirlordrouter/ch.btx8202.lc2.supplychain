@@ -104,6 +104,11 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
 
     }
 
+    public void refreshOrderTable() {
+        data.clear();
+        setOrderTable();
+    }
+
     public void setOrderTable(){
         /*
          * *************************************************

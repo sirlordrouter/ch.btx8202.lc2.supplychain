@@ -112,6 +112,11 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
 
     }
 
+    public void refreshOpenOrderTable(){
+        data.clear();
+        setOpenOrderTable();
+    }
+
     public void setOpenOrderTable(){
          /*
          * *************************************************
