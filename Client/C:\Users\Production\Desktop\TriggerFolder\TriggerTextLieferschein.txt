@@ -1,0 +1,3 @@
+%BTW% /AF=C:\Users\Production\Desktop\TriggerFolder\Lieferschein.btw /D=<Trigger File Name> /PRN="PDFCreator" /R=3 /P /DD
+%END%
+2,Bristol-Myers Squibb SA,7601001010703,Klinik Hoeheweg Station A,7640166731078,17-03-2015,106141410000098766,1,7680193950301,MARCOUMAR Tabl 3 mg,4,2,7680336700282,ASPIRIN C Brausetabl,2,3,7680475040157,DAFALGAN Tabl 500 mg,6

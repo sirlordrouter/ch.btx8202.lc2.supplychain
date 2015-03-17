@@ -1,0 +1,3 @@
+%BTW% /AF=C:\Users\Production\Desktop\TriggerFolder\Etikette_100x150.btw /D=<Trigger File Name> /PRN="Shipment Printer" /R=3 /P /DD
+%END%
+7601001010703,Bristol-Myers Squibb SA,7640166731078,Klinik Hoeheweg Station A,17-03-2015,106141410000098766
