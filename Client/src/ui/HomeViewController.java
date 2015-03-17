@@ -1,13 +1,11 @@
 package ui;
 
-import barcode.Barcode;
-import barcode.BarcodeDecoder;
-import barcode.BarcodeInformation;
-import barcode.ScannedString;
+import barcode.*;
 import barcodeHook.Scanner;
 import barcodeHook.ScannerEvent;
 import barcodeHook.ScannerListener;
 import exceptions.BarcodeNotDeserializeableException;
+import exceptions.NotCorrectEANLenghtException;
 import exceptions.NotImplementedBarcodeTypeException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -351,7 +349,15 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
         info =  code.getBarcodeInformation();
         if(info != null) {
             txtareaMediInfo.appendText(info.toString());
-
+            //TODO: in datamatrix 14 digit gtins were used, in this project (also swissindex) ist working with 13 digits, so change it if necessary
+            if (info.getAI01_HANDELSEINHEIT().length() == 14) {
+                try {
+                    info.setAI01_HANDELSEINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI01_HANDELSEINHEIT()));
+                    info.setAI02_ENTHALTENE_EINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI02_ENTHALTENE_EINHEIT()));
+                } catch (NotCorrectEANLenghtException e) {
+                    e.printStackTrace();
+                }
+            }
 
             if (info.getAI00_SSCC() != null) {
                 if(dataSource == null ) {

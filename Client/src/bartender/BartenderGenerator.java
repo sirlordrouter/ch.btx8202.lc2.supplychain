@@ -1,15 +1,15 @@
 package bartender;
 
+import barcode.GtinFormatConverter;
+import exceptions.NotCorrectEANLenghtException;
 import services.PropertiesReader;
 import webservice.erp.Item;
 import webservice.erp.Position;
 import webservice.erp.Production;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -34,7 +34,15 @@ public class BartenderGenerator {
         PropertiesReader reader = new PropertiesReader();
         try {
             prop = reader.getPropValues();
+            //TODO: Better Handling, current working with 13 digits so convert to 14 digits due to matrix printing
+            for (Item item : production.getItems()) {
+                if (item.getGTIN().length() == 13) {
+                    item.setGTIN(GtinFormatConverter.ConvertEan13To14(item.getGTIN()));
+                }
+            }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NotCorrectEANLenghtException e) {
             e.printStackTrace();
         }
         // read the user configuration
@@ -83,8 +91,8 @@ public class BartenderGenerator {
                     " Name> /PRN=\""+printerNameDataMatrix+"\" /R=3 /P /DD" +separator+
                     "%END%");
             for(Item item:production.getItems()){
-                output.append(separator+item.getGTIN()+","+item.getExpiryDate()+","+item.getLot()+
-                ","+item.getSerial()+","+item.getBeschreibung());
+                output.append(separator + item.getGTIN() + "," + item.getExpiryDate() + "," + item.getLot() +
+                        "," + item.getSerial() + "," + item.getBeschreibung());
             }
 
             output.close();
