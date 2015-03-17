@@ -46,8 +46,7 @@ public class SupplyChainService {
   @WebMethod
   public String sayHelloWorldFrom(String from) {
     String result = "Hello, world, from " + from;
-    System.out.println(result);
-    return result;
+      return result;
   }
     /**
      *  Returns a WebServiceResult object with a boolean and a list of all checked in items of a specific global location number (GLN).
@@ -545,7 +544,11 @@ public class SupplyChainService {
         return "BFH"+formatter.format(date);
     }
     private String getSerial(String batch, int objectNumber){
-        return batch+"00000"+Integer.toString(objectNumber);
+        String serial = Integer.toString(objectNumber);
+        while(serial.length()<6){
+            serial = "0" + serial;
+        }
+        return batch+serial;
     }
     private Timestamp getExpDate(){
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
