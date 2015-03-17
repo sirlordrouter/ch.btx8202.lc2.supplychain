@@ -5,6 +5,7 @@ import barcodeHook.Scanner;
 import barcodeHook.ScannerEvent;
 import barcodeHook.ScannerListener;
 import exceptions.BarcodeNotDeserializeableException;
+import exceptions.ConversionException;
 import exceptions.NotCorrectEANLenghtException;
 import exceptions.NotImplementedBarcodeTypeException;
 import javafx.beans.value.ChangeListener;
@@ -355,6 +356,8 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                     info.setAI01_HANDELSEINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI01_HANDELSEINHEIT()));
                     info.setAI02_ENTHALTENE_EINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI02_ENTHALTENE_EINHEIT()));
                 } catch (NotCorrectEANLenghtException e) {
+                    e.printStackTrace();
+                } catch (ConversionException e) {
                     e.printStackTrace();
                 }
             }
