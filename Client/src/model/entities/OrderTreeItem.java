@@ -8,7 +8,8 @@ import javafx.beans.property.SimpleStringProperty;
  * BSc Medical Informatics</br>
  * Module Bachelorthesis</br>
  *
- *<p>.</p>
+ *<p>This class provides the initalization of OrderTreeItem Objects.
+ * They can be easily added to a java fx tree list.</p>
  *
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 28-02-2015

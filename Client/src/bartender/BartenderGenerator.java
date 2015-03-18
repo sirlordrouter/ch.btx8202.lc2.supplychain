@@ -60,12 +60,15 @@ public class BartenderGenerator {
     public void createSSCCtriggerFile(){
         // build the trigger text field at the specified location
         try{
+            // get todays date and format it
             java.util.Date date = new java.util.Date();
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             String dateString = formatter.format(date);
             Writer output = null;
+            // create the file in the specified file path (config.properties)
             File file = new File(fileNameSSCC);
             output = new BufferedWriter(new FileWriter(file));
+            // write the commander script and add the custom data
             output.write("%BTW% /AF="+labelTemplateSSCC+" /D=<Trigger File" +
                     " Name> /PRN=\""+printerNameSSCC+"\" /R=3 /P /DD" + separator+
                     "%END%"+separator+ production.getShipment().getGlnOrigin()+","+
@@ -85,11 +88,14 @@ public class BartenderGenerator {
         // build the trigger text field at the specified location
         try{
             Writer output = null;
+            // create the file in the specified file path (config.properties)
             File file = new File(fileNameDataMatrix);
             output = new BufferedWriter(new FileWriter(file));
+            // write the commander script
             output.write("%BTW% /AF="+labelTemplateDataMatrix+" /D=<Trigger File" +
                     " Name> /PRN=\""+printerNameDataMatrix+"\" /R=3 /P /DD" +separator+
                     "%END%");
+            // add the custom data
             for(Item item:production.getItems()){
                 output.append(separator + item.getGTIN() + "," + item.getExpiryDate() + "," + item.getLot() +
                         "," + item.getSerial() + "," + item.getBeschreibung());
@@ -104,15 +110,19 @@ public class BartenderGenerator {
     public void createShipmenttriggerFile(){
         // build the trigger text field at the specified location
         try{
+            // get todays date and format it
             java.util.Date date = new java.util.Date();
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             String dateString = formatter.format(date);
             Writer output = null;
+            // create the file in the specified file path (config.properties)
             File file = new File(fileNameLieferschein);
             output = new BufferedWriter(new FileWriter(file));
+            // write the commander script
             output.write("%BTW% /AF="+labelTemplateLieferschein+" /D=<Trigger File" +
                     " Name> /PRN=\""+printerNameLieferschein+"\" /R=3 /P /DD" +separator+
                     "%END%");
+            // add the custom data
             output.append(separator+production.getShipment().getOrderNr()+","+
             production.getShipment().getDescOrigin()+","+
             production.getShipment().getGlnOrigin()+","+

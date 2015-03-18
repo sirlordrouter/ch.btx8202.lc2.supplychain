@@ -25,6 +25,10 @@ public class Address {
         this.setCity(city);
     }
 
+    public Address(){
+
+    }
+
     public int getStreetNr() {
         return streetNr;
     }
