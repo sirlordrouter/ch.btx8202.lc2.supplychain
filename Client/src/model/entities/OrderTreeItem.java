@@ -4,9 +4,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Bachelorthesis</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis<br>
  *
  *<p>This class provides the initalization of OrderTreeItem Objects.
  * They can be easily added to a java fx tree list.</p>

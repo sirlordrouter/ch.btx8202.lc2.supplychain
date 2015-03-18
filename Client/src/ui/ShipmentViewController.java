@@ -33,9 +33,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Bachelorthesis</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis<br>
  *
  *<p>This class handles the gui elements of the ShipmentView.fxml.
  * Manufacturer has the possibility to process an open order (generate identifiers for products and

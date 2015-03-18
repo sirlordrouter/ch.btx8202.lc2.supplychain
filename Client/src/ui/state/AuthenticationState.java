@@ -3,18 +3,18 @@ package ui.state;
 import ui.Main;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>
  * Describes an abstract class for the different Authentication states the Application goes through.
  * The class is the base class for implementing the State Pattern.
- * The States context is the {@link //ch.bfh.btx8081.w2013.green.ui.start.MyVaadinUI} User Interface, whose content
+ * The States context is the ch.bfh.btx8081.w2013.green.ui.start.MyVaadinUI User Interface, whose content
  * differs for an authenticated User or an unauthenticated User.
  *
  * For the states have different <code>Views</code> that can change, the
- * class provides an {@link //com.vaadin.navigator.Navigator} reference.
+ * class provides an com.vaadin.navigator.Navigator reference.
  * </p>
  *
  * @author Johannes Gnaegi, gnaegj1@bfh.ch

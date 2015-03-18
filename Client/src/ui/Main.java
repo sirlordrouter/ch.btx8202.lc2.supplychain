@@ -19,9 +19,9 @@ import ui.state.UnauthenticatedState;
 import java.io.InputStream;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>Main class (entry point) for the java client application used to simulate an erp system for medical products
  based on gs1 identifiers.</p>
@@ -94,6 +94,7 @@ public class Main extends Application implements IAuthenticationStateContext {
      *
      * @param userId UserID
      * @param password Password
+     * @return a boolean
      */
     public boolean authenticate(String userId, String password){
         if (Authenticator.validate(userId, password)) {

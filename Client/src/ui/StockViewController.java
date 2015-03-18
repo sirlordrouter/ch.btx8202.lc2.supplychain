@@ -33,9 +33,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>This class handles the data provided of the TrackedItems Table in the Logistic Database.
  * The goal is to show all checked in Items of a specific global location number.</p>
@@ -96,6 +96,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
     /**
      * update the checked in items list.
      * @param event
+     * a button event
      */
     public void searchCheckedInItems(ActionEvent event) {
         data.clear();

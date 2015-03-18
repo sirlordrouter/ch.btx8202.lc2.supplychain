@@ -38,9 +38,9 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>
  *     Controller class for the StockView.
@@ -199,6 +199,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
     /**
      * Adds an item to the list f scanned items
      * @param actionEvent
+     * button event
      */
     public void addItem(ActionEvent actionEvent) {
         Navigator.getInstance().getMainController().setStatusbarWaiting("adding found items...");
@@ -413,6 +414,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
     /**
      * Resets the Database for a new Demonstration of the whole supply chain process
      * @param actionEvent
+     * button event
      */
     public void resetTrackedItems(ActionEvent actionEvent) {
         dataSource.resetTrackedItems();

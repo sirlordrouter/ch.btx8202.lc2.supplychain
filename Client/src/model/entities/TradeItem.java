@@ -5,9 +5,9 @@ import webservice.erp.Item;
 import java.math.BigInteger;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>A TradeItem Class</p>
  *

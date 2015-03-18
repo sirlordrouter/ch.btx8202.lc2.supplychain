@@ -4,9 +4,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Bachelorthesis</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis<br>
  *
  *<p>This class provides the initialization and modification of position objects that can be stored in an order.
  * A position object consists of a global trad item number (gtin) as a string, a description as a string and a quantity

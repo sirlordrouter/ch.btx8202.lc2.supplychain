@@ -6,12 +6,12 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
- *<p>Simple properties class. Reads the file resources/config.properties and reads the given values.</p>
- * @credits: http://crunchify.com/java-properties-file-how-to-read-config-properties-values-in-java/
+ *<p>Simple properties class. Reads the file resources/config.properties and reads the given values.
+ * Credits: http://crunchify.com/java-properties-file-how-to-read-config-properties-values-in-java/ </p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 17-11-2014

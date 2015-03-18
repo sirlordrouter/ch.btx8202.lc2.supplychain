@@ -23,12 +23,12 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
- *<p>Controller class for the main view.</p>
- * @credits https://gist.github.com/jewelsea/6460130
+ *<p>Controller class for the main view. Credits: https://gist.github.com/jewelsea/6460130</p>
+ *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */

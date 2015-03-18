@@ -14,11 +14,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Bachelorthesis</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis<br>
  *
- *<p></p>
+ *<p>Web View of the PHP-Tracker.</p>
  *
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
  * @version 03-03-2015

@@ -3,9 +3,9 @@ package model.entities;
 import java.util.List;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>This class is used to handle the results of a request to the SwissINDEX Webservice.
  * A List of TradeItems, a result (boolean) and a message (String) can be specified.</p>

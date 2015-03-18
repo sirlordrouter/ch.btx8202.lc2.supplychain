@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Observable;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Bachelorthesis</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis<br>
  *
  *<p>This class provides the initialization and modification of order objects. An order object consists of a name (String), a
  * list of positions and a boolean to mark if the order is already sent (true) or not (false).</p>

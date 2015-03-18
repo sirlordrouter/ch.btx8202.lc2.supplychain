@@ -13,9 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>Class for the generation of trigger text files to print labels with BarTender.
  * Configurations have to be made in the config.properties file.</p>

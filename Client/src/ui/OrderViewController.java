@@ -29,9 +29,9 @@ import java.net.URL;
 import java.util.*;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Bachelorthesis</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis<br>
  *
  *<p>This class handles the gui elements of the OrderView.fxml. Based on database tables, order suggestions for medicaments are generated
  * in a treetableview. The entries are editable and removable.</p>
@@ -301,6 +301,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
 
     /**
      * get order suggestion
+     * @return an Order
      */
     public Order getOrderSuggestion() {
 
