@@ -16,6 +16,12 @@
 <message name="getCheckedInItemsResponse">
 <part name="parameters" element="tns:getCheckedInItemsResponse"/>
 </message>
+<message name="checkinItems">
+<part name="parameters" element="tns:checkinItems"/>
+</message>
+<message name="checkinItemsResponse">
+<part name="parameters" element="tns:checkinItemsResponse"/>
+</message>
 <message name="setOrder">
 <part name="parameters" element="tns:setOrder"/>
 </message>
@@ -51,12 +57,6 @@
 </message>
 <message name="getQuantitiesResponse">
 <part name="parameters" element="tns:getQuantitiesResponse"/>
-</message>
-<message name="checkinItems">
-<part name="parameters" element="tns:checkinItems"/>
-</message>
-<message name="checkinItemsResponse">
-<part name="parameters" element="tns:checkinItemsResponse"/>
 </message>
 <message name="getOpenOrdersByGLN">
 <part name="parameters" element="tns:getOpenOrdersByGLN"/>
@@ -97,6 +97,10 @@
 <input wsam:Action="http://service/SupplyChainService/getCheckedInItemsRequest" message="tns:getCheckedInItems"/>
 <output wsam:Action="http://service/SupplyChainService/getCheckedInItemsResponse" message="tns:getCheckedInItemsResponse"/>
 </operation>
+<operation name="checkinItems">
+<input wsam:Action="http://service/SupplyChainService/checkinItemsRequest" message="tns:checkinItems"/>
+<output wsam:Action="http://service/SupplyChainService/checkinItemsResponse" message="tns:checkinItemsResponse"/>
+</operation>
 <operation name="setOrder">
 <input wsam:Action="http://service/SupplyChainService/setOrderRequest" message="tns:setOrder"/>
 <output wsam:Action="http://service/SupplyChainService/setOrderResponse" message="tns:setOrderResponse"/>
@@ -120,10 +124,6 @@
 <operation name="getQuantities">
 <input wsam:Action="http://service/SupplyChainService/getQuantitiesRequest" message="tns:getQuantities"/>
 <output wsam:Action="http://service/SupplyChainService/getQuantitiesResponse" message="tns:getQuantitiesResponse"/>
-</operation>
-<operation name="checkinItems">
-<input wsam:Action="http://service/SupplyChainService/checkinItemsRequest" message="tns:checkinItems"/>
-<output wsam:Action="http://service/SupplyChainService/checkinItemsResponse" message="tns:checkinItemsResponse"/>
 </operation>
 <operation name="getOpenOrdersByGLN">
 <input wsam:Action="http://service/SupplyChainService/getOpenOrdersByGLNRequest" message="tns:getOpenOrdersByGLN"/>
@@ -166,6 +166,15 @@
 <soap:body use="literal"/>
 </output>
 </operation>
+<operation name="checkinItems">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="setOrder">
 <soap:operation soapAction=""/>
 <input>
@@ -212,15 +221,6 @@
 </output>
 </operation>
 <operation name="getQuantities">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="checkinItems">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

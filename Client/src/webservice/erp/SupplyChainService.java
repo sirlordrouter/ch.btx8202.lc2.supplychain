@@ -58,6 +58,24 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns webservice.erp.WebServiceResult
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "checkinItems", targetNamespace = "http://service/", className = "webservice.erp.CheckinItems")
+    @ResponseWrapper(localName = "checkinItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.CheckinItemsResponse")
+    @Action(input = "http://service/SupplyChainService/checkinItemsRequest", output = "http://service/SupplyChainService/checkinItemsResponse")
+    public WebServiceResult checkinItems(
+        @WebParam(name = "arg0", targetNamespace = "")
+        List<Item> arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
+
+    /**
+     * 
      * @param arg2
      * @param arg1
      * @param arg0
@@ -163,24 +181,6 @@ public interface SupplyChainService {
     public List<Quantity> getQuantities(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
-
-    /**
-     * 
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns webservice.erp.WebServiceResult
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "checkinItems", targetNamespace = "http://service/", className = "webservice.erp.CheckinItems")
-    @ResponseWrapper(localName = "checkinItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.CheckinItemsResponse")
-    @Action(input = "http://service/SupplyChainService/checkinItemsRequest", output = "http://service/SupplyChainService/checkinItemsResponse")
-    public WebServiceResult checkinItems(
-        @WebParam(name = "arg0", targetNamespace = "")
-        List<Item> arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1);
 
     /**
      * 

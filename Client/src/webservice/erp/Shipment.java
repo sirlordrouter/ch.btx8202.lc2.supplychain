@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="descOrigin" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="glnDestination" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="glnOrigin" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="gsin" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="orderNr" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="sscc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
@@ -36,6 +37,7 @@ import javax.xml.bind.annotation.XmlType;
     "descOrigin",
     "glnDestination",
     "glnOrigin",
+    "gsin",
     "orderNr",
     "sscc"
 })
@@ -45,6 +47,7 @@ public class Shipment {
     protected String descOrigin;
     protected String glnDestination;
     protected String glnOrigin;
+    protected String gsin;
     protected String orderNr;
     protected String sscc;
 
@@ -142,6 +145,30 @@ public class Shipment {
      */
     public void setGlnOrigin(String value) {
         this.glnOrigin = value;
+    }
+
+    /**
+     * Ruft den Wert der gsin-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getGsin() {
+        return gsin;
+    }
+
+    /**
+     * Legt den Wert der gsin-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setGsin(String value) {
+        this.gsin = value;
     }
 
     /**
