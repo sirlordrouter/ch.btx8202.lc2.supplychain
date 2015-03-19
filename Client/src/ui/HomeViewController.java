@@ -354,8 +354,8 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
             //TODO: in datamatrix 14 digit gtins were used, in this project (also swissindex) ist working with 13 digits, so change it if necessary
             if (info.getAI01_HANDELSEINHEIT().length() == 14) {
                 try {
-                    info.setAI01_HANDELSEINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI01_HANDELSEINHEIT()));
-                    info.setAI02_ENTHALTENE_EINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI02_ENTHALTENE_EINHEIT()));
+                   if (info.getAI01_HANDELSEINHEIT() != null) {info.setAI01_HANDELSEINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI01_HANDELSEINHEIT()));}
+                   if(info.getAI02_ENTHALTENE_EINHEIT() != null) {info.setAI02_ENTHALTENE_EINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI02_ENTHALTENE_EINHEIT()));}
                 } catch (NotCorrectEANLenghtException e) {
                     e.printStackTrace();
                 } catch (ConversionException e) {
@@ -383,6 +383,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
         } else {
             Navigator.getInstance().getMainController().setStatusbarEmpty();
             System.out.println("Info was null");
+            txtareaMediInfo.setText("Could not extract Information from Code: Info was null");
         }
         Navigator.getInstance().getMainController().setStatusbarEmpty();
 
