@@ -99,6 +99,62 @@ public class SupplyChainService {
     }
 
     /**
+     *  Returns a WebServiceResult object with a boolean and a list of all checked in items of a specific global shipment identification number (GSIN).
+     *  @param gsin A Global Shipment Identification Number (String)
+     *  @return a WebServiceResult
+     */
+    @WebMethod
+    public WebServiceResult getItemsByGSIN(String gsin) {
+
+        List<Item> items = null;
+        boolean resultState = false;
+        ResultSet rs;
+
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            @Language("DB2")
+            String query = "SELECT [GTINsek]\n" +
+                    "      ,[SerialNr]\n" +
+                    "      ,[BatchLot]\n" +
+                    "      ,[ExpiryDate]\n" +
+                    "      ,[GTINtert]\n" +
+                    "      ,[LogisticPackage].[SSCC]\n" +
+                    "FROM [dbo].[LogisticPackage] INNER JOIN [dbo].[SecondaryPackage] on\n" +
+                    " [dbo].[LogisticPackage].SSCC=[dbo].[SecondaryPackage].SSCC\n" +
+                    "WHERE ShipmentIdGSIN=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, gsin);
+            rs =  ps.executeQuery();
+            while (rs.next()) {
+                Item item = new Item();
+                item.setGTIN(rs.getString(1));
+                item.setSerial(rs.getString(2));
+                item.setLot(rs.getString(3));
+                item.setExpiryDate(rs.getDate(4, new GregorianCalendar()).toString());
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (items.size() > 0){
+            resultState=true;
+        }
+
+        WebServiceResult webServiceResult = new WebServiceResult(items, resultState);
+        return webServiceResult;
+    }
+
+    /**
      * checkinItems
      *  @param items
      *  a List of items to checkin by the webservice
