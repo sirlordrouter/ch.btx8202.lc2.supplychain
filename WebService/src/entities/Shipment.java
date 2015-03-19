@@ -11,7 +11,7 @@ package entities;
  * @version 10-03-2015
  */
 public class Shipment {
-    private String orderNr, glnOrigin, glnDestination, descOrigin, descDestination, sscc,gsin;
+    private String orderNr, glnOrigin, glnDestination, descOrigin, descDestination, sscc, gsin;
 
     public Shipment(){
 
