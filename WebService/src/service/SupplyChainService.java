@@ -538,14 +538,14 @@ public class SupplyChainService {
         return items;
     }
 
-    private String getBatch(){
+    private String getBatch(){ //Beutel 9stellig
         java.util.Date date = new java.util.Date();
-        DateFormat formatter = new SimpleDateFormat("ddMMyyHHmm");
-        return "BFH"+formatter.format(date);
+        DateFormat formatter = new SimpleDateFormat("ddMMyyHHm");
+        return formatter.format(date);
     }
-    private String getSerial(String batch, int objectNumber){
+    private String getSerial(String batch, int objectNumber){ //17 stellig
         String serial = Integer.toString(objectNumber);
-        while(serial.length()<6){
+        while(serial.length()<8){
             serial = "0" + serial;
         }
         return batch+serial;
