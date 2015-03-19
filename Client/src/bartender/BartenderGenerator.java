@@ -128,7 +128,7 @@ public class BartenderGenerator {
             production.getShipment().getGlnOrigin()+","+
             production.getShipment().getDescDestination()+","+
             production.getShipment().getGlnDestination()+","+
-            dateString + ","+production.getShipment().getSscc());
+            dateString + ","+production.getShipment().getGsin());
             int count = 1;
             for(Position pos:production.getPositions()){
                 output.append(","+Integer.toString(count)+","+pos.getGtin()+","+

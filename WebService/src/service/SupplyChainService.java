@@ -624,7 +624,7 @@ public class SupplyChainService {
                     "\t  ,d1.Name as 'DescDest'\n" +
                     "      ,a.[GLNsender]\n" +
                     "\t  ,d2.Name as 'DescSend'\n" +
-                    "\t  ,p.SSCC\n" +
+                    "\t  ,p.SSCC\n,p.ShipmentIdGSIN\n" +
                     "  FROM [dbo].[Shipment] a\n" +
                     "  INNER JOIN LogisticPackage p On \n" +
                     "  p.OrderNr=a.OrderNr and \n" +
@@ -643,6 +643,7 @@ public class SupplyChainService {
             shipment.setGlnOrigin(rs.getString(3));
             shipment.setDescOrigin(rs.getString(4));
             shipment.setSscc(rs.getString(5));
+            shipment.setGsin(Integer.toString((int)(long)(Long)rs.getObject(6)));
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -11,19 +11,20 @@ package entities;
  * @version 10-03-2015
  */
 public class Shipment {
-    private String orderNr, glnOrigin, glnDestination, descOrigin, descDestination, sscc;
+    private String orderNr, glnOrigin, glnDestination, descOrigin, descDestination, sscc,gsin;
 
     public Shipment(){
 
     }
 
-    public Shipment(String OrderNr, String GlnOrigin, String GlnDest, String DescOrigin, String DescDest, String SSCC){
+    public Shipment(String OrderNr, String GlnOrigin, String GlnDest, String DescOrigin, String DescDest, String SSCC, String aGsin){
         this.orderNr=OrderNr;
         this.glnOrigin=GlnOrigin;
         this.glnDestination=GlnDest;
         this.descOrigin=DescOrigin;
         this.descDestination=DescDest;
         this.sscc=SSCC;
+        this.gsin=aGsin;
     }
 
     public String getOrderNr() {
@@ -72,5 +73,13 @@ public class Shipment {
 
     public void setSscc(String sscc) {
         this.sscc = sscc;
+    }
+
+    public String getGsin() {
+        return gsin;
+    }
+
+    public void setGsin(String gsin) {
+        this.gsin = gsin;
     }
 }
