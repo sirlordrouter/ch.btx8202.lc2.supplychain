@@ -10,12 +10,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import model.entities.FilePathTreeItem;
 import model.entities.OrderTreeItem;
 import services.ErpClient;
 import services.IDataSource;
@@ -28,7 +29,10 @@ import webservice.erp.Production;
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.nio.file.*;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -47,6 +51,8 @@ import java.util.ResourceBundle;
  */
 public class ShipmentViewController extends VBox implements Initializable,IPartialView {
     public TreeTableView orderTable;
+    public TreeView treeView;
+    public VBox pdfBox;
     public Button processButton,refreshOrdersButton;
     public ObservableList<Item> data =  FXCollections.observableArrayList();
     List<Order> orderList=FXCollections.observableArrayList();
@@ -180,7 +186,7 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
                             // Quantity Column
                             TreeTableColumn<OrderTreeItem, String> quantityColumn =
                                     new TreeTableColumn<>("Quantity");
-                            quantityColumn.setPrefWidth(80);
+                            quantityColumn.setPrefWidth(90);
                             quantityColumn.setEditable(true);
                             quantityColumn.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
                             quantityColumn.setCellValueFactory(
@@ -249,6 +255,25 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
                     });
                 }
                     }}).start();
+
+        //setup the file browser root
+        String folderName="Lieferscheine";
+        TreeItem<String> rootNode=new TreeItem<>(folderName,new ImageView(new Image(Main.class.getResourceAsStream("/media/folder.png"))));
+
+        DirectoryStream<Path> directoryStream = null;
+        try {
+            directoryStream = Files.newDirectoryStream(Paths.get("/Users/ph/Desktop/pdfs/"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (Path path : directoryStream) {
+            FilePathTreeItem treeNode=new FilePathTreeItem(path);
+            rootNode.getChildren().add(treeNode);
+        }
+        rootNode.setExpanded(true);
+        //create the tree view
+        treeView.setRoot(rootNode);
+        treeView.setShowRoot(true);
 
 
     }
