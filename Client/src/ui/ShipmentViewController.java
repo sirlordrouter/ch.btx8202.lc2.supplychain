@@ -1,8 +1,11 @@
 package ui;
 
 import bartender.BartenderGenerator;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +31,8 @@ import webservice.erp.Position;
 import webservice.erp.Production;
 
 import javax.xml.ws.WebServiceException;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -52,10 +58,10 @@ import java.util.ResourceBundle;
 public class ShipmentViewController extends VBox implements Initializable,IPartialView {
     public TreeTableView orderTable;
     public TreeView treeView;
-    public VBox pdfBox;
     public Button processButton,refreshOrdersButton;
     public ObservableList<Item> data =  FXCollections.observableArrayList();
     List<Order> orderList=FXCollections.observableArrayList();
+    private Desktop desktop = Desktop.getDesktop();
 
     IDataSource dataSource;
     Properties prop;
@@ -271,6 +277,20 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
             rootNode.getChildren().add(treeNode);
         }
         rootNode.setExpanded(true);
+        treeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+
+            @Override
+            public void changed(ObservableValue observable, Object oldValue,
+                                Object newValue) {
+                TreeItem<String> selectedItem = (TreeItem<String>) newValue;
+                try {
+                    desktop.open(new File(prop.getProperty("lieferscheinFolder")+selectedItem.getValue()));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        });
         //create the tree view
         treeView.setRoot(rootNode);
         treeView.setShowRoot(true);
