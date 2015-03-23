@@ -262,7 +262,7 @@ public class ShipmentViewController extends VBox implements Initializable,IParti
 
         DirectoryStream<Path> directoryStream = null;
         try {
-            directoryStream = Files.newDirectoryStream(Paths.get("/Users/ph/Desktop/pdfs/"));
+            directoryStream = Files.newDirectoryStream(Paths.get(prop.getProperty("lieferscheinFolder")));
         } catch (IOException e) {
             e.printStackTrace();
         }
