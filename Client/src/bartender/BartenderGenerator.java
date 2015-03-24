@@ -123,12 +123,12 @@ public class BartenderGenerator {
                     " Name> /PRN=\""+printerNameLieferschein+"\" /R=3 /P /DD" +separator+
                     "%END%");
             // add the custom data
-            output.append(separator+production.getShipment().getOrderNr()+","+
+            output.append(separator+production.getShipment().getGsin()+","+production.getShipment().getOrderNr()+","+
             production.getShipment().getDescOrigin()+","+
             production.getShipment().getGlnOrigin()+","+
             production.getShipment().getDescDestination()+","+
             production.getShipment().getGlnDestination()+","+
-            dateString + ","+production.getShipment());
+            dateString + ","+production.getShipment().getSscc());
             int count = 1;
             for(Position pos:production.getPositions()){
                 output.append(","+Integer.toString(count)+","+pos.getGtin()+","+
