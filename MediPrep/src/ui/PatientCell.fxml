@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:id="patientCellBox">
+   <children>
+      <Pane prefHeight="65.0" prefWidth="64.0">
+         <children>
+            <ImageView fx:id="genderView" fitHeight="55.0" fitWidth="55.0" layoutX="4.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/image/user194.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <VBox prefHeight="65.0" prefWidth="536.0">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="fidLabel" layoutX="248.0" layoutY="3.0" text="Fallnr: " />
+                  <Label fx:id="pidLabel" layoutX="2.0" layoutY="3.0" text="PID:" />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="nameLabel" layoutY="6.0" text="Name: " />
+                  <Label fx:id="firstnameLabel" layoutX="179.0" layoutY="6.0" text="Vorname: " />
+                  <Label fx:id="birthdayLabel" layoutX="375.0" layoutY="6.0" text="Geburtsdatum:" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</HBox>

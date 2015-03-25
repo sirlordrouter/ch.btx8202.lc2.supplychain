@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?scenebuilder-stylesheet vista.css?>
+
+<!--
+* Bern University of Applied Sciences</br>
+* BSc Medical Informatics</br>
+* Module Living Case 2</br>
+*
+*<p>Main Window of the application with a stack pane to load views and a statusbar.</p>
+*
+* @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
+* @version 04-11-2014
+-->
+
+<AnchorPane minHeight="880.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainController">
+    <children>
+      <AnchorPane fx:id="navigationHolderPane" maxHeight="165.0" minHeight="85.0" prefHeight="85.0" prefWidth="823.0" style="-fx-background-color: lightgrey;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="823.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                    <Button id="big-yellow-button" fx:id="logoutBtn" contentDisplay="TOP" layoutX="756.0" layoutY="2.0" mnemonicParsing="false" onAction="#logout" prefHeight="70" prefWidth="90" text="Logout" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
+                        <graphic>
+                            <ImageView>
+                               <image>
+                                   <Image url="@../resources/image/logout.png" />
+                               </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Label id="lblLocationInfo" fx:id="locationField" layoutX="239.0" layoutY="1.0" prefHeight="31.0" prefWidth="135.0" text="StationA" textFill="#2b5bae" AnchorPane.leftAnchor="248.0" AnchorPane.topAnchor="6.0" />
+                    <Label id="lblUserName" fx:id="userField" layoutX="71.0" prefHeight="31.0" prefWidth="159.0" text="User: zehnp1" textFill="#2b5bae" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="5.0" />
+                    <Label id="lblCurrentDate" fx:id="dateTimeField" layoutX="71.0" layoutY="31.0" prefHeight="31.0" prefWidth="235.0" text="27.10.2014; 15:01 Uhr" textFill="#2b5bae" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="36.0" />
+            
+                  <ImageView fitHeight="63.0" fitWidth="60.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="8.0">
+                     <image>
+                        <Image fx:id="imgProfilePicture" url="@../resources/image/Profilbild.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+        <AnchorPane layoutY="84.0" minHeight="600.0" prefHeight="756.0" prefWidth="823.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="84.0">
+           <children>
+            <Pane prefHeight="735.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button id="big-yellow-button" fx:id="patientView" contentDisplay="TOP" layoutX="22.0" layoutY="24.0" mnemonicParsing="false" onAction="#showPatientView" prefHeight="85.0" prefWidth="159.0" text="Patienten">
+                     <graphic>
+                        <ImageView fitHeight="55.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/image/man369.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button id="big-yellow-button" fx:id="btnAddictionalMedics" contentDisplay="TOP" layoutX="22.0" layoutY="124.0" mnemonicParsing="false" onAction="#openAdditionalMedicsView" prefHeight="85.0" prefWidth="159.0" text="Weitere Medikamente">
+                     <graphic>
+                        <ImageView fx:id="btnAdditionalMedics" fitHeight="59.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/image/medical4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button id="big-yellow-button" fx:id="btnDoset" contentDisplay="TOP" layoutX="22.0" layoutY="228.0" mnemonicParsing="false" onAction="#openDosetPrepView" prefHeight="85.0" prefWidth="159.0" text="Dosett richten">
+                     <graphic>
+                        <ImageView fitHeight="63.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/image/medicine.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button id="big-yellow-button" fx:id="btnDosetControl" contentDisplay="TOP" layoutX="22.0" layoutY="336.0" mnemonicParsing="false" onAction="#openDosetControlView" prefHeight="85.0" prefWidth="159.0" text="Doset kontrollieren">
+                     <graphic>
+                        <ImageView fitHeight="70.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/image/magnifier13.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button id="big-yellow-button" fx:id="btnSettings" contentDisplay="TOP" layoutX="21.0" layoutY="647.0" mnemonicParsing="false" onAction="#openSettingsView" prefHeight="85.0" prefWidth="159.0" text="Einstellungen">
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/image/settings48.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </Pane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                     <VBox fx:id="vistaHolder" minHeight="600.0" prefHeight="755.0" prefWidth="823.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+           </children>
+        </AnchorPane>
+        <AnchorPane maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="823.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+           <children>
+              <ProgressIndicator fx:id="statusLineIndicator" layoutX="782.0" layoutY="7.0" prefHeight="25.0" prefWidth="29.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="10.0" />
+              <Label fx:id="statusLineLabel" layoutX="30.0" layoutY="12.0" prefHeight="16.0" prefWidth="732.0" text="statusBarLabel" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="60.0" />
+           </children>
+        </AnchorPane>
+    </children>
+    <stylesheets>
+        <URL value="@../resources/style.css" />
+    </stylesheets>
+</AnchorPane>
