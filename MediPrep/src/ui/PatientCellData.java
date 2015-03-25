@@ -20,6 +20,7 @@ public class PatientCellData {
     public Label nameLabel;
     public Label firstnameLabel;
     public Label birthdayLabel;
+    private Patient patient;
 
 
     public PatientCellData() {
@@ -33,7 +34,14 @@ public class PatientCellData {
         }
     }
 
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+
     public void setContent(Patient patient) {
+        this.patient = patient;
         genderView.setImage(patient.getGenderImage());
         fidLabel.setText(String.valueOf(patient.getFid()));
         pidLabel.setText(String.valueOf(patient.getPid()));
@@ -46,4 +54,5 @@ public class PatientCellData {
     public HBox getPatientCellBox() {
         return patientCellBox;
     }
+
 }

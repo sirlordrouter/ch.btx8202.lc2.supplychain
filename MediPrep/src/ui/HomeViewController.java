@@ -2,16 +2,16 @@ package ui;
 
 import datalayer.FakeDataRepository;
 import entities.Patient;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import services.PropertiesReader;
 
 import java.io.IOException;
@@ -54,29 +54,35 @@ public class HomeViewController extends VBox implements IPartialView {
 
     private void buildUpStationAccordeon() {
 
-        TitledPane[] tps = new TitledPane[FakeDataRepository.getStations().size()];
-        List<String> stations = FakeDataRepository.getStations();
+        TitledPane[] tps = new TitledPane[FakeDataRepository.getInstance().getStations().size()];
+        List<String> stations = FakeDataRepository.getInstance().getStations();
 
         for (int i = 0; i < stations.size(); i++) {
             final String stationName = stations.get(i);
 
             ObservableList<Patient> pats = FXCollections.observableArrayList();
             pats.addAll(
-                    FakeDataRepository.getPatients()
+                    FakeDataRepository.getInstance().getPatients()
                             .stream()
                             .filter(p -> p.getStationName().equals(stationName))
                             .collect(Collectors.toList())
             );
 
-            ListView stationPatients = new ListView();
+            ListView<Patient> stationPatients = new ListView();
+            stationPatients.getSelectionModel().selectedItemProperty().addListener(
+                    new ChangeListener<Patient>() {
+                        @Override
+                        public void changed(ObservableValue<? extends Patient> observable, Patient oldValue, Patient newValue) {
+                            if (newValue != null) {
+                                FakeDataRepository.getInstance().setCurrentPatient(newValue);
+                            }
+                        }
+                    }
+            );
+
             stationPatients.setItems(pats);
 
-            stationPatients.setCellFactory(new Callback<ListView<Patient>, ListCell<Patient>>() {
-                @Override
-                public ListCell<Patient> call(ListView<Patient> listView) {
-                    return new PatientCell();
-                }
-            });
+            stationPatients.setCellFactory(listView -> new PatientCell());
 
             stationPatients.setPrefHeight(pats.size()*ROW_HEIGHT);
             tps[i] = getStationPane(stationName,  stationPatients);

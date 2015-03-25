@@ -21,11 +21,12 @@ public class Patient {
     private boolean reaState;
     private int fid = -1;
     private String StationName;
+    private String room;
     private Gender gender;
     private BloodGroup bloodGroup;
     public Image genderImage;
 
-    public Patient(int pid, UUID beaconID, String firstname, String lastname, Date birthDate, boolean reaState, int fid, String stationName, Gender gender, BloodGroup bloodGroup) {
+    public Patient(int pid, UUID beaconID, String firstname, String lastname, Date birthDate, boolean reaState, int fid, String stationName, String room, Gender gender, BloodGroup bloodGroup) {
         this.pid = pid;
         this.beaconID = beaconID;
         this.firstname = firstname;
@@ -33,6 +34,7 @@ public class Patient {
         this.birthDate = birthDate;
         this.reaState = reaState;
         this.fid = fid;
+        this.room = room;
         this.gender = gender;
         this.StationName = stationName;
         this.bloodGroup = bloodGroup;
@@ -110,6 +112,13 @@ public class Patient {
         this.gender = gender;
     }
 
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
 
     public String getStationName() {
         return StationName;
