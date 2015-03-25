@@ -1,6 +1,7 @@
 package ui;
 
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -110,192 +111,210 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
     }
 
     public void setOrderTable(){
+        Navigator.getInstance().getMainController().setStatusbarWaiting("getting order suggestions...");
         /*
          * *************************************************
          * Test data.
          */
         List<Order> orderList=new ArrayList<>();
-        orderList.add(getOrderSuggestion());
-        /*
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+        try{
+            orderList.add(getOrderSuggestion());
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+ /*
          * *********************SETUP TREE NODES*****************************
          */
-        // empty root element (will be set to invisible)
-        final TreeItem<OrderTreeItem> root =
-        new TreeItem<OrderTreeItem>(new OrderTreeItem("Orders", null, null));
+                    // empty root element (will be set to invisible)
+                    final TreeItem<OrderTreeItem> root =
+                            new TreeItem<OrderTreeItem>(new OrderTreeItem("Orders", null, null));
 
-        // iterate over the orders and fill the empty root element with tree items
-        for(Order order:orderList){
-            TreeItem<OrderTreeItem> tempItem = new TreeItem<OrderTreeItem>(new OrderTreeItem(order.getName(), null, null));
-            for(Position position:order.getPositions()){
-                tempItem.getChildren().add(new TreeItem<OrderTreeItem>(new OrderTreeItem(position.getGtin(), position.getDescription(), Integer.toString(position.getQuantity()))));
-            }
-            root.getChildren().add(tempItem);
-        }
+                    // iterate over the orders and fill the empty root element with tree items
+                    for(Order order:orderList){
+                        TreeItem<OrderTreeItem> tempItem = new TreeItem<OrderTreeItem>(new OrderTreeItem(order.getName(), null, null));
+                        for(Position position:order.getPositions()){
+                            tempItem.getChildren().add(new TreeItem<OrderTreeItem>(new OrderTreeItem(position.getGtin(), position.getDescription(), Integer.toString(position.getQuantity()))));
+                        }
+                        root.getChildren().add(tempItem);
+                    }
 
 
         /*
         ***************************SETUP TABLE COLUMNS********************************************************
          */
 
-        // GTIN Column
-        TreeTableColumn<OrderTreeItem, String> gtinColumn =
-                new TreeTableColumn<>("GTIN");
-        gtinColumn.setPrefWidth(200);
-        gtinColumn.setEditable(true);
-        gtinColumn.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-        gtinColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<OrderTreeItem, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getGtin())
-        );
-        // provide modification functionality
-        gtinColumn.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<OrderTreeItem, String>>()  {
-            @Override
-            public void handle(final TreeTableColumn.CellEditEvent<OrderTreeItem, String> event) {
-                final OrderTreeItem item = event.getRowValue().getValue();
-                item.setGtin(event.getNewValue());
-            }
-        });
+                    // GTIN Column
+                    TreeTableColumn<OrderTreeItem, String> gtinColumn =
+                            new TreeTableColumn<>("GTIN");
+                    gtinColumn.setPrefWidth(200);
+                    gtinColumn.setEditable(true);
+                    gtinColumn.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+                    gtinColumn.setCellValueFactory(
+                            (TreeTableColumn.CellDataFeatures<OrderTreeItem, String> param) ->
+                                    new ReadOnlyStringWrapper(param.getValue().getValue().getGtin())
+                    );
+                    // provide modification functionality
+                    gtinColumn.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<OrderTreeItem, String>>()  {
+                        @Override
+                        public void handle(final TreeTableColumn.CellEditEvent<OrderTreeItem, String> event) {
+                            final OrderTreeItem item = event.getRowValue().getValue();
+                            item.setGtin(event.getNewValue());
+                        }
+                    });
 
-        // Description Column
-        TreeTableColumn<OrderTreeItem, String> descColumn =
-                new TreeTableColumn<>("Description");
-        descColumn.setPrefWidth(200);
-        descColumn.setEditable(true);
-        descColumn.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-        descColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<OrderTreeItem, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getDescription())
-        );
-        // provide modification functionality
-        descColumn.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<OrderTreeItem, String>>()  {
-            @Override
-            public void handle(final TreeTableColumn.CellEditEvent<OrderTreeItem, String> event) {
-                final OrderTreeItem item = event.getRowValue().getValue();
-                item.setDescription(event.getNewValue());
-            }
-        });
-        // Quantity Column
-        TreeTableColumn<OrderTreeItem, String> quantityColumn =
-                new TreeTableColumn<>("Quantity");
-        quantityColumn.setPrefWidth(80);
-        quantityColumn.setEditable(true);
-        quantityColumn.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-        quantityColumn.setCellValueFactory(
-                (TreeTableColumn.CellDataFeatures<OrderTreeItem, String> param) ->
-                        new ReadOnlyStringWrapper(param.getValue().getValue().getQuantity())
-        );
-        // provide modification functionality
-        quantityColumn.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<OrderTreeItem, String>>()  {
-            @Override
-            public void handle(final TreeTableColumn.CellEditEvent<OrderTreeItem, String> event) {
-                final OrderTreeItem item = event.getRowValue().getValue();
-                item.setQuantity(event.getNewValue());
-            }
-        });
+                    // Description Column
+                    TreeTableColumn<OrderTreeItem, String> descColumn =
+                            new TreeTableColumn<>("Description");
+                    descColumn.setPrefWidth(200);
+                    descColumn.setEditable(true);
+                    descColumn.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+                    descColumn.setCellValueFactory(
+                            (TreeTableColumn.CellDataFeatures<OrderTreeItem, String> param) ->
+                                    new ReadOnlyStringWrapper(param.getValue().getValue().getDescription())
+                    );
+                    // provide modification functionality
+                    descColumn.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<OrderTreeItem, String>>()  {
+                        @Override
+                        public void handle(final TreeTableColumn.CellEditEvent<OrderTreeItem, String> event) {
+                            final OrderTreeItem item = event.getRowValue().getValue();
+                            item.setDescription(event.getNewValue());
+                        }
+                    });
+                    // Quantity Column
+                    TreeTableColumn<OrderTreeItem, String> quantityColumn =
+                            new TreeTableColumn<>("Quantity");
+                    quantityColumn.setPrefWidth(80);
+                    quantityColumn.setEditable(true);
+                    quantityColumn.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+                    quantityColumn.setCellValueFactory(
+                            (TreeTableColumn.CellDataFeatures<OrderTreeItem, String> param) ->
+                                    new ReadOnlyStringWrapper(param.getValue().getValue().getQuantity())
+                    );
+                    // provide modification functionality
+                    quantityColumn.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<OrderTreeItem, String>>()  {
+                        @Override
+                        public void handle(final TreeTableColumn.CellEditEvent<OrderTreeItem, String> event) {
+                            final OrderTreeItem item = event.getRowValue().getValue();
+                            item.setQuantity(event.getNewValue());
+                        }
+                    });
 
         /*
         *******************************SETUP BUTTONS********************************************************
          */
 
-        // add button to add more positions to an existing order
-        addButton.setOnAction( new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle( final ActionEvent event )
-            {
-                final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
-                // check if the selected item is an order
-                if(selectedItem.getValue().getDescription()==null){
-                    final TreeItem<OrderTreeItem> newItem =
-                    new TreeItem<>( new OrderTreeItem("", "","" ) );
-                    // add an empty treeitem
-                    selectedItem.getChildren().add( newItem );
-                    selectedItem.expandedProperty().set( true );
-                    final int rowIndex = orderTable.getRow(newItem);
-                    orderTable.edit(rowIndex, gtinColumn );
-                }
-            }
+                    // add button to add more positions to an existing order
+                    addButton.setOnAction( new EventHandler<ActionEvent>()
+                    {
+                        @Override
+                        public void handle( final ActionEvent event )
+                        {
+                            final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
+                            // check if the selected item is an order
+                            if(selectedItem.getValue().getDescription()==null){
+                                final TreeItem<OrderTreeItem> newItem =
+                                        new TreeItem<>( new OrderTreeItem("", "","" ) );
+                                // add an empty treeitem
+                                selectedItem.getChildren().add( newItem );
+                                selectedItem.expandedProperty().set( true );
+                                final int rowIndex = orderTable.getRow(newItem);
+                                orderTable.edit(rowIndex, gtinColumn );
+                            }
+                        }
 
-        } );
-        // edit button to modify existing tree items (no input validation)
-        editButton.setOnAction( new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle( final ActionEvent event )
-            {
-                final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
-                // check that the selected item isnt an order
-                if(selectedItem.getValue().getDescription()!=null){
-                    final int rowIndex = orderTable.getRow(selectedItem);
-                    orderTable.edit(rowIndex, quantityColumn );
-                }else{
-                    // error popup
-                    UserInformationPopup popup = new UserInformationPopup("You can only edit the quantity of an existing position.","Error");
-                    popup.show();
-                }
+                    } );
+                    // edit button to modify existing tree items (no input validation)
+                    editButton.setOnAction( new EventHandler<ActionEvent>()
+                    {
+                        @Override
+                        public void handle( final ActionEvent event )
+                        {
+                            final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
+                            // check that the selected item isnt an order
+                            if(selectedItem.getValue().getDescription()!=null){
+                                final int rowIndex = orderTable.getRow(selectedItem);
+                                orderTable.edit(rowIndex, quantityColumn );
+                            }else{
+                                // error popup
+                                UserInformationPopup popup = new UserInformationPopup("You can only edit the quantity of an existing position.","Error");
+                                popup.show();
+                            }
 
-            }
+                        }
 
-        } );
-        // remove button to remove entries of the tree table.
-        removeButton.setOnAction( new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle( final ActionEvent event )
-            {
-                final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
-                selectedItem.getParent().getChildren().remove(selectedItem);
-            }
+                    } );
+                    // remove button to remove entries of the tree table.
+                    removeButton.setOnAction( new EventHandler<ActionEvent>()
+                    {
+                        @Override
+                        public void handle( final ActionEvent event )
+                        {
+                            final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
+                            selectedItem.getParent().getChildren().remove(selectedItem);
+                        }
 
-        } );
-        sendButton.setOnAction( new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle( final ActionEvent event )
-            {
-                Navigator.getInstance().getMainController().setStatusbarWaiting("send orders...");
+                    } );
+                    sendButton.setOnAction( new EventHandler<ActionEvent>()
+                    {
+                        @Override
+                        public void handle( final ActionEvent event )
+                        {
+                            Navigator.getInstance().getMainController().setStatusbarWaiting("send orders...");
 
 
-                final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
-                if(selectedItem.getValue().getDescription()==null){
-                    ObservableList<Position> positions = FXCollections.observableArrayList();
-                    Order order = new Order();
-                    order.setName("Order");
-                    order.setOrdered(true);
-                    for(TreeItem<OrderTreeItem> item:selectedItem.getChildren()){
-                        Position pos = new Position();
-                        pos.setGtin(item.getValue().getGtin());
-                        pos.setDescription(item.getValue().getDescription());
-                        pos.setQuantity(Integer.parseInt(item.getValue().getQuantity()));
-                        positions.add(pos);
-                    }
-                    order.getPositions().addAll(positions);
-                    boolean request = dataSource.setOrder(order,prop.getProperty("stationGLN"),prop.getProperty("manufacturerGLN"));
-                    if(request){
-                        selectedItem.getParent().getChildren().remove(selectedItem);
-                        Navigator.getInstance().getMainController().setStatusbarEmpty();
-                        UserInformationPopup popup = new UserInformationPopup("The order is successfully sent.","Information");
-                        popup.show();
-                    }else{
-                        Navigator.getInstance().getMainController().setStatusbarEmpty();
-                        UserInformationPopup popup = new UserInformationPopup("The order could not been sent. Please check your input data.","Error");
-                        popup.show();
-                    }
-                }else{
+                            final TreeItem<OrderTreeItem> selectedItem = (TreeItem<OrderTreeItem>)orderTable.getSelectionModel().getSelectedItem();
+                            if(selectedItem.getValue().getDescription()==null){
+                                ObservableList<Position> positions = FXCollections.observableArrayList();
+                                Order order = new Order();
+                                order.setName("Order");
+                                order.setOrdered(true);
+                                for(TreeItem<OrderTreeItem> item:selectedItem.getChildren()){
+                                    Position pos = new Position();
+                                    pos.setGtin(item.getValue().getGtin());
+                                    pos.setDescription(item.getValue().getDescription());
+                                    pos.setQuantity(Integer.parseInt(item.getValue().getQuantity()));
+                                    positions.add(pos);
+                                }
+                                order.getPositions().addAll(positions);
+                                boolean request = dataSource.setOrder(order,prop.getProperty("stationGLN"),prop.getProperty("manufacturerGLN"));
+                                if(request){
+                                    selectedItem.getParent().getChildren().remove(selectedItem);
+                                    Navigator.getInstance().getMainController().setStatusbarEmpty();
+                                    UserInformationPopup popup = new UserInformationPopup("The order is successfully sent.","Information");
+                                    popup.show();
+                                }else{
+                                    Navigator.getInstance().getMainController().setStatusbarEmpty();
+                                    UserInformationPopup popup = new UserInformationPopup("The order could not been sent. Please check your input data.","Error");
+                                    popup.show();
+                                }
+                            }else{
+                                Navigator.getInstance().getMainController().setStatusbarEmpty();
+                                UserInformationPopup popup = new UserInformationPopup("You can only send whole orders, not single positions.","Error");
+                                popup.show();
+                            }
+                        }
+                    } );
+                    // add the columns to the treetable
+                    orderTable.getColumns().setAll(gtinColumn, descColumn,quantityColumn);
+                    // set the root element
+                    orderTable.setRoot(root);
+                    // make the treetable editable
+                    orderTable.setEditable(true);
+                    // dont show the root element (invisible container)
+                    orderTable.setShowRoot(false);
                     Navigator.getInstance().getMainController().setStatusbarEmpty();
-                    UserInformationPopup popup = new UserInformationPopup("You can only send whole orders, not single positions.","Error");
-                    popup.show();
                 }
-            }
-        } );
-        // add the columns to the treetable
-        orderTable.getColumns().setAll(gtinColumn, descColumn,quantityColumn);
-        // set the root element
-        orderTable.setRoot(root);
-        // make the treetable editable
-        orderTable.setEditable(true);
-        // dont show the root element (invisible container)
-        orderTable.setShowRoot(false);
+            });
+        }
+            }}).start();
+
+
 
     }
 
@@ -304,10 +323,6 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
      * @return an Order
      */
     public Order getOrderSuggestion() {
-
-        Navigator.getInstance().getMainController().setStatusbarWaiting("getting order suggestions...");
-
-
         Order order = new Order();
         order.setName("Order Suggestion");
         order.setOrdered(false);
@@ -379,7 +394,6 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 }
 
         }
-        Navigator.getInstance().getMainController().setStatusbarEmpty();
         return order;
     }
 }
