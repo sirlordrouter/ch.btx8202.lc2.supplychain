@@ -1,6 +1,5 @@
 package ui;
 
-import services.Authenticator;
 import entities.User;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -11,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import services.Authenticator;
 import ui.state.AuthenticationState;
 import ui.state.IAuthenticationStateContext;
 import ui.state.UnauthenticatedState;
