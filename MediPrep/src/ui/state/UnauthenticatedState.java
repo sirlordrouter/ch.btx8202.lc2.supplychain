@@ -1,7 +1,7 @@
 package ui.state;
 
-import ui.Main;
 import ui.LoginController;
+import ui.Main;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
