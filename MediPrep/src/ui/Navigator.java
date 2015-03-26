@@ -74,6 +74,7 @@ public class Navigator {
      */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+        ((PatientChanger)views.get(HOME_VIEW)).addListener(mainController);
     }
 
     public void setNavigationContext(IAuthenticationStateContext context) {

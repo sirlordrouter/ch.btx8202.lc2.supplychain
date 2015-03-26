@@ -1,7 +1,16 @@
 package entities;
 
 /**
- * Created by Johannes on 24.03.15.
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis <br>
+ *
+ *<p>
+ * User Object
+ *</p>
+ *
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
  */
 public class Staff {
 }

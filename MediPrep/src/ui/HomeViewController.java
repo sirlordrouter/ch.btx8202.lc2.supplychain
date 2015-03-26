@@ -15,15 +15,30 @@ import javafx.scene.layout.VBox;
 import services.PropertiesReader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-public class HomeViewController extends VBox implements IPartialView {
+/**
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis <br>
+ *
+ *<p>
+ *     Main View with patient listing.
+ *     If patient changes listeners are informed.
+ *</p>
+ *
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
+ */
+public class HomeViewController extends VBox implements IPartialView, PatientChanger {
 
     final int ROW_HEIGHT = 80;
 
     public Accordion PatientsAccordionView;
+    private final List<PatientChangerListener> patientChangedListers = new ArrayList<>();
     //final ObservableList patientsList = FXCollections.observableArrayList();
     //final ObservableList stationsList = FXCollections.observableArrayList();
 
@@ -75,6 +90,9 @@ public class HomeViewController extends VBox implements IPartialView {
                         public void changed(ObservableValue<? extends Patient> observable, Patient oldValue, Patient newValue) {
                             if (newValue != null) {
                                 FakeDataRepository.getInstance().setCurrentPatient(newValue);
+                                for (PatientChangerListener patientChangedLister : patientChangedListers) {
+                                    patientChangedLister.onPatientChanged(newValue);
+                                }
                             }
                         }
                     }
@@ -112,5 +130,17 @@ public class HomeViewController extends VBox implements IPartialView {
     @Override
     public void beforeOpen() {
 
+    }
+
+    @Override
+    public void addListener(PatientChangerListener listener) {
+        if (!patientChangedListers.contains(listener)) {
+            patientChangedListers.add(listener);
+        }
+    }
+
+    @Override
+    public void removeListener(PatientChangerListener listener) {
+        patientChangedListers.remove(listener);
     }
 }

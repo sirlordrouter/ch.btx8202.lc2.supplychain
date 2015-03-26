@@ -7,9 +7,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 /**
- * Created by Johannes on 25.03.15.
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis<br>
+ *
+ *<p>
+ * Model for a Patientcell in patient list view
+ *</p>
+ *
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
  */
 public class PatientCellData {
 
@@ -43,11 +53,13 @@ public class PatientCellData {
     public void setContent(Patient patient) {
         this.patient = patient;
         genderView.setImage(patient.getGenderImage());
-        fidLabel.setText(String.valueOf(patient.getFid()));
-        pidLabel.setText(String.valueOf(patient.getPid()));
+        fidLabel.setText("FID:" + String.valueOf(patient.getFid()));
+        pidLabel.setText("PID: " + String.valueOf(patient.getPid()));
         nameLabel.setText(patient.getLastname());
         firstnameLabel.setText(patient.getLastname());
-        birthdayLabel.setText(patient.getBirthDate().toString());
+        birthdayLabel.setText(
+                patient.getBirthDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+                        + " " + "(" + patient.getAge()+ ")");
     }
 
 

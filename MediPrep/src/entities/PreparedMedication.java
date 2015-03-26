@@ -1,12 +1,24 @@
 package entities;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
- * Created by Johannes on 25.03.15.
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis <br>
+ *
+ *<p>
+ * Describes a prepared medication from prescrription with a medication set (Batch, Serial, Expiry) prepared.
+ * Patient, Presritpion and Preparation time used.
+ *</p>
+ *
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
  */
 public class PreparedMedication extends Medication {
 
@@ -15,40 +27,44 @@ public class PreparedMedication extends Medication {
     private StringProperty BatchLot;
     private StringProperty Serial;
     private StringProperty ExpiryDate;
-    private State state;
-    private Patient forPatient;
-    private Prescription basedOnPrescription;
+    private ObjectProperty<State> state = new SimpleObjectProperty<>();
+    private ObjectProperty<Patient> forPatient = new SimpleObjectProperty<>();
+    private ObjectProperty<Prescription> basedOnPrescription = new SimpleObjectProperty<>();
+    private ObjectProperty<LocalDateTime> preparationTime = new SimpleObjectProperty<LocalDateTime>();
 
-    public PreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, LocalDate preparationTime) {
-        super(gtin,name,description,dosage,dosageUnit,applicationScheme,preparationTime);
+    private boolean isReserve = false;
 
+    public PreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, LocalDateTime preparationTime) {
+        super(gtin,name,description,dosage,dosageUnit,applicationScheme);
     }
 
     public PreparedMedication(String gtin, String name, String description, String dosage,
-                              String dosageUnit, String applicationScheme, LocalDate preparationTime, String batchLot, String serial, String expiryDate, Patient patient, Prescription prescription) {
-        super(gtin,name,description,dosage,dosageUnit,applicationScheme,preparationTime);
+                              String dosageUnit, String applicationScheme, LocalDateTime preparationTime, String batchLot, String serial, String expiryDate, Patient patient, Prescription prescription, boolean isReserve, State state) {
+        super(gtin,name,description,dosage,dosageUnit,applicationScheme);
         this.BatchLot = new SimpleStringProperty(batchLot);
         this.Serial = new SimpleStringProperty(serial);
         this.ExpiryDate = new SimpleStringProperty(expiryDate);
-        this.forPatient = patient;
-        this.basedOnPrescription = prescription;
-
+        this.forPatient.set(patient);
+        this.basedOnPrescription.set(prescription);
+        this.isReserve = isReserve;
+        this.state.set(state);
+        this.preparationTime.set(preparationTime);
     }
 
-    public Patient getForPatient() {
+    public ObjectProperty<Patient> getForPatient() {
         return forPatient;
     }
 
     public void setForPatient(Patient forPatient) {
-        this.forPatient = forPatient;
+        this.forPatient.set(forPatient);
     }
 
-    public Prescription getBasedOnPrescription() {
+    public ObjectProperty<Prescription> getBasedOnPrescription() {
         return basedOnPrescription;
     }
 
     public void setBasedOnPrescription(Prescription basedOnPrescription) {
-        this.basedOnPrescription = basedOnPrescription;
+        this.basedOnPrescription.set(basedOnPrescription);
     }
 
     public StringProperty getBatchLot() {
@@ -75,11 +91,27 @@ public class PreparedMedication extends Medication {
         ExpiryDate.set(expiryDate);
     }
 
-    public State getState() {
+    public ObjectProperty<State> getState() {
         return state;
     }
 
     public void setState(State state) {
-        this.state = state;
+        this.state.set(state);
+    }
+
+    public boolean isReserve() {
+        return isReserve;
+    }
+
+    public void setReserve(boolean isReserve) {
+        this.isReserve = isReserve;
+    }
+
+    public ObjectProperty<LocalDateTime> preparationTimeProperty() {
+        return preparationTime;
+    }
+
+    public void setPreparationTime(LocalDateTime preparationTime) {
+        this.preparationTime.set(preparationTime);
     }
 }

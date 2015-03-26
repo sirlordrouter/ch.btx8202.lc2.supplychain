@@ -1,11 +1,13 @@
 package ui;
 
+import entities.Patient;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
@@ -31,7 +33,14 @@ import java.util.ResourceBundle;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 21-10-2014
  */
-public class MainController implements Initializable {
+public class MainController implements Initializable, PatientChanger.PatientChangerListener {
+
+    public Button btnPatientView;
+    public Button btnAddictionalMedics;
+    public Button btnDoset;
+    public Button btnDosetControl;
+    public Button btnSettings;
+
     public Label dateTimeField;
     public Label userField;
     public Label locationField;
@@ -92,6 +101,11 @@ public class MainController implements Initializable {
             locationField.setText("Configuration could not be read!");
         }
 
+        btnAddictionalMedics.disableProperty().setValue(true);
+        btnDoset.disableProperty().setValue(true);
+        btnDosetControl.disableProperty().setValue(true);
+        btnSettings.disableProperty().setValue(true);
+
     }
 
     public void logout(ActionEvent actionEvent) {
@@ -108,6 +122,19 @@ public class MainController implements Initializable {
 
     public void openSettingsView(ActionEvent actionEvent) {}
 
+    @Override
+    public void onPatientChanged(Patient patient) {
+        if (patient != null) {
+            btnAddictionalMedics.disableProperty().setValue(false);
+            btnDoset.disableProperty().setValue(false);
+            btnDosetControl.disableProperty().setValue(false);
+
+        } else {
+            btnAddictionalMedics.disableProperty().setValue(true);
+            btnDoset.disableProperty().setValue(true);
+            btnDosetControl.disableProperty().setValue(true);
+        }
+    }
 
 //    public void setStatusbarWaiting(String infotext) {
 //        statusLineIndicator.setVisible(true);
