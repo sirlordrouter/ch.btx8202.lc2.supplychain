@@ -1157,6 +1157,52 @@ public class SupplyChainService {
         }
     }
 
+    /**
+     * A list of all Station available for the Hospital.
+     * @return a Collection of Stations
+     */
+    public List<Station> getStations() {
+        List<Station> stations = new ArrayList<Station>();
+
+        return stations;
+    }
+
+    /**
+     * A list of all Patients for the Hospital
+     * @return a Collection of Patients
+     */
+    public List<Patient> getPatients() {
+        List<Patient> patients = new ArrayList<Patient>();
+
+        return patients;
+    }
+
+    public List<Prescription> getPrescriptionsForPatient(String pid) {
+        List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+        return prescriptions;
+    }
+
+    public List<Prescription> getPrescriptionsWithPreparedMedicationsForPatient(String pid) {
+        List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+        return prescriptions;
+    }
+
+    public boolean savePreparedMedications(List<PreparedMedication> preparedMedications) {
+        boolean wasSuccessful = false;
+
+
+        return wasSuccessful;
+    }
+
+    public List<PreparedMedication> getPreparedMedicationsForPatient(String pid) {
+
+        List<PreparedMedication> preparedMedications = new ArrayList<PreparedMedication>();
+
+        return preparedMedications;
+    }
+
 
     public static void main(String[] argv) {
     Object implementor = new SupplyChainService();
