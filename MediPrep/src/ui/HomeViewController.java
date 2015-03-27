@@ -2,6 +2,7 @@ package ui;
 
 import datalayer.FakeDataRepository;
 import entities.Patient;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import services.PropertiesReader;
@@ -36,9 +38,11 @@ import java.util.stream.Collectors;
 public class HomeViewController extends VBox implements IPartialView, PatientChanger {
 
     final int ROW_HEIGHT = 80;
+    public ProgressIndicator progressPatients;
 
     public Accordion PatientsAccordionView;
     private final List<PatientChangerListener> patientChangedListers = new ArrayList<>();
+    private TitledPane[] tps;
     //final ObservableList patientsList = FXCollections.observableArrayList();
     //final ObservableList stationsList = FXCollections.observableArrayList();
 
@@ -64,51 +68,85 @@ public class HomeViewController extends VBox implements IPartialView, PatientCha
            //TODO SHow Message
         }
 
+        progressPatients.setVisible(false);
+        progressPatients.setProgress(-1);
+        progressPatients.setPrefHeight(30);
+        progressPatients.setPrefWidth(30);
+
         buildUpStationAccordeon();
     }
 
     private void buildUpStationAccordeon() {
 
-        TitledPane[] tps = new TitledPane[FakeDataRepository.getInstance().getStations().size()];
-        List<String> stations = FakeDataRepository.getInstance().getStations();
+        tps = new TitledPane[FakeDataRepository.getInstance().getStations().size()];
+        progressPatients.setVisible(true);
 
-        for (int i = 0; i < stations.size(); i++) {
-            final String stationName = stations.get(i);
+        // loads the items at another thread, asynchronously
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000l); // just emulates some loading time
 
-            ObservableList<Patient> pats = FXCollections.observableArrayList();
-            pats.addAll(
-                    FakeDataRepository.getInstance().getPatients()
-                            .stream()
-                            .filter(p -> p.getStationName().equals(stationName))
-                            .collect(Collectors.toList())
-            );
+                    List<String> stations = FakeDataRepository.getInstance().getStations();
 
-            ListView<Patient> stationPatients = new ListView();
-            stationPatients.getSelectionModel().selectedItemProperty().addListener(
-                    new ChangeListener<Patient>() {
-                        @Override
-                        public void changed(ObservableValue<? extends Patient> observable, Patient oldValue, Patient newValue) {
-                            if (newValue != null) {
-                                FakeDataRepository.getInstance().setCurrentPatient(newValue);
-                                for (PatientChangerListener patientChangedLister : patientChangedListers) {
-                                    patientChangedLister.onPatientChanged(newValue);
+                    for (int i = 0; i < stations.size(); i++) {
+                        final ObservableList<Patient> patientItems = FXCollections.observableArrayList();
+                        final String stationName = stations.get(i);
+
+                        patientItems.clear();
+                        patientItems.addAll(
+                                FakeDataRepository.getInstance().getPatients()
+                                        .stream()
+                                        .filter(p -> p.getStationName().equals(stationName))
+                                        .collect(Collectors.toList())
+                        );
+
+                        ListView<Patient> stationPatients = new ListView();
+                        stationPatients.getSelectionModel().selectedItemProperty().addListener(
+                                new ChangeListener<Patient>() {
+                                    @Override
+                                    public void changed(ObservableValue<? extends Patient> observable, Patient oldValue, Patient newValue) {
+                                        if (newValue != null) {
+                                            FakeDataRepository.getInstance().setCurrentPatient(newValue);
+                                            for (PatientChangerListener patientChangedLister : patientChangedListers) {
+                                                patientChangedLister.onPatientChanged(newValue);
+                                            }
+                                        }
+                                    }
                                 }
-                            }
-                        }
+                        );
+
+                        stationPatients.setItems(patientItems);
+
+                        stationPatients.setCellFactory(listView -> new PatientCell());
+
+                        stationPatients.setPrefHeight(patientItems.size() * ROW_HEIGHT);
+                        stationPatients.setMinHeight(patientItems.size() * ROW_HEIGHT);
+                        tps[i] = getStationPane(stationName,  stationPatients);
+
                     }
-            );
 
-            stationPatients.setItems(pats);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    // just updates the list view items at the
+                    // Application Thread
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            PatientsAccordionView.getPanes().addAll(tps);
+                            PatientsAccordionView.setExpandedPane(tps[0]);
+                            progressPatients.setVisible(false); // stop displaying the loading indicator
+                        }
+                    });
+                }
+            }
+        }).start();
 
-            stationPatients.setCellFactory(listView -> new PatientCell());
 
-            stationPatients.setPrefHeight(pats.size()*ROW_HEIGHT);
-            tps[i] = getStationPane(stationName,  stationPatients);
 
-        }
 
-        PatientsAccordionView.getPanes().addAll(tps);
-        PatientsAccordionView.setExpandedPane(tps[0]);
 
     }
 
