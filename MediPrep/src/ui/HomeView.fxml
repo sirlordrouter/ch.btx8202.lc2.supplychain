@@ -9,6 +9,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
+<!--
+* Bern University of Applied Sciences</br>
+* BSc Medical Informatics</br>
+* Module Bachelorthesis</br>
+*
+*<p>List of all Patient grouped by Stations</p>
+*
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
+-->
 <fx:root fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Accordion fx:id="PatientsAccordionView" />

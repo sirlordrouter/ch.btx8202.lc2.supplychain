@@ -10,14 +10,13 @@
 <!--
 * Bern University of Applied Sciences</br>
 * BSc Medical Informatics</br>
-* Module Living Case 2</br>
+* Module Bachelorthesis</br>
 *
 *<p>Main Window of the application with a stack pane to load views and a statusbar.</p>
 *
-* @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
-* @version 04-11-2014
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
 -->
-
 <AnchorPane minHeight="880.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainController">
     <children>
       <AnchorPane fx:id="navigationHolderPane" maxHeight="165.0" minHeight="85.0" prefHeight="85.0" prefWidth="823.0" style="-fx-background-color: lightgrey;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

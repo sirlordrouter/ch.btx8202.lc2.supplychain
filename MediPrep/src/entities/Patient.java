@@ -2,13 +2,27 @@ package entities;
 
 import javafx.scene.image.Image;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.UUID;
 
 /**
- * Created by Johannes on 24.03.15.
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module <br>
+ *
+ *<p>
+ * Describes a Patient Object with necessary information to display in MediPrep.
+ *</p>
+ *
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
  */
 public class Patient {
+
+    public Patient() {
+
+    }
 
     public static enum Gender {male, female, undefined}
     public static enum BloodGroup {Apositive, Bpositive, AB, ZeroNegative, ZeroPositive}
@@ -17,15 +31,16 @@ public class Patient {
     private UUID beaconID = null;
     private String firstname;
     private String lastname;
-    private Date birthDate;
+    private LocalDate birthDate;
     private boolean reaState;
     private int fid = -1;
     private String StationName;
+    private String room;
     private Gender gender;
     private BloodGroup bloodGroup;
     public Image genderImage;
 
-    public Patient(int pid, UUID beaconID, String firstname, String lastname, Date birthDate, boolean reaState, int fid, String stationName, Gender gender, BloodGroup bloodGroup) {
+    public Patient(int pid, UUID beaconID, String firstname, String lastname, LocalDate birthDate, boolean reaState, int fid, String stationName, String room, Gender gender, BloodGroup bloodGroup) {
         this.pid = pid;
         this.beaconID = beaconID;
         this.firstname = firstname;
@@ -33,6 +48,7 @@ public class Patient {
         this.birthDate = birthDate;
         this.reaState = reaState;
         this.fid = fid;
+        this.room = room;
         this.gender = gender;
         this.StationName = stationName;
         this.bloodGroup = bloodGroup;
@@ -78,11 +94,18 @@ public class Patient {
         this.lastname = lastname;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public int getAge() {
+        LocalDate today = LocalDate.now();
+        LocalDate birthday = this.getBirthDate();
+        Period p = Period.between(birthday, today);
+        return p.getYears();
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -110,6 +133,13 @@ public class Patient {
         this.gender = gender;
     }
 
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
 
     public String getStationName() {
         return StationName;

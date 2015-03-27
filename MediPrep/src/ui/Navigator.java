@@ -60,7 +60,7 @@ public class Navigator {
         views.put(HOME_VIEW, new HomeViewController(HOME_VIEW));
 //        views.put(DOSETPREP_VIEW, new StockViewController(STOCK_VIEW));
 //        views.put(DOSETCONTROL_VIEW, new OrderViewController(ORDER_VIEW));
-//        views.put(ADDITIONALMEDIC_VIEW, new ShipmentViewController(SHIPMENT_VIEW));
+        views.put(ADDITIONALMEDIC_VIEW, new AdditionalMedicViewController(ADDITIONALMEDIC_VIEW));
     }
 
     public MainController getMainController() {
@@ -74,6 +74,7 @@ public class Navigator {
      */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+        ((PatientChanger)views.get(HOME_VIEW)).addListener(mainController);
     }
 
     public void setNavigationContext(IAuthenticationStateContext context) {

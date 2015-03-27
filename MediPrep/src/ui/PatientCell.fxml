@@ -5,8 +5,17 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:id="patientCellBox">
+<!--
+* Bern University of Applied Sciences</br>
+* BSc Medical Informatics</br>
+* Module Bachelorthesis</br>
+*
+*<p>Layout of a Patient cell in Patient List view</p>
+*
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
+-->
+<HBox fx:id="patientCellBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane prefHeight="65.0" prefWidth="64.0">
          <children>
