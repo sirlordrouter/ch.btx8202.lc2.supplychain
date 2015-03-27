@@ -32,5 +32,7 @@
     <orderEntry type="library" name="Libraries" level="project" />
     <orderEntry type="library" name="lib3" level="project" />
     <orderEntry type="library" name="tools" level="project" />
+    <orderEntry type="library" name="ExtLib" level="project" />
+    <orderEntry type="library" name="JAX-WS-Apache Axis" level="project" />
   </component>
 </module>
