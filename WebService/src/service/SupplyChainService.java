@@ -1177,6 +1177,16 @@ public class SupplyChainService {
         return patients;
     }
 
+    /**
+     * Returns the Patient for given UUID
+     * @return a  Patient
+     */
+    public Patient getPatientByUUID() {
+        Patient patient = new Patient();
+
+        return patient;
+    }
+
     public List<Prescription> getPrescriptionsForPatient(String pid) {
         List<Prescription> prescriptions = new ArrayList<Prescription>();
 
