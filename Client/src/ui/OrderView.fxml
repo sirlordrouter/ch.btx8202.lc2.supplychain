@@ -41,7 +41,7 @@
                 <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="addButton" mnemonicParsing="false" text="Add" textAlignment="RIGHT" AnchorPane.rightAnchor="107.0" AnchorPane.topAnchor="7.0" ></Button>
                 <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="removeButton" mnemonicParsing="false" text="Remove" textAlignment="RIGHT" AnchorPane.rightAnchor="207.0" AnchorPane.topAnchor="7.0" ></Button>
                 <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="sendButton" mnemonicParsing="false" text="Send" textAlignment="RIGHT" AnchorPane.rightAnchor="307.0" AnchorPane.topAnchor="7.0" ></Button>
-                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="refreshButton" mnemonicParsing="false" onAction="#setOrderTable" text="Refresh" textAlignment="RIGHT" AnchorPane.rightAnchor="407.0" AnchorPane.topAnchor="7.0" />
+                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshOrderTable" text="Refresh" textAlignment="RIGHT" AnchorPane.rightAnchor="407.0" AnchorPane.topAnchor="7.0" />
             </children>
         </AnchorPane>
     </children>

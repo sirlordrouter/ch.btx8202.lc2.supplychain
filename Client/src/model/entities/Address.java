@@ -1,9 +1,9 @@
 package model.entities;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>An Address Class</p>
  *
@@ -23,6 +23,10 @@ public class Address {
         this.setStreetName(streetName);
         this.setZip(zip);
         this.setCity(city);
+    }
+
+    public Address(){
+
     }
 
     public int getStreetNr() {

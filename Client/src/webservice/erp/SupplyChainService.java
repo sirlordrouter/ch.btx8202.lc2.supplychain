@@ -28,6 +28,27 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "setOrder", targetNamespace = "http://service/", className = "webservice.erp.SetOrder")
+    @ResponseWrapper(localName = "setOrderResponse", targetNamespace = "http://service/", className = "webservice.erp.SetOrderResponse")
+    @Action(input = "http://service/SupplyChainService/setOrderRequest", output = "http://service/SupplyChainService/setOrderResponse")
+    public boolean setOrder(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Order arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
+
+    /**
+     * 
      * @param arg0
      * @return
      *     returns java.lang.String
@@ -58,6 +79,21 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns webservice.erp.WebServiceResult
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getItemsByGSIN", targetNamespace = "http://service/", className = "webservice.erp.GetItemsByGSIN")
+    @ResponseWrapper(localName = "getItemsByGSINResponse", targetNamespace = "http://service/", className = "webservice.erp.GetItemsByGSINResponse")
+    @Action(input = "http://service/SupplyChainService/getItemsByGSINRequest", output = "http://service/SupplyChainService/getItemsByGSINResponse")
+    public WebServiceResult getItemsByGSIN(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
      * @param arg1
      * @param arg0
      * @return
@@ -73,27 +109,6 @@ public interface SupplyChainService {
         List<Item> arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1);
-
-    /**
-     * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "setOrder", targetNamespace = "http://service/", className = "webservice.erp.SetOrder")
-    @ResponseWrapper(localName = "setOrderResponse", targetNamespace = "http://service/", className = "webservice.erp.SetOrderResponse")
-    @Action(input = "http://service/SupplyChainService/setOrderRequest", output = "http://service/SupplyChainService/setOrderResponse")
-    public boolean setOrder(
-        @WebParam(name = "arg0", targetNamespace = "")
-        Order arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2);
 
     /**
      * 

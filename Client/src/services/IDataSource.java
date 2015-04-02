@@ -8,9 +8,9 @@ import webservice.erp.*;
 import java.util.List;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>Interface for the ErpClient Connection Class.</p>
  *

@@ -1,13 +1,12 @@
 package ui;
 
-import barcode.Barcode;
-import barcode.BarcodeDecoder;
-import barcode.BarcodeInformation;
-import barcode.ScannedString;
+import barcode.*;
 import barcodeHook.Scanner;
 import barcodeHook.ScannerEvent;
 import barcodeHook.ScannerListener;
 import exceptions.BarcodeNotDeserializeableException;
+import exceptions.ConversionException;
+import exceptions.NotCorrectEANLenghtException;
 import exceptions.NotImplementedBarcodeTypeException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -39,9 +38,9 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>
  *     Controller class for the StockView.
@@ -200,6 +199,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
     /**
      * Adds an item to the list f scanned items
      * @param actionEvent
+     * button event
      */
     public void addItem(ActionEvent actionEvent) {
         Navigator.getInstance().getMainController().setStatusbarWaiting("adding found items...");
@@ -351,7 +351,17 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
         info =  code.getBarcodeInformation();
         if(info != null) {
             txtareaMediInfo.appendText(info.toString());
-
+            //TODO: in datamatrix 14 digit gtins were used, in this project (also swissindex) ist working with 13 digits, so change it if necessary
+            if (info.getAI01_HANDELSEINHEIT().length() == 14) {
+                try {
+                   if (info.getAI01_HANDELSEINHEIT() != null) {info.setAI01_HANDELSEINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI01_HANDELSEINHEIT()));}
+                   if(info.getAI02_ENTHALTENE_EINHEIT() != null) {info.setAI02_ENTHALTENE_EINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI02_ENTHALTENE_EINHEIT()));}
+                } catch (NotCorrectEANLenghtException e) {
+                    e.printStackTrace();
+                } catch (ConversionException e) {
+                    e.printStackTrace();
+                }
+            }
 
             if (info.getAI00_SSCC() != null) {
                 if(dataSource == null ) {
@@ -373,6 +383,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
         } else {
             Navigator.getInstance().getMainController().setStatusbarEmpty();
             System.out.println("Info was null");
+            txtareaMediInfo.setText("Could not extract Information from Code: Info was null");
         }
         Navigator.getInstance().getMainController().setStatusbarEmpty();
 
@@ -404,6 +415,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
     /**
      * Resets the Database for a new Demonstration of the whole supply chain process
      * @param actionEvent
+     * button event
      */
     public void resetTrackedItems(ActionEvent actionEvent) {
         dataSource.resetTrackedItems();

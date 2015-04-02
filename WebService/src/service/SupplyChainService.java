@@ -46,8 +46,7 @@ public class SupplyChainService {
   @WebMethod
   public String sayHelloWorldFrom(String from) {
     String result = "Hello, world, from " + from;
-    System.out.println(result);
-    return result;
+      return result;
   }
     /**
      *  Returns a WebServiceResult object with a boolean and a list of all checked in items of a specific global location number (GLN).
@@ -96,6 +95,62 @@ public class SupplyChainService {
         }
 
         WebServiceResult webServiceResult = new WebServiceResult(checkedInItems, resultState);
+        return webServiceResult;
+    }
+
+    /**
+     *  Returns a WebServiceResult object with a boolean and a list of all checked in items of a specific global shipment identification number (GSIN).
+     *  @param gsin A Global Shipment Identification Number (String)
+     *  @return a WebServiceResult
+     */
+    @WebMethod
+    public WebServiceResult getItemsByGSIN(String gsin) {
+
+        List<Item> items = null;
+        boolean resultState = false;
+        ResultSet rs;
+
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            @Language("DB2")
+            String query = "SELECT [GTINsek]\n" +
+                    "      ,[SerialNr]\n" +
+                    "      ,[BatchLot]\n" +
+                    "      ,[ExpiryDate]\n" +
+                    "      ,[GTINtert]\n" +
+                    "      ,[LogisticPackage].[SSCC]\n" +
+                    "FROM [dbo].[LogisticPackage] INNER JOIN [dbo].[SecondaryPackage] on\n" +
+                    " [dbo].[LogisticPackage].SSCC=[dbo].[SecondaryPackage].SSCC\n" +
+                    "WHERE ShipmentIdGSIN=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, gsin);
+            rs =  ps.executeQuery();
+            while (rs.next()) {
+                Item item = new Item();
+                item.setGTIN(rs.getString(1));
+                item.setSerial(rs.getString(2));
+                item.setLot(rs.getString(3));
+                item.setExpiryDate(rs.getDate(4, new GregorianCalendar()).toString());
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (items.size() > 0){
+            resultState=true;
+        }
+
+        WebServiceResult webServiceResult = new WebServiceResult(items, resultState);
         return webServiceResult;
     }
 
@@ -539,13 +594,17 @@ public class SupplyChainService {
         return items;
     }
 
-    private String getBatch(){
+    private String getBatch(){ //Beutel 9stellig
         java.util.Date date = new java.util.Date();
-        DateFormat formatter = new SimpleDateFormat("ddMMyyHHmm");
-        return "BFH"+formatter.format(date);
+        DateFormat formatter = new SimpleDateFormat("ddMMyyHHm");
+        return formatter.format(date);
     }
-    private String getSerial(String batch, int objectNumber){
-        return batch+"0000000"+Integer.toString(objectNumber);
+    private String getSerial(String batch, int objectNumber){ //17 stellig
+        String serial = Integer.toString(objectNumber);
+        while(serial.length()<8){
+            serial = "0" + serial;
+        }
+        return batch+serial;
     }
     private Timestamp getExpDate(){
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
@@ -621,13 +680,13 @@ public class SupplyChainService {
                     "\t  ,d1.Name as 'DescDest'\n" +
                     "      ,a.[GLNsender]\n" +
                     "\t  ,d2.Name as 'DescSend'\n" +
-                    "\t  ,p.SSCC\n" +
+                    "\t  ,p.SSCC\n,p.ShipmentIdGSIN\n" +
                     "  FROM [dbo].[Shipment] a\n" +
                     "  INNER JOIN LogisticPackage p On \n" +
                     "  p.OrderNr=a.OrderNr and \n" +
                     "  a.ShipmentIdGSIN = p.ShipmentIdGSIN\n" +
-                    "  inner join Division d1 on d1.GLNdiv = a.GLNdest\n" +
-                    "  inner join Division d2 on d2.GLNdiv = a.GLNsender\n" +
+                    "  inner join [dbo].[Location] d1 on d1.GLN = a.GLNdest\n" +
+                    "  inner join [dbo].[Location] d2 on d2.GLN = a.GLNsender\n" +
                     "Where p.OrderNr = ?";
 
             PreparedStatement ps = connection.prepareStatement(query);
@@ -640,6 +699,7 @@ public class SupplyChainService {
             shipment.setGlnOrigin(rs.getString(3));
             shipment.setDescOrigin(rs.getString(4));
             shipment.setSscc(rs.getString(5));
+            shipment.setGsin(Integer.toString((int)(long)(Long)rs.getObject(6)));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1095,6 +1155,62 @@ public class SupplyChainService {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * A list of all Station available for the Hospital.
+     * @return a Collection of Stations
+     */
+    public List<Station> getStations() {
+        List<Station> stations = new ArrayList<Station>();
+
+        return stations;
+    }
+
+    /**
+     * A list of all Patients for the Hospital
+     * @return a Collection of Patients
+     */
+    public List<Patient> getPatients() {
+        List<Patient> patients = new ArrayList<Patient>();
+
+        return patients;
+    }
+
+    /**
+     * Returns the Patient for given UUID
+     * @return a  Patient
+     */
+    public Patient getPatientByUUID() {
+        Patient patient = new Patient();
+
+        return patient;
+    }
+
+    public List<Prescription> getPrescriptionsForPatient(String pid) {
+        List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+        return prescriptions;
+    }
+
+    public List<Prescription> getPrescriptionsWithPreparedMedicationsForPatient(String pid) {
+        List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+        return prescriptions;
+    }
+
+    public boolean savePreparedMedications(List<PreparedMedication> preparedMedications) {
+        boolean wasSuccessful = false;
+
+
+        return wasSuccessful;
+    }
+
+    public List<PreparedMedication> getPreparedMedicationsForPatient(String pid) {
+
+        List<PreparedMedication> preparedMedications = new ArrayList<PreparedMedication>();
+
+        return preparedMedications;
     }
 
 

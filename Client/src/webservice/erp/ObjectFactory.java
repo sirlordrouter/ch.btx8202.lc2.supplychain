@@ -32,6 +32,8 @@ public class ObjectFactory {
     private final static QName _SayHelloWorldFromResponse_QNAME = new QName("http://service/", "sayHelloWorldFromResponse");
     private final static QName _GetCheckedInItems_QNAME = new QName("http://service/", "getCheckedInItems");
     private final static QName _GetItemsByBatchResponse_QNAME = new QName("http://service/", "getItemsByBatchResponse");
+    private final static QName _GetItemsByGSIN_QNAME = new QName("http://service/", "getItemsByGSIN");
+    private final static QName _GetItemsByGSINResponse_QNAME = new QName("http://service/", "getItemsByGSINResponse");
     private final static QName _GetOrderForSSCCResponse_QNAME = new QName("http://service/", "getOrderForSSCCResponse");
     private final static QName _ProcessOrder_QNAME = new QName("http://service/", "processOrder");
     private final static QName _SetOrder_QNAME = new QName("http://service/", "setOrder");
@@ -237,6 +239,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetItemsByGSIN }
+     * 
+     */
+    public GetItemsByGSIN createGetItemsByGSIN() {
+        return new GetItemsByGSIN();
+    }
+
+    /**
+     * Create an instance of {@link GetItemsByGSINResponse }
+     * 
+     */
+    public GetItemsByGSINResponse createGetItemsByGSINResponse() {
+        return new GetItemsByGSINResponse();
+    }
+
+    /**
      * Create an instance of {@link GetOrderForSSCCResponse }
      * 
      */
@@ -418,6 +436,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "getItemsByBatchResponse")
     public JAXBElement<GetItemsByBatchResponse> createGetItemsByBatchResponse(GetItemsByBatchResponse value) {
         return new JAXBElement<GetItemsByBatchResponse>(_GetItemsByBatchResponse_QNAME, GetItemsByBatchResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetItemsByGSIN }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getItemsByGSIN")
+    public JAXBElement<GetItemsByGSIN> createGetItemsByGSIN(GetItemsByGSIN value) {
+        return new JAXBElement<GetItemsByGSIN>(_GetItemsByGSIN_QNAME, GetItemsByGSIN.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetItemsByGSINResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getItemsByGSINResponse")
+    public JAXBElement<GetItemsByGSINResponse> createGetItemsByGSINResponse(GetItemsByGSINResponse value) {
+        return new JAXBElement<GetItemsByGSINResponse>(_GetItemsByGSINResponse_QNAME, GetItemsByGSINResponse.class, null, value);
     }
 
     /**

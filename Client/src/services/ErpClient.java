@@ -11,9 +11,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>
  *     Connection Class to the erp webservice.
@@ -71,7 +71,7 @@ public class ErpClient implements IDataSource{
     /**
      * Returns a list of items referring to the specified sscc.
      * @param sscc A Serial Shipping Container Code.
-     * @return List<Item>
+     * @return List of Items
      */
     @Override
     public List<Item> getItemsBySSCC(String sscc) {
@@ -110,7 +110,7 @@ public class ErpClient implements IDataSource{
     * @param gtin A global trade item number (GTIN).
     * @param batchLot A BatchLot.
     * @param expiryDate An Expiry Date.
-    * @return List<Item>
+    * @return List of Items
     */
     @Override
     public List<Item> getItemsByBatch(String gtin, String batchLot, Date expiryDate) {

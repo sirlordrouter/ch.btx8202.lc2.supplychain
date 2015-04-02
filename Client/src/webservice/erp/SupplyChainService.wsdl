@@ -4,6 +4,12 @@
 <xsd:import namespace="http://service/" schemaLocation="http://localhost:8080/services/SupplyChainService?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="setOrder">
+<part name="parameters" element="tns:setOrder"/>
+</message>
+<message name="setOrderResponse">
+<part name="parameters" element="tns:setOrderResponse"/>
+</message>
 <message name="sayHelloWorldFrom">
 <part name="parameters" element="tns:sayHelloWorldFrom"/>
 </message>
@@ -16,17 +22,17 @@
 <message name="getCheckedInItemsResponse">
 <part name="parameters" element="tns:getCheckedInItemsResponse"/>
 </message>
+<message name="getItemsByGSIN">
+<part name="parameters" element="tns:getItemsByGSIN"/>
+</message>
+<message name="getItemsByGSINResponse">
+<part name="parameters" element="tns:getItemsByGSINResponse"/>
+</message>
 <message name="checkinItems">
 <part name="parameters" element="tns:checkinItems"/>
 </message>
 <message name="checkinItemsResponse">
 <part name="parameters" element="tns:checkinItemsResponse"/>
-</message>
-<message name="setOrder">
-<part name="parameters" element="tns:setOrder"/>
-</message>
-<message name="setOrderResponse">
-<part name="parameters" element="tns:setOrderResponse"/>
 </message>
 <message name="checkoutItems">
 <part name="parameters" element="tns:checkoutItems"/>
@@ -89,6 +95,10 @@
 <part name="parameters" element="tns:resetTrackedItemsResponse"/>
 </message>
 <portType name="SupplyChainService">
+<operation name="setOrder">
+<input wsam:Action="http://service/SupplyChainService/setOrderRequest" message="tns:setOrder"/>
+<output wsam:Action="http://service/SupplyChainService/setOrderResponse" message="tns:setOrderResponse"/>
+</operation>
 <operation name="sayHelloWorldFrom">
 <input wsam:Action="http://service/SupplyChainService/sayHelloWorldFromRequest" message="tns:sayHelloWorldFrom"/>
 <output wsam:Action="http://service/SupplyChainService/sayHelloWorldFromResponse" message="tns:sayHelloWorldFromResponse"/>
@@ -97,13 +107,13 @@
 <input wsam:Action="http://service/SupplyChainService/getCheckedInItemsRequest" message="tns:getCheckedInItems"/>
 <output wsam:Action="http://service/SupplyChainService/getCheckedInItemsResponse" message="tns:getCheckedInItemsResponse"/>
 </operation>
+<operation name="getItemsByGSIN">
+<input wsam:Action="http://service/SupplyChainService/getItemsByGSINRequest" message="tns:getItemsByGSIN"/>
+<output wsam:Action="http://service/SupplyChainService/getItemsByGSINResponse" message="tns:getItemsByGSINResponse"/>
+</operation>
 <operation name="checkinItems">
 <input wsam:Action="http://service/SupplyChainService/checkinItemsRequest" message="tns:checkinItems"/>
 <output wsam:Action="http://service/SupplyChainService/checkinItemsResponse" message="tns:checkinItemsResponse"/>
-</operation>
-<operation name="setOrder">
-<input wsam:Action="http://service/SupplyChainService/setOrderRequest" message="tns:setOrder"/>
-<output wsam:Action="http://service/SupplyChainService/setOrderResponse" message="tns:setOrderResponse"/>
 </operation>
 <operation name="checkoutItems">
 <input wsam:Action="http://service/SupplyChainService/checkoutItemsRequest" message="tns:checkoutItems"/>
@@ -148,6 +158,15 @@
 </portType>
 <binding name="SupplyChainServicePortBinding" type="tns:SupplyChainService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="setOrder">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="sayHelloWorldFrom">
 <soap:operation soapAction=""/>
 <input>
@@ -166,7 +185,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="checkinItems">
+<operation name="getItemsByGSIN">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -175,7 +194,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="setOrder">
+<operation name="checkinItems">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

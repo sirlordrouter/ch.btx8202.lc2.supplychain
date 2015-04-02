@@ -33,9 +33,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Living Case 2</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Living Case 2<br>
  *
  *<p>This class handles the data provided of the TrackedItems Table in the Logistic Database.
  * The goal is to show all checked in Items of a specific global location number.</p>
@@ -96,6 +96,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
     /**
      * update the checked in items list.
      * @param event
+     * a button event
      */
     public void searchCheckedInItems(ActionEvent event) {
         data.clear();
@@ -116,6 +117,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
      * get checked in items from the webservice and add product informations from the swissindex webservice
      */
     public void getCheckedInItems(){
+        itemList.setStyle("-fx-selection-bar: lightblue;");
         Navigator.getInstance().getMainController().setStatusbarWaiting("Get current stock...");
 
         final ObservableList<Item> tempData =  FXCollections.observableArrayList();
@@ -204,7 +206,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
                             // Name Column
                             TreeTableColumn<StockTreeItem, String> nameColumn =
                                     new TreeTableColumn<>("Name");
-                            nameColumn.setPrefWidth(200);
+                            nameColumn.setPrefWidth(300);
                             nameColumn.setCellValueFactory(
                                     (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
                                             new ReadOnlyStringWrapper(param.getValue().getValue().getDescription())
@@ -244,7 +246,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
                             // Serial Column
                             TreeTableColumn<StockTreeItem, String> serialColumn =
                                     new TreeTableColumn<>("Serial");
-                            serialColumn.setPrefWidth(150);
+                            serialColumn.setPrefWidth(170);
                             serialColumn.setCellValueFactory(
                                     (TreeTableColumn.CellDataFeatures<StockTreeItem, String> param) ->
                                             new ReadOnlyStringWrapper(param.getValue().getValue().getSerial())

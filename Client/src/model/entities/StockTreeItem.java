@@ -3,9 +3,9 @@ package model.entities;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- * Bern University of Applied Sciences</br>
- * BSc Medical Informatics</br>
- * Module Bachelorthesis</br>
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module Bachelorthesis<br>
  *
  *<p>This class generates Objects to be filled in a TreeTableView only available in JavaFX 8.</p>
  *
