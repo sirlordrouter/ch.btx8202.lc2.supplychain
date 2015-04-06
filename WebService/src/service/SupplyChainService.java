@@ -13,6 +13,7 @@ import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -447,7 +448,7 @@ public class SupplyChainService {
 
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1,orderNr);
-            ps.setString(2,glnDest);
+            ps.setString(2, glnDest);
             ps.setString(3,glnSender);
             int success =  ps.executeUpdate();
 
@@ -640,7 +641,7 @@ public class SupplyChainService {
                     "  WHERE [GLN] = ?";
 
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1,gln);
+            ps.setString(1, gln);
             rs =  ps.executeQuery();
 
             while(rs.next()){
@@ -1157,12 +1158,16 @@ public class SupplyChainService {
         }
     }
 
+    public String getProductForSecondaryPackage(String secondaryGTIN) {
+
+    }
+
     /**
      * A list of all Station available for the Hospital.
      * @return a Collection of Stations
      */
     public List<Station> getStations() {
-        List<Station> stations = new ArrayList<Station>();
+        List<Station> stations = null;
 
         return stations;
     }
@@ -1172,7 +1177,66 @@ public class SupplyChainService {
      * @return a Collection of Patients
      */
     public List<Patient> getPatients() {
-        List<Patient> patients = new ArrayList<Patient>();
+        List<Patient> patients = null;
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            String query = "SELECT PolyPointPID,UUID,Name, FirstName,Birthdate,Gender,Station From MediPrep_Patients";
+            PreparedStatement ps = connection.prepareStatement(query);
+            rs =  ps.executeQuery();
+
+            patients = getPatientsFromResult(rs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return patients;
+    }
+
+    private List<Patient> getPatientsFromResult(ResultSet rs) throws SQLException {
+        int index = 1;
+        List<Patient> patients = new ArrayList<>();
+
+        while (rs.next()) {
+            Patient p = new Patient();
+            p.setPid(rs.getInt(1));
+            p.setBeaconID(UUID.fromString(rs.getString(2)));
+            p.setLastname(rs.getString(3));
+            p.setFirstname(rs.getString(4));
+            p.setBirthDate(rs.getDate(5).toLocalDate());
+
+            String gender = rs.getString(6);
+            switch (gender) {
+                case "m":
+                    p.setGender(Patient.Gender.male);
+                    break;
+                case "f":
+                    p.setGender(Patient.Gender.female);
+                    break;
+                default:
+                    p.setGender(Patient.Gender.undefined);
+            }
+            p.setStationName(rs.getString(7));
+
+            /* Fake other items not in db*/
+            p.setRoom("Zi 20" + index);
+            p.setFid(index);
+            p.setBloodGroup(Patient.BloodGroup.Apositive);
+            p.setReaState(false);
+
+            index++;
+
+            patients.add(p);
+        }
 
         return patients;
     }
@@ -1181,10 +1245,36 @@ public class SupplyChainService {
      * Returns the Patient for given UUID
      * @return a  Patient
      */
-    public Patient getPatientByUUID() {
-        Patient patient = new Patient();
+    public Patient getPatientByUUID(UUID uuid) {
+        List<Patient> patients = null;
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
 
-        return patient;
+        try {
+            String query = "SELECT PolyPointPID,UUID,Name, FirstName,Birthdate,Gender,Station From MediPrep_Patients WHERE UUID = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, uuid.toString());
+            rs =  ps.executeQuery();
+
+            patients = getPatientsFromResult(rs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if( patients.size() > 2 || patients.size() == 0) {
+            System.out.println("There have been more than one patient with UUID " + uuid);
+            return null;
+        } else {
+            return patients.get(0);
+        }
     }
 
     public List<Prescription> getPrescriptionsForPatient(String pid) {

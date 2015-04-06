@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -45,6 +46,7 @@ public class MainController implements Initializable, PatientChanger.PatientChan
     public Label userField;
     public Label locationField;
     public Image imgProfilePicture;
+    public Label lblSelectedPatientInfo;
 
     public Label statusLineLabel;
     public ProgressIndicator statusLineIndicator;
@@ -126,10 +128,17 @@ public class MainController implements Initializable, PatientChanger.PatientChan
     public void onPatientChanged(Patient patient) {
         if (patient != null) {
             btnAddictionalMedics.disableProperty().setValue(false);
-            btnDoset.disableProperty().setValue(false);
-            btnDosetControl.disableProperty().setValue(false);
+            //TODO: Enable later when all views implemented (not in Bachelorthesis)
+            //btnDoset.disableProperty().setValue(false);
+            //btnDosetControl.disableProperty().setValue(false);
+            lblSelectedPatientInfo.setText(
+                    patient.getLastname() + ", " + patient.getFirstname() + " (" + patient.getGender() +") "
+                    + " " +patient.getBirthDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " (" + patient.getAge() +")"
+                    + "; Station: " + patient.getStationName() + ", Zi: " + patient.getRoom()
+            ) ;
 
         } else {
+            lblSelectedPatientInfo.setText("");
             btnAddictionalMedics.disableProperty().setValue(true);
             btnDoset.disableProperty().setValue(true);
             btnDosetControl.disableProperty().setValue(true);
