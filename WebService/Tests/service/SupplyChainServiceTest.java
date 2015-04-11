@@ -1,9 +1,6 @@
 package service;
 
-import entities.Item;
-import entities.Order;
-import entities.Position;
-import entities.Quantity;
+import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import junit.framework.TestCase;
@@ -93,4 +90,52 @@ public class SupplyChainServiceTest extends TestCase {
     }
 
 
+    public void testGetItemsByGSIN() throws Exception {
+
+    }
+
+    public void testSetOrder() throws Exception {
+
+    }
+
+    public void testResetTrackedItems() throws Exception {
+
+    }
+
+    public void testGetProductForSecondaryPackage() throws Exception {
+
+    }
+
+    public void testGetStations() throws Exception {
+
+    }
+
+    public void testGetPatients() throws Exception {
+        SupplyChainService service = new SupplyChainService();
+        List<Patient> patients = service.getPatients();
+
+        Assert.assertNotNull(patients);
+        Assert.assertTrue(patients.size() >= 2);
+
+    }
+
+    public void testGetPatientByUUID() throws Exception {
+
+    }
+
+    public void testGetPrescriptionsForPatient() throws Exception {
+
+    }
+
+    public void testGetPrescriptionsWithPreparedMedicationsForPatient() throws Exception {
+
+    }
+
+    public void testSavePreparedMedications() throws Exception {
+
+    }
+
+    public void testGetPreparedMedicationsForPatient() throws Exception {
+
+    }
 }

@@ -27,12 +27,14 @@ public class PreparedMedication extends Medication {
     private StringProperty BatchLot;
     private StringProperty Serial;
     private StringProperty ExpiryDate;
-    private ObjectProperty<State> state = new SimpleObjectProperty<>();
+    private ObjectProperty<State> state = new SimpleObjectProperty<>(State.open);
     private ObjectProperty<Patient> forPatient = new SimpleObjectProperty<>();
     private ObjectProperty<Prescription> basedOnPrescription = new SimpleObjectProperty<>();
     private ObjectProperty<LocalDateTime> preparationTime = new SimpleObjectProperty<LocalDateTime>();
 
     private boolean isReserve = false;
+
+    public PreparedMedication() {}
 
     public PreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, LocalDateTime preparationTime) {
         super(gtin,name,description,dosage,dosageUnit,applicationScheme);

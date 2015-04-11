@@ -8,12 +8,10 @@ import org.intellij.lang.annotations.Language;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
-import java.math.BigDecimal;
 import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -36,7 +34,7 @@ import java.util.*;
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
- * @version 29-11-2014
+ * @version 06-04-2015
  */
 @WebService()
 public class SupplyChainService {
@@ -1160,6 +1158,9 @@ public class SupplyChainService {
 
     public String getProductForSecondaryPackage(String secondaryGTIN) {
 
+
+
+        return "";
     }
 
     /**
@@ -1209,7 +1210,7 @@ public class SupplyChainService {
         while (rs.next()) {
             Patient p = new Patient();
             p.setPid(rs.getInt(1));
-            p.setBeaconID(UUID.fromString(rs.getString(2)));
+            p.setBeaconID(rs.getString(2));
             p.setLastname(rs.getString(3));
             p.setFirstname(rs.getString(4));
             p.setBirthDate(rs.getDate(5).toLocalDate());
@@ -1278,14 +1279,126 @@ public class SupplyChainService {
     }
 
     public List<Prescription> getPrescriptionsForPatient(String pid) {
+
+        //All prescriptions where state is open, paused, doseChanged
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
         List<Prescription> prescriptions = new ArrayList<Prescription>();
 
+        try {
+            String query =
+                    "SELECT " +
+                    "PolypointID, PatientPolypointID, DateCreated, State, CreatedByStaffGLN, Name, FirstName, Position, Description, Schedule, RouteOfAdministration " +
+                    "From MediPrep_Prescription " +
+                    "LEFT JOIN MediPrep_Staff " +
+                    "ON MediPrep_Staff.GLN = MediPrep_Prescription.CreatedByStaffGLN " +
+                    "WHERE PatientPolypointID = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, pid);
+            rs =  ps.executeQuery();
+
+            prescriptions = getPrescriptionFromResult(rs);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         return prescriptions;
+    }
+
+    private List<Prescription> getPrescriptionFromResult(ResultSet rs) throws SQLException {
+        List<Prescription> prescriptions = new ArrayList<Prescription>();
+        while (rs.next()) {
+            Prescription p = new Prescription();
+
+            p.setPolypointID(rs.getString(1));
+            p.setPatientPolypointID(rs.getString(2));
+            p.setDateCreated(rs.getDate(3).toLocalDate());
+            p.setCreatedByStaffGLN(rs.getString(4));
+            p.setName(rs.getString(5));
+            p.setFirstName(rs.getString(6));
+            p.setPosition(rs.getString(7));
+            p.setDescription(rs.getString(8));
+            p.setSchedule(rs.getString(9));
+            p.setRouteOfAdministration(rs.getString(10));
+
+            prescriptions.add(p);
+        }
+        return prescriptions;
+    }
+
+    private List<PreparedMedication> getPreparedMedicationsForPrescription(Prescription p) {
+        List<PreparedMedication> medications = new ArrayList<PreparedMedication>();
+
+        //All prescriptions where state is open, paused, doseChanged
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            String query =
+                    "SELECT GTIN, PrescriptionID,Dosage,DosageUnit FROM MediPrep_PrescriptionDefinesMedication " +
+                            "LEFT JOIN Product ON GTINprim = GTIN WHERE PrescriptionID = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, p.getPolypointID());
+            rs =  ps.executeQuery();
+
+            //TODO: Pattern für encapsulated Base Class (zuerst Basisklasse Medication nutzen und dann beim vorbereiten der Medis auf die erweiterte Klasse PreparedMedication wechseln)
+            medications = getMedicationFromResult(rs);
+
+            for (PreparedMedication preparedMedication : medications) {
+
+                query = "SELECT  FROM MediPrep_PrescriptionDefinesPreparedMedication ";
+
+
+            }
+
+            //TODO: Für jedes Medi schauen ob bereits gerichtete Medis vorhanden sind
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return medications;
+
+    }
+
+    private List<PreparedMedication> getMedicationFromResult(ResultSet rs) throws SQLException {
+        List<PreparedMedication> preparedMedications = new ArrayList<>();
+
+        while (rs.next()) {
+            PreparedMedication preparedMedication = new PreparedMedication();
+
+            preparedMedication.setGtin(rs.getString(1));
+            preparedMedication.setDosage(rs.getString(4));
+            preparedMedication.setApplicationScheme(rs.getString(5));
+            preparedMedication.setDosageUnit(rs.getString(6));
+
+            preparedMedications.add(preparedMedication);
+        }
+        return preparedMedications;
     }
 
     public List<Prescription> getPrescriptionsWithPreparedMedicationsForPatient(String pid) {
         List<Prescription> prescriptions = new ArrayList<Prescription>();
 
+        //All Prescriptions
         return prescriptions;
     }
 
