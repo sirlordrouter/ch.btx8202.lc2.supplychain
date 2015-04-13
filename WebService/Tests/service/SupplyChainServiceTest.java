@@ -124,6 +124,13 @@ public class SupplyChainServiceTest extends TestCase {
     }
 
     public void testGetPrescriptionsForPatient() throws Exception {
+        SupplyChainService service = new SupplyChainService();
+        List<Prescription> p = service.getPrescriptionsForPatient("1");
+
+        for (Prescription prescription : p) {
+            Assert.assertTrue(prescription.getMedications().size() == 2);
+        }
+
 
     }
 

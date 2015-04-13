@@ -1,10 +1,10 @@
 package ui;
 
-import entities.Patient;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import webservice.erp.Patient;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;

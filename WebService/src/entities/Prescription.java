@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class Prescription {
 
-    public static enum State {open, paused, stopped, doseChanged}
+    public static enum PrescriptionState {open, paused, stopped, doseChanged}
     private boolean isStandardMedic = true;
     private List<PreparedMedication> medications;
     private String PolypointID; //TODO: Replace Polypint in Name with InformationSystem

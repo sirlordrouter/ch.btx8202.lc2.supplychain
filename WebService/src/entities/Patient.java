@@ -19,10 +19,6 @@ import java.time.Period;
  */
 public class Patient {
 
-    public Patient() {
-
-    }
-
     public static enum Gender {male, female, undefined}
     public static enum BloodGroup {Apositive, Bpositive, AB, ZeroNegative, ZeroPositive}
 
@@ -31,13 +27,15 @@ public class Patient {
     private String firstname;
     private String lastname;
     private LocalDate birthDate;
-    private boolean reaState;
+    private boolean reaState = false;
     private int fid = -1;
     private String StationName;
     private String room;
     private Gender gender;
     private BloodGroup bloodGroup;
     public Image genderImage;
+
+    public Patient() {}
 
     public Patient(int pid, String beaconID, String firstname, String lastname, LocalDate birthDate, boolean reaState, int fid, String stationName, String room, Gender gender, BloodGroup bloodGroup) {
         this.pid = pid;
@@ -147,7 +145,6 @@ public class Patient {
     public void setStationName(String stationName) {
         StationName = stationName;
     }
-
 
     public BloodGroup getBloodGroup() {
         return bloodGroup;

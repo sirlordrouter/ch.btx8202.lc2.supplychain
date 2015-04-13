@@ -22,36 +22,86 @@ import java.time.LocalDateTime;
  */
 public class PreparedMedication extends Medication {
 
-    public static enum State {open, prepared, controlled, served}
+    public static enum MedicationState {open, prepared, controlled, served}
 
-    private StringProperty BatchLot;
-    private StringProperty Serial;
-    private StringProperty ExpiryDate;
-    private ObjectProperty<State> state = new SimpleObjectProperty<>();
+    private StringProperty BatchLot = new SimpleStringProperty();
+    private StringProperty Serial = new SimpleStringProperty();
+    private StringProperty ExpiryDate = new SimpleStringProperty();
+    private ObjectProperty<MedicationState> state = new SimpleObjectProperty<>(MedicationState.open);
     private ObjectProperty<Patient> forPatient = new SimpleObjectProperty<>();
     private ObjectProperty<Prescription> basedOnPrescription = new SimpleObjectProperty<>();
     private ObjectProperty<LocalDateTime> preparationTime = new SimpleObjectProperty<LocalDateTime>();
+    private StringProperty StaffGln = new SimpleStringProperty();
 
     private boolean isReserve = false;
 
-    public PreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, LocalDateTime preparationTime) {
-        super(gtin,name,description,dosage,dosageUnit,applicationScheme);
-    }
+    public PreparedMedication() {}
 
-    public PreparedMedication(String gtin, String name, String description, String dosage,
-                              String dosageUnit, String applicationScheme, LocalDateTime preparationTime, String batchLot, String serial, String expiryDate, Patient patient, Prescription prescription, boolean isReserve, State state) {
-        super(gtin,name,description,dosage,dosageUnit,applicationScheme);
-        this.BatchLot = new SimpleStringProperty(batchLot);
-        this.Serial = new SimpleStringProperty(serial);
-        this.ExpiryDate = new SimpleStringProperty(expiryDate);
-        this.forPatient.set(patient);
-        this.basedOnPrescription.set(prescription);
+    public PreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, String batchLot, String serial, String expiryDate, ObjectProperty<MedicationState> state, ObjectProperty<Patient> forPatient, ObjectProperty<Prescription> basedOnPrescription, ObjectProperty<LocalDateTime> preparationTime, boolean isReserve) {
+        super(gtin, name, description, dosage, dosageUnit, applicationScheme);
+        BatchLot.setValue(batchLot);
+        Serial.setValue(serial);
+        ExpiryDate.setValue(expiryDate);
+        this.state = state;
+        this.forPatient = forPatient;
+        this.basedOnPrescription = basedOnPrescription;
+        this.preparationTime = preparationTime;
         this.isReserve = isReserve;
-        this.state.set(state);
-        this.preparationTime.set(preparationTime);
     }
 
-    public ObjectProperty<Patient> getForPatient() {
+    public String getBatchLot() {
+        return BatchLot.get();
+    }
+
+    public StringProperty batchLotProperty() {
+        return BatchLot;
+    }
+
+    public void setBatchLot(String batchLot) {
+        this.BatchLot.set(batchLot);
+    }
+
+    public String getSerial() {
+        return Serial.get();
+    }
+
+    public StringProperty serialProperty() {
+        return Serial;
+    }
+
+    public void setSerial(String serial) {
+        this.Serial.set(serial);
+    }
+
+    public String getExpiryDate() {
+        return ExpiryDate.get();
+    }
+
+    public StringProperty expiryDateProperty() {
+        return ExpiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.ExpiryDate.set(expiryDate);
+    }
+
+    public MedicationState getState() {
+        return state.get();
+    }
+
+    public ObjectProperty<MedicationState> stateProperty() {
+        return state;
+    }
+
+    public void setState(MedicationState medicationState) {
+        this.state.set(medicationState);
+    }
+
+    public Patient getForPatient() {
+        return forPatient.get();
+    }
+
+    public ObjectProperty<Patient> forPatientProperty() {
         return forPatient;
     }
 
@@ -59,7 +109,11 @@ public class PreparedMedication extends Medication {
         this.forPatient.set(forPatient);
     }
 
-    public ObjectProperty<Prescription> getBasedOnPrescription() {
+    public Prescription getBasedOnPrescription() {
+        return basedOnPrescription.get();
+    }
+
+    public ObjectProperty<Prescription> basedOnPrescriptionProperty() {
         return basedOnPrescription;
     }
 
@@ -67,44 +121,8 @@ public class PreparedMedication extends Medication {
         this.basedOnPrescription.set(basedOnPrescription);
     }
 
-    public StringProperty getBatchLot() {
-        return BatchLot;
-    }
-
-    public void setBatchLot(String batchLot) {
-        BatchLot.set(batchLot);
-    }
-
-    public StringProperty getSerial() {
-        return Serial;
-    }
-
-    public void setSerial(String serial) {
-        Serial.set(serial);
-    }
-
-    public StringProperty getExpiryDate() {
-        return ExpiryDate;
-    }
-
-    public void setExpiryDate(String expiryDate) {
-        ExpiryDate.set(expiryDate);
-    }
-
-    public ObjectProperty<State> getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state.set(state);
-    }
-
-    public boolean isReserve() {
-        return isReserve;
-    }
-
-    public void setReserve(boolean isReserve) {
-        this.isReserve = isReserve;
+    public LocalDateTime getPreparationTime() {
+        return preparationTime.get();
     }
 
     public ObjectProperty<LocalDateTime> preparationTimeProperty() {
@@ -113,5 +131,25 @@ public class PreparedMedication extends Medication {
 
     public void setPreparationTime(LocalDateTime preparationTime) {
         this.preparationTime.set(preparationTime);
+    }
+
+    public boolean isReserve() {
+        return isReserve;
+    }
+
+    public void setIsReserve(boolean isReserve) {
+        this.isReserve = isReserve;
+    }
+
+    public String getStaffGln() {
+        return StaffGln.get();
+    }
+
+    public StringProperty staffGlnProperty() {
+        return StaffGln;
+    }
+
+    public void setStaffGln(String staffGln) {
+        this.StaffGln.set(staffGln);
     }
 }

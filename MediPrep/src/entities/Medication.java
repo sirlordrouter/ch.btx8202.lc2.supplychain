@@ -17,21 +17,21 @@ import javafx.beans.property.StringProperty;
  */
 public class Medication {
 
-    private StringProperty gtin;
-    private StringProperty Name;
-    private StringProperty Description;
-    private StringProperty Dosage;
-    private StringProperty DosageUnit;
-    private StringProperty ApplicationScheme;
+    private StringProperty gtin = new SimpleStringProperty();
+    private StringProperty Name = new SimpleStringProperty();
+    private StringProperty Description = new SimpleStringProperty();
+    private StringProperty Dosage = new SimpleStringProperty();
+    private StringProperty DosageUnit = new SimpleStringProperty();
+    private StringProperty ApplicationScheme = new SimpleStringProperty();
 
 
     public Medication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme) {
-        this.gtin = new SimpleStringProperty(gtin);
-        this.Name = new SimpleStringProperty(name);
-        this.Description = new SimpleStringProperty(description);
-        this.Dosage = new SimpleStringProperty(dosage);
-        this.DosageUnit = new SimpleStringProperty(dosageUnit);
-        this.ApplicationScheme = new SimpleStringProperty(applicationScheme);
+        this.gtin.setValue(gtin);
+        this.Name.setValue(name);
+        this.Description.setValue(description);
+        this.Dosage.setValue(dosage);
+        this.DosageUnit.setValue(dosageUnit);
+        this.ApplicationScheme.setValue(applicationScheme);
     }
 
     public Medication() {
@@ -51,7 +51,7 @@ public class Medication {
     }
 
     public void setName(String name) {
-        Name = new SimpleStringProperty(name);
+        Name.setValue(name);
     }
 
     public StringProperty getDescription() {

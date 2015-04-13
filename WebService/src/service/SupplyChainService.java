@@ -5,6 +5,7 @@ import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.intellij.lang.annotations.Language;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
@@ -12,6 +13,9 @@ import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -183,7 +187,7 @@ public class SupplyChainService {
         }
 
 
-        //State 2: Arrived
+        //MedicationState 2: Arrived
         insertTrackingItems(items, gln, 2);
         return new WebServiceResult(removedItems,true);
     }
@@ -1167,6 +1171,7 @@ public class SupplyChainService {
      * A list of all Station available for the Hospital.
      * @return a Collection of Stations
      */
+    @WebMethod
     public List<Station> getStations() {
         List<Station> stations = null;
 
@@ -1177,6 +1182,7 @@ public class SupplyChainService {
      * A list of all Patients for the Hospital
      * @return a Collection of Patients
      */
+    @WebMethod
     public List<Patient> getPatients() {
         List<Patient> patients = null;
         ResultSet rs;
@@ -1246,7 +1252,8 @@ public class SupplyChainService {
      * Returns the Patient for given UUID
      * @return a  Patient
      */
-    public Patient getPatientByUUID(UUID uuid) {
+    @WebMethod
+    public Patient getPatientByMinorId(String minorid) {
         List<Patient> patients = null;
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
@@ -1254,7 +1261,7 @@ public class SupplyChainService {
         try {
             String query = "SELECT PolyPointPID,UUID,Name, FirstName,Birthdate,Gender,Station From MediPrep_Patients WHERE UUID = ?";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, uuid.toString());
+            ps.setString(1, minorid);
             rs =  ps.executeQuery();
 
             patients = getPatientsFromResult(rs);
@@ -1271,13 +1278,19 @@ public class SupplyChainService {
         }
 
         if( patients.size() > 2 || patients.size() == 0) {
-            System.out.println("There have been more than one patient with UUID " + uuid);
+            System.out.println("There have been more than one patient with UUID " + minorid);
             return null;
         } else {
             return patients.get(0);
         }
     }
 
+    @WebMethod
+    public Patient getPatientByPid(String pid) {
+        return null;
+    }
+
+    @WebMethod
     public List<Prescription> getPrescriptionsForPatient(String pid) {
 
         //All prescriptions where state is open, paused, doseChanged
@@ -1288,14 +1301,14 @@ public class SupplyChainService {
 
         try {
             String query =
-                    "SELECT " +
-                    "PolypointID, PatientPolypointID, DateCreated, State, CreatedByStaffGLN, Name, FirstName, Position, Description, Schedule, RouteOfAdministration " +
-                    "From MediPrep_Prescription " +
-                    "LEFT JOIN MediPrep_Staff " +
-                    "ON MediPrep_Staff.GLN = MediPrep_Prescription.CreatedByStaffGLN " +
+                    "SELECT p.PolypointID, PatientPolypointID, DateCreated, State, CreatedByStaffGLN, \n" +
+                        "Name, FirstName, Position, Description, Schedule, RouteOfAdministration " +
+                    "FROM MediPrep_Prescription p \n" +
+                    "LEFT JOIN MediPrep_Staff  s\n" +
+                        "ON s.GLN = p.CreatedByStaffGLN  \n" +
                     "WHERE PatientPolypointID = ?";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, pid);
+            ps.setInt(1, Integer.parseInt(pid));
             rs =  ps.executeQuery();
 
             prescriptions = getPrescriptionFromResult(rs);
@@ -1330,6 +1343,7 @@ public class SupplyChainService {
             p.setDescription(rs.getString(8));
             p.setSchedule(rs.getString(9));
             p.setRouteOfAdministration(rs.getString(10));
+            p.setMedications(getPreparedMedicationsForPrescription(p));
 
             prescriptions.add(p);
         }
@@ -1345,24 +1359,34 @@ public class SupplyChainService {
 
         try {
             String query =
-                    "SELECT GTIN, PrescriptionID,Dosage,DosageUnit FROM MediPrep_PrescriptionDefinesMedication " +
-                            "LEFT JOIN Product ON GTINprim = GTIN WHERE PrescriptionID = ?";
+                    "SELECT\n" +
+                            "  GTIN,\n" +
+                            "  Name,\n" +
+                            "  Pharmacode,\n" +
+                            "  PrescriptionID,\n" +
+                            "  Dosage,\n" +
+                            "  DosageUnit,\n" +
+                            "  State,\n" +
+                            "  TimePrepared,\n" +
+                            "  sp.GTINSek,\n" +
+                            "  sp.SerialNr,\n" +
+                            "  sp.ExpiryDate,\n" +
+                            "  sp.BatchLot,\n" +
+                            "  StaffGLN\n" +
+                            "FROM MediPrep_PrescriptionDefinesMedication pdm\n" +
+                            "LEFT JOIN Product p\n" +
+                            "  ON GTINprim = GTIN\n" +
+                            "Left JOIN MediPrep_PreparedMedication pm\n" +
+                            " ON pm.UID = pdm.PreparedMedicationUID\n" +
+                            "Left JOIN SecondaryPackage sp\n" +
+                            " ON sp.GTINsek = pm.GTINSek AND sp.SerialNr = pm.SerialNr AND sp.ExpiryDate = pm.ExpiryDate\n" +
+                            "WHERE PrescriptionID = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, p.getPolypointID());
             rs =  ps.executeQuery();
 
-            //TODO: Pattern für encapsulated Base Class (zuerst Basisklasse Medication nutzen und dann beim vorbereiten der Medis auf die erweiterte Klasse PreparedMedication wechseln)
+            //TODO: Pattern für encapsulated Base Class (zuerst Basisklasse Medication nutzen und dann beim vorbereiten der Medis auf die erweiterte Klasse PreparedMedication wechseln) => nur falls sinnvoll
             medications = getMedicationFromResult(rs);
-
-            for (PreparedMedication preparedMedication : medications) {
-
-                query = "SELECT  FROM MediPrep_PrescriptionDefinesPreparedMedication ";
-
-
-            }
-
-            //TODO: Für jedes Medi schauen ob bereits gerichtete Medis vorhanden sind
-
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1386,22 +1410,70 @@ public class SupplyChainService {
             PreparedMedication preparedMedication = new PreparedMedication();
 
             preparedMedication.setGtin(rs.getString(1));
-            preparedMedication.setDosage(rs.getString(4));
-            preparedMedication.setApplicationScheme(rs.getString(5));
-            preparedMedication.setDosageUnit(rs.getString(6));
+            preparedMedication.setName(rs.getString(2));
+            preparedMedication.setDosage(rs.getString(3));
+            preparedMedication.setApplicationScheme("??");
+            preparedMedication.setDosageUnit(rs.getString(4));
+
+            LocalDate localDate = this.getDateValue(rs,8);
+            if (localDate != null) {
+                LocalDateTime localDateTime = localDate.atTime(this.getTimeValue(rs, 8));
+                preparedMedication.setPreparationTime(localDateTime);
+            }
+
+            preparedMedication.setSerial(rs.getString(10));
+            preparedMedication.setExpiryDate(rs.getString(11));
+            preparedMedication.setBatchLot(rs.getString(12));
+            preparedMedication.setStaffGln(rs.getString(13));
 
             preparedMedications.add(preparedMedication);
         }
         return preparedMedications;
     }
 
+    private String getStringValue(ResultSet rs, int index) throws SQLException {
+        String col = rs.getString(index);
+        if (rs.wasNull()) {
+            return "";
+        } else {
+            return col;
+        }
+    }
+
+    private LocalDate getDateValue(ResultSet rs, int index) throws SQLException {
+        Date col = rs.getDate(index);
+        if (rs.wasNull()) {
+            return null;
+        } else {
+            return col.toLocalDate();
+        }
+    }
+
+    private LocalTime getTimeValue(ResultSet rs, int index) throws SQLException {
+        Time col = rs.getTime(index);
+        if (rs.wasNull()) {
+            return null;
+        } else {
+            return col.toLocalTime();
+        }
+    }
+
+
+    @WebMethod
     public List<Prescription> getPrescriptionsWithPreparedMedicationsForPatient(String pid) {
         List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+        //Alle prescriptions wo schedule für aktuelle Zeit => join mit allen vorbereiteneten und produkt columns nötig für matchen
+        //für jede prescriptions
+        //Fall 1: ein medi: scanned code als gtin eines scanned items mit gtin vergleichen, falls nicht => ev. fall 2
+        //Fall 2: x-Medis: code als prescription id behandlen und schauen ob vorhanden
+
 
         //All Prescriptions
         return prescriptions;
     }
 
+    @WebMethod
     public boolean savePreparedMedications(List<PreparedMedication> preparedMedications) {
         boolean wasSuccessful = false;
 
@@ -1409,11 +1481,24 @@ public class SupplyChainService {
         return wasSuccessful;
     }
 
+    public boolean updatePreparedMedications(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState medicationState) {
+        return false;
+    }
+
+    public boolean updatePrescriptions(List<Prescription> prescriptions, Prescription.PrescriptionState prescriptionState) {
+        return false;
+    }
+
+    @WebMethod
     public List<PreparedMedication> getPreparedMedicationsForPatient(String pid) {
 
         List<PreparedMedication> preparedMedications = new ArrayList<PreparedMedication>();
 
         return preparedMedications;
+    }
+
+    public String getDosetForPatient(String pid) {
+        return "";
     }
 
 

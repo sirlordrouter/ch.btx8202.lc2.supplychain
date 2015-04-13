@@ -1,8 +1,6 @@
 package ui;
 
 import datalayer.FakeDataRepository;
-import entities.Patient;
-import entities.PreparedMedication;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import services.PropertiesReader;
+import webservice.erp.Patient;
+import webservice.erp.PreparedMedication;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

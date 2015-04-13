@@ -4,7 +4,6 @@ import javafx.scene.image.Image;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.UUID;
 
 /**
  * Bern University of Applied Sciences<br>
@@ -20,19 +19,15 @@ import java.util.UUID;
  */
 public class Patient {
 
-    public Patient() {
-
-    }
-
     public static enum Gender {male, female, undefined}
     public static enum BloodGroup {Apositive, Bpositive, AB, ZeroNegative, ZeroPositive}
 
     private int pid = -1;
-    private UUID beaconID = null;
+    private String beaconID = null;
     private String firstname;
     private String lastname;
     private LocalDate birthDate;
-    private boolean reaState;
+    private boolean reaState = false;
     private int fid = -1;
     private String StationName;
     private String room;
@@ -40,7 +35,9 @@ public class Patient {
     private BloodGroup bloodGroup;
     public Image genderImage;
 
-    public Patient(int pid, UUID beaconID, String firstname, String lastname, LocalDate birthDate, boolean reaState, int fid, String stationName, String room, Gender gender, BloodGroup bloodGroup) {
+    public Patient() {}
+
+    public Patient(int pid, String beaconID, String firstname, String lastname, LocalDate birthDate, boolean reaState, int fid, String stationName, String room, Gender gender, BloodGroup bloodGroup) {
         this.pid = pid;
         this.beaconID = beaconID;
         this.firstname = firstname;
@@ -70,11 +67,11 @@ public class Patient {
         this.pid = pid;
     }
 
-    public UUID getBeaconID() {
+    public String getBeaconID() {
         return beaconID;
     }
 
-    public void setBeaconID(UUID beaconID) {
+    public void setBeaconID(String beaconID) {
         this.beaconID = beaconID;
     }
 
@@ -148,7 +145,6 @@ public class Patient {
     public void setStationName(String stationName) {
         StationName = stationName;
     }
-
 
     public BloodGroup getBloodGroup() {
         return bloodGroup;
