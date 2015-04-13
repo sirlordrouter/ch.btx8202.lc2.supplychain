@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 26.03.2015
  */
-public class PreparedMedication extends Medication {
+public class TrspPreparedMedication extends TransportItemMedication {
 
     public static enum MedicationState {open, prepared, controlled, served}
 
@@ -35,9 +35,9 @@ public class PreparedMedication extends Medication {
 
     private boolean isReserve = false;
 
-    public PreparedMedication() {}
+    public TrspPreparedMedication() {}
 
-    public PreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, String batchLot, String serial, String expiryDate, ObjectProperty<MedicationState> state, ObjectProperty<Patient> forPatient, ObjectProperty<Prescription> basedOnPrescription, ObjectProperty<LocalDateTime> preparationTime, boolean isReserve) {
+    public TrspPreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, String batchLot, String serial, String expiryDate, ObjectProperty<MedicationState> state, ObjectProperty<Patient> forPatient, ObjectProperty<Prescription> basedOnPrescription, ObjectProperty<LocalDateTime> preparationTime, boolean isReserve) {
         super(gtin, name, description, dosage, dosageUnit, applicationScheme);
         BatchLot.setValue(batchLot);
         Serial.setValue(serial);

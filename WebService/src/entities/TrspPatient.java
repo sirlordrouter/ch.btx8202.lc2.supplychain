@@ -11,13 +11,13 @@ import java.time.Period;
  * Module <br>
  *
  *<p>
- * Describes a Patient Object with necessary information to display in MediPrep.
+ * Describes a TrspPatient Object with necessary information to display in MediPrep.
  *</p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 26.03.2015
  */
-public class Patient {
+public class TrspPatient {
 
     public static enum Gender {male, female, undefined}
     public static enum BloodGroup {Apositive, Bpositive, AB, ZeroNegative, ZeroPositive}
@@ -35,9 +35,9 @@ public class Patient {
     private BloodGroup bloodGroup;
     public Image genderImage;
 
-    public Patient() {}
+    public TrspPatient() {}
 
-    public Patient(int pid, String beaconID, String firstname, String lastname, LocalDate birthDate, boolean reaState, int fid, String stationName, String room, Gender gender, BloodGroup bloodGroup) {
+    public TrspPatient(int pid, String beaconID, String firstname, String lastname, LocalDate birthDate, boolean reaState, int fid, String stationName, String room, Gender gender, BloodGroup bloodGroup) {
         this.pid = pid;
         this.beaconID = beaconID;
         this.firstname = firstname;

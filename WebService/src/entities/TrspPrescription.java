@@ -9,17 +9,17 @@ import java.util.List;
  * Module Bachelorthesis<br>
  *
  *<p>
- * Describes a Prescription with 1 or more medications defined.
+ * Describes a TrspPrescription with 1 or more medications defined.
  *</p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 26.03.2015
  */
-public class Prescription {
+public class TrspPrescription {
 
     public static enum PrescriptionState {open, paused, stopped, doseChanged}
     private boolean isStandardMedic = true;
-    private List<PreparedMedication> medications;
+    private List<TrspPreparedMedication> medications;
     private String PolypointID; //TODO: Replace Polypint in Name with InformationSystem
     private String PatientPolypointID;//TODO: Replace Polypint in Name with InformationSystem
     private LocalDate DateCreated;
@@ -31,9 +31,9 @@ public class Prescription {
     private String Schedule;
     private String RouteOfAdministration;
 
-    public Prescription() {}
+    public TrspPrescription() {}
 
-    public Prescription(boolean isStandardMedic, List<PreparedMedication> medications, String polypointID, String patientPolypointID, LocalDate dateCreated, String createdByStaffGLN, String name, String firstName, String position, String description, String schedule, String routeOfAdministration) {
+    public TrspPrescription(boolean isStandardMedic, List<TrspPreparedMedication> medications, String polypointID, String patientPolypointID, LocalDate dateCreated, String createdByStaffGLN, String name, String firstName, String position, String description, String schedule, String routeOfAdministration) {
         this.isStandardMedic = isStandardMedic;
         this.medications = medications;
         PolypointID = polypointID;
@@ -56,11 +56,11 @@ public class Prescription {
         this.isStandardMedic = isStandardMedic;
     }
 
-    public List<PreparedMedication> getMedications() {
+    public List<TrspPreparedMedication> getMedications() {
         return medications;
     }
 
-    public void setMedications(List<PreparedMedication> medications) {
+    public void setMedications(List<TrspPreparedMedication> medications) {
         this.medications = medications;
     }
 
