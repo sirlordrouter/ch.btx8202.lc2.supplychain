@@ -1,9 +1,9 @@
 package entities;
 
-import javafx.scene.image.Image;
+import service.LocalDateAdapter;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
-import java.time.Period;
 
 /**
  * Bern University of Applied Sciences<br>
@@ -33,7 +33,6 @@ public class TrspPatient {
     private String room;
     private Gender gender;
     private BloodGroup bloodGroup;
-    public Image genderImage;
 
     public TrspPatient() {}
 
@@ -49,14 +48,6 @@ public class TrspPatient {
         this.gender = gender;
         this.StationName = stationName;
         this.bloodGroup = bloodGroup;
-
-        if (this.gender == Gender.female) {
-            this.genderImage = new Image("resources/image/woman139.png");
-        } else if(this.gender == Gender.male) {
-            this.genderImage = new Image("resources/image/user194.png");
-        } else {
-            this.genderImage = null;
-        }
     }
 
     public int getPid() {
@@ -91,15 +82,9 @@ public class TrspPatient {
         this.lastname = lastname;
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getBirthDate() {
         return birthDate;
-    }
-
-    public int getAge() {
-        LocalDate today = LocalDate.now();
-        LocalDate birthday = this.getBirthDate();
-        Period p = Period.between(birthday, today);
-        return p.getYears();
     }
 
     public void setBirthDate(LocalDate birthDate) {
@@ -154,9 +139,6 @@ public class TrspPatient {
         this.bloodGroup = bloodGroup;
     }
 
-    public Image getGenderImage() {
-        return genderImage;
-    }
 
 
 }

@@ -1,5 +1,8 @@
 package entities;
 
+import service.LocalDateAdapter;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -80,6 +83,7 @@ public class TrspPrescription {
         PatientPolypointID = patientPolypointID;
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getDateCreated() {
         return DateCreated;
     }

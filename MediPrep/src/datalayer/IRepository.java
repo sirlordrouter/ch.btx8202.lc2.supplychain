@@ -14,7 +14,7 @@ public interface IRepository {
 
     public List<Patient> getPatients();
     public List<String> getStations();
-    public List<String> getStuff();
+    public List<String> getStaff();
     public List<PreparedMedication> getMedications();
     public List<Prescription> getPrescriptions(Patient patient);
     public boolean UpdatePreperationState(Prescription prescription, Medication medication, Patient patient);

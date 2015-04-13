@@ -112,10 +112,10 @@ public class SupplyChainServiceTest extends TestCase {
 
     public void testGetPatients() throws Exception {
         SupplyChainService service = new SupplyChainService();
-        List<Patient> patients = service.getPatients();
+        List<TrspPatient> trspPatients = service.getPatients();
 
-        Assert.assertNotNull(patients);
-        Assert.assertTrue(patients.size() >= 2);
+        Assert.assertNotNull(trspPatients);
+        Assert.assertTrue(trspPatients.size() >= 2);
 
     }
 
@@ -125,13 +125,11 @@ public class SupplyChainServiceTest extends TestCase {
 
     public void testGetPrescriptionsForPatient() throws Exception {
         SupplyChainService service = new SupplyChainService();
-        List<Prescription> p = service.getPrescriptionsForPatient("1");
+        List<TrspPrescription> p = service.getPrescriptionsForPatient("1");
 
-        for (Prescription prescription : p) {
-            Assert.assertTrue(prescription.getMedications().size() == 2);
+        for (TrspPrescription trspPrescription : p) {
+            Assert.assertTrue(trspPrescription.getMedications().size() == 2);
         }
-
-
     }
 
     public void testGetPrescriptionsWithPreparedMedicationsForPatient() throws Exception {

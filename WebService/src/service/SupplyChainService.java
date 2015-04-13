@@ -1183,8 +1183,8 @@ public class SupplyChainService {
      * @return a Collection of Patients
      */
     @WebMethod
-    public List<Patient> getPatients() {
-        List<Patient> patients = null;
+    public List<TrspPatient> getPatients() {
+        List<TrspPatient> trspPatients = null;
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
 
@@ -1193,7 +1193,7 @@ public class SupplyChainService {
             PreparedStatement ps = connection.prepareStatement(query);
             rs =  ps.executeQuery();
 
-            patients = getPatientsFromResult(rs);
+            trspPatients = getPatientsFromResult(rs);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1206,15 +1206,15 @@ public class SupplyChainService {
             }
         }
 
-        return patients;
+        return trspPatients;
     }
 
-    private List<Patient> getPatientsFromResult(ResultSet rs) throws SQLException {
+    private List<TrspPatient> getPatientsFromResult(ResultSet rs) throws SQLException {
         int index = 1;
-        List<Patient> patients = new ArrayList<>();
+        List<TrspPatient> trspPatients = new ArrayList<>();
 
         while (rs.next()) {
-            Patient p = new Patient();
+            TrspPatient p = new TrspPatient();
             p.setPid(rs.getInt(1));
             p.setBeaconID(rs.getString(2));
             p.setLastname(rs.getString(3));
@@ -1224,37 +1224,37 @@ public class SupplyChainService {
             String gender = rs.getString(6);
             switch (gender) {
                 case "m":
-                    p.setGender(Patient.Gender.male);
+                    p.setGender(TrspPatient.Gender.male);
                     break;
                 case "f":
-                    p.setGender(Patient.Gender.female);
+                    p.setGender(TrspPatient.Gender.female);
                     break;
                 default:
-                    p.setGender(Patient.Gender.undefined);
+                    p.setGender(TrspPatient.Gender.undefined);
             }
             p.setStationName(rs.getString(7));
 
             /* Fake other items not in db*/
             p.setRoom("Zi 20" + index);
             p.setFid(index);
-            p.setBloodGroup(Patient.BloodGroup.Apositive);
+            p.setBloodGroup(TrspPatient.BloodGroup.Apositive);
             p.setReaState(false);
 
             index++;
 
-            patients.add(p);
+            trspPatients.add(p);
         }
 
-        return patients;
+        return trspPatients;
     }
 
     /**
-     * Returns the Patient for given UUID
-     * @return a  Patient
+     * Returns the TrspPatient for given UUID
+     * @return a  TrspPatient
      */
     @WebMethod
-    public Patient getPatientByMinorId(String minorid) {
-        List<Patient> patients = null;
+    public TrspPatient getPatientByMinorId(String minorid) {
+        List<TrspPatient> trspPatients = null;
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
 
@@ -1264,7 +1264,7 @@ public class SupplyChainService {
             ps.setString(1, minorid);
             rs =  ps.executeQuery();
 
-            patients = getPatientsFromResult(rs);
+            trspPatients = getPatientsFromResult(rs);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1277,27 +1277,27 @@ public class SupplyChainService {
             }
         }
 
-        if( patients.size() > 2 || patients.size() == 0) {
+        if( trspPatients.size() > 2 || trspPatients.size() == 0) {
             System.out.println("There have been more than one patient with UUID " + minorid);
             return null;
         } else {
-            return patients.get(0);
+            return trspPatients.get(0);
         }
     }
 
     @WebMethod
-    public Patient getPatientByPid(String pid) {
+    public TrspPatient getPatientByPid(String pid) {
         return null;
     }
 
     @WebMethod
-    public List<Prescription> getPrescriptionsForPatient(String pid) {
+    public List<TrspPrescription> getPrescriptionsForPatient(String pid) {
 
-        //All prescriptions where state is open, paused, doseChanged
+        //All trspPrescriptions where state is open, paused, doseChanged
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
 
-        List<Prescription> prescriptions = new ArrayList<Prescription>();
+        List<TrspPrescription> trspPrescriptions = new ArrayList<TrspPrescription>();
 
         try {
             String query =
@@ -1311,7 +1311,7 @@ public class SupplyChainService {
             ps.setInt(1, Integer.parseInt(pid));
             rs =  ps.executeQuery();
 
-            prescriptions = getPrescriptionFromResult(rs);
+            trspPrescriptions = getPrescriptionFromResult(rs);
 
 
         } catch (SQLException e) {
@@ -1325,13 +1325,13 @@ public class SupplyChainService {
             }
         }
 
-        return prescriptions;
+        return trspPrescriptions;
     }
 
-    private List<Prescription> getPrescriptionFromResult(ResultSet rs) throws SQLException {
-        List<Prescription> prescriptions = new ArrayList<Prescription>();
+    private List<TrspPrescription> getPrescriptionFromResult(ResultSet rs) throws SQLException {
+        List<TrspPrescription> trspPrescriptions = new ArrayList<TrspPrescription>();
         while (rs.next()) {
-            Prescription p = new Prescription();
+            TrspPrescription p = new TrspPrescription();
 
             p.setPolypointID(rs.getString(1));
             p.setPatientPolypointID(rs.getString(2));
@@ -1345,13 +1345,13 @@ public class SupplyChainService {
             p.setRouteOfAdministration(rs.getString(10));
             p.setMedications(getPreparedMedicationsForPrescription(p));
 
-            prescriptions.add(p);
+            trspPrescriptions.add(p);
         }
-        return prescriptions;
+        return trspPrescriptions;
     }
 
-    private List<PreparedMedication> getPreparedMedicationsForPrescription(Prescription p) {
-        List<PreparedMedication> medications = new ArrayList<PreparedMedication>();
+    private List<TrspPreparedMedication> getPreparedMedicationsForPrescription(TrspPrescription p) {
+        List<TrspPreparedMedication> medications = new ArrayList<TrspPreparedMedication>();
 
         //All prescriptions where state is open, paused, doseChanged
         ResultSet rs;
@@ -1385,7 +1385,7 @@ public class SupplyChainService {
             ps.setString(1, p.getPolypointID());
             rs =  ps.executeQuery();
 
-            //TODO: Pattern für encapsulated Base Class (zuerst Basisklasse Medication nutzen und dann beim vorbereiten der Medis auf die erweiterte Klasse PreparedMedication wechseln) => nur falls sinnvoll
+            //TODO: Pattern für encapsulated Base Class (zuerst Basisklasse TrspMedication nutzen und dann beim vorbereiten der Medis auf die erweiterte Klasse TrspPreparedMedication wechseln) => nur falls sinnvoll
             medications = getMedicationFromResult(rs);
 
         } catch (SQLException e) {
@@ -1403,32 +1403,32 @@ public class SupplyChainService {
 
     }
 
-    private List<PreparedMedication> getMedicationFromResult(ResultSet rs) throws SQLException {
-        List<PreparedMedication> preparedMedications = new ArrayList<>();
+    private List<TrspPreparedMedication> getMedicationFromResult(ResultSet rs) throws SQLException {
+        List<TrspPreparedMedication> trspPreparedMedications = new ArrayList<>();
 
         while (rs.next()) {
-            PreparedMedication preparedMedication = new PreparedMedication();
+            TrspPreparedMedication trspPreparedMedication = new TrspPreparedMedication();
 
-            preparedMedication.setGtin(rs.getString(1));
-            preparedMedication.setName(rs.getString(2));
-            preparedMedication.setDosage(rs.getString(3));
-            preparedMedication.setApplicationScheme("??");
-            preparedMedication.setDosageUnit(rs.getString(4));
+            trspPreparedMedication.setGtin(rs.getString(1));
+            trspPreparedMedication.setName(rs.getString(2));
+            trspPreparedMedication.setDosage(rs.getString(3));
+            trspPreparedMedication.setApplicationScheme("??");
+            trspPreparedMedication.setDosageUnit(rs.getString(4));
 
             LocalDate localDate = this.getDateValue(rs,8);
             if (localDate != null) {
                 LocalDateTime localDateTime = localDate.atTime(this.getTimeValue(rs, 8));
-                preparedMedication.setPreparationTime(localDateTime);
+                trspPreparedMedication.setPreparationTime(localDateTime);
             }
 
-            preparedMedication.setSerial(rs.getString(10));
-            preparedMedication.setExpiryDate(rs.getString(11));
-            preparedMedication.setBatchLot(rs.getString(12));
-            preparedMedication.setStaffGln(rs.getString(13));
+            trspPreparedMedication.setSerial(rs.getString(10));
+            trspPreparedMedication.setExpiryDate(rs.getString(11));
+            trspPreparedMedication.setBatchLot(rs.getString(12));
+            trspPreparedMedication.setStaffGln(rs.getString(13));
 
-            preparedMedications.add(preparedMedication);
+            trspPreparedMedications.add(trspPreparedMedication);
         }
-        return preparedMedications;
+        return trspPreparedMedications;
     }
 
     private String getStringValue(ResultSet rs, int index) throws SQLException {
@@ -1460,41 +1460,41 @@ public class SupplyChainService {
 
 
     @WebMethod
-    public List<Prescription> getPrescriptionsWithPreparedMedicationsForPatient(String pid) {
-        List<Prescription> prescriptions = new ArrayList<Prescription>();
+    public List<TrspPrescription> getPrescriptionsWithPreparedMedicationsForPatient(String pid) {
+        List<TrspPrescription> trspPrescriptions = new ArrayList<TrspPrescription>();
 
-        //Alle prescriptions wo schedule für aktuelle Zeit => join mit allen vorbereiteneten und produkt columns nötig für matchen
-        //für jede prescriptions
+        //Alle trspPrescriptions wo schedule für aktuelle Zeit => join mit allen vorbereiteneten und produkt columns nötig für matchen
+        //für jede trspPrescriptions
         //Fall 1: ein medi: scanned code als gtin eines scanned items mit gtin vergleichen, falls nicht => ev. fall 2
         //Fall 2: x-Medis: code als prescription id behandlen und schauen ob vorhanden
 
 
         //All Prescriptions
-        return prescriptions;
+        return trspPrescriptions;
     }
 
     @WebMethod
-    public boolean savePreparedMedications(List<PreparedMedication> preparedMedications) {
+    public boolean savePreparedMedications(List<TrspPreparedMedication> trspPreparedMedications) {
         boolean wasSuccessful = false;
 
 
         return wasSuccessful;
     }
 
-    public boolean updatePreparedMedications(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState medicationState) {
+    public boolean updatePreparedMedications(List<TrspPreparedMedication> trspPreparedMedications, TrspPreparedMedication.MedicationState medicationState) {
         return false;
     }
 
-    public boolean updatePrescriptions(List<Prescription> prescriptions, Prescription.PrescriptionState prescriptionState) {
+    public boolean updatePrescriptions(List<TrspPrescription> trspPrescriptions, TrspPrescription.PrescriptionState prescriptionState) {
         return false;
     }
 
     @WebMethod
-    public List<PreparedMedication> getPreparedMedicationsForPatient(String pid) {
+    public List<TrspPreparedMedication> getPreparedMedicationsForPatient(String pid) {
 
-        List<PreparedMedication> preparedMedications = new ArrayList<PreparedMedication>();
+        List<TrspPreparedMedication> trspPreparedMedications = new ArrayList<TrspPreparedMedication>();
 
-        return preparedMedications;
+        return trspPreparedMedications;
     }
 
     public String getDosetForPatient(String pid) {

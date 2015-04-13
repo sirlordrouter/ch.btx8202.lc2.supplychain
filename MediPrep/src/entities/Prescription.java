@@ -143,4 +143,13 @@ public class Prescription {
     public void setRouteOfAdministration(String routeOfAdministration) {
         RouteOfAdministration = routeOfAdministration;
     }
+
+    public boolean doAllMedicationsHave(PreparedMedication.MedicationState state) {
+        for (PreparedMedication medication : medications) {
+            if (medication.getState() != state ) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

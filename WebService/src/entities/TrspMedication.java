@@ -6,7 +6,7 @@ package entities;
  * Module Bachelorthesis <br>
  *
  *<p>
- * Describes a TrspMedication from a Prescription with Identification and Application information.
+ * Describes a TrspMedication from a TrspPrescription with Identification and Application information.
  *</p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch

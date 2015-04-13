@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="343.0" prefWidth="514.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="387.0" layoutY="255.0" mnemonicParsing="false" onAction="#save" prefHeight="38.0" prefWidth="94.0" text="OK" />
+      <Button layoutX="292.0" layoutY="255.0" mnemonicParsing="false" onAction="#cancel" prefHeight="38.0" prefWidth="83.0" text="Abbrechen" />
+      <Label alignment="CENTER_RIGHT" layoutX="34.0" layoutY="93.0" prefHeight="16.0" prefWidth="72.0" text="GTIN">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER_RIGHT" layoutX="24.0" layoutY="131.0" prefHeight="16.0" prefWidth="83.0" text="Ablaufdatum" />
+      <Label alignment="CENTER_RIGHT" layoutX="33.0" layoutY="169.0" text="Lot / Charge" />
+      <Label alignment="CENTER_RIGHT" layoutX="53.0" layoutY="206.0" text="Seriennr." />
+      <TextField fx:id="txtGtin" layoutX="112.0" layoutY="89.0" prefHeight="26.0" prefWidth="208.0" />
+      <TextField fx:id="txtExpiryDate" layoutX="112.0" layoutY="126.0" prefHeight="26.0" prefWidth="208.0" />
+      <TextField fx:id="txtLot" layoutX="112.0" layoutY="164.0" prefHeight="26.0" prefWidth="208.0" />
+      <TextField fx:id="txtSerial" layoutX="112.0" layoutY="201.0" prefHeight="26.0" prefWidth="208.0" />
+      <Label layoutX="14.0" layoutY="14.0" text="Eingabe Produktdaten - manuell Erfassung">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="139.0" fitWidth="148.0" layoutX="334.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="54.0" layoutY="54.0" text="Produkt:" />
+      <Label fx:id="lblName" layoutX="112.0" layoutY="54.0" prefHeight="16.0" prefWidth="369.0" text="Label" />
+   </children>
+</Pane>

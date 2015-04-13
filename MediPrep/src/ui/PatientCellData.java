@@ -1,10 +1,10 @@
 package ui;
 
+import entities.Patient;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import webservice.erp.Patient;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -56,7 +56,7 @@ public class PatientCellData {
         fidLabel.setText("FID:" + String.valueOf(patient.getFid()));
         pidLabel.setText("PID: " + String.valueOf(patient.getPid()));
         nameLabel.setText(patient.getLastname());
-        firstnameLabel.setText(patient.getLastname());
+        firstnameLabel.setText(patient.getFirstname());
         birthdayLabel.setText(
                 patient.getBirthDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
                         + " " + "(" + patient.getAge()+ ")");

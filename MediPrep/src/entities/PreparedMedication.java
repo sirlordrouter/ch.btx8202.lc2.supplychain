@@ -4,6 +4,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 
 import java.time.LocalDateTime;
 
@@ -37,15 +38,15 @@ public class PreparedMedication extends Medication {
 
     public PreparedMedication() {}
 
-    public PreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, String batchLot, String serial, String expiryDate, ObjectProperty<MedicationState> state, ObjectProperty<Patient> forPatient, ObjectProperty<Prescription> basedOnPrescription, ObjectProperty<LocalDateTime> preparationTime, boolean isReserve) {
+    public PreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, String batchLot, String serial, String expiryDate, MedicationState state, Patient forPatient, Prescription basedOnPrescription, LocalDateTime preparationTime, boolean isReserve) {
         super(gtin, name, description, dosage, dosageUnit, applicationScheme);
         BatchLot.setValue(batchLot);
         Serial.setValue(serial);
         ExpiryDate.setValue(expiryDate);
-        this.state = state;
-        this.forPatient = forPatient;
-        this.basedOnPrescription = basedOnPrescription;
-        this.preparationTime = preparationTime;
+        this.state.setValue(state);
+        this.forPatient.setValue(forPatient);
+        this.basedOnPrescription.setValue(basedOnPrescription);
+        this.preparationTime.setValue(preparationTime);
         this.isReserve = isReserve;
     }
 
@@ -89,7 +90,7 @@ public class PreparedMedication extends Medication {
         return state.get();
     }
 
-    public ObjectProperty<MedicationState> stateProperty() {
+    public ObservableValue<MedicationState> stateProperty() {
         return state;
     }
 
@@ -101,8 +102,8 @@ public class PreparedMedication extends Medication {
         return forPatient.get();
     }
 
-    public ObjectProperty<Patient> forPatientProperty() {
-        return forPatient;
+    public Patient forPatientProperty() {
+        return forPatient.get();
     }
 
     public void setForPatient(Patient forPatient) {
@@ -113,8 +114,8 @@ public class PreparedMedication extends Medication {
         return basedOnPrescription.get();
     }
 
-    public ObjectProperty<Prescription> basedOnPrescriptionProperty() {
-        return basedOnPrescription;
+    public Prescription basedOnPrescriptionProperty() {
+        return basedOnPrescription.getValue();
     }
 
     public void setBasedOnPrescription(Prescription basedOnPrescription) {
@@ -125,7 +126,7 @@ public class PreparedMedication extends Medication {
         return preparationTime.get();
     }
 
-    public ObjectProperty<LocalDateTime> preparationTimeProperty() {
+    public ObservableValue<LocalDateTime> preparationTimeProperty() {
         return preparationTime;
     }
 

@@ -1,24 +1,26 @@
 package ui;
 
 import datalayer.FakeDataRepository;
+import datalayer.IRepository;
+import entities.Patient;
+import entities.PreparedMedication;
+import entities.Prescription;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import services.ErpWebserviceClient;
 import services.PropertiesReader;
-import webservice.erp.Patient;
-import webservice.erp.PreparedMedication;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -40,12 +42,12 @@ public class AdditionalMedicViewController extends VBox implements IPartialView 
     public Label lblBirthdate;
     public Label lblPatInfo;
 
-
     public TableView<PreparedMedication> medicationsList;
     public TableView<PreparedMedication> medicationsListReserve;
 
     private final ObservableList<PreparedMedication> medications =  FXCollections.observableArrayList();
     private final ObservableList<PreparedMedication> medicationReserve =  FXCollections.observableArrayList();
+    private IRepository dataSource;
 
     public AdditionalMedicViewController(String fxml) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
@@ -67,6 +69,8 @@ public class AdditionalMedicViewController extends VBox implements IPartialView 
         catch (IOException e) {
             //TODO Show Message
         }
+
+        dataSource = new ErpWebserviceClient(prop.getProperty("stationGLN"));
 
         setUpTables(medicationsList);
         setUpTables(medicationsListReserve);
@@ -96,14 +100,58 @@ public class AdditionalMedicViewController extends VBox implements IPartialView 
     }
 
     private void setUpTables(TableView aTable) {
+        aTable.setRowFactory(t -> {
+                    TableRow<PreparedMedication> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    PreparedMedication rowData = row.getItem();
+                    System.out.println(rowData);
+                    AddMedDialog addMedDialog = new AddMedDialog(null, rowData.getGtin().get(), rowData.getName().get());
+                    addMedDialog.centerOnScreen();
+                    addMedDialog.showAndWait();
+
+                    if (!addMedDialog.isCanceled()) {
+                        String expDate = addMedDialog.getTxtExpiryDate().getText();
+                        String lot = addMedDialog.getTxtLot().getText();
+                        String serial = addMedDialog.getTxtSerial().getText();
+
+                        rowData.setExpiryDate(expDate);
+                        rowData.setBatchLot(lot);
+                        rowData.setSerial(serial);
+
+                        rowData.setPreparationTime(LocalDateTime.now());
+                        rowData.setState(PreparedMedication.MedicationState.prepared);
+
+                        if (rowData.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.prepared)) {
+                            //Print Barcode for product and make info .....
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Information Dialog");
+                            alert.setHeaderText(null);
+                            alert.setContentText("You now have successfully prepared all medications\n for the prescription" +
+                                    "congratulations!! :-p" +
+                                    "\nTake the printed barcode and put in on the item" +
+                                    "\nto enable bedside scanning." +
+                                    "\n<< Happy Scan >>"
+                            );
+
+                            alert.showAndWait();
+                        }
+                    }
+
+                }
+            });
+            return row;
+        });
 
         /**
          * Main Columns
          */
-        TableColumn<PreparedMedication, PreparedMedication.State> state = new TableColumn("State");
-        state.setCellValueFactory(cellData -> cellData.getValue().getState());
+        TableColumn<PreparedMedication, PreparedMedication.MedicationState> state = new TableColumn("State");
+        state.setCellValueFactory(cellData -> {
+            return cellData.getValue().stateProperty();
+        });
         state.setCellFactory(cellData -> {
-            return new TableCell<PreparedMedication, PreparedMedication.State>() {
+            return new TableCell<PreparedMedication, PreparedMedication.MedicationState>() {
 
                 Image pendingImage = new Image("resources/image/time.png");
                 Image readyImage = new Image("resources/image/ok_icon.png");
@@ -117,7 +165,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView 
                 }
 
                 @Override
-                public void updateItem(PreparedMedication.State item, boolean empty) {
+                public void updateItem(PreparedMedication.MedicationState item, boolean empty) {
                     super.updateItem(item, empty);
                     if (item == null || empty) {
                         setText(null);
@@ -184,7 +232,6 @@ public class AdditionalMedicViewController extends VBox implements IPartialView 
         evening.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApplicationScheme().get().substring(2,3)));
         TableColumn<PreparedMedication, String> night = new TableColumn("Na");
         night.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApplicationScheme().get().substring(3,4)));
-
         applicationScheme.getColumns().addAll(morning, noon, evening, night);
         aTable.getColumns().addAll(state, name, description, dosage, dosageUnit, applicationScheme, preparationTime);
 
@@ -199,6 +246,19 @@ public class AdditionalMedicViewController extends VBox implements IPartialView 
     public void beforeOpen() {
         if (FakeDataRepository.getInstance().getCurrentPatient() != null) {
             setUpPatientInfo(FakeDataRepository.getInstance().getCurrentPatient());
+
+            medications.clear();
+            medicationReserve.clear();
+
+            List<Prescription> prescriptionList = dataSource.getPrescriptions(FakeDataRepository.getInstance().getCurrentPatient());
+            List<PreparedMedication> preparedMedications = new ArrayList<>();
+
+            for (Prescription prescription : prescriptionList) {
+                preparedMedications.addAll(prescription.getMedications());
+            }
+
+            medications.addAll(preparedMedications);
+
         }
     }
 }

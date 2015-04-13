@@ -1,20 +1,32 @@
 package service;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Bern University of Applied Sciences<br>
  * BSc Medical Informatics<br>
  * Module <br>
  * <p>
- * <p>
- * A class used to now about the current logged in user.
- * The <code>User</code> contains id, username, firstname, and isPatient information of the current logged in user
+ * Serializer and Deserializer for the LocalDateTime Class.
  * </p>
  * Project: WebService
  * Package: service
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
- * @author Patrizia Zehnder, patriziasusanna.zehnder@students.bfh.ch
  * @version 13.04.15
  */
-public class LocalDateTimeAdapter {
+public class LocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
+
+    @Override
+    public LocalDateTime unmarshal(String dateString) throws Exception {
+        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE);
+    }
+
+    @Override
+    public String marshal(LocalDateTime localDate) throws Exception {
+        return DateTimeFormatter.ISO_DATE.format(localDate);
+    }
+
 }

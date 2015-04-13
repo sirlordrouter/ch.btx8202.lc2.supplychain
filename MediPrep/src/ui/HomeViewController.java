@@ -1,6 +1,7 @@
 package ui;
 
 import datalayer.FakeDataRepository;
+import datalayer.IRepository;
 import entities.Patient;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -14,6 +15,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
+import services.ErpWebserviceClient;
 import services.PropertiesReader;
 
 import java.io.IOException;
@@ -43,6 +45,7 @@ public class HomeViewController extends VBox implements IPartialView, PatientCha
     public Accordion PatientsAccordionView;
     private final List<PatientChangerListener> patientChangedListers = new ArrayList<>();
     private TitledPane[] tps;
+    private IRepository dataSource;
     //final ObservableList patientsList = FXCollections.observableArrayList();
     //final ObservableList stationsList = FXCollections.observableArrayList();
 
@@ -68,6 +71,8 @@ public class HomeViewController extends VBox implements IPartialView, PatientCha
            //TODO SHow Message
         }
 
+        dataSource = new ErpWebserviceClient(prop.getProperty("stationGLN"));
+
         progressPatients.setVisible(false);
         progressPatients.setProgress(-1);
         progressPatients.setPrefHeight(30);
@@ -78,7 +83,7 @@ public class HomeViewController extends VBox implements IPartialView, PatientCha
 
     private void buildUpStationAccordeon() {
 
-        tps = new TitledPane[FakeDataRepository.getInstance().getStations().size()];
+
         progressPatients.setVisible(true);
 
         // loads the items at another thread, asynchronously
@@ -86,18 +91,21 @@ public class HomeViewController extends VBox implements IPartialView, PatientCha
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000l); // just emulates some loading time
+                    Thread.sleep(2l); // just emulates some loading time
 
-                    List<String> stations = FakeDataRepository.getInstance().getStations();
+
+                    List<String> stations = dataSource.getStations();
+                    tps = new TitledPane[stations.size()];
 
                     for (int i = 0; i < stations.size(); i++) {
                         final ObservableList<Patient> patientItems = FXCollections.observableArrayList();
                         final String stationName = stations.get(i);
 
                         patientItems.clear();
+
+                        List<Patient> pat = dataSource.getPatients();
                         patientItems.addAll(
-                                FakeDataRepository.getInstance().getPatients()
-                                        .stream()
+                                pat.stream()
                                         .filter(p -> p.getStationName().equals(stationName))
                                         .collect(Collectors.toList())
                         );
