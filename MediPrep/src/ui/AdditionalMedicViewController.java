@@ -1,5 +1,11 @@
 package ui;
 
+import barcode.Barcode;
+import barcode.BarcodeDecoder;
+import barcode.BarcodeInformation;
+import barcodeHook.Scanner;
+import barcodeHook.ScannerEvent;
+import barcodeHook.ScannerListener;
 import datalayer.FakeDataRepository;
 import datalayer.IRepository;
 import entities.Patient;
@@ -15,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import services.ErpWebserviceClient;
 import services.PropertiesReader;
+import webservice.erp.Item;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -36,7 +43,7 @@ import java.util.stream.Collectors;
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @version 26.03.2015
  */
-public class AdditionalMedicViewController extends VBox implements IPartialView {
+public class AdditionalMedicViewController extends VBox implements IPartialView, ScannerListener {
 
     public Label lblNameGender;
     public Label lblBirthdate;
@@ -239,11 +246,13 @@ public class AdditionalMedicViewController extends VBox implements IPartialView 
 
     @Override
     public void beforeLeaving() {
-
+        Scanner.removeScannerListener(this);
     }
 
     @Override
     public void beforeOpen() {
+        Scanner.addScannerEventListener(this, "(/", 0);
+
         if (FakeDataRepository.getInstance().getCurrentPatient() != null) {
             setUpPatientInfo(FakeDataRepository.getInstance().getCurrentPatient());
 
@@ -259,6 +268,38 @@ public class AdditionalMedicViewController extends VBox implements IPartialView 
 
             medications.addAll(preparedMedications);
 
+        }
+    }
+
+    @Override
+    public void handleScannerEvent(ScannerEvent scannerEvent) {
+        //Navigator.getInstance().getMainController().setStatusbarWaiting("scanned item is evaluated...");
+
+        List<Item> items;
+
+        //txtareaMediInfo.setText("Barcode " + evt.getBarCode() + " gescannt.");
+        Barcode code = BarcodeDecoder.getBarcodeFrom(scannerEvent);
+        final BarcodeInformation info =  code.getBarcodeInformation();
+        if(info != null) {
+            if (info.getAI01_HANDELSEINHEIT() != null
+                    && info.getAI21_SERIAL_NUMBER() != null
+                    && info.getAI17_VERFALLSDATUM() != null
+                    && info.getAI10_CHARGENNUMMER() != null) {
+                medications.stream().filter(m -> m.getGtin().equals(info.getAI01_HANDELSEINHEIT())).map(
+                        m -> {
+                            m.setSerial(info.getAI21_SERIAL_NUMBER());
+                            m.setExpiryDate(info.getAI17_VERFALLSDATUM());
+                            m.setBatchLot(info.getAI10_CHARGENNUMMER());
+
+                            m.setPreparationTime(LocalDateTime.now());
+                            m.setState(PreparedMedication.MedicationState.prepared);
+
+                            return m;
+                        }
+                );
+            } else {
+                //TODO: what to do if not every field captured
+            }
         }
     }
 }

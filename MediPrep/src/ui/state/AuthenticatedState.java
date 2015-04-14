@@ -1,6 +1,7 @@
 package ui.state;
 
 
+import barcodeHook.Scanner;
 import ui.Main;
 import ui.MainController;
 import ui.Navigator;
@@ -41,7 +42,7 @@ public class AuthenticatedState extends AuthenticationState {
 	@Override
 	protected void entryState() {
         try {
-
+            Scanner.initStream();
             controller = (MainController) super.context.replaceSceneContent(Navigator.MAIN);
             /**
              * Set up Navigator

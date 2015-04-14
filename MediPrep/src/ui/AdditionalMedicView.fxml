@@ -63,8 +63,7 @@
                   <TableView fx:id="medicationsList" layoutX="3.0" layoutY="300.0" prefHeight="231.0" prefWidth="994.0" AnchorPane.bottomAnchor="269.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="300.0" />
             <Label layoutX="22.0" layoutY="274.0" text="Medikamente" />
             <Label layoutX="21.0" layoutY="543.0" text="Reserve" />
-            <TableView fx:id="medicationsListReserve" layoutX="22.0" layoutY="569.0" prefHeight="39.0" prefWidth="960.0" AnchorPane.bottomAnchor="192.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="569.0" />
-            <ListView fx:id="prescriptionsList" layoutX="20.0" layoutY="657.0" prefHeight="170.0" prefWidth="960.0" />
+            <TableView fx:id="medicationsListReserve" layoutX="22.0" layoutY="560.0" prefHeight="225.0" prefWidth="960.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="555.0" />
                </children>
         </AnchorPane>
     </children>

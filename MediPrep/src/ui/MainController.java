@@ -1,6 +1,7 @@
 package ui;
 
 import entities.Patient;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -80,7 +81,7 @@ public class MainController implements Initializable, PatientChanger.PatientChan
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //Platform.runLater(() -> this.setStatusbarEmpty());
+        Platform.runLater(() -> this.setStatusbarEmpty());
 
         Properties prop = null;
         try {
@@ -145,20 +146,20 @@ public class MainController implements Initializable, PatientChanger.PatientChan
         }
     }
 
-//    public void setStatusbarWaiting(String infotext) {
-//        statusLineIndicator.setVisible(true);
-//        //SetisShowingProperty(new SimpleBooleanProperty(true));
-//        statusLineLabel.setText(infotext);
-//    }
+    public void setStatusbarWaiting(String infotext) {
+        statusLineIndicator.setVisible(true);
+        //SetisShowingProperty(new SimpleBooleanProperty(true));
+        statusLineLabel.setText(infotext);
+    }
 
-//    public void setStatusbarEmpty() {
-//        statusLineIndicator.setVisible(false);
-//        statusLineLabel.setText("");
-//    }
-//
-//    public void setStatusbarText(String infotext) {
-//
-//        SetisShowingProperty(new SimpleBooleanProperty(false));
-//        statusLineLabel.setText(infotext);
-//    }
+    public void setStatusbarEmpty() {
+        statusLineIndicator.setVisible(false);
+        statusLineLabel.setText("");
+    }
+
+    public void setStatusbarText(String infotext) {
+
+        SetisShowingProperty(new SimpleBooleanProperty(false));
+        statusLineLabel.setText(infotext);
+    }
 }

@@ -600,7 +600,7 @@ public class SupplyChainService {
     private String getBatch(){ //Beutel 9stellig
         java.util.Date date = new java.util.Date();
         DateFormat formatter = new SimpleDateFormat("ddMMyyHHm");
-        return formatter.format(date);
+        return formatter.format(date).substring(1,10);
     }
     private String getSerial(String batch, int objectNumber){ //17 stellig
         String serial = Integer.toString(objectNumber);

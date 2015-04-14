@@ -1,5 +1,6 @@
 package ui;
 
+import barcodeHook.Scanner;
 import entities.User;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -61,7 +62,8 @@ public class Main extends Application implements IAuthenticationStateContext {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
-
+                Scanner.endStream();
+                System.out.println("Scanner has been unregistered");
             }
         });
 
