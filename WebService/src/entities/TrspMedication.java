@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 /**
  * Bern University of Applied Sciences<br>
  * BSc Medical Informatics<br>
@@ -14,7 +16,8 @@ package entities;
  */
 public class TrspMedication {
 
-    private String gtin;
+    private String gtinA;
+    private List<String> gtinBs;
     private String Name;
     private String Description;
     private String Dosage;
@@ -22,8 +25,9 @@ public class TrspMedication {
     private String ApplicationScheme;
 
 
-    public TrspMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme) {
-        this.gtin = gtin;
+    public TrspMedication(String gtinA,List<String> gtinBs, String name, String description, String dosage, String dosageUnit, String applicationScheme) {
+        this.gtinA = gtinA;
+        this.gtinBs = gtinBs;
         this.Name = name;
         this.Description = description;
         this.Dosage = dosage;
@@ -35,12 +39,20 @@ public class TrspMedication {
 
     }
 
-    public String getGtin() {
-        return gtin;
+    public String getGtinA() {
+        return gtinA;
     }
 
-    public void setGtin(String gtin) {
-        this.gtin = gtin;
+    public void setGtinA(String gtinA) {
+        this.gtinA = gtinA;
+    }
+
+    public List<String> getGtinBs() {
+        return gtinBs;
+    }
+
+    public void setGtinBs(List<String> gtinBs) {
+        this.gtinBs = gtinBs;
     }
 
     public String getName() {
@@ -82,4 +94,6 @@ public class TrspMedication {
     public void setApplicationScheme(String applicationScheme) {
         ApplicationScheme = applicationScheme;
     }
+
+
 }

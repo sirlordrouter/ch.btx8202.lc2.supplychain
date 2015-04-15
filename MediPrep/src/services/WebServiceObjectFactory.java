@@ -66,12 +66,14 @@ public class WebServiceObjectFactory {
         }
 
         PreparedMedication preparedMedication = new PreparedMedication(
-                trspPreparedMedication.getGtin(),
+                trspPreparedMedication.getGtinA(),
+                trspPreparedMedication.getGtinBs(),
                 trspPreparedMedication.getName(),
                 trspPreparedMedication.getDescription(),
                 trspPreparedMedication.getDosage(),
                 trspPreparedMedication.getDosageUnit(),
                 trspPreparedMedication.getApplicationScheme(),
+                trspPreparedMedication.getGtinFromAssignedItem(),
                 trspPreparedMedication.getBatchLot(),
                 trspPreparedMedication.getSerial(),
                 trspPreparedMedication.getExpiryDate(),

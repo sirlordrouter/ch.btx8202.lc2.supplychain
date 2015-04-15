@@ -1,14 +1,20 @@
 package ui;
 
+import entities.PreparedMedication;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,29 +58,52 @@ public class AddMedDialog extends Stage implements Initializable {
 
     @FXML
     private Label lblName;
+
+    @FXML
+    private Label lblErrorCode;
+
     private boolean canceled = false;
 
-    public AddMedDialog(Parent parent, String gtin, String name)
-    {
+
+
+    private PreparedMedication currentMedication;
+
+
+    public AddMedDialog(Parent parent, PreparedMedication selectedMedication) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddMedDialog.fxml"));
         fxmlLoader.setController(this);
 
-
         try {
             setScene(new Scene((Parent) fxmlLoader.load()));
+            this.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    canceled = true;
+                    close();
+                }
+            });
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
 
-        this.txtGtin.setText(gtin);
-        this.lblName.setText(name);
-        this.txtGtin.setEditable(false);
+        currentMedication = selectedMedication;
+        this.lblErrorCode.setText("");
+        this.lblName.setText(selectedMedication.getDescription().get());
     }
 
 
     @FXML
     void save(ActionEvent event) {
-        close();
+
+        if (!currentMedication.getGtinBs().stream().anyMatch(l -> l.equals(txtGtin.getText()))){
+            //TODO: ERROR message below field
+            txtGtin.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
+            , Insets.EMPTY)));
+            lblErrorCode.setText("Das eingegebene Produkt passt nicht zum Produkt der Verordnung!\n" +
+                    "Überprüfen Sie noch einmal das Medikament.");
+        } else {
+            close();
+        }
     }
 
     @FXML
@@ -83,6 +112,8 @@ public class AddMedDialog extends Stage implements Initializable {
         this.canceled = true;
         close();
     }
+
+
 
 
     @Override

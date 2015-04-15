@@ -7,6 +7,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Bern University of Applied Sciences<br>
@@ -25,6 +26,7 @@ public class PreparedMedication extends Medication {
 
     public static enum MedicationState {open, prepared, controlled, served}
 
+    private StringProperty assignedProductGTIN = new SimpleStringProperty();
     private StringProperty BatchLot = new SimpleStringProperty();
     private StringProperty Serial = new SimpleStringProperty();
     private StringProperty ExpiryDate = new SimpleStringProperty();
@@ -38,8 +40,9 @@ public class PreparedMedication extends Medication {
 
     public PreparedMedication() {}
 
-    public PreparedMedication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme, String batchLot, String serial, String expiryDate, MedicationState state, Patient forPatient, Prescription basedOnPrescription, LocalDateTime preparationTime, boolean isReserve) {
-        super(gtin, name, description, dosage, dosageUnit, applicationScheme);
+    public PreparedMedication(String gtin,List<String> gtinBs, String name, String description, String dosage, String dosageUnit, String applicationScheme,String assignedProductGTIN, String batchLot, String serial, String expiryDate, MedicationState state, Patient forPatient, Prescription basedOnPrescription, LocalDateTime preparationTime, boolean isReserve) {
+        super(gtin, gtinBs, name, description, dosage, dosageUnit, applicationScheme);
+        this.assignedProductGTIN.setValue(assignedProductGTIN);
         BatchLot.setValue(batchLot);
         Serial.setValue(serial);
         ExpiryDate.setValue(expiryDate);
@@ -48,6 +51,18 @@ public class PreparedMedication extends Medication {
         this.basedOnPrescription.setValue(basedOnPrescription);
         this.preparationTime.setValue(preparationTime);
         this.isReserve = isReserve;
+    }
+
+    public String getAssignedProductGTIN() {
+        return assignedProductGTIN.get();
+    }
+
+    public StringProperty assignedProductGTINProperty() {
+        return assignedProductGTIN;
+    }
+
+    public void setAssignedProductGTIN(String assignedProductGTIN) {
+        this.assignedProductGTIN.set(assignedProductGTIN);
     }
 
     public String getBatchLot() {

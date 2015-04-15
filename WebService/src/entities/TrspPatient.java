@@ -1,8 +1,5 @@
 package entities;
 
-import service.LocalDateAdapter;
-
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 /**
@@ -82,7 +79,6 @@ public class TrspPatient {
         this.lastname = lastname;
     }
 
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getBirthDate() {
         return birthDate;
     }

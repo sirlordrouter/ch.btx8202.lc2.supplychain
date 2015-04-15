@@ -1,9 +1,7 @@
 package entities;
 
-import service.LocalDateTimeAdapter;
-
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Bern University of Applied Sciences<br>
@@ -22,6 +20,7 @@ public class TrspPreparedMedication extends TrspMedication {
 
     public static enum MedicationState {open, prepared, controlled, served}
 
+    private String gtinFromAssignedItem;
     private String BatchLot;
     private String Serial;
     private String ExpiryDate;
@@ -35,11 +34,12 @@ public class TrspPreparedMedication extends TrspMedication {
 
     public TrspPreparedMedication() {}
 
-    public TrspPreparedMedication(String gtin, String name, String description, String dosage,
-                                  String dosageUnit, String applicationScheme, String batchLot,
+    public TrspPreparedMedication(String gtinA, List<String> gtinBs, String name, String description, String dosage,
+                                  String dosageUnit, String applicationScheme, String gtinFromAssignedItem, String batchLot,
                                   String serial, String expiryDate,
                                   MedicationState state, TrspPatient forPatient, TrspPrescription basedOnPrescription, LocalDateTime preparationTime, boolean isReserve) {
-        super(gtin, name, description, dosage, dosageUnit, applicationScheme);
+        super(gtinA,gtinBs, name, description, dosage, dosageUnit, applicationScheme);
+        this.gtinFromAssignedItem = gtinFromAssignedItem;
         BatchLot = batchLot;
         Serial = serial;
         ExpiryDate = expiryDate;
@@ -48,6 +48,14 @@ public class TrspPreparedMedication extends TrspMedication {
         this.basedOnPrescription = basedOnPrescription;
         this.preparationTime = preparationTime;
         this.isReserve = isReserve;
+    }
+
+    public String getGtinFromAssignedItem() {
+        return gtinFromAssignedItem;
+    }
+
+    public void setGtinFromAssignedItem(String gtinFromAssignedItem) {
+        this.gtinFromAssignedItem = gtinFromAssignedItem;
     }
 
     public String getBatchLot() {
@@ -98,7 +106,6 @@ public class TrspPreparedMedication extends TrspMedication {
         this.basedOnPrescription = basedOnPrescription;
     }
 
-    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
     public LocalDateTime getPreparationTime() {
         return preparationTime;
     }

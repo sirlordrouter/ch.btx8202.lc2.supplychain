@@ -8,8 +8,8 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="343.0" prefWidth="514.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="387.0" layoutY="255.0" mnemonicParsing="false" onAction="#save" prefHeight="38.0" prefWidth="94.0" text="OK" />
-      <Button layoutX="292.0" layoutY="255.0" mnemonicParsing="false" onAction="#cancel" prefHeight="38.0" prefWidth="83.0" text="Abbrechen" />
+      <Button layoutX="386.0" layoutY="284.0" mnemonicParsing="false" onAction="#save" prefHeight="38.0" prefWidth="94.0" text="OK" />
+      <Button layoutX="293.0" layoutY="284.0" mnemonicParsing="false" onAction="#cancel" prefHeight="38.0" prefWidth="83.0" text="Abbrechen" />
       <Label alignment="CENTER_RIGHT" layoutX="34.0" layoutY="93.0" prefHeight="16.0" prefWidth="72.0" text="GTIN">
          <font>
             <Font size="14.0" />
@@ -30,5 +30,6 @@
       <ImageView fitHeight="139.0" fitWidth="148.0" layoutX="334.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
       <Label layoutX="54.0" layoutY="54.0" text="Produkt:" />
       <Label fx:id="lblName" layoutX="112.0" layoutY="54.0" prefHeight="16.0" prefWidth="369.0" text="Label" />
+      <Label fx:id="lblErrorCode" layoutX="33.0" layoutY="242.0" text="Das eingegebene Produkt passt nicht zum Produkt der Verordnung!&#10;Überprüfen Sie noch einmal das Medikament." textFill="RED" />
    </children>
 </Pane>

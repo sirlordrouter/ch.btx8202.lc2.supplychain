@@ -8,6 +8,7 @@ import org.intellij.lang.annotations.Language;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.ws.Endpoint;
 import java.sql.*;
 import java.sql.Date;
@@ -1160,11 +1161,38 @@ public class SupplyChainService {
         }
     }
 
-    public String getProductForSecondaryPackage(String secondaryGTIN) {
+    public List<String> getLogisticUnitsForProduct(String productGTIN) {
 
+        List<String> secondaryGTINs = new ArrayList<>();
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
 
+        try {
 
-        return "";
+            String query = "SELECT  prim.GTINsek \n" +
+                    "FROM Product p\n" +
+                    "LEFT JOIN PrimaryPackage prim ON p.GTINprim = prim.GTINprim\n" +
+                    "WHERE p.GTINprim = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, productGTIN);
+            rs =  ps.executeQuery();
+
+            while (rs.next()) {
+                secondaryGTINs.add(rs.getString(1));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return secondaryGTINs;
     }
 
     /**
@@ -1248,47 +1276,47 @@ public class SupplyChainService {
         return trspPatients;
     }
 
-    /**
-     * Returns the TrspPatient for given UUID
-     * @return a  TrspPatient
-     */
-    @WebMethod
-    public TrspPatient getPatientByMinorId(String minorid) {
-        List<TrspPatient> trspPatients = null;
-        ResultSet rs;
-        Connection connection = connectorLogistic.getConnection();
-
-        try {
-            String query = "SELECT PolyPointPID,UUID,Name, FirstName,Birthdate,Gender,Station From MediPrep_Patients WHERE UUID = ?";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, minorid);
-            rs =  ps.executeQuery();
-
-            trspPatients = getPatientsFromResult(rs);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if( trspPatients.size() > 2 || trspPatients.size() == 0) {
-            System.out.println("There have been more than one patient with UUID " + minorid);
-            return null;
-        } else {
-            return trspPatients.get(0);
-        }
-    }
-
-    @WebMethod
-    public TrspPatient getPatientByPid(String pid) {
-        return null;
-    }
+//    /**
+//     * Returns the TrspPatient for given UUID
+//     * @return a  TrspPatient
+//     */
+//    @WebMethod
+//    public TrspPatient getPatientByMinorId(String minorid) {
+//        List<TrspPatient> trspPatients = null;
+//        ResultSet rs;
+//        Connection connection = connectorLogistic.getConnection();
+//
+//        try {
+//            String query = "SELECT PolyPointPID,UUID,Name, FirstName,Birthdate,Gender,Station From MediPrep_Patients WHERE UUID = ?";
+//            PreparedStatement ps = connection.prepareStatement(query);
+//            ps.setString(1, minorid);
+//            rs =  ps.executeQuery();
+//
+//            trspPatients = getPatientsFromResult(rs);
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        } finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if( trspPatients.size() > 2 || trspPatients.size() == 0) {
+//            System.out.println("There have been more than one patient with UUID " + minorid);
+//            return null;
+//        } else {
+//            return trspPatients.get(0);
+//        }
+//    }
+//
+//    @WebMethod
+//    public TrspPatient getPatientByPid(String pid) {
+//        return null;
+//    }
 
     @WebMethod
     public List<TrspPrescription> getPrescriptionsForPatient(String pid) {
@@ -1409,10 +1437,10 @@ public class SupplyChainService {
         while (rs.next()) {
             TrspPreparedMedication trspPreparedMedication = new TrspPreparedMedication();
 
-            trspPreparedMedication.setGtin(rs.getString(1));
+            trspPreparedMedication.setGtinA(rs.getString(1));
+            trspPreparedMedication.setGtinBs(getLogisticUnitsForProduct(rs.getString(1)));
             trspPreparedMedication.setName(rs.getString(2));
             trspPreparedMedication.setDosage(rs.getString(3));
-            trspPreparedMedication.setApplicationScheme("??");
             trspPreparedMedication.setDosageUnit(rs.getString(4));
 
             LocalDate localDate = this.getDateValue(rs,8);
@@ -1421,6 +1449,7 @@ public class SupplyChainService {
                 trspPreparedMedication.setPreparationTime(localDateTime);
             }
 
+            trspPreparedMedication.setGtinFromAssignedItem(rs.getString(9));
             trspPreparedMedication.setSerial(rs.getString(10));
             trspPreparedMedication.setExpiryDate(rs.getString(11));
             trspPreparedMedication.setBatchLot(rs.getString(12));

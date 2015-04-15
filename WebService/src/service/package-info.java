@@ -12,7 +12,7 @@
  */
 
 
-@XmlJavaTypeAdapters({
+@XmlJavaTypeAdapters(value = {
         @XmlJavaTypeAdapter(value = LocalDateAdapter.class, type = LocalDate.class),
         @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class, type = LocalDateTime.class)
 })

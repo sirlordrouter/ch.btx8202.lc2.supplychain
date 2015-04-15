@@ -26,13 +26,11 @@ public class ObjectFactory {
 
     private final static QName _GetItemsBySSCC_QNAME = new QName("http://service/", "getItemsBySSCC");
     private final static QName _GetItemsByBatch_QNAME = new QName("http://service/", "getItemsByBatch");
-    private final static QName _GetPatientByPidResponse_QNAME = new QName("http://service/", "getPatientByPidResponse");
     private final static QName _GetPreparedMedicationsForPatientResponse_QNAME = new QName("http://service/", "getPreparedMedicationsForPatientResponse");
     private final static QName _GetDosetForPatient_QNAME = new QName("http://service/", "getDosetForPatient");
     private final static QName _GetOrderForSSCCResponse_QNAME = new QName("http://service/", "getOrderForSSCCResponse");
     private final static QName _ProcessOrder_QNAME = new QName("http://service/", "processOrder");
     private final static QName _SetOrder_QNAME = new QName("http://service/", "setOrder");
-    private final static QName _GetProductForSecondaryPackage_QNAME = new QName("http://service/", "getProductForSecondaryPackage");
     private final static QName _UpdatePreparedMedicationsResponse_QNAME = new QName("http://service/", "updatePreparedMedicationsResponse");
     private final static QName _GetQuantities_QNAME = new QName("http://service/", "getQuantities");
     private final static QName _GetPrescriptionsForPatientResponse_QNAME = new QName("http://service/", "getPrescriptionsForPatientResponse");
@@ -44,11 +42,9 @@ public class ObjectFactory {
     private final static QName _ProcessOrderResponse_QNAME = new QName("http://service/", "processOrderResponse");
     private final static QName _CheckoutItemsResponse_QNAME = new QName("http://service/", "checkoutItemsResponse");
     private final static QName _GetItemsBySSCCResponse_QNAME = new QName("http://service/", "getItemsBySSCCResponse");
-    private final static QName _GetProductForSecondaryPackageResponse_QNAME = new QName("http://service/", "getProductForSecondaryPackageResponse");
     private final static QName _UpdatePrescriptionsResponse_QNAME = new QName("http://service/", "updatePrescriptionsResponse");
     private final static QName _GetPreparedMedicationsForPatient_QNAME = new QName("http://service/", "getPreparedMedicationsForPatient");
     private final static QName _GetStations_QNAME = new QName("http://service/", "getStations");
-    private final static QName _GetPatientByMinorId_QNAME = new QName("http://service/", "getPatientByMinorId");
     private final static QName _GetCheckedInItemsResponse_QNAME = new QName("http://service/", "getCheckedInItemsResponse");
     private final static QName _GetPrescriptionsWithPreparedMedicationsForPatient_QNAME = new QName("http://service/", "getPrescriptionsWithPreparedMedicationsForPatient");
     private final static QName _InsertTrackingItemsResponse_QNAME = new QName("http://service/", "insertTrackingItemsResponse");
@@ -66,17 +62,17 @@ public class ObjectFactory {
     private final static QName _GetPatients_QNAME = new QName("http://service/", "getPatients");
     private final static QName _GetOpenOrdersByGLN_QNAME = new QName("http://service/", "getOpenOrdersByGLN");
     private final static QName _UpdatePreparedMedications_QNAME = new QName("http://service/", "updatePreparedMedications");
+    private final static QName _GetLogisticUnitsForProduct_QNAME = new QName("http://service/", "getLogisticUnitsForProduct");
     private final static QName _SavePreparedMedicationsResponse_QNAME = new QName("http://service/", "savePreparedMedicationsResponse");
     private final static QName _GetQuantitiesResponse_QNAME = new QName("http://service/", "getQuantitiesResponse");
     private final static QName _CheckoutItems_QNAME = new QName("http://service/", "checkoutItems");
     private final static QName _GetStationsResponse_QNAME = new QName("http://service/", "getStationsResponse");
     private final static QName _CheckinItemsResponse_QNAME = new QName("http://service/", "checkinItemsResponse");
     private final static QName _SayHelloWorldFrom_QNAME = new QName("http://service/", "sayHelloWorldFrom");
-    private final static QName _GetPatientByMinorIdResponse_QNAME = new QName("http://service/", "getPatientByMinorIdResponse");
     private final static QName _SetOrderResponse_QNAME = new QName("http://service/", "setOrderResponse");
+    private final static QName _GetLogisticUnitsForProductResponse_QNAME = new QName("http://service/", "getLogisticUnitsForProductResponse");
     private final static QName _GetPatientsResponse_QNAME = new QName("http://service/", "getPatientsResponse");
     private final static QName _CheckinItems_QNAME = new QName("http://service/", "checkinItems");
-    private final static QName _GetPatientByPid_QNAME = new QName("http://service/", "getPatientByPid");
     private final static QName _SavePreparedMedications_QNAME = new QName("http://service/", "savePreparedMedications");
 
     /**
@@ -108,6 +104,14 @@ public class ObjectFactory {
      */
     public GetQuantitiesResponse createGetQuantitiesResponse() {
         return new GetQuantitiesResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetLogisticUnitsForProduct }
+     * 
+     */
+    public GetLogisticUnitsForProduct createGetLogisticUnitsForProduct() {
+        return new GetLogisticUnitsForProduct();
     }
 
     /**
@@ -151,14 +155,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetPatientByMinorIdResponse }
-     * 
-     */
-    public GetPatientByMinorIdResponse createGetPatientByMinorIdResponse() {
-        return new GetPatientByMinorIdResponse();
-    }
-
-    /**
      * Create an instance of {@link SayHelloWorldFrom }
      * 
      */
@@ -183,14 +179,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetPatientByPid }
-     * 
-     */
-    public GetPatientByPid createGetPatientByPid() {
-        return new GetPatientByPid();
-    }
-
-    /**
      * Create an instance of {@link SavePreparedMedications }
      * 
      */
@@ -204,6 +192,14 @@ public class ObjectFactory {
      */
     public CheckinItems createCheckinItems() {
         return new CheckinItems();
+    }
+
+    /**
+     * Create an instance of {@link GetLogisticUnitsForProductResponse }
+     * 
+     */
+    public GetLogisticUnitsForProductResponse createGetLogisticUnitsForProductResponse() {
+        return new GetLogisticUnitsForProductResponse();
     }
 
     /**
@@ -228,14 +224,6 @@ public class ObjectFactory {
      */
     public GetCheckedInItemsResponse createGetCheckedInItemsResponse() {
         return new GetCheckedInItemsResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetPatientByMinorId }
-     * 
-     */
-    public GetPatientByMinorId createGetPatientByMinorId() {
-        return new GetPatientByMinorId();
     }
 
     /**
@@ -391,14 +379,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetProductForSecondaryPackageResponse }
-     * 
-     */
-    public GetProductForSecondaryPackageResponse createGetProductForSecondaryPackageResponse() {
-        return new GetProductForSecondaryPackageResponse();
-    }
-
-    /**
      * Create an instance of {@link GetPreparedMedicationsForPatient }
      * 
      */
@@ -420,14 +400,6 @@ public class ObjectFactory {
      */
     public GetItemsByBatch createGetItemsByBatch() {
         return new GetItemsByBatch();
-    }
-
-    /**
-     * Create an instance of {@link GetPatientByPidResponse }
-     * 
-     */
-    public GetPatientByPidResponse createGetPatientByPidResponse() {
-        return new GetPatientByPidResponse();
     }
 
     /**
@@ -500,14 +472,6 @@ public class ObjectFactory {
      */
     public GetQuantities createGetQuantities() {
         return new GetQuantities();
-    }
-
-    /**
-     * Create an instance of {@link GetProductForSecondaryPackage }
-     * 
-     */
-    public GetProductForSecondaryPackage createGetProductForSecondaryPackage() {
-        return new GetProductForSecondaryPackage();
     }
 
     /**
@@ -641,15 +605,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetPatientByPidResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://service/", name = "getPatientByPidResponse")
-    public JAXBElement<GetPatientByPidResponse> createGetPatientByPidResponse(GetPatientByPidResponse value) {
-        return new JAXBElement<GetPatientByPidResponse>(_GetPatientByPidResponse_QNAME, GetPatientByPidResponse.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetPreparedMedicationsForPatientResponse }{@code >}}
      * 
      */
@@ -692,15 +647,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "setOrder")
     public JAXBElement<SetOrder> createSetOrder(SetOrder value) {
         return new JAXBElement<SetOrder>(_SetOrder_QNAME, SetOrder.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetProductForSecondaryPackage }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://service/", name = "getProductForSecondaryPackage")
-    public JAXBElement<GetProductForSecondaryPackage> createGetProductForSecondaryPackage(GetProductForSecondaryPackage value) {
-        return new JAXBElement<GetProductForSecondaryPackage>(_GetProductForSecondaryPackage_QNAME, GetProductForSecondaryPackage.class, null, value);
     }
 
     /**
@@ -803,15 +749,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetProductForSecondaryPackageResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://service/", name = "getProductForSecondaryPackageResponse")
-    public JAXBElement<GetProductForSecondaryPackageResponse> createGetProductForSecondaryPackageResponse(GetProductForSecondaryPackageResponse value) {
-        return new JAXBElement<GetProductForSecondaryPackageResponse>(_GetProductForSecondaryPackageResponse_QNAME, GetProductForSecondaryPackageResponse.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link UpdatePrescriptionsResponse }{@code >}}
      * 
      */
@@ -836,15 +773,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "getStations")
     public JAXBElement<GetStations> createGetStations(GetStations value) {
         return new JAXBElement<GetStations>(_GetStations_QNAME, GetStations.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetPatientByMinorId }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://service/", name = "getPatientByMinorId")
-    public JAXBElement<GetPatientByMinorId> createGetPatientByMinorId(GetPatientByMinorId value) {
-        return new JAXBElement<GetPatientByMinorId>(_GetPatientByMinorId_QNAME, GetPatientByMinorId.class, null, value);
     }
 
     /**
@@ -1001,6 +929,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetLogisticUnitsForProduct }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getLogisticUnitsForProduct")
+    public JAXBElement<GetLogisticUnitsForProduct> createGetLogisticUnitsForProduct(GetLogisticUnitsForProduct value) {
+        return new JAXBElement<GetLogisticUnitsForProduct>(_GetLogisticUnitsForProduct_QNAME, GetLogisticUnitsForProduct.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SavePreparedMedicationsResponse }{@code >}}
      * 
      */
@@ -1055,21 +992,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetPatientByMinorIdResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://service/", name = "getPatientByMinorIdResponse")
-    public JAXBElement<GetPatientByMinorIdResponse> createGetPatientByMinorIdResponse(GetPatientByMinorIdResponse value) {
-        return new JAXBElement<GetPatientByMinorIdResponse>(_GetPatientByMinorIdResponse_QNAME, GetPatientByMinorIdResponse.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SetOrderResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://service/", name = "setOrderResponse")
     public JAXBElement<SetOrderResponse> createSetOrderResponse(SetOrderResponse value) {
         return new JAXBElement<SetOrderResponse>(_SetOrderResponse_QNAME, SetOrderResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetLogisticUnitsForProductResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getLogisticUnitsForProductResponse")
+    public JAXBElement<GetLogisticUnitsForProductResponse> createGetLogisticUnitsForProductResponse(GetLogisticUnitsForProductResponse value) {
+        return new JAXBElement<GetLogisticUnitsForProductResponse>(_GetLogisticUnitsForProductResponse_QNAME, GetLogisticUnitsForProductResponse.class, null, value);
     }
 
     /**
@@ -1088,15 +1025,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "checkinItems")
     public JAXBElement<CheckinItems> createCheckinItems(CheckinItems value) {
         return new JAXBElement<CheckinItems>(_CheckinItems_QNAME, CheckinItems.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetPatientByPid }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://service/", name = "getPatientByPid")
-    public JAXBElement<GetPatientByPid> createGetPatientByPid(GetPatientByPid value) {
-        return new JAXBElement<GetPatientByPid>(_GetPatientByPid_QNAME, GetPatientByPid.class, null, value);
     }
 
     /**

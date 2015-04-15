@@ -94,11 +94,11 @@
 <message name="resetTrackedItemsResponse">
 <part name="parameters" element="tns:resetTrackedItemsResponse"/>
 </message>
-<message name="getProductForSecondaryPackage">
-<part name="parameters" element="tns:getProductForSecondaryPackage"/>
+<message name="getLogisticUnitsForProduct">
+<part name="parameters" element="tns:getLogisticUnitsForProduct"/>
 </message>
-<message name="getProductForSecondaryPackageResponse">
-<part name="parameters" element="tns:getProductForSecondaryPackageResponse"/>
+<message name="getLogisticUnitsForProductResponse">
+<part name="parameters" element="tns:getLogisticUnitsForProductResponse"/>
 </message>
 <message name="getStations">
 <part name="parameters" element="tns:getStations"/>
@@ -111,18 +111,6 @@
 </message>
 <message name="getPatientsResponse">
 <part name="parameters" element="tns:getPatientsResponse"/>
-</message>
-<message name="getPatientByMinorId">
-<part name="parameters" element="tns:getPatientByMinorId"/>
-</message>
-<message name="getPatientByMinorIdResponse">
-<part name="parameters" element="tns:getPatientByMinorIdResponse"/>
-</message>
-<message name="getPatientByPid">
-<part name="parameters" element="tns:getPatientByPid"/>
-</message>
-<message name="getPatientByPidResponse">
-<part name="parameters" element="tns:getPatientByPidResponse"/>
 </message>
 <message name="getPrescriptionsForPatient">
 <part name="parameters" element="tns:getPrescriptionsForPatient"/>
@@ -227,9 +215,9 @@
 <input wsam:Action="http://service/SupplyChainService/resetTrackedItemsRequest" message="tns:resetTrackedItems"/>
 <output wsam:Action="http://service/SupplyChainService/resetTrackedItemsResponse" message="tns:resetTrackedItemsResponse"/>
 </operation>
-<operation name="getProductForSecondaryPackage">
-<input wsam:Action="http://service/SupplyChainService/getProductForSecondaryPackageRequest" message="tns:getProductForSecondaryPackage"/>
-<output wsam:Action="http://service/SupplyChainService/getProductForSecondaryPackageResponse" message="tns:getProductForSecondaryPackageResponse"/>
+<operation name="getLogisticUnitsForProduct">
+<input wsam:Action="http://service/SupplyChainService/getLogisticUnitsForProductRequest" message="tns:getLogisticUnitsForProduct"/>
+<output wsam:Action="http://service/SupplyChainService/getLogisticUnitsForProductResponse" message="tns:getLogisticUnitsForProductResponse"/>
 </operation>
 <operation name="getStations">
 <input wsam:Action="http://service/SupplyChainService/getStationsRequest" message="tns:getStations"/>
@@ -238,14 +226,6 @@
 <operation name="getPatients">
 <input wsam:Action="http://service/SupplyChainService/getPatientsRequest" message="tns:getPatients"/>
 <output wsam:Action="http://service/SupplyChainService/getPatientsResponse" message="tns:getPatientsResponse"/>
-</operation>
-<operation name="getPatientByMinorId">
-<input wsam:Action="http://service/SupplyChainService/getPatientByMinorIdRequest" message="tns:getPatientByMinorId"/>
-<output wsam:Action="http://service/SupplyChainService/getPatientByMinorIdResponse" message="tns:getPatientByMinorIdResponse"/>
-</operation>
-<operation name="getPatientByPid">
-<input wsam:Action="http://service/SupplyChainService/getPatientByPidRequest" message="tns:getPatientByPid"/>
-<output wsam:Action="http://service/SupplyChainService/getPatientByPidResponse" message="tns:getPatientByPidResponse"/>
 </operation>
 <operation name="getPrescriptionsForPatient">
 <input wsam:Action="http://service/SupplyChainService/getPrescriptionsForPatientRequest" message="tns:getPrescriptionsForPatient"/>
@@ -413,7 +393,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="getProductForSecondaryPackage">
+<operation name="getLogisticUnitsForProduct">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -432,24 +412,6 @@
 </output>
 </operation>
 <operation name="getPatients">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getPatientByMinorId">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getPatientByPid">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

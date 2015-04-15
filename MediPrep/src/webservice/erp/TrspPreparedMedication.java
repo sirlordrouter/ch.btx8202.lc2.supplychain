@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="batchLot" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="expiryDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="forPatient" type="{http://service/}trspPatient" minOccurs="0"/>
+ *         &lt;element name="gtinFromAssignedItem" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="preparationTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="serial" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="staffGln" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -39,6 +40,7 @@ import javax.xml.bind.annotation.XmlType;
     "batchLot",
     "expiryDate",
     "forPatient",
+    "gtinFromAssignedItem",
     "preparationTime",
     "serial",
     "staffGln",
@@ -52,6 +54,7 @@ public class TrspPreparedMedication
     protected String batchLot;
     protected String expiryDate;
     protected TrspPatient forPatient;
+    protected String gtinFromAssignedItem;
     protected String preparationTime;
     protected String serial;
     protected String staffGln;
@@ -152,6 +155,30 @@ public class TrspPreparedMedication
      */
     public void setForPatient(TrspPatient value) {
         this.forPatient = value;
+    }
+
+    /**
+     * Ruft den Wert der gtinFromAssignedItem-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getGtinFromAssignedItem() {
+        return gtinFromAssignedItem;
+    }
+
+    /**
+     * Legt den Wert der gtinFromAssignedItem-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setGtinFromAssignedItem(String value) {
+        this.gtinFromAssignedItem = value;
     }
 
     /**

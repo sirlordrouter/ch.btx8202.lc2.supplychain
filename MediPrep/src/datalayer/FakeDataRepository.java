@@ -3,7 +3,6 @@ package datalayer;
 import entities.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,10 +80,10 @@ public class FakeDataRepository implements IRepository {
         // ObjectProperty<Patient> forPatient, ObjectProperty<Prescription> basedOnPrescription,
         // ObjectProperty<LocalDateTime> preparationTime, boolean isReserve)
 
-        prepMedis.add(new PreparedMedication("1", "Testmedi", "Analgetikum", "2", "ml", "1110", "batch", "String serial", "String expiryDate", PreparedMedication.MedicationState.prepared,  new Patient(), new Prescription(), LocalDateTime.now() ,false));
-        prepMedis.add(new PreparedMedication("2", "Testmedi", "Dormikum", "2", "ml", "1000", "batch", "String serial", "String expiryDate", PreparedMedication.MedicationState.open,  new Patient(), new Prescription(), LocalDateTime.now() ,false));
-        prepMedis.add(new PreparedMedication("3", "Testmedi", "Analgetikum", "100", "g", "1011", "batch", "String serial", "String expiryDate", PreparedMedication.MedicationState.open,  new Patient(), new Prescription(), LocalDateTime.now() ,true));
-        prepMedis.add(new PreparedMedication("4", "Testmedi", "Analgetikum", "2", "ml", "1010", "batch", "String serial", "String expiryDate", PreparedMedication.MedicationState.prepared,  new Patient(), new Prescription(), LocalDateTime.now() ,false));
+        //prepMedis.add(new PreparedMedication("1", "Testmedi", "Analgetikum", "2", "ml", "1110", "batch", "String serial", "String expiryDate", PreparedMedication.MedicationState.prepared,  new Patient(), new Prescription(), LocalDateTime.now() ,false));
+        //prepMedis.add(new PreparedMedication("2", "Testmedi", "Dormikum", "2", "ml", "1000", "batch", "String serial", "String expiryDate", PreparedMedication.MedicationState.open,  new Patient(), new Prescription(), LocalDateTime.now() ,false));
+        //prepMedis.add(new PreparedMedication("3", "Testmedi", "Analgetikum", "100", "g", "1011", "batch", "String serial", "String expiryDate", PreparedMedication.MedicationState.open,  new Patient(), new Prescription(), LocalDateTime.now() ,true));
+        //prepMedis.add(new PreparedMedication("4", "Testmedi", "Analgetikum", "2", "ml", "1010", "batch", "String serial", "String expiryDate", PreparedMedication.MedicationState.prepared,  new Patient(), new Prescription(), LocalDateTime.now() ,false));
 
         return prepMedis;
     }

@@ -3,6 +3,9 @@ package entities;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Bern University of Applied Sciences<br>
  * BSc Medical Informatics<br>
@@ -17,7 +20,8 @@ import javafx.beans.property.StringProperty;
  */
 public class Medication {
 
-    private StringProperty gtin = new SimpleStringProperty();
+    private StringProperty gtinA = new SimpleStringProperty();
+    private List<String> gtinBs = new ArrayList<>();
     private StringProperty Name = new SimpleStringProperty();
     private StringProperty Description = new SimpleStringProperty();
     private StringProperty Dosage = new SimpleStringProperty();
@@ -25,8 +29,9 @@ public class Medication {
     private StringProperty ApplicationScheme = new SimpleStringProperty();
 
 
-    public Medication(String gtin, String name, String description, String dosage, String dosageUnit, String applicationScheme) {
-        this.gtin.setValue(gtin);
+    public Medication(String gtin,List<String> gtinBs, String name, String description, String dosage, String dosageUnit, String applicationScheme) {
+        this.gtinA.setValue(gtin);
+        this.gtinBs = gtinBs;
         this.Name.setValue(name);
         this.Description.setValue(description);
         this.Dosage.setValue(dosage);
@@ -38,12 +43,20 @@ public class Medication {
 
     }
 
-    public StringProperty getGtin() {
-        return gtin;
+    public StringProperty getGtinA() {
+        return gtinA;
     }
 
-    public void setGtin(String gtin) {
-        this.gtin.setValue(gtin);
+    public void setGtinA(String gtinA) {
+        this.gtinA.setValue(gtinA);
+    }
+
+    public List<String> getGtinBs() {
+        return gtinBs;
+    }
+
+    public void setGtinBs(List<String> gtinBs) {
+        this.gtinBs = gtinBs;
     }
 
     public StringProperty getName() {
