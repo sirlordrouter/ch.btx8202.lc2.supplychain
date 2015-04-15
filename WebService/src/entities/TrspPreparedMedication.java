@@ -9,7 +9,7 @@ import java.util.List;
  * Module Bachelorthesis <br>
  *
  *<p>
- * Describes a prepared medication from prescrription with a medication set (Batch, Serial, Expiry) prepared.
+ * Describes a prepared medication from prescrription with a medication set (Batch, serial, Expiry) prepared.
  * TrspPatient, Presritpion and Preparation time used.
  *</p>
  *
@@ -21,14 +21,14 @@ public class TrspPreparedMedication extends TrspMedication {
     public static enum MedicationState {open, prepared, controlled, served}
 
     private String gtinFromAssignedItem;
-    private String BatchLot;
-    private String Serial;
-    private String ExpiryDate;
+    private String batchLot;
+    private String serial;
+    private String expiryDate;
     private MedicationState state = MedicationState.open;
     private TrspPatient forPatient;
     private TrspPrescription basedOnPrescription;
     private LocalDateTime preparationTime;
-    private String StaffGln;
+    private String staffGln;
 
     private boolean isReserve = false;
 
@@ -40,9 +40,9 @@ public class TrspPreparedMedication extends TrspMedication {
                                   MedicationState state, TrspPatient forPatient, TrspPrescription basedOnPrescription, LocalDateTime preparationTime, boolean isReserve) {
         super(gtinA,gtinBs, name, description, dosage, dosageUnit, applicationScheme);
         this.gtinFromAssignedItem = gtinFromAssignedItem;
-        BatchLot = batchLot;
-        Serial = serial;
-        ExpiryDate = expiryDate;
+        this.batchLot = batchLot;
+        this.serial = serial;
+        this.expiryDate = expiryDate;
         this.state = state;
         this.forPatient = forPatient;
         this.basedOnPrescription = basedOnPrescription;
@@ -59,27 +59,27 @@ public class TrspPreparedMedication extends TrspMedication {
     }
 
     public String getBatchLot() {
-        return BatchLot;
+        return batchLot;
     }
 
     public void setBatchLot(String batchLot) {
-        BatchLot = batchLot;
+        this.batchLot = batchLot;
     }
 
     public String getSerial() {
-        return Serial;
+        return serial;
     }
 
     public void setSerial(String serial) {
-        Serial = serial;
+        this.serial = serial;
     }
 
     public String getExpiryDate() {
-        return ExpiryDate;
+        return expiryDate;
     }
 
     public void setExpiryDate(String expiryDate) {
-        ExpiryDate = expiryDate;
+        this.expiryDate = expiryDate;
     }
 
     public MedicationState getState() {
@@ -115,11 +115,11 @@ public class TrspPreparedMedication extends TrspMedication {
     }
 
     public String getStaffGln() {
-        return StaffGln;
+        return staffGln;
     }
 
     public void setStaffGln(String staffGln) {
-        StaffGln = staffGln;
+        this.staffGln = staffGln;
     }
 
     public boolean isReserve() {

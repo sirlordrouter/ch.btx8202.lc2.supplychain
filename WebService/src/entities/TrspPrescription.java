@@ -18,34 +18,63 @@ import java.util.List;
 public class TrspPrescription {
 
     public static enum PrescriptionState {open, paused, stopped, doseChanged}
+
+
+    private String polypointID; //TODO: Replace Polypint in name with InformationSystem
+    private String patientPolypointID;//TODO: Replace Polypint in name with InformationSystem
+    private LocalDate dateCreated;
+    private String createdByStaffGLN;
+    private String name;
+    private String firstName;
+    private String position;
+    private String description;
+    private String schedule;
+    private String routeOfAdministration;
     private boolean isStandardMedic = true;
+    private PrescriptionState prescriptionState;
+    private String notes;
     private List<TrspPreparedMedication> medications;
-    private String PolypointID; //TODO: Replace Polypint in Name with InformationSystem
-    private String PatientPolypointID;//TODO: Replace Polypint in Name with InformationSystem
-    private LocalDate DateCreated;
-    private String CreatedByStaffGLN;
-    private String Name;
-    private String FirstName;
-    private String Position;
-    private String Description;
-    private String Schedule;
-    private String RouteOfAdministration;
+    private List<TrspPreparedMedication> medicationsMorning;
+    private List<TrspPreparedMedication> medicationsNoon;
+    private List<TrspPreparedMedication> medicationsEvening;
+    private List<TrspPreparedMedication> medicationsNight;
 
     public TrspPrescription() {}
 
     public TrspPrescription(boolean isStandardMedic, List<TrspPreparedMedication> medications, String polypointID, String patientPolypointID, LocalDate dateCreated, String createdByStaffGLN, String name, String firstName, String position, String description, String schedule, String routeOfAdministration) {
         this.isStandardMedic = isStandardMedic;
         this.medications = medications;
-        PolypointID = polypointID;
-        PatientPolypointID = patientPolypointID;
-        DateCreated = dateCreated;
-        CreatedByStaffGLN = createdByStaffGLN;
-        Name = name;
-        FirstName = firstName;
-        Position = position;
-        Description = description;
-        Schedule = schedule;
-        RouteOfAdministration = routeOfAdministration;
+        this.polypointID = polypointID;
+        this.patientPolypointID = patientPolypointID;
+        this.dateCreated = dateCreated;
+        this.createdByStaffGLN = createdByStaffGLN;
+        this.name = name;
+        this.firstName = firstName;
+        this.position = position;
+        this.description = description;
+        this.schedule = schedule;
+        this.routeOfAdministration = routeOfAdministration;
+    }
+
+    public TrspPrescription(boolean isStandardMedic, String polypointID, String patientPolypointID, LocalDate dateCreated, String createdByStaffGLN, String name, String firstName, String position, String description, String schedule, String routeOfAdministration, PrescriptionState prescriptionState, String notes, List<TrspPreparedMedication> medications, List<TrspPreparedMedication> medicationsMorning, List<TrspPreparedMedication> medicationsNoon, List<TrspPreparedMedication> medicationsEvening, List<TrspPreparedMedication> medicationsNight) {
+        this.isStandardMedic = isStandardMedic;
+        this.polypointID = polypointID;
+        this.patientPolypointID = patientPolypointID;
+        this.dateCreated = dateCreated;
+        this.createdByStaffGLN = createdByStaffGLN;
+        this.name = name;
+        this.firstName = firstName;
+        this.position = position;
+        this.description = description;
+        this.schedule = schedule;
+        this.routeOfAdministration = routeOfAdministration;
+        this.prescriptionState = prescriptionState;
+        this.notes = notes;
+        this.medications = medications;
+        this.medicationsMorning = medicationsMorning;
+        this.medicationsNoon = medicationsNoon;
+        this.medicationsEvening = medicationsEvening;
+        this.medicationsNight = medicationsNight;
     }
 
     public boolean isStandardMedic() {
@@ -56,6 +85,102 @@ public class TrspPrescription {
         this.isStandardMedic = isStandardMedic;
     }
 
+    public String getPolypointID() {
+        return polypointID;
+    }
+
+    public void setPolypointID(String polypointID) {
+        this.polypointID = polypointID;
+    }
+
+    public String getPatientPolypointID() {
+        return patientPolypointID;
+    }
+
+    public void setPatientPolypointID(String patientPolypointID) {
+        this.patientPolypointID = patientPolypointID;
+    }
+
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getCreatedByStaffGLN() {
+        return createdByStaffGLN;
+    }
+
+    public void setCreatedByStaffGLN(String createdByStaffGLN) {
+        this.createdByStaffGLN = createdByStaffGLN;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getRouteOfAdministration() {
+        return routeOfAdministration;
+    }
+
+    public void setRouteOfAdministration(String routeOfAdministration) {
+        this.routeOfAdministration = routeOfAdministration;
+    }
+
+    public PrescriptionState getPrescriptionState() {
+        return prescriptionState;
+    }
+
+    public void setPrescriptionState(PrescriptionState prescriptionState) {
+        this.prescriptionState = prescriptionState;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public List<TrspPreparedMedication> getMedications() {
         return medications;
     }
@@ -64,83 +189,35 @@ public class TrspPrescription {
         this.medications = medications;
     }
 
-    public String getPolypointID() {
-        return PolypointID;
+    public List<TrspPreparedMedication> getMedicationsMorning() {
+        return medicationsMorning;
     }
 
-    public void setPolypointID(String polypointID) {
-        PolypointID = polypointID;
+    public void setMedicationsMorning(List<TrspPreparedMedication> medicationsMorning) {
+        this.medicationsMorning = medicationsMorning;
     }
 
-    public String getPatientPolypointID() {
-        return PatientPolypointID;
+    public List<TrspPreparedMedication> getMedicationsNoon() {
+        return medicationsNoon;
     }
 
-    public void setPatientPolypointID(String patientPolypointID) {
-        PatientPolypointID = patientPolypointID;
+    public void setMedicationsNoon(List<TrspPreparedMedication> medicationsNoon) {
+        this.medicationsNoon = medicationsNoon;
     }
 
-    public LocalDate getDateCreated() {
-        return DateCreated;
+    public List<TrspPreparedMedication> getMedicationsEvening() {
+        return medicationsEvening;
     }
 
-    public void setDateCreated(LocalDate dateCreated) {
-        DateCreated = dateCreated;
+    public void setMedicationsEvening(List<TrspPreparedMedication> medicationsEvening) {
+        this.medicationsEvening = medicationsEvening;
     }
 
-    public String getCreatedByStaffGLN() {
-        return CreatedByStaffGLN;
+    public List<TrspPreparedMedication> getMedicationsNight() {
+        return medicationsNight;
     }
 
-    public void setCreatedByStaffGLN(String createdByStaffGLN) {
-        CreatedByStaffGLN = createdByStaffGLN;
-    }
-
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
-    }
-
-    public String getFirstName() {
-        return FirstName;
-    }
-
-    public void setFirstName(String firstName) {
-        FirstName = firstName;
-    }
-
-    public String getPosition() {
-        return Position;
-    }
-
-    public void setPosition(String position) {
-        Position = position;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
-
-    public String getSchedule() {
-        return Schedule;
-    }
-
-    public void setSchedule(String schedule) {
-        Schedule = schedule;
-    }
-
-    public String getRouteOfAdministration() {
-        return RouteOfAdministration;
-    }
-
-    public void setRouteOfAdministration(String routeOfAdministration) {
-        RouteOfAdministration = routeOfAdministration;
+    public void setMedicationsNight(List<TrspPreparedMedication> medicationsNight) {
+        this.medicationsNight = medicationsNight;
     }
 }

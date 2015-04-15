@@ -26,7 +26,7 @@ public class TrspPatient {
     private LocalDate birthDate;
     private boolean reaState = false;
     private int fid = -1;
-    private String StationName;
+    private String stationName;
     private String room;
     private Gender gender;
     private BloodGroup bloodGroup;
@@ -43,7 +43,7 @@ public class TrspPatient {
         this.fid = fid;
         this.room = room;
         this.gender = gender;
-        this.StationName = stationName;
+        this.stationName = stationName;
         this.bloodGroup = bloodGroup;
     }
 
@@ -120,11 +120,11 @@ public class TrspPatient {
     }
 
     public String getStationName() {
-        return StationName;
+        return stationName;
     }
 
     public void setStationName(String stationName) {
-        StationName = stationName;
+        this.stationName = stationName;
     }
 
     public BloodGroup getBloodGroup() {

@@ -94,7 +94,7 @@ public class FakeDataRepository implements IRepository {
     }
 
     @Override
-    public boolean UpdatePreperationState(Prescription prescription, Medication medication, Patient patient) {
+    public boolean UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state) {
         return false;
     }
 }

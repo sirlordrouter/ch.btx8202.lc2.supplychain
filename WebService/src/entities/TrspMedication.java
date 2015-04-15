@@ -18,21 +18,21 @@ public class TrspMedication {
 
     private String gtinA;
     private List<String> gtinBs;
-    private String Name;
-    private String Description;
-    private String Dosage;
-    private String DosageUnit;
-    private String ApplicationScheme;
+    private String name;
+    private String description;
+    private String dosage;
+    private String dosageUnit;
+    private String applicationScheme;
 
 
     public TrspMedication(String gtinA,List<String> gtinBs, String name, String description, String dosage, String dosageUnit, String applicationScheme) {
         this.gtinA = gtinA;
         this.gtinBs = gtinBs;
-        this.Name = name;
-        this.Description = description;
-        this.Dosage = dosage;
-        this.DosageUnit = dosageUnit;
-        this.ApplicationScheme = applicationScheme;
+        this.name = name;
+        this.description = description;
+        this.dosage = dosage;
+        this.dosageUnit = dosageUnit;
+        this.applicationScheme = applicationScheme;
     }
 
     public TrspMedication() {
@@ -56,43 +56,43 @@ public class TrspMedication {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description= description;
+        this.description = description;
     }
 
     public String getDosage() {
-        return Dosage;
+        return dosage;
     }
 
     public void setDosage(String dosage) {
-        Dosage= dosage;
+        this.dosage = dosage;
     }
 
     public String getDosageUnit() {
-        return DosageUnit;
+        return dosageUnit;
     }
 
     public void setDosageUnit(String dosageUnit) {
-        DosageUnit= dosageUnit;
+        this.dosageUnit = dosageUnit;
     }
 
     public String getApplicationScheme() {
-        return ApplicationScheme;
+        return applicationScheme;
     }
 
     public void setApplicationScheme(String applicationScheme) {
-        ApplicationScheme = applicationScheme;
+        this.applicationScheme = applicationScheme;
     }
 
 

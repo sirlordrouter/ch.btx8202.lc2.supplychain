@@ -1,6 +1,5 @@
 package datalayer;
 
-import entities.Medication;
 import entities.Patient;
 import entities.PreparedMedication;
 import entities.Prescription;
@@ -17,6 +16,6 @@ public interface IRepository {
     public List<String> getStaff();
     public List<PreparedMedication> getMedications();
     public List<Prescription> getPrescriptions(Patient patient);
-    public boolean UpdatePreperationState(Prescription prescription, Medication medication, Patient patient);
+    public boolean UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state);
 
 }

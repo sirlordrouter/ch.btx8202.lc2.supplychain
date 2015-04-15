@@ -3,9 +3,7 @@ package services;
 import entities.Patient;
 import entities.PreparedMedication;
 import entities.Prescription;
-import webservice.erp.TrspPatient;
-import webservice.erp.TrspPreparedMedication;
-import webservice.erp.TrspPrescription;
+import webservice.erp.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,7 +16,9 @@ import java.util.stream.Collectors;
  * BSc Medical Informatics<br>
  * Module <br>
  * <p>
- * <p></p>
+ *  Converter class to chnage objects from Webservice to local client specific objects with javafx properties and back.
+ *  No validation of Input is performed.
+ * </p>
  * Project: MediPrep
  * Package: services
  *
@@ -109,15 +109,72 @@ public class WebServiceObjectFactory {
         return patient;
     }
 
-    public static TrspPrescription convertToWebServiceObject(Prescription p) {
+    public static TrspPrescription convertToWebServiceObject(Prescription prescription) {
+
+        TrspPrescription trspPrescription = new TrspPrescription();
+
+        trspPrescription.setCreatedByStaffGLN(prescription.getCreatedByStaffGLN());
+        trspPrescription.setDateCreated(prescription.getDateCreated().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        trspPrescription.setDescription(prescription.getDescription());
+        trspPrescription.setName(prescription.getName());
+        trspPrescription.setFirstName(prescription.getFirstName());
+        trspPrescription.setPatientPolypointID(prescription.getPatientPolypointID());
+        trspPrescription.setPolypointID(prescription.getPolypointID());
+        trspPrescription.setPosition(prescription.getPosition());
+        trspPrescription.setRouteOfAdministration(prescription.getRouteOfAdministration());
+        trspPrescription.setSchedule(prescription.getSchedule());
+
+        /*
+        trspPrescription.setNotes
+        trspPrescription.setIsStandardMedic
+        trspPrescription.setPrescriptionState
+        trspPrescription.setMedications
+        trspPrescription.setMedicationMorning
+        trspPrescription.setMedicationNoon
+        trspPrescription.setMedicationEvening
+        trspPrescription.setMedicationNight
+        */
+
         return null;
     }
 
     public static TrspPreparedMedication convertToWebServiceObject(PreparedMedication preparedMedication) {
-        return null;
+        TrspPreparedMedication trspPreparedMedication = new TrspPreparedMedication();
+
+        trspPreparedMedication.setGtinA(preparedMedication.getGtinA().get());
+        trspPreparedMedication.setName(preparedMedication.getName().get());
+        trspPreparedMedication.setDescription(preparedMedication.getDescription().get());
+        trspPreparedMedication.setDosage(preparedMedication.getDosage().get());
+        trspPreparedMedication.setDosageUnit(preparedMedication.getDosageUnit().get());
+        trspPreparedMedication.setApplicationScheme(preparedMedication.getApplicationScheme().get());
+        trspPreparedMedication.setGtinFromAssignedItem(preparedMedication.getAssignedProductGTIN());
+        trspPreparedMedication.setBatchLot(preparedMedication.getBatchLot());
+        trspPreparedMedication.setSerial(preparedMedication.getSerial());
+        trspPreparedMedication.setExpiryDate(preparedMedication.getExpiryDate());
+        trspPreparedMedication.setState(MedicationState.valueOf(preparedMedication.getState().name()));
+        trspPreparedMedication.setForPatient(convertToWebServiceObject(preparedMedication.getForPatient()));
+        trspPreparedMedication.setBasedOnPrescription(convertToWebServiceObject(preparedMedication.getBasedOnPrescription()));
+        trspPreparedMedication.setPreparationTime(preparedMedication.getPreparationTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+
+        return trspPreparedMedication;
     }
 
     public static TrspPatient convertToWebServiceObject(Patient patient) {
-        return null;
+
+        TrspPatient trspPatient = new TrspPatient();
+
+        trspPatient.setBeaconID(patient.getBeaconID());
+        trspPatient.setBirthDate(patient.getBirthDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        //trspPatient.setReaState(patient.get);
+        trspPatient.setBloodGroup(BloodGroup.fromValue(patient.getBloodGroup().name()));
+        trspPatient.setFid(patient.getFid());
+        trspPatient.setFirstname(patient.getFirstname());
+        trspPatient.setLastname(patient.getLastname());
+        trspPatient.setGender(Gender.fromValue(patient.getGender().name()));
+        trspPatient.setPid(patient.getPid());
+        trspPatient.setRoom(patient.getRoom());
+        trspPatient.setStationName(patient.getStationName());
+
+        return trspPatient;
     }
 }

@@ -230,30 +230,6 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
 
     }
 
-    private void updatePreparedMedication(PreparedMedication preparedMedication, String gtin, String expDate, String lot, String serial) {
-        preparedMedication.setAssignedProductGTIN(gtin);
-        preparedMedication.setExpiryDate(expDate);
-        preparedMedication.setBatchLot(lot);
-        preparedMedication.setSerial(serial);
-
-        preparedMedication.setPreparationTime(LocalDateTime.now());
-        preparedMedication.setState(PreparedMedication.MedicationState.prepared);
-    }
-
-    private void showSuccessfullPreparationAndPrintLabel(PreparedMedication preparedMedication) {
-        //Print Barcode for product and make info .....
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText(null);
-        alert.setContentText("You now have successfully prepared all medications\n for the prescription" +
-                "congratulations!! :-p" +
-                "\nTake the printed barcode and put in on the item" +
-                "\nto enable bedside scanning." +
-                "\n<< Happy Scan >>"
-        );
-
-        alert.showAndWait();
-    }
 
     @Override
     public void beforeLeaving() {
@@ -306,19 +282,10 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 } else {
 
                     PreparedMedication preparedMedication = medis.get(0);
-                    preparedMedication.setSerial(info.getAI21_SERIAL_NUMBER());
-                    preparedMedication.setExpiryDate(info.getAI17_VERFALLSDATUM());
-                    preparedMedication.setBatchLot(info.getAI10_CHARGENNUMMER());
+                    updatePreparedMedication(preparedMedication, info.getAI01_HANDELSEINHEIT(),
+                            info.getAI17_VERFALLSDATUM(), info.getAI10_CHARGENNUMMER(), info.getAI21_SERIAL_NUMBER());
 
-                    preparedMedication.setPreparationTime(LocalDateTime.now());
-                    preparedMedication.setState(PreparedMedication.MedicationState.prepared);
-
-                    Alert alertSuccessfulScan = new Alert(Alert.AlertType.INFORMATION);
-                    alertSuccessfulScan.setTitle("Information Dialog");
-                    alertSuccessfulScan.setHeaderText(null);
-                    alertSuccessfulScan.setContentText("Scan von " + medis.get(0).getDescription() + "erfolgreich." );
-
-                    alertSuccessfulScan.showAndWait();
+                    showSuccessfullScan(preparedMedication);
 
                     if (medis.get(0).getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.prepared)) {
                         showSuccessfullPreparationAndPrintLabel(preparedMedication);
@@ -331,6 +298,58 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 //TODO: what to do if not every field captured
                 errorMessage += "Es konnten nicht alle Informationen zum Medikament ausgelesen werden.";
             }
+
+            if(!errorMessage.equals("")) {
+                showError(errorMessage);
+            }
+
         }
+    }
+
+    private void showError(String errorMessage) {
+        Alert alertSuccessfulScan = new Alert(Alert.AlertType.ERROR);
+        alertSuccessfulScan.setTitle("Information Dialog");
+        alertSuccessfulScan.setHeaderText(null);
+        alertSuccessfulScan.setContentText("Scan von nicht erfolgreich. Gefundene Fehler:\n" + errorMessage);
+
+        alertSuccessfulScan.showAndWait();
+    }
+
+    private void showSuccessfullScan(PreparedMedication preparedMedication) {
+        Alert alertSuccessfulScan = new Alert(Alert.AlertType.INFORMATION);
+        alertSuccessfulScan.setTitle("Information Dialog");
+        alertSuccessfulScan.setHeaderText(null);
+        alertSuccessfulScan.setContentText("Scan von " + preparedMedication.getDescription() + "erfolgreich." );
+
+        alertSuccessfulScan.showAndWait();
+    }
+
+    private void updatePreparedMedication(PreparedMedication preparedMedication, String gtin, String expDate, String lot, String serial) {
+        preparedMedication.setAssignedProductGTIN(gtin);
+        preparedMedication.setExpiryDate(expDate);
+        preparedMedication.setBatchLot(lot);
+        preparedMedication.setSerial(serial);
+
+        preparedMedication.setPreparationTime(LocalDateTime.now());
+        preparedMedication.setState(PreparedMedication.MedicationState.prepared);
+        List<PreparedMedication> medicationList = new ArrayList<>();
+        medicationList.add(preparedMedication);
+
+        dataSource.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
+    }
+
+    private void showSuccessfullPreparationAndPrintLabel(PreparedMedication preparedMedication) {
+        //Print Barcode for product and make info .....
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("You now have successfully prepared all medications\n for the prescription" +
+                        "congratulations!! :-p" +
+                        "\nTake the printed barcode and put in on the item" +
+                        "\nto enable bedside scanning." +
+                        "\n<< Happy Scan >>"
+        );
+
+        alert.showAndWait();
     }
 }

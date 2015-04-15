@@ -18,8 +18,8 @@ import java.util.List;
 public class Prescription {
 
     public static enum PrescriptionState {open, paused, stopped, doseChanged}
+
     private boolean isStandardMedic = true;
-    private List<PreparedMedication> medications;
     private String PolypointID; //TODO: Replace Polypint in Name with InformationSystem
     private String PatientPolypointID;//TODO: Replace Polypint in Name with InformationSystem
     private LocalDate DateCreated;
@@ -30,6 +30,13 @@ public class Prescription {
     private String Description;
     private String Schedule;
     private String RouteOfAdministration;
+    private PrescriptionState prescriptionState;
+    private String notes;
+    private List<PreparedMedication> medications;
+    private List<PreparedMedication> medicationsMorning;
+    private List<PreparedMedication> medicationsNoon;
+    private List<PreparedMedication> medicationsEvening;
+    private List<PreparedMedication> medicationsNight;
 
     public Prescription() {}
 
@@ -46,6 +53,27 @@ public class Prescription {
         Description = description;
         Schedule = schedule;
         RouteOfAdministration = routeOfAdministration;
+    }
+
+    public Prescription(boolean isStandardMedic,List<PreparedMedication> medications, String polypointID, String patientPolypointID, LocalDate dateCreated, String createdByStaffGLN, String name, String firstName, String position, String description, String schedule, String routeOfAdministration, PrescriptionState prescriptionState, String notes,  List<PreparedMedication> medicationsMorning, List<PreparedMedication> medicationsNoon, List<PreparedMedication> medicationsEvening, List<PreparedMedication> medicationsNight) {
+        this.isStandardMedic = isStandardMedic;
+        PolypointID = polypointID;
+        PatientPolypointID = patientPolypointID;
+        DateCreated = dateCreated;
+        CreatedByStaffGLN = createdByStaffGLN;
+        Name = name;
+        FirstName = firstName;
+        Position = position;
+        Description = description;
+        Schedule = schedule;
+        RouteOfAdministration = routeOfAdministration;
+        this.prescriptionState = prescriptionState;
+        this.notes = notes;
+        this.medications = medications;
+        this.medicationsMorning = medicationsMorning;
+        this.medicationsNoon = medicationsNoon;
+        this.medicationsEvening = medicationsEvening;
+        this.medicationsNight = medicationsNight;
     }
 
     public boolean isStandardMedic() {
@@ -142,6 +170,54 @@ public class Prescription {
 
     public void setRouteOfAdministration(String routeOfAdministration) {
         RouteOfAdministration = routeOfAdministration;
+    }
+
+    public PrescriptionState getPrescriptionState() {
+        return prescriptionState;
+    }
+
+    public void setPrescriptionState(PrescriptionState prescriptionState) {
+        this.prescriptionState = prescriptionState;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public List<PreparedMedication> getMedicationsMorning() {
+        return medicationsMorning;
+    }
+
+    public void setMedicationsMorning(List<PreparedMedication> medicationsMorning) {
+        this.medicationsMorning = medicationsMorning;
+    }
+
+    public List<PreparedMedication> getMedicationsNoon() {
+        return medicationsNoon;
+    }
+
+    public void setMedicationsNoon(List<PreparedMedication> medicationsNoon) {
+        this.medicationsNoon = medicationsNoon;
+    }
+
+    public List<PreparedMedication> getMedicationsEvening() {
+        return medicationsEvening;
+    }
+
+    public void setMedicationsEvening(List<PreparedMedication> medicationsEvening) {
+        this.medicationsEvening = medicationsEvening;
+    }
+
+    public List<PreparedMedication> getMedicationsNight() {
+        return medicationsNight;
+    }
+
+    public void setMedicationsNight(List<PreparedMedication> medicationsNight) {
+        this.medicationsNight = medicationsNight;
     }
 
     public boolean doAllMedicationsHave(PreparedMedication.MedicationState state) {

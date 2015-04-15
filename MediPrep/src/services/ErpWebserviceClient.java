@@ -2,10 +2,7 @@ package services;
 
 import datalayer.IRepository;
 import entities.*;
-import webservice.erp.SupplyChainService;
-import webservice.erp.SupplyChainServiceService;
-import webservice.erp.TrspPatient;
-import webservice.erp.TrspPrescription;
+import webservice.erp.*;
 
 import javax.xml.ws.soap.SOAPFaultException;
 import java.util.ArrayList;
@@ -131,10 +128,17 @@ public class ErpWebserviceClient implements IRepository {
     }
 
     @Override
-    public boolean UpdatePreperationState(Prescription prescription, Medication medication, Patient patient) {
+    public boolean UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state) {
         try{
+           MedicationState medicationState = MedicationState.valueOf(state.name());
+           assert !medicationState.value().equals("");
+           List<TrspPreparedMedication> trspPreparedMedicationList = new ArrayList<>();
 
-        return false;
+            for (PreparedMedication preparedMedication : preparedMedications) {
+                trspPreparedMedicationList.add(WebServiceObjectFactory.convertToWebServiceObject(preparedMedication));
+            }
+
+            return supplyChainServicePort.updatePreparedMedications(trspPreparedMedicationList, medicationState);
 
         } catch (SOAPFaultException e) {
             e.printStackTrace();
