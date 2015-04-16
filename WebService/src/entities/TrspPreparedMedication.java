@@ -20,6 +20,7 @@ public class TrspPreparedMedication extends TrspMedication {
 
     public static enum MedicationState {open, prepared, controlled, served}
 
+    private int preparedMedicationId;
     private String gtinFromAssignedItem;
     private String batchLot;
     private String serial;
@@ -48,6 +49,29 @@ public class TrspPreparedMedication extends TrspMedication {
         this.basedOnPrescription = basedOnPrescription;
         this.preparationTime = preparationTime;
         this.isReserve = isReserve;
+    }
+
+    public TrspPreparedMedication(String gtinA, List<String> gtinBs, String name, String description, String dosage, String dosageUnit, String applicationScheme, int preparedMedicationId, String gtinFromAssignedItem, String batchLot, String serial, String expiryDate, MedicationState state, TrspPatient forPatient, TrspPrescription basedOnPrescription, LocalDateTime preparationTime, String staffGln, boolean isReserve) {
+        super(gtinA, gtinBs, name, description, dosage, dosageUnit, applicationScheme);
+        this.preparedMedicationId = preparedMedicationId;
+        this.gtinFromAssignedItem = gtinFromAssignedItem;
+        this.batchLot = batchLot;
+        this.serial = serial;
+        this.expiryDate = expiryDate;
+        this.state = state;
+        this.forPatient = forPatient;
+        this.basedOnPrescription = basedOnPrescription;
+        this.preparationTime = preparationTime;
+        this.staffGln = staffGln;
+        this.isReserve = isReserve;
+    }
+
+    public int getPreparedMedicationId() {
+        return preparedMedicationId;
+    }
+
+    public void setPreparedMedicationId(int preparedMedicationId) {
+        this.preparedMedicationId = preparedMedicationId;
     }
 
     public String getGtinFromAssignedItem() {

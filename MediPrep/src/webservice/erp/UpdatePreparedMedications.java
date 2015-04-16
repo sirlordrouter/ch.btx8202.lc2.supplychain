@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="arg0" type="{http://service/}trspPreparedMedication" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="arg1" type="{http://service/}medicationState" minOccurs="0"/>
+ *         &lt;element name="arg2" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,13 +33,15 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "updatePreparedMedications", propOrder = {
     "arg0",
-    "arg1"
+    "arg1",
+    "arg2"
 })
 public class UpdatePreparedMedications {
 
     protected List<TrspPreparedMedication> arg0;
     @XmlSchemaType(name = "string")
     protected MedicationState arg1;
+    protected String arg2;
 
     /**
      * Gets the value of the arg0 property.
@@ -91,6 +94,30 @@ public class UpdatePreparedMedications {
      */
     public void setArg1(MedicationState value) {
         this.arg1 = value;
+    }
+
+    /**
+     * Ruft den Wert der arg2-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getArg2() {
+        return arg2;
+    }
+
+    /**
+     * Legt den Wert der arg2-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setArg2(String value) {
+        this.arg2 = value;
     }
 
 }

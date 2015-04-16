@@ -41,17 +41,25 @@ public class WebServiceObjectFactory {
                         trspPrescription.getPolypointID(),
                         trspPrescription.getPatientPolypointID(),
                         LocalDate.parse(trspPrescription.getDateCreated(), DateTimeFormatter.ISO_LOCAL_DATE),
+                        LocalDate.parse(trspPrescription.getVaildUntil(), DateTimeFormatter.ISO_LOCAL_DATE),
                         trspPrescription.getCreatedByStaffGLN(),
                         trspPrescription.getName(),
                         trspPrescription.getFirstName(),
                         trspPrescription.getPosition(),
                         trspPrescription.getDescription(),
                         trspPrescription.getSchedule(),
-                        trspPrescription.getRouteOfAdministration());
+                        trspPrescription.getRouteOfAdministration(),
+                        Prescription.PrescriptionState.valueOf(trspPrescription.getPrescriptionState().value()),
+                        trspPrescription.getNotes(),
+                        null,
+                        null,
+                        null,
+                        null
+                );
 
         //TODO: solve better (webservice)
         for (PreparedMedication preparedMedication : preparedMedicationList) {
-            preparedMedication.setApplicationScheme(trspPrescription.getRouteOfAdministration());
+            preparedMedication.setApplicationScheme(trspPrescription.getSchedule());
             preparedMedication.setBasedOnPrescription(prescription);
         }
 
@@ -72,6 +80,7 @@ public class WebServiceObjectFactory {
                 trspPreparedMedication.getDescription(),
                 trspPreparedMedication.getDosage(),
                 trspPreparedMedication.getDosageUnit(),
+                -1,
                 trspPreparedMedication.getApplicationScheme(),
                 trspPreparedMedication.getGtinFromAssignedItem(),
                 trspPreparedMedication.getBatchLot(),
@@ -111,10 +120,14 @@ public class WebServiceObjectFactory {
 
     public static TrspPrescription convertToWebServiceObject(Prescription prescription) {
 
+        if (prescription == null) {
+            return null;
+        }
+
         TrspPrescription trspPrescription = new TrspPrescription();
 
         trspPrescription.setCreatedByStaffGLN(prescription.getCreatedByStaffGLN());
-        trspPrescription.setDateCreated(prescription.getDateCreated().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        trspPrescription.setDateCreated(prescription.getDateCreated().format(DateTimeFormatter.ISO_LOCAL_DATE)); //TODO: CHange to date time
         trspPrescription.setDescription(prescription.getDescription());
         trspPrescription.setName(prescription.getName());
         trspPrescription.setFirstName(prescription.getFirstName());
@@ -123,9 +136,8 @@ public class WebServiceObjectFactory {
         trspPrescription.setPosition(prescription.getPosition());
         trspPrescription.setRouteOfAdministration(prescription.getRouteOfAdministration());
         trspPrescription.setSchedule(prescription.getSchedule());
-
+        trspPrescription.setNotes(prescription.getNotes());
         /*
-        trspPrescription.setNotes
         trspPrescription.setIsStandardMedic
         trspPrescription.setPrescriptionState
         trspPrescription.setMedications
@@ -135,10 +147,15 @@ public class WebServiceObjectFactory {
         trspPrescription.setMedicationNight
         */
 
-        return null;
+        return trspPrescription;
     }
 
     public static TrspPreparedMedication convertToWebServiceObject(PreparedMedication preparedMedication) {
+
+        if (preparedMedication == null) {
+            return null;
+        }
+
         TrspPreparedMedication trspPreparedMedication = new TrspPreparedMedication();
 
         trspPreparedMedication.setGtinA(preparedMedication.getGtinA().get());
@@ -151,7 +168,7 @@ public class WebServiceObjectFactory {
         trspPreparedMedication.setBatchLot(preparedMedication.getBatchLot());
         trspPreparedMedication.setSerial(preparedMedication.getSerial());
         trspPreparedMedication.setExpiryDate(preparedMedication.getExpiryDate());
-        trspPreparedMedication.setState(MedicationState.valueOf(preparedMedication.getState().name()));
+        trspPreparedMedication.setState(convertToWebServiceObject(preparedMedication.getState()));
         trspPreparedMedication.setForPatient(convertToWebServiceObject(preparedMedication.getForPatient()));
         trspPreparedMedication.setBasedOnPrescription(convertToWebServiceObject(preparedMedication.getBasedOnPrescription()));
         trspPreparedMedication.setPreparationTime(preparedMedication.getPreparationTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
@@ -161,20 +178,70 @@ public class WebServiceObjectFactory {
 
     public static TrspPatient convertToWebServiceObject(Patient patient) {
 
+        if (patient == null) {
+            return null;
+        }
+
         TrspPatient trspPatient = new TrspPatient();
 
         trspPatient.setBeaconID(patient.getBeaconID());
         trspPatient.setBirthDate(patient.getBirthDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
         //trspPatient.setReaState(patient.get);
-        trspPatient.setBloodGroup(BloodGroup.fromValue(patient.getBloodGroup().name()));
+        trspPatient.setBloodGroup(convertToWebServiceObject((patient.getBloodGroup())));
         trspPatient.setFid(patient.getFid());
         trspPatient.setFirstname(patient.getFirstname());
         trspPatient.setLastname(patient.getLastname());
-        trspPatient.setGender(Gender.fromValue(patient.getGender().name()));
+        trspPatient.setGender(convertToWebServiceObject((patient.getGender())));
         trspPatient.setPid(patient.getPid());
         trspPatient.setRoom(patient.getRoom());
         trspPatient.setStationName(patient.getStationName());
 
         return trspPatient;
     }
+
+    public static MedicationState convertToWebServiceObject(PreparedMedication.MedicationState state) {
+        switch (state) {
+            case open:
+                return MedicationState.OPEN;
+            case prepared:
+                return MedicationState.PREPARED;
+            case controlled:
+                return MedicationState.CONTROLLED;
+            case served:
+                return MedicationState.SERVED;
+        }
+        return null;
+    }
+
+    public static Gender convertToWebServiceObject(Patient.Gender gender) {
+        switch (gender) {
+            case male:
+                return Gender.MALE;
+            case female:
+                return Gender.FEMALE;
+            case undefined:
+                return Gender.UNDEFINED;
+        }
+
+        return null;
+    }
+
+    public static BloodGroup convertToWebServiceObject(Patient.BloodGroup bloodGroup) {
+        switch (bloodGroup) {
+
+            case Apositive:
+                return BloodGroup.APOSITIVE;
+            case Bpositive:
+                return BloodGroup.BPOSITIVE;
+            case AB:
+                return BloodGroup.AB;
+            case ZeroNegative:
+                return BloodGroup.ZERO_NEGATIVE;
+            case ZeroPositive:
+                return BloodGroup.ZERO_POSITIVE;
+        }
+        return null;
+    }
+
+
 }

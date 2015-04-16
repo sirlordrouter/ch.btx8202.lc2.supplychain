@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -24,12 +25,19 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="firstName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="medications" type="{http://service/}trspPreparedMedication" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="medicationsEvening" type="{http://service/}trspPreparedMedication" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="medicationsMorning" type="{http://service/}trspPreparedMedication" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="medicationsNight" type="{http://service/}trspPreparedMedication" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="medicationsNoon" type="{http://service/}trspPreparedMedication" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="notes" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="patientPolypointID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="polypointID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="position" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="prescriptionState" type="{http://service/}prescriptionState" minOccurs="0"/>
  *         &lt;element name="routeOfAdministration" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="schedule" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="vaildUntil" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -45,12 +53,19 @@ import javax.xml.bind.annotation.XmlType;
     "description",
     "firstName",
     "medications",
+    "medicationsEvening",
+    "medicationsMorning",
+    "medicationsNight",
+    "medicationsNoon",
     "name",
+    "notes",
     "patientPolypointID",
     "polypointID",
     "position",
+    "prescriptionState",
     "routeOfAdministration",
-    "schedule"
+    "schedule",
+    "vaildUntil"
 })
 public class TrspPrescription {
 
@@ -60,12 +75,24 @@ public class TrspPrescription {
     protected String firstName;
     @XmlElement(nillable = true)
     protected List<TrspPreparedMedication> medications;
+    @XmlElement(nillable = true)
+    protected List<TrspPreparedMedication> medicationsEvening;
+    @XmlElement(nillable = true)
+    protected List<TrspPreparedMedication> medicationsMorning;
+    @XmlElement(nillable = true)
+    protected List<TrspPreparedMedication> medicationsNight;
+    @XmlElement(nillable = true)
+    protected List<TrspPreparedMedication> medicationsNoon;
     protected String name;
+    protected String notes;
     protected String patientPolypointID;
     protected String polypointID;
     protected String position;
+    @XmlSchemaType(name = "string")
+    protected PrescriptionState prescriptionState;
     protected String routeOfAdministration;
     protected String schedule;
+    protected String vaildUntil;
 
     /**
      * Ruft den Wert der createdByStaffGLN-Eigenschaft ab.
@@ -193,6 +220,122 @@ public class TrspPrescription {
     }
 
     /**
+     * Gets the value of the medicationsEvening property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the medicationsEvening property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getMedicationsEvening().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link TrspPreparedMedication }
+     * 
+     * 
+     */
+    public List<TrspPreparedMedication> getMedicationsEvening() {
+        if (medicationsEvening == null) {
+            medicationsEvening = new ArrayList<TrspPreparedMedication>();
+        }
+        return this.medicationsEvening;
+    }
+
+    /**
+     * Gets the value of the medicationsMorning property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the medicationsMorning property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getMedicationsMorning().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link TrspPreparedMedication }
+     * 
+     * 
+     */
+    public List<TrspPreparedMedication> getMedicationsMorning() {
+        if (medicationsMorning == null) {
+            medicationsMorning = new ArrayList<TrspPreparedMedication>();
+        }
+        return this.medicationsMorning;
+    }
+
+    /**
+     * Gets the value of the medicationsNight property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the medicationsNight property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getMedicationsNight().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link TrspPreparedMedication }
+     * 
+     * 
+     */
+    public List<TrspPreparedMedication> getMedicationsNight() {
+        if (medicationsNight == null) {
+            medicationsNight = new ArrayList<TrspPreparedMedication>();
+        }
+        return this.medicationsNight;
+    }
+
+    /**
+     * Gets the value of the medicationsNoon property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the medicationsNoon property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getMedicationsNoon().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link TrspPreparedMedication }
+     * 
+     * 
+     */
+    public List<TrspPreparedMedication> getMedicationsNoon() {
+        if (medicationsNoon == null) {
+            medicationsNoon = new ArrayList<TrspPreparedMedication>();
+        }
+        return this.medicationsNoon;
+    }
+
+    /**
      * Ruft den Wert der name-Eigenschaft ab.
      * 
      * @return
@@ -214,6 +357,30 @@ public class TrspPrescription {
      */
     public void setName(String value) {
         this.name = value;
+    }
+
+    /**
+     * Ruft den Wert der notes-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * Legt den Wert der notes-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNotes(String value) {
+        this.notes = value;
     }
 
     /**
@@ -289,6 +456,30 @@ public class TrspPrescription {
     }
 
     /**
+     * Ruft den Wert der prescriptionState-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link PrescriptionState }
+     *     
+     */
+    public PrescriptionState getPrescriptionState() {
+        return prescriptionState;
+    }
+
+    /**
+     * Legt den Wert der prescriptionState-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link PrescriptionState }
+     *     
+     */
+    public void setPrescriptionState(PrescriptionState value) {
+        this.prescriptionState = value;
+    }
+
+    /**
      * Ruft den Wert der routeOfAdministration-Eigenschaft ab.
      * 
      * @return
@@ -334,6 +525,30 @@ public class TrspPrescription {
      */
     public void setSchedule(String value) {
         this.schedule = value;
+    }
+
+    /**
+     * Ruft den Wert der vaildUntil-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVaildUntil() {
+        return vaildUntil;
+    }
+
+    /**
+     * Legt den Wert der vaildUntil-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setVaildUntil(String value) {
+        this.vaildUntil = value;
     }
 
 }

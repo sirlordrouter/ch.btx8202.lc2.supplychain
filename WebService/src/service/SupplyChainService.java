@@ -4,6 +4,7 @@ import data.DbConnectorLogistic;
 import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import net.sourceforge.jtds.jdbc.DateTime;
 import org.intellij.lang.annotations.Language;
 
 import javax.jws.WebMethod;
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 
 /**
@@ -613,6 +615,7 @@ public class SupplyChainService {
     private Timestamp getExpDate(){
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
         cal.add((GregorianCalendar.YEAR), 1);
+        cal.setTimeInMillis(0);
         java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
         return timestamp;
     }
@@ -1329,12 +1332,23 @@ public class SupplyChainService {
 
         try {
             String query =
-                    "SELECT p.PolypointID, PatientPolypointID, DateCreated, State, CreatedByStaffGLN, \n" +
-                        "Name, FirstName, Position, Description, Schedule, RouteOfAdministration " +
-                    "FROM MediPrep_Prescription p \n" +
-                    "LEFT JOIN MediPrep_Staff  s\n" +
-                        "ON s.GLN = p.CreatedByStaffGLN  \n" +
-                    "WHERE PatientPolypointID = ?";
+                    "SELECT p.PolypointID, \n" +
+                            "PatientPolypointID, \n" +
+                            "DateCreated, \n" +
+                            "State, \n" +
+                            "CreatedByStaffGLN,\n" +
+                            "s.Name, \n" +
+                            "s.FirstName, \n" +
+                            "s.Position, \n" +
+                            "Description, \n" +
+                            "Schedule, \n" +
+                            "RouteOfAdministration," +
+                            "Notes, \n" +
+                            "ValidUntil  \n" +
+                            "FROM MediPrep_Prescription p  \n" +
+                            "LEFT JOIN MediPrep_Staff  s \n" +
+                            "    ON s.GLN = p.CreatedByStaffGLN   \n" +
+                            "WHERE PatientPolypointID = ? and ValidUntil >= GETDATE()";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, Integer.parseInt(pid));
             rs =  ps.executeQuery();
@@ -1364,14 +1378,17 @@ public class SupplyChainService {
             p.setPolypointID(rs.getString(1));
             p.setPatientPolypointID(rs.getString(2));
             p.setDateCreated(rs.getDate(3).toLocalDate());
-            p.setCreatedByStaffGLN(rs.getString(4));
-            p.setName(rs.getString(5));
-            p.setFirstName(rs.getString(6));
-            p.setPosition(rs.getString(7));
-            p.setDescription(rs.getString(8));
-            p.setSchedule(rs.getString(9));
-            p.setRouteOfAdministration(rs.getString(10));
+            p.setVaildUntil(rs.getDate(13).toLocalDate());
+            p.setCreatedByStaffGLN(rs.getString(5));
+            p.setName(rs.getString(6));
+            p.setFirstName(rs.getString(7));
+            p.setPosition(rs.getString(8));
+            p.setDescription(rs.getString(9));
+            p.setSchedule(rs.getString(10));
+            p.setRouteOfAdministration(rs.getString(11));
+            p.setNotes(rs.getString(12));
             p.setMedications(getPreparedMedicationsForPrescription(p));
+            p.setPrescriptionState(TrspPrescription.PrescriptionState.open); //TODO: change to db value, value 4
 
             trspPrescriptions.add(p);
         }
@@ -1387,28 +1404,29 @@ public class SupplyChainService {
 
         try {
             String query =
-                    "SELECT\n" +
-                            "  GTIN,\n" +
-                            "  Name,\n" +
-                            "  Pharmacode,\n" +
-                            "  PrescriptionID,\n" +
-                            "  Dosage,\n" +
-                            "  DosageUnit,\n" +
-                            "  State,\n" +
-                            "  TimePrepared,\n" +
-                            "  sp.GTINSek,\n" +
-                            "  sp.SerialNr,\n" +
-                            "  sp.ExpiryDate,\n" +
-                            "  sp.BatchLot,\n" +
-                            "  StaffGLN\n" +
-                            "FROM MediPrep_PrescriptionDefinesMedication pdm\n" +
-                            "LEFT JOIN Product p\n" +
-                            "  ON GTINprim = GTIN\n" +
-                            "Left JOIN MediPrep_PreparedMedication pm\n" +
-                            " ON pm.UID = pdm.PreparedMedicationUID\n" +
-                            "Left JOIN SecondaryPackage sp\n" +
-                            " ON sp.GTINsek = pm.GTINSek AND sp.SerialNr = pm.SerialNr AND sp.ExpiryDate = pm.ExpiryDate\n" +
-                            "WHERE PrescriptionID = ?";
+                    "SELECT\n " +
+            "GTIN,\n" +
+                    "Name,\n" +
+                    "Pharmacode,\n" +
+                    "PrescriptionID,\n" +
+                    "Dosage,\n" +
+                    "DosageUnit,\n" +
+                    "State,\n" +
+                    "TimePrepared,\n" +
+                    "sp.GTINSek,\n" +
+                    "sp.SerialNr,\n" +
+                    "sp.ExpiryDate,\n" +
+                    "sp.BatchLot,\n" +
+                    "StaffGLN,  \n" +
+                    "pm.UID\n" +
+                    "FROM MediPrep_PrescriptionDefinesMedication pdm\n" +
+                    "LEFT JOIN Product p\n" +
+                    "ON GTINprim = GTIN\n" +
+                    "Left JOIN MediPrep_PreparedMedication pm\n" +
+                    "ON pm.PresciriptionID = pdm.PrescriptionID AND pm.GtinPrescribedMedic = pdm.GTIN\n" +
+                    "Left JOIN SecondaryPackage sp\n" +
+                    "ON sp.GTINsek = pm.GTINSek AND sp.SerialNr = pm.SerialNr AND sp.ExpiryDate = pm.ExpiryDate\n" +
+                    "WHERE PrescriptionID = ? and (pm.State < 4 OR pm.State is null)";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, p.getPolypointID());
             rs =  ps.executeQuery();
@@ -1440,8 +1458,8 @@ public class SupplyChainService {
             trspPreparedMedication.setGtinA(rs.getString(1));
             trspPreparedMedication.setGtinBs(getLogisticUnitsForProduct(rs.getString(1)));
             trspPreparedMedication.setName(rs.getString(2));
-            trspPreparedMedication.setDosage(rs.getString(3));
-            trspPreparedMedication.setDosageUnit(rs.getString(4));
+            trspPreparedMedication.setDosage(rs.getString(5));
+            trspPreparedMedication.setDosageUnit(rs.getString(6));
 
             LocalDate localDate = this.getDateValue(rs,8);
             if (localDate != null) {
@@ -1510,8 +1528,129 @@ public class SupplyChainService {
         return wasSuccessful;
     }
 
-    public boolean updatePreparedMedications(List<TrspPreparedMedication> trspPreparedMedications, TrspPreparedMedication.MedicationState medicationState) {
-        return false;
+    public boolean updatePreparedMedications(List<TrspPreparedMedication> trspPreparedMedications, TrspPreparedMedication.MedicationState medicationState, String stationGLN) {
+
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+       String query = "";
+
+
+        try{
+
+            connection.setAutoCommit(false);
+
+            switch (medicationState) {
+                case open:  //no change
+
+                    break;
+                case prepared: //initalize
+                    query = "INSERT INTO MediPrep_PreparedMedication\n" +
+                            "           ([State]\n" +
+                            "           ,[TimePrepared]\n" +
+                            "           ,[GTINSek]\n" +
+                            "           ,[SerialNr]\n" +
+                            "           ,[ExpiryDate]\n" +
+                            "           ,[PresciriptionID]\n" +
+                            "           ,[GtinPrescribedMedic]\n" +
+                            "           ,[StaffGLN])\n" +
+                            "     VALUES\n" +
+                            "           (2\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?)";
+
+
+
+                    for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
+
+                        LocalDate expDate = LocalDate.parse(trspPreparedMedication.getExpiryDate());
+                        LocalDateTime expDateTime = expDate.atTime(0, 0, 0, 0);
+                        Timestamp expiryDate = Timestamp.valueOf(expDateTime);
+
+                        PreparedStatement ps = connection.prepareStatement(query);
+                        ps.setTimestamp(1, Timestamp.valueOf(trspPreparedMedication.getPreparationTime()));
+                        ps.setString(2, trspPreparedMedication.getGtinFromAssignedItem());
+                        ps.setString(3, trspPreparedMedication.getSerial());
+                        ps.setTimestamp(4, expiryDate);
+                        ps.setInt(5, Integer.valueOf(trspPreparedMedication.getBasedOnPrescription().getPolypointID()));
+                        ps.setString(6, trspPreparedMedication.getGtinA());
+                        ps.setString(7, trspPreparedMedication.getStaffGln());
+
+                        ps.executeUpdate();
+
+                    }
+
+                    connection.commit();
+
+
+                    break;
+                case controlled: //update
+
+                    query = "Update MediPrep_PreparedMedication " +
+                            "SET State = 3 " +
+                            "WHERE UID = ?";
+
+                    for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
+
+                        PreparedStatement ps = connection.prepareStatement(query);
+                        ps.setInt(1, trspPreparedMedication.getPreparedMedicationId());
+                        ps.executeUpdate();
+
+
+                    }
+
+                    connection.commit();
+                    break;
+                case served: //update and tracker input as well as quantity decrement
+
+                    query =  "Update MediPrep_PreparedMedication " +
+                            "SET State = 3 " +
+                            "WHERE UID = ?";
+                    String queryTracking = "INSERT INTO TrackedItems (GTIN, SerialNr, ExpiryDate, GLNscan, ScanDate, StateNr, ScannedSSCC,Lot) VALUES (?,?,?,?,?,?,?,?)";
+                    for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
+                        PreparedStatement psUpdate = connection.prepareStatement(query);
+                        PreparedStatement  psTracking = connection.prepareStatement(queryTracking);
+
+                        psUpdate.setInt(1, trspPreparedMedication.getPreparedMedicationId());
+                        psUpdate.executeUpdate();
+
+                        psTracking.setString(1, trspPreparedMedication.getGtinFromAssignedItem());
+                        psTracking.setString(2, trspPreparedMedication.getSerial());
+                        psTracking.setString(3, trspPreparedMedication.getExpiryDate());
+                        psTracking.setString(4, stationGLN);
+                        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
+                        java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+                        psTracking.setTimestamp(5,timestamp);
+                        psTracking.setInt(6,3);
+                        psTracking.setString(7, null);
+                        psTracking.executeUpdate();
+
+                    }
+
+                    connection.commit();
+
+                    break;
+            }
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            return false;
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+
     }
 
     public boolean updatePrescriptions(List<TrspPrescription> trspPrescriptions, TrspPrescription.PrescriptionState prescriptionState) {

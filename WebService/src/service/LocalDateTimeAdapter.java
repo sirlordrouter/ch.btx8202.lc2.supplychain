@@ -21,12 +21,13 @@ public class LocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
 
     @Override
     public LocalDateTime unmarshal(String dateString) throws Exception {
-        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE);
+        LocalDateTime time = LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return time;
     }
 
     @Override
     public String marshal(LocalDateTime localDate) throws Exception {
-        return DateTimeFormatter.ISO_DATE.format(localDate);
+        return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(localDate);
     }
 
 }

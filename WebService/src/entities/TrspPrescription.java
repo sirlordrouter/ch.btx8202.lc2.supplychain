@@ -23,6 +23,7 @@ public class TrspPrescription {
     private String polypointID; //TODO: Replace Polypint in name with InformationSystem
     private String patientPolypointID;//TODO: Replace Polypint in name with InformationSystem
     private LocalDate dateCreated;
+    private LocalDate vaildUntil;
     private String createdByStaffGLN;
     private String name;
     private String firstName;
@@ -56,11 +57,12 @@ public class TrspPrescription {
         this.routeOfAdministration = routeOfAdministration;
     }
 
-    public TrspPrescription(boolean isStandardMedic, String polypointID, String patientPolypointID, LocalDate dateCreated, String createdByStaffGLN, String name, String firstName, String position, String description, String schedule, String routeOfAdministration, PrescriptionState prescriptionState, String notes, List<TrspPreparedMedication> medications, List<TrspPreparedMedication> medicationsMorning, List<TrspPreparedMedication> medicationsNoon, List<TrspPreparedMedication> medicationsEvening, List<TrspPreparedMedication> medicationsNight) {
+    public TrspPrescription(boolean isStandardMedic, String polypointID, String patientPolypointID, LocalDate dateCreated, LocalDate vaildUntil, String createdByStaffGLN, String name, String firstName, String position, String description, String schedule, String routeOfAdministration, PrescriptionState prescriptionState, String notes, List<TrspPreparedMedication> medications, List<TrspPreparedMedication> medicationsMorning, List<TrspPreparedMedication> medicationsNoon, List<TrspPreparedMedication> medicationsEvening, List<TrspPreparedMedication> medicationsNight) {
         this.isStandardMedic = isStandardMedic;
         this.polypointID = polypointID;
         this.patientPolypointID = patientPolypointID;
         this.dateCreated = dateCreated;
+        this.vaildUntil = vaildUntil;
         this.createdByStaffGLN = createdByStaffGLN;
         this.name = name;
         this.firstName = firstName;
@@ -75,6 +77,14 @@ public class TrspPrescription {
         this.medicationsNoon = medicationsNoon;
         this.medicationsEvening = medicationsEvening;
         this.medicationsNight = medicationsNight;
+    }
+
+    public LocalDate getVaildUntil() {
+        return vaildUntil;
+    }
+
+    public void setVaildUntil(LocalDate vaildUntil) {
+        this.vaildUntil = vaildUntil;
     }
 
     public boolean isStandardMedic() {

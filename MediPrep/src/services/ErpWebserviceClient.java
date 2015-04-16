@@ -130,7 +130,7 @@ public class ErpWebserviceClient implements IRepository {
     @Override
     public boolean UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state) {
         try{
-           MedicationState medicationState = MedicationState.valueOf(state.name());
+           MedicationState medicationState = WebServiceObjectFactory.convertToWebServiceObject(state);
            assert !medicationState.value().equals("");
            List<TrspPreparedMedication> trspPreparedMedicationList = new ArrayList<>();
 
@@ -138,7 +138,7 @@ public class ErpWebserviceClient implements IRepository {
                 trspPreparedMedicationList.add(WebServiceObjectFactory.convertToWebServiceObject(preparedMedication));
             }
 
-            return supplyChainServicePort.updatePreparedMedications(trspPreparedMedicationList, medicationState);
+            return supplyChainServicePort.updatePreparedMedications(trspPreparedMedicationList, medicationState, this.stationGLN);
 
         } catch (SOAPFaultException e) {
             e.printStackTrace();

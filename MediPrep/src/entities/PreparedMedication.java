@@ -1,9 +1,6 @@
 package entities;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 
 import java.time.LocalDateTime;
@@ -35,13 +32,15 @@ public class PreparedMedication extends Medication {
     private ObjectProperty<Prescription> basedOnPrescription = new SimpleObjectProperty<>();
     private ObjectProperty<LocalDateTime> preparationTime = new SimpleObjectProperty<LocalDateTime>();
     private StringProperty StaffGln = new SimpleStringProperty();
+    private IntegerProperty preparedMedicationId = new SimpleIntegerProperty();
 
     private boolean isReserve = false;
 
     public PreparedMedication() {}
 
-    public PreparedMedication(String gtin,List<String> gtinBs, String name, String description, String dosage, String dosageUnit, String applicationScheme,String assignedProductGTIN, String batchLot, String serial, String expiryDate, MedicationState state, Patient forPatient, Prescription basedOnPrescription, LocalDateTime preparationTime, boolean isReserve) {
+    public PreparedMedication(String gtin,List<String> gtinBs, String name, String description, String dosage, String dosageUnit,Integer preparedMedicationId, String applicationScheme, String assignedProductGTIN, String batchLot, String serial, String expiryDate, MedicationState state, Patient forPatient, Prescription basedOnPrescription, LocalDateTime preparationTime, boolean isReserve) {
         super(gtin, gtinBs, name, description, dosage, dosageUnit, applicationScheme);
+        this.preparedMedicationId.setValue(preparedMedicationId);
         this.assignedProductGTIN.setValue(assignedProductGTIN);
         BatchLot.setValue(batchLot);
         Serial.setValue(serial);
@@ -51,6 +50,18 @@ public class PreparedMedication extends Medication {
         this.basedOnPrescription.setValue(basedOnPrescription);
         this.preparationTime.setValue(preparationTime);
         this.isReserve = isReserve;
+    }
+
+    public int getPreparedMedicationId() {
+        return preparedMedicationId.get();
+    }
+
+    public IntegerProperty preparedMedicationIdProperty() {
+        return preparedMedicationId;
+    }
+
+    public void setPreparedMedicationId(int preparedMedicationId) {
+        this.preparedMedicationId.set(preparedMedicationId);
     }
 
     public String getAssignedProductGTIN() {

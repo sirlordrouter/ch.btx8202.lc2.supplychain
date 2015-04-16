@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="forPatient" type="{http://service/}trspPatient" minOccurs="0"/>
  *         &lt;element name="gtinFromAssignedItem" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="preparationTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="preparedMedicationId" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="serial" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="staffGln" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="state" type="{http://service/}medicationState" minOccurs="0"/>
@@ -42,6 +43,7 @@ import javax.xml.bind.annotation.XmlType;
     "forPatient",
     "gtinFromAssignedItem",
     "preparationTime",
+    "preparedMedicationId",
     "serial",
     "staffGln",
     "state"
@@ -56,6 +58,7 @@ public class TrspPreparedMedication
     protected TrspPatient forPatient;
     protected String gtinFromAssignedItem;
     protected String preparationTime;
+    protected int preparedMedicationId;
     protected String serial;
     protected String staffGln;
     @XmlSchemaType(name = "string")
@@ -203,6 +206,22 @@ public class TrspPreparedMedication
      */
     public void setPreparationTime(String value) {
         this.preparationTime = value;
+    }
+
+    /**
+     * Ruft den Wert der preparedMedicationId-Eigenschaft ab.
+     * 
+     */
+    public int getPreparedMedicationId() {
+        return preparedMedicationId;
+    }
+
+    /**
+     * Legt den Wert der preparedMedicationId-Eigenschaft fest.
+     * 
+     */
+    public void setPreparedMedicationId(int value) {
+        this.preparedMedicationId = value;
     }
 
     /**

@@ -361,6 +361,7 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg2
      * @param arg1
      * @param arg0
      * @return
@@ -375,7 +376,9 @@ public interface SupplyChainService {
         @WebParam(name = "arg0", targetNamespace = "")
         List<TrspPreparedMedication> arg0,
         @WebParam(name = "arg1", targetNamespace = "")
-        MedicationState arg1);
+        MedicationState arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
 
     /**
      * 

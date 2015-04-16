@@ -287,7 +287,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
 
                     showSuccessfullScan(preparedMedication);
 
-                    if (medis.get(0).getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.prepared)) {
+                    if (preparedMedication.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.prepared)) {
                         showSuccessfullPreparationAndPrintLabel(preparedMedication);
                     }
 
