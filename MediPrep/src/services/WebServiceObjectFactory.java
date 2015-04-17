@@ -80,7 +80,7 @@ public class WebServiceObjectFactory {
                 trspPreparedMedication.getDescription(),
                 trspPreparedMedication.getDosage(),
                 trspPreparedMedication.getDosageUnit(),
-                -1,
+                trspPreparedMedication.getPreparedMedicationId(),
                 trspPreparedMedication.getApplicationScheme(),
                 trspPreparedMedication.getGtinFromAssignedItem(),
                 trspPreparedMedication.getBatchLot(),

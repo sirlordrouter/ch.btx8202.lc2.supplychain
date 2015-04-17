@@ -1455,11 +1455,17 @@ public class SupplyChainService {
         while (rs.next()) {
             TrspPreparedMedication trspPreparedMedication = new TrspPreparedMedication();
 
+
             trspPreparedMedication.setGtinA(rs.getString(1));
             trspPreparedMedication.setGtinBs(getLogisticUnitsForProduct(rs.getString(1)));
             trspPreparedMedication.setName(rs.getString(2));
             trspPreparedMedication.setDosage(rs.getString(5));
             trspPreparedMedication.setDosageUnit(rs.getString(6));
+            int stateIndex = rs.getInt(7)-1;
+
+            if (stateIndex > 0) {
+                trspPreparedMedication.setState(TrspPreparedMedication.MedicationState.values()[stateIndex]);
+            }
 
             LocalDate localDate = this.getDateValue(rs,8);
             if (localDate != null) {
@@ -1472,6 +1478,7 @@ public class SupplyChainService {
             trspPreparedMedication.setExpiryDate(rs.getString(11));
             trspPreparedMedication.setBatchLot(rs.getString(12));
             trspPreparedMedication.setStaffGln(rs.getString(13));
+            trspPreparedMedication.setPreparedMedicationId(rs.getInt(14));
 
             trspPreparedMedications.add(trspPreparedMedication);
         }
