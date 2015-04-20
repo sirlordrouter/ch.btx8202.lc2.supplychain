@@ -1406,20 +1406,21 @@ public class SupplyChainService {
             String query =
                     "SELECT\n " +
             "GTIN,\n" +
-                    "Name,\n" +
-                    "Pharmacode,\n" +
-                    "PrescriptionID,\n" +
-                    "Dosage,\n" +
-                    "DosageUnit,\n" +
-                    "State,\n" +
-                    "TimePrepared,\n" +
-                    "sp.GTINSek,\n" +
-                    "sp.SerialNr,\n" +
-                    "sp.ExpiryDate,\n" +
-                    "sp.BatchLot,\n" +
-                    "StaffGLN,  \n" +
-                    "pm.UID\n" +
-                    "FROM MediPrep_PrescriptionDefinesMedication pdm\n" +
+                    "Name," +
+                    "Pharmacode," +
+                    "pdm.PrescriptionID," +
+                    "Dosage," +
+                    "DosageUnit," +
+                    "State," +
+                    "TimePrepared," +
+                    "sp.GTINSek," +
+                    "sp.SerialNr," +
+                    "sp.ExpiryDate," +
+                    "sp.BatchLot," +
+                    "StaffGLN," +
+                    "pm.UID," +
+                    "pdm.isAdditionalMedic "  +
+                    "FROM MediPrep_PrescriptionDefinesMedication pdm " +
                     "LEFT JOIN Product p\n" +
                     "ON GTINprim = GTIN\n" +
                     "Left JOIN MediPrep_PreparedMedication pm\n" +
@@ -1479,6 +1480,7 @@ public class SupplyChainService {
             trspPreparedMedication.setBatchLot(rs.getString(12));
             trspPreparedMedication.setStaffGln(rs.getString(13));
             trspPreparedMedication.setPreparedMedicationId(rs.getInt(14));
+            trspPreparedMedication.setIsReserve(rs.getBoolean(15));
 
             trspPreparedMedications.add(trspPreparedMedication);
         }
@@ -1660,11 +1662,48 @@ public class SupplyChainService {
 
     }
 
+    @WebMethod
+    public int getPreparedPrescriptionsCountForPatient(String pid) {
+        int result = -1;
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+        String query =
+                "SELECT COUNT(*) AS PrescriptionCount \n" +
+                "FROM (\n" +
+                "\tSELECT p.PolypointID\n" +
+                "\tFROM MediPrep_Prescription p  \n" +
+                "\tLEFT JOIN MediPrep_Staff  s \n" +
+                "\t\tON s.GLN = p.CreatedByStaffGLN  \n" +
+                "\tINNER JOIN MediPrep_PrescriptionDefinesMedication m\n" +
+                "\t\tON p.PolypointID = m.PrescriptionID\n" +
+                "\tINNER JOIN MediPrep_PreparedMedication pm\n" +
+                "\t\tON m.PrescriptionID = pm.PresciriptionID\n" +
+                "\t\tAND m.GTIN = pm.GtinPrescribedMedic\t \n" +
+                "\tWHERE PatientPolypointID = ? \n" +
+                "\t\tAND ValidUntil >= GETDATE() \n" +
+                "\t\tAND pm.State = 3) as prescriptions";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, pid);
+            rs =  ps.executeQuery();
+
+            rs.next();
+            int count = 0;
+            count = rs.getInt(1);
+            return count;
+
+
+        } catch (SQLException e) {
+            return -1;
+        }
+    }
+
+
     public boolean updatePrescriptions(List<TrspPrescription> trspPrescriptions, TrspPrescription.PrescriptionState prescriptionState) {
         return false;
     }
 
-    @WebMethod
     public List<TrspPreparedMedication> getPreparedMedicationsForPatient(String pid) {
 
         List<TrspPreparedMedication> trspPreparedMedications = new ArrayList<TrspPreparedMedication>();
@@ -1673,6 +1712,7 @@ public class SupplyChainService {
     }
 
     public String getDosetForPatient(String pid) {
+
         return "";
     }
 

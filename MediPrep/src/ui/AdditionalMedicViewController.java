@@ -274,7 +274,12 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                     && info.getAI21_SERIAL_NUMBER() != null
                     && info.getAI17_VERFALLSDATUM() != null
                     && info.getAI10_CHARGENNUMMER() != null) {
-                List<PreparedMedication> medis =  medications.stream().filter(m -> m.getGtinA().equals(info.getAI01_HANDELSEINHEIT())).collect(Collectors.toList());
+                //is product or logistic unit scanned matching a medic in the preparation list?
+                List<PreparedMedication> medis =  medications.stream().filter(
+                        m ->
+                                m.getGtinA().equals(info.getAI01_HANDELSEINHEIT()) ||
+                                m.getGtinBs().stream().anyMatch(b -> b.equals(info.getAI01_HANDELSEINHEIT()))
+                ).collect(Collectors.toList());
                 if (medis.size() == 0 || medis.size() > 1) {
                     //TODO: fehler, keine entpsrechende gtin gefunden bzw. zu viele passende medis
                    errorMessage +=  medis.size() == 0 ? "Fehler 1: Es wurden keine Medikamente in der Verordnung gefunden,\n die zum gescannten Medikament passen.\n" : "";
@@ -282,6 +287,9 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 } else {
 
                     PreparedMedication preparedMedication = medis.get(0);
+
+
+
                     updatePreparedMedication(preparedMedication, info.getAI01_HANDELSEINHEIT(),
                             info.getAI17_VERFALLSDATUM(), info.getAI10_CHARGENNUMMER(), info.getAI21_SERIAL_NUMBER());
 
@@ -319,7 +327,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         Alert alertSuccessfulScan = new Alert(Alert.AlertType.INFORMATION);
         alertSuccessfulScan.setTitle("Information Dialog");
         alertSuccessfulScan.setHeaderText(null);
-        alertSuccessfulScan.setContentText("Scan von " + preparedMedication.getDescription() + "erfolgreich." );
+        alertSuccessfulScan.setContentText("Scan von " + preparedMedication.getDescription() + "erfolgreich.");
 
         alertSuccessfulScan.showAndWait();
     }
@@ -334,8 +342,11 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         preparedMedication.setState(PreparedMedication.MedicationState.prepared);
         List<PreparedMedication> medicationList = new ArrayList<>();
         medicationList.add(preparedMedication);
-
-        dataSource.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
+        //Additional Medics are directly in controlled state as they are immediately given to the patient
+        boolean success = dataSource.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.controlled);
+        if (!success) {
+            //fehlermeldung => ev stimmen batch/serial/expirydate nicht überein mit produkten im SPital
+        }
     }
 
     private void showSuccessfullPreparationAndPrintLabel(PreparedMedication preparedMedication) {

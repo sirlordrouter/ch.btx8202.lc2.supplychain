@@ -128,7 +128,7 @@ public class SupplyChainServiceTest extends TestCase {
         List<TrspPrescription> p = service.getPrescriptionsForPatient("1");
 
         for (TrspPrescription trspPrescription : p) {
-            Assert.assertTrue(trspPrescription.getMedications().size() == 2);
+            Assert.assertTrue(trspPrescription.getMedications().size() == 1);
         }
     }
 
@@ -142,5 +142,13 @@ public class SupplyChainServiceTest extends TestCase {
 
     public void testGetPreparedMedicationsForPatient() throws Exception {
 
+    }
+
+    public void testGetPreparedPrescriptionsCountForPatient() throws Exception {
+        SupplyChainService service = new SupplyChainService();
+        List<TrspPatient> patients = service.getPatients();
+        for (TrspPatient patient : patients) {
+            System.out.println(patient.getFirstname() + " " + patient.getLastname() + " | prepared prescription count:" + service.getPreparedPrescriptionsCountForPatient(Integer.toString(patient.getPid())));
+        }
     }
 }
