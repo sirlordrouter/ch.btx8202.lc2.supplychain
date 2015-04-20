@@ -45,11 +45,13 @@ public class ObjectFactory {
     private final static QName _UpdatePrescriptionsResponse_QNAME = new QName("http://service/", "updatePrescriptionsResponse");
     private final static QName _GetPreparedMedicationsForPatient_QNAME = new QName("http://service/", "getPreparedMedicationsForPatient");
     private final static QName _GetStations_QNAME = new QName("http://service/", "getStations");
+    private final static QName _GetPreparedPrescriptionsCountForPatientResponse_QNAME = new QName("http://service/", "getPreparedPrescriptionsCountForPatientResponse");
     private final static QName _GetCheckedInItemsResponse_QNAME = new QName("http://service/", "getCheckedInItemsResponse");
     private final static QName _GetPrescriptionsWithPreparedMedicationsForPatient_QNAME = new QName("http://service/", "getPrescriptionsWithPreparedMedicationsForPatient");
     private final static QName _InsertTrackingItemsResponse_QNAME = new QName("http://service/", "insertTrackingItemsResponse");
     private final static QName _GetDosetForPatientResponse_QNAME = new QName("http://service/", "getDosetForPatientResponse");
     private final static QName _GetItemByIdentifier_QNAME = new QName("http://service/", "getItemByIdentifier");
+    private final static QName _GetPreparedPrescriptionsCountForPatient_QNAME = new QName("http://service/", "getPreparedPrescriptionsCountForPatient");
     private final static QName _SayHelloWorldFromResponse_QNAME = new QName("http://service/", "sayHelloWorldFromResponse");
     private final static QName _GetCheckedInItems_QNAME = new QName("http://service/", "getCheckedInItems");
     private final static QName _GetItemsByBatchResponse_QNAME = new QName("http://service/", "getItemsByBatchResponse");
@@ -227,11 +229,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetPreparedPrescriptionsCountForPatientResponse }
+     * 
+     */
+    public GetPreparedPrescriptionsCountForPatientResponse createGetPreparedPrescriptionsCountForPatientResponse() {
+        return new GetPreparedPrescriptionsCountForPatientResponse();
+    }
+
+    /**
      * Create an instance of {@link SayHelloWorldFromResponse }
      * 
      */
     public SayHelloWorldFromResponse createSayHelloWorldFromResponse() {
         return new SayHelloWorldFromResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetPreparedPrescriptionsCountForPatient }
+     * 
+     */
+    public GetPreparedPrescriptionsCountForPatient createGetPreparedPrescriptionsCountForPatient() {
+        return new GetPreparedPrescriptionsCountForPatient();
     }
 
     /**
@@ -531,6 +549,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link MediPrepResult }
+     * 
+     */
+    public MediPrepResult createMediPrepResult() {
+        return new MediPrepResult();
+    }
+
+    /**
      * Create an instance of {@link TrspPreparedMedication }
      * 
      */
@@ -776,6 +802,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPreparedPrescriptionsCountForPatientResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getPreparedPrescriptionsCountForPatientResponse")
+    public JAXBElement<GetPreparedPrescriptionsCountForPatientResponse> createGetPreparedPrescriptionsCountForPatientResponse(GetPreparedPrescriptionsCountForPatientResponse value) {
+        return new JAXBElement<GetPreparedPrescriptionsCountForPatientResponse>(_GetPreparedPrescriptionsCountForPatientResponse_QNAME, GetPreparedPrescriptionsCountForPatientResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetCheckedInItemsResponse }{@code >}}
      * 
      */
@@ -818,6 +853,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "getItemByIdentifier")
     public JAXBElement<GetItemByIdentifier> createGetItemByIdentifier(GetItemByIdentifier value) {
         return new JAXBElement<GetItemByIdentifier>(_GetItemByIdentifier_QNAME, GetItemByIdentifier.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPreparedPrescriptionsCountForPatient }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service/", name = "getPreparedPrescriptionsCountForPatient")
+    public JAXBElement<GetPreparedPrescriptionsCountForPatient> createGetPreparedPrescriptionsCountForPatient(GetPreparedPrescriptionsCountForPatient value) {
+        return new JAXBElement<GetPreparedPrescriptionsCountForPatient>(_GetPreparedPrescriptionsCountForPatient_QNAME, GetPreparedPrescriptionsCountForPatient.class, null, value);
     }
 
     /**

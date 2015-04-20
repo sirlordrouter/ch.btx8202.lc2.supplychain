@@ -28,6 +28,27 @@ public interface SupplyChainService {
 
     /**
      * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "setOrder", targetNamespace = "http://service/", className = "webservice.erp.SetOrder")
+    @ResponseWrapper(localName = "setOrderResponse", targetNamespace = "http://service/", className = "webservice.erp.SetOrderResponse")
+    @Action(input = "http://service/SupplyChainService/setOrderRequest", output = "http://service/SupplyChainService/setOrderResponse")
+    public boolean setOrder(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Order arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
+
+    /**
+     * 
      * @param arg0
      * @return
      *     returns java.lang.String
@@ -88,27 +109,6 @@ public interface SupplyChainService {
         List<Item> arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1);
-
-    /**
-     * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "setOrder", targetNamespace = "http://service/", className = "webservice.erp.SetOrder")
-    @ResponseWrapper(localName = "setOrderResponse", targetNamespace = "http://service/", className = "webservice.erp.SetOrderResponse")
-    @Action(input = "http://service/SupplyChainService/setOrderRequest", output = "http://service/SupplyChainService/setOrderResponse")
-    public boolean setOrder(
-        @WebParam(name = "arg0", targetNamespace = "")
-        Order arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2);
 
     /**
      * 
@@ -365,20 +365,35 @@ public interface SupplyChainService {
      * @param arg1
      * @param arg0
      * @return
-     *     returns boolean
+     *     returns webservice.erp.MediPrepResult
      */
     @WebMethod
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "updatePreparedMedications", targetNamespace = "http://service/", className = "webservice.erp.UpdatePreparedMedications")
     @ResponseWrapper(localName = "updatePreparedMedicationsResponse", targetNamespace = "http://service/", className = "webservice.erp.UpdatePreparedMedicationsResponse")
     @Action(input = "http://service/SupplyChainService/updatePreparedMedicationsRequest", output = "http://service/SupplyChainService/updatePreparedMedicationsResponse")
-    public boolean updatePreparedMedications(
+    public MediPrepResult updatePreparedMedications(
         @WebParam(name = "arg0", targetNamespace = "")
         List<TrspPreparedMedication> arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         MedicationState arg1,
         @WebParam(name = "arg2", targetNamespace = "")
         String arg2);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns int
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPreparedPrescriptionsCountForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedPrescriptionsCountForPatient")
+    @ResponseWrapper(localName = "getPreparedPrescriptionsCountForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedPrescriptionsCountForPatientResponse")
+    @Action(input = "http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientRequest", output = "http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientResponse")
+    public int getPreparedPrescriptionsCountForPatient(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
 
     /**
      * 

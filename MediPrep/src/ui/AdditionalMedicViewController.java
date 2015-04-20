@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import services.ErpWebserviceClient;
 import services.PropertiesReader;
 import webservice.erp.Item;
+import webservice.erp.MediPrepResult;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -113,9 +114,9 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     PreparedMedication rowData = row.getItem();
                     System.out.println(rowData);
-                    AddMedDialog addMedDialog = new AddMedDialog(null, rowData);
+                    AddMedDialog addMedDialog = new AddMedDialog(null, rowData, dataSource);
                     addMedDialog.centerOnScreen();
-                    addMedDialog.showAndWait();
+                    addMedDialog.showAndWait(); //TODO: Check successful in DIalog to display error
 
                     if (!addMedDialog.isCanceled()) {
                         String gtin = addMedDialog.getTxtGtin().getText();
@@ -171,6 +172,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                                 view.setImage(readyImage);
                                 break;
                             case controlled:
+                                view.setImage(readyImage);
                                 break;
                             case served:
                                 break;
@@ -253,7 +255,10 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 preparedMedications.addAll(prescription.getMedications());
             }
 
-            medications.addAll(preparedMedications);
+            medications.addAll(preparedMedications.stream().filter(p -> !p.isReserve()).collect(Collectors.toList()));
+            medicationReserve.addAll(preparedMedications.stream().filter(p -> p.isReserve()).collect(Collectors.toList()));
+
+            System.out.println("Test");
 
         }
     }
@@ -287,8 +292,6 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 } else {
 
                     PreparedMedication preparedMedication = medis.get(0);
-
-
 
                     updatePreparedMedication(preparedMedication, info.getAI01_HANDELSEINHEIT(),
                             info.getAI17_VERFALLSDATUM(), info.getAI10_CHARGENNUMMER(), info.getAI21_SERIAL_NUMBER());
@@ -343,9 +346,12 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         List<PreparedMedication> medicationList = new ArrayList<>();
         medicationList.add(preparedMedication);
         //Additional Medics are directly in controlled state as they are immediately given to the patient
-        boolean success = dataSource.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.controlled);
-        if (!success) {
+        MediPrepResult success = dataSource.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
+        if (!success.isResult()) {
             //fehlermeldung => ev stimmen batch/serial/expirydate nicht überein mit produkten im SPital
+            System.out.println("Fehler: Produktinformationen konnten im ERP nicht gefunden werden.");
+        } else {
+            //TODO: get inserted data and set also state to controlled
         }
     }
 

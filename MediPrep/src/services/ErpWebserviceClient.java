@@ -128,7 +128,7 @@ public class ErpWebserviceClient implements IRepository {
     }
 
     @Override
-    public boolean UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state) {
+    public MediPrepResult UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state) {
         try{
            MedicationState medicationState = WebServiceObjectFactory.convertToWebServiceObject(state);
            assert !medicationState.value().equals("");
@@ -142,10 +142,14 @@ public class ErpWebserviceClient implements IRepository {
 
         } catch (SOAPFaultException e) {
             e.printStackTrace();
-            return false;
+            MediPrepResult result = new MediPrepResult();
+            result.setResult(false);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            MediPrepResult result = new MediPrepResult();
+            result.setResult(false);
+            return result;
         }
     }
 }

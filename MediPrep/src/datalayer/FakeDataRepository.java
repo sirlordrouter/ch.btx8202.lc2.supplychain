@@ -1,6 +1,7 @@
 package datalayer;
 
 import entities.*;
+import webservice.erp.MediPrepResult;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class FakeDataRepository implements IRepository {
     }
 
     @Override
-    public boolean UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state) {
-        return false;
+    public MediPrepResult UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state) {
+        return null;
     }
 }

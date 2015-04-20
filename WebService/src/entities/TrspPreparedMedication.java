@@ -30,8 +30,10 @@ public class TrspPreparedMedication extends TrspMedication {
     private TrspPrescription basedOnPrescription;
     private LocalDateTime preparationTime;
     private String staffGln;
+    private boolean isReserve;
+    private String blabla;
+    private String tuc;
 
-    private boolean isReserve = false;
 
     public TrspPreparedMedication() {}
 
@@ -65,6 +67,8 @@ public class TrspPreparedMedication extends TrspMedication {
         this.staffGln = staffGln;
         this.isReserve = isReserve;
     }
+
+
 
     public int getPreparedMedicationId() {
         return preparedMedicationId;
@@ -146,7 +150,7 @@ public class TrspPreparedMedication extends TrspMedication {
         this.staffGln = staffGln;
     }
 
-    public boolean isReserve() {
+    public boolean getIsReserve() {
         return isReserve;
     }
 

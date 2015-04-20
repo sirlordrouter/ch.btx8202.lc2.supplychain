@@ -3,6 +3,7 @@ package datalayer;
 import entities.Patient;
 import entities.PreparedMedication;
 import entities.Prescription;
+import webservice.erp.MediPrepResult;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ public interface IRepository {
     public List<String> getStaff();
     public List<PreparedMedication> getMedications();
     public List<Prescription> getPrescriptions(Patient patient);
-    public boolean UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state);
+    public MediPrepResult UpdatePreperationState(List<PreparedMedication> preparedMedications, PreparedMedication.MedicationState state);
 
 }

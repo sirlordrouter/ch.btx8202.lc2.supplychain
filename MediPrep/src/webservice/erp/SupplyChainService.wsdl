@@ -4,6 +4,12 @@
 <xsd:import namespace="http://service/" schemaLocation="http://localhost:8080/services/SupplyChainService?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="setOrder">
+<part name="parameters" element="tns:setOrder"/>
+</message>
+<message name="setOrderResponse">
+<part name="parameters" element="tns:setOrderResponse"/>
+</message>
 <message name="sayHelloWorldFrom">
 <part name="parameters" element="tns:sayHelloWorldFrom"/>
 </message>
@@ -27,12 +33,6 @@
 </message>
 <message name="checkinItemsResponse">
 <part name="parameters" element="tns:checkinItemsResponse"/>
-</message>
-<message name="setOrder">
-<part name="parameters" element="tns:setOrder"/>
-</message>
-<message name="setOrderResponse">
-<part name="parameters" element="tns:setOrderResponse"/>
 </message>
 <message name="checkoutItems">
 <part name="parameters" element="tns:checkoutItems"/>
@@ -136,6 +136,12 @@
 <message name="updatePreparedMedicationsResponse">
 <part name="parameters" element="tns:updatePreparedMedicationsResponse"/>
 </message>
+<message name="getPreparedPrescriptionsCountForPatient">
+<part name="parameters" element="tns:getPreparedPrescriptionsCountForPatient"/>
+</message>
+<message name="getPreparedPrescriptionsCountForPatientResponse">
+<part name="parameters" element="tns:getPreparedPrescriptionsCountForPatientResponse"/>
+</message>
 <message name="updatePrescriptions">
 <part name="parameters" element="tns:updatePrescriptions"/>
 </message>
@@ -155,6 +161,10 @@
 <part name="parameters" element="tns:getDosetForPatientResponse"/>
 </message>
 <portType name="SupplyChainService">
+<operation name="setOrder">
+<input wsam:Action="http://service/SupplyChainService/setOrderRequest" message="tns:setOrder"/>
+<output wsam:Action="http://service/SupplyChainService/setOrderResponse" message="tns:setOrderResponse"/>
+</operation>
 <operation name="sayHelloWorldFrom">
 <input wsam:Action="http://service/SupplyChainService/sayHelloWorldFromRequest" message="tns:sayHelloWorldFrom"/>
 <output wsam:Action="http://service/SupplyChainService/sayHelloWorldFromResponse" message="tns:sayHelloWorldFromResponse"/>
@@ -170,10 +180,6 @@
 <operation name="checkinItems">
 <input wsam:Action="http://service/SupplyChainService/checkinItemsRequest" message="tns:checkinItems"/>
 <output wsam:Action="http://service/SupplyChainService/checkinItemsResponse" message="tns:checkinItemsResponse"/>
-</operation>
-<operation name="setOrder">
-<input wsam:Action="http://service/SupplyChainService/setOrderRequest" message="tns:setOrder"/>
-<output wsam:Action="http://service/SupplyChainService/setOrderResponse" message="tns:setOrderResponse"/>
 </operation>
 <operation name="checkoutItems">
 <input wsam:Action="http://service/SupplyChainService/checkoutItemsRequest" message="tns:checkoutItems"/>
@@ -243,6 +249,10 @@
 <input wsam:Action="http://service/SupplyChainService/updatePreparedMedicationsRequest" message="tns:updatePreparedMedications"/>
 <output wsam:Action="http://service/SupplyChainService/updatePreparedMedicationsResponse" message="tns:updatePreparedMedicationsResponse"/>
 </operation>
+<operation name="getPreparedPrescriptionsCountForPatient">
+<input wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientRequest" message="tns:getPreparedPrescriptionsCountForPatient"/>
+<output wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientResponse" message="tns:getPreparedPrescriptionsCountForPatientResponse"/>
+</operation>
 <operation name="updatePrescriptions">
 <input wsam:Action="http://service/SupplyChainService/updatePrescriptionsRequest" message="tns:updatePrescriptions"/>
 <output wsam:Action="http://service/SupplyChainService/updatePrescriptionsResponse" message="tns:updatePrescriptionsResponse"/>
@@ -258,6 +268,15 @@
 </portType>
 <binding name="SupplyChainServicePortBinding" type="tns:SupplyChainService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="setOrder">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="sayHelloWorldFrom">
 <soap:operation soapAction=""/>
 <input>
@@ -286,15 +305,6 @@
 </output>
 </operation>
 <operation name="checkinItems">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="setOrder">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -448,6 +458,15 @@
 </output>
 </operation>
 <operation name="updatePreparedMedications">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getPreparedPrescriptionsCountForPatient">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

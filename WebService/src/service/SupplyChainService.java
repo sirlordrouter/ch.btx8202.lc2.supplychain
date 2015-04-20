@@ -1537,7 +1537,8 @@ public class SupplyChainService {
         return wasSuccessful;
     }
 
-    public boolean updatePreparedMedications(List<TrspPreparedMedication> trspPreparedMedications, TrspPreparedMedication.MedicationState medicationState, String stationGLN) {
+    @WebMethod
+    public MediPrepResult updatePreparedMedications(List<TrspPreparedMedication> trspPreparedMedications, TrspPreparedMedication.MedicationState medicationState, String stationGLN) {
 
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
@@ -1647,18 +1648,13 @@ public class SupplyChainService {
         } catch (SQLException e) {
             try {
                 connection.rollback();
+                connection.setAutoCommit(true);
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            return false;
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return true;
+            return new MediPrepResult(false, e.getErrorCode());
         }
+        return new MediPrepResult(true, -1);
 
     }
 

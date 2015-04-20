@@ -92,6 +92,7 @@ public class WebServiceObjectFactory {
                 trspPreparedMedication.getPreparationTime() != null ? LocalDateTime.parse(trspPreparedMedication.getPreparationTime(),DateTimeFormatter.ISO_LOCAL_DATE_TIME) : null,
                 false
         );
+        preparedMedication.setIsReserve(trspPreparedMedication.isIsReserve());
         return preparedMedication;
     }
 
