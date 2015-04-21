@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 /**
@@ -550,6 +551,7 @@ public class SupplyChainService {
             // get the identifier of the latest order entry in the database
             String batch = getBatch();
             Timestamp expdate = getExpDate();
+
             for(Position pos:order.getPositions()){
                 for(int i= 0;i<pos.getQuantity();i++){
                     Item item = new Item();
@@ -613,10 +615,9 @@ public class SupplyChainService {
         return batch+serial;
     }
     private Timestamp getExpDate(){
-        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
-        cal.add((GregorianCalendar.YEAR), 1);
-        cal.setTimeInMillis(0);
-        java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+        LocalDate dateTime = LocalDate.now();
+        LocalDateTime dateTime1 = dateTime.atTime(0, 0, 0, 0);
+        java.sql.Timestamp timestamp = Timestamp.valueOf(dateTime1);
         return timestamp;
     }
 
@@ -1524,7 +1525,6 @@ public class SupplyChainService {
         //Fall 1: ein medi: scanned code als gtin eines scanned items mit gtin vergleichen, falls nicht => ev. fall 2
         //Fall 2: x-Medis: code als prescription id behandlen und schauen ob vorhanden
 
-
         //All Prescriptions
         return trspPrescriptions;
     }
@@ -1564,7 +1564,7 @@ public class SupplyChainService {
                             "           ,[GtinPrescribedMedic]\n" +
                             "           ,[StaffGLN])\n" +
                             "     VALUES\n" +
-                            "           (2\n" +
+                            "           (?\n" +
                             "           ,?\n" +
                             "           ,?\n" +
                             "           ,?\n" +
@@ -1577,18 +1577,19 @@ public class SupplyChainService {
 
                     for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
 
-                        LocalDate expDate = LocalDate.parse(trspPreparedMedication.getExpiryDate());
+                        LocalDate expDate = LocalDate.parse(trspPreparedMedication.getExpiryDate()); //Parse Exception
                         LocalDateTime expDateTime = expDate.atTime(0, 0, 0, 0);
                         Timestamp expiryDate = Timestamp.valueOf(expDateTime);
-
                         PreparedStatement ps = connection.prepareStatement(query);
-                        ps.setTimestamp(1, Timestamp.valueOf(trspPreparedMedication.getPreparationTime()));
-                        ps.setString(2, trspPreparedMedication.getGtinFromAssignedItem());
-                        ps.setString(3, trspPreparedMedication.getSerial());
-                        ps.setTimestamp(4, expiryDate);
-                        ps.setInt(5, Integer.valueOf(trspPreparedMedication.getBasedOnPrescription().getPolypointID()));
-                        ps.setString(6, trspPreparedMedication.getGtinA());
-                        ps.setString(7, trspPreparedMedication.getStaffGln());
+                        int state = trspPreparedMedication.getState().ordinal()+1;
+                        ps.setInt(1,state);
+                        ps.setTimestamp(2, Timestamp.valueOf(trspPreparedMedication.getPreparationTime()));
+                        ps.setString(3, trspPreparedMedication.getGtinFromAssignedItem());
+                        ps.setString(4, trspPreparedMedication.getSerial());
+                        ps.setTimestamp(5, expiryDate);
+                        ps.setInt(6, Integer.valueOf(trspPreparedMedication.getBasedOnPrescription().getPolypointID()));
+                        ps.setString(7, trspPreparedMedication.getGtinA());
+                        ps.setString(8, trspPreparedMedication.getStaffGln());
 
                         ps.executeUpdate();
 
@@ -1632,8 +1633,7 @@ public class SupplyChainService {
                         psTracking.setString(2, trspPreparedMedication.getSerial());
                         psTracking.setString(3, trspPreparedMedication.getExpiryDate());
                         psTracking.setString(4, stationGLN);
-                        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
-                        java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+                        java.sql.Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
                         psTracking.setTimestamp(5,timestamp);
                         psTracking.setInt(6,3);
                         psTracking.setString(7, null);
@@ -1653,7 +1653,10 @@ public class SupplyChainService {
                 e1.printStackTrace();
             }
             return new MediPrepResult(false, e.getErrorCode());
+        } catch (DateTimeParseException e) {
+            return new MediPrepResult(false, 2);
         }
+
         return new MediPrepResult(true, -1);
 
     }
@@ -1664,20 +1667,31 @@ public class SupplyChainService {
         ResultSet rs;
         Connection connection = connectorLogistic.getConnection();
         String query =
-                "SELECT COUNT(*) AS PrescriptionCount \n" +
-                "FROM (\n" +
-                "\tSELECT p.PolypointID\n" +
-                "\tFROM MediPrep_Prescription p  \n" +
-                "\tLEFT JOIN MediPrep_Staff  s \n" +
-                "\t\tON s.GLN = p.CreatedByStaffGLN  \n" +
-                "\tINNER JOIN MediPrep_PrescriptionDefinesMedication m\n" +
-                "\t\tON p.PolypointID = m.PrescriptionID\n" +
-                "\tINNER JOIN MediPrep_PreparedMedication pm\n" +
-                "\t\tON m.PrescriptionID = pm.PresciriptionID\n" +
-                "\t\tAND m.GTIN = pm.GtinPrescribedMedic\t \n" +
-                "\tWHERE PatientPolypointID = ? \n" +
-                "\t\tAND ValidUntil >= GETDATE() \n" +
-                "\t\tAND pm.State = 3) as prescriptions";
+                "select COUNT(*) AS PrescriptionCount \n" +
+                        "FROM (\n" +
+                        "\tSELECT \n" +
+                        "\t\tDISTINCT(p.PolypointID)\n" +
+                        "\tFROM MediPrep_Prescription p  \n" +
+                        "\tLEFT JOIN MediPrep_Staff  s \n" +
+                        "\t\tON s.GLN = p.CreatedByStaffGLN  \n" +
+                        "\tINNER JOIN MediPrep_PrescriptionDefinesMedication m\n" +
+                        "\t\tON p.PolypointID = m.PrescriptionID\n" +
+                        "\tINNER JOIN MediPrep_PreparedMedication pm\n" +
+                        "\t\tON m.PrescriptionID = pm.PresciriptionID\n" +
+                        "\t\tAND m.GTIN = pm.GtinPrescribedMedic\t \n" +
+                        "\tWHERE PatientPolypointID = ? \n" +
+                        "\t\tAND ValidUntil >= GETDATE() \n" +
+                        "\t\tAND pm.State = 3\n" +
+                        "\t\tand not exists (\n" +
+                        "\t\t\tselect * \n" +
+                        "\t\t\tfrom MediPrep_PrescriptionDefinesMedication a\n" +
+                        "\t\t\tleft join MediPrep_PreparedMedication b\n" +
+                        "\t\t\tON a.GTIN = b.GtinPrescribedMedic\n" +
+                        "\t\t\tAND a.PrescriptionID = b.PresciriptionID\n" +
+                        "\t\t\tWHERE (b.State is null or b.State < 3) and a.PrescriptionID =p.PolypointID\n" +
+                        "\t\t)\n" +
+                        ") as prescriptions";
+        // noch anpassen dass wenn ein medi noch nicht vorbereitet ist, prescription nicht als prepared angezeigt wird
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);
@@ -1693,6 +1707,47 @@ public class SupplyChainService {
         } catch (SQLException e) {
             return -1;
         }
+    }
+
+    public ToDoListPrescriptions getToDoListPrescriptions() {
+
+        List<TrspPrescription> scheduldedPrescriptionsMorning = new ArrayList<>();
+        List<TrspPrescription> scheduldedPrescriptionsNoon  = new ArrayList<>();
+        List<TrspPrescription> scheduldedPrescriptionsEvening  = new ArrayList<>();
+        List<TrspPrescription> scheduldedPrescriptionsNight  = new ArrayList<>();
+
+        List<TrspPatient> trspPatients = getPatients();
+
+        for (TrspPatient trspPatient : trspPatients) {
+            List<TrspPrescription> tempPresc = getPrescriptionsForPatient(Integer.toString(trspPatient.getPid()));
+            for (TrspPrescription trspPrescription : tempPresc) {
+                String schedule = trspPrescription.getSchedule();
+                for (int i = 0; i < schedule.length(); i++) {
+                    if (Integer.valueOf(schedule.substring(i,i+1)) == 1 ) {
+                        switch (i) {
+                            case 0:
+                                scheduldedPrescriptionsMorning.add(trspPrescription);
+                                break;
+                            case 1:
+                                scheduldedPrescriptionsNoon.add(trspPrescription);
+                                break;
+                            case 2:
+                                scheduldedPrescriptionsEvening.add(trspPrescription);
+                                break;
+                            case 3:
+                                scheduldedPrescriptionsNight.add(trspPrescription);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return new ToDoListPrescriptions(
+                scheduldedPrescriptionsMorning,
+                scheduldedPrescriptionsNoon,
+                scheduldedPrescriptionsEvening,
+                scheduldedPrescriptionsNight);
     }
 
 

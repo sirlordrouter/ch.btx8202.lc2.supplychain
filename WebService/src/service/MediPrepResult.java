@@ -14,6 +14,12 @@ package service;
  */
 public class MediPrepResult {
     private boolean result;
+    /**
+     * -1: Unbekannt
+     * 1:
+     * 2: DateTime Parse Exception
+     * 547: Integrity Contraint error => Product does not match stock item
+     */
     private int errorCode;
 
     /**

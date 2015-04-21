@@ -50,15 +50,15 @@ public class SupplyChainServiceTest extends TestCase {
 
     }
 
-//    public void testSetOrder() throws Exception {
-//        SupplyChainService service = new SupplyChainService();
-//        Order order = new Order("Order",null,true);
-//        ObservableList<Position> positions = FXCollections.observableArrayList();
-//        positions.add(new Position("21342431", "Aspirin", 10));
-//        positions.add(new Position("2341341355", "Dafalgan", 10));
-//        order.setPositions(positions);
-//        service.setOrder(order,null,null);
-//    }
+    public void testSetOrder() throws Exception {
+        SupplyChainService service = new SupplyChainService();
+        Order order = new Order("Order",null,true);
+        ObservableList<Position> positions = FXCollections.observableArrayList();
+        positions.add(new Position("21342431", "Aspirin", 10));
+        positions.add(new Position("2341341355", "Dafalgan", 10));
+        order.setPositions(positions);
+        service.setOrder(order,null,null);
+    }
 
     public void testGetQuantities() throws Exception {
         SupplyChainService service = new SupplyChainService();
@@ -94,9 +94,6 @@ public class SupplyChainServiceTest extends TestCase {
 
     }
 
-    public void testSetOrder() throws Exception {
-
-    }
 
     public void testResetTrackedItems() throws Exception {
 

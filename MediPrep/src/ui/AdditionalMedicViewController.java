@@ -114,21 +114,16 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     PreparedMedication rowData = row.getItem();
                     System.out.println(rowData);
-                    AddMedDialog addMedDialog = new AddMedDialog(null, rowData, dataSource);
-                    addMedDialog.centerOnScreen();
-                    addMedDialog.showAndWait(); //TODO: Check successful in DIalog to display error
+                    if (rowData.getState() == PreparedMedication.MedicationState.open) {
+                        AddMedDialog addMedDialog = new AddMedDialog(null, rowData, dataSource);
+                        addMedDialog.centerOnScreen();
+                        addMedDialog.showAndWait(); //TODO: Check successful in DIalog to display error
 
-                    if (!addMedDialog.isCanceled()) {
-                        String gtin = addMedDialog.getTxtGtin().getText();
-                        String expDate = addMedDialog.getTxtExpiryDate().getText();
-                        String lot = addMedDialog.getTxtLot().getText();
-                        String serial = addMedDialog.getTxtSerial().getText();
+                        if (!addMedDialog.isCanceled()) {
+                            if (rowData.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.prepared)) {
+                                showSuccessfullPreparationAndPrintLabel(rowData);
 
-                        updatePreparedMedication(rowData, gtin, expDate, lot, serial);
-
-                        if (rowData.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.prepared)) {
-                            showSuccessfullPreparationAndPrintLabel(rowData);
-
+                            }
                         }
                     }
 
@@ -163,6 +158,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                     super.updateItem(item, empty);
                     if (item == null || empty) {
                         setText(null);
+                        view.setImage(null);
                     } else {
                         switch (item) {
                             case open:
@@ -175,6 +171,10 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                                 view.setImage(readyImage);
                                 break;
                             case served:
+                                view.setImage(null);
+                                break;
+                            default:
+                                view.setImage(null);
                                 break;
                         }
                     }
@@ -242,8 +242,13 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
     public void beforeOpen() {
         Scanner.addScannerEventListener(this, "(/", 0);
 
+        fetchPatientData();
+    }
+
+    private void fetchPatientData() {
         if (FakeDataRepository.getInstance().getCurrentPatient() != null) {
             setUpPatientInfo(FakeDataRepository.getInstance().getCurrentPatient());
+
 
             medications.clear();
             medicationReserve.clear();
@@ -257,8 +262,6 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
 
             medications.addAll(preparedMedications.stream().filter(p -> !p.isReserve()).collect(Collectors.toList()));
             medicationReserve.addAll(preparedMedications.stream().filter(p -> p.isReserve()).collect(Collectors.toList()));
-
-            System.out.println("Test");
 
         }
     }
@@ -293,13 +296,16 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
 
                     PreparedMedication preparedMedication = medis.get(0);
 
-                    updatePreparedMedication(preparedMedication, info.getAI01_HANDELSEINHEIT(),
-                            info.getAI17_VERFALLSDATUM(), info.getAI10_CHARGENNUMMER(), info.getAI21_SERIAL_NUMBER());
+                    if(preparedMedication.getState() == PreparedMedication.MedicationState.open) {
 
-                    showSuccessfullScan(preparedMedication);
+                        updatePreparedMedication(preparedMedication, info.getAI01_HANDELSEINHEIT(),
+                                info.getAI17_VERFALLSDATUM(), info.getAI10_CHARGENNUMMER(), info.getAI21_SERIAL_NUMBER());
 
-                    if (preparedMedication.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.prepared)) {
-                        showSuccessfullPreparationAndPrintLabel(preparedMedication);
+                        showSuccessfullScan(preparedMedication);
+
+                        if (preparedMedication.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.controlled)) {
+                            showSuccessfullPreparationAndPrintLabel(preparedMedication);
+                        }
                     }
 
                 }
@@ -342,7 +348,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         preparedMedication.setSerial(serial);
 
         preparedMedication.setPreparationTime(LocalDateTime.now());
-        preparedMedication.setState(PreparedMedication.MedicationState.prepared);
+        preparedMedication.setState(PreparedMedication.MedicationState.controlled);
         List<PreparedMedication> medicationList = new ArrayList<>();
         medicationList.add(preparedMedication);
         //Additional Medics are directly in controlled state as they are immediately given to the patient
