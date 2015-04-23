@@ -16,8 +16,10 @@ public class MediPrepResult {
     private boolean result;
     /**
      * -1: Unbekannt
+     * 0:
      * 1:
      * 2: DateTime Parse Exception
+     * 3: No Data found to update
      * 547: Integrity Contraint error => Product does not match stock item
      */
     private int errorCode;
