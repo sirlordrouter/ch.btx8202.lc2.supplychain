@@ -28,7 +28,6 @@ public class Medication {
     private StringProperty DosageUnit = new SimpleStringProperty();
     private StringProperty ApplicationScheme = new SimpleStringProperty();
 
-
     public Medication(String gtin,List<String> gtinBs, String name, String description, String dosage, String dosageUnit, String applicationScheme) {
         this.gtinA.setValue(gtin);
         this.gtinBs = gtinBs;
@@ -98,4 +97,5 @@ public class Medication {
     public void setApplicationScheme(String applicationScheme) {
         ApplicationScheme.set(applicationScheme);
     }
+
 }

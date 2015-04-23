@@ -94,7 +94,7 @@ public class AddMedDialog extends Stage implements Initializable {
 
         currentMedication = selectedMedication;
         this.lblErrorCode.setText("");
-        this.lblName.setText(selectedMedication.getDescription().get());
+        this.lblName.setText(selectedMedication.getName().get());
         this.repository = dataSource;
     }
 

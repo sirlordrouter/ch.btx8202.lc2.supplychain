@@ -47,9 +47,8 @@ public class SupplyChainService {
 
     DbConnectorLogistic connectorLogistic = new DbConnectorLogistic();
 
-
-  @WebMethod
-  public String sayHelloWorldFrom(String from) {
+    @WebMethod
+    public String sayHelloWorldFrom(String from) {
     String result = "Hello, world, from " + from;
       return result;
   }
@@ -546,7 +545,8 @@ public class SupplyChainService {
     {
         Connection connection = connectorLogistic.getConnection();
         List<Item> items = new ArrayList<Item>();
-        Map<String, Tuple<String,String>> GtinbContainesA = getProductInformation();
+        Map<String, LogisticInformation> GtinbContainesA = getProductInformation();
+        //TODO: fetch quantity from product
 
         try {
             // get the identifier of the latest order entry in the database
@@ -564,14 +564,17 @@ public class SupplyChainService {
                             "           ,[BatchLot]\n" +
                             "           ,[ExpiryDate]\n" +
                             "           ,[GTINtert]\n" +
-                            "           ,[SSCC])\n" +
+                            "           ,[SSCC]\n" +
+                            "           ,[ProductQuantity]) " +
                             "     VALUES\n" +
                             "           (?\n" +
                             "           ,?\n" +
                             "           ,?\n" +
                             "           ,?\n" +
                             "           ,null\n" +
+                            "           ,?" +
                             "           ,?)";
+
                     String primaryQuery = "INSERT INTO [dbo].[PrimaryPackage]\n" +
                             "           ([GTINsek]\n" +
                             "           ,[GTINprim]\n" +
@@ -579,7 +582,7 @@ public class SupplyChainService {
                             "           ,[ExpiryDate]\n" +
                             "           ,[Type]\n" +
                             "           ,[GLNman]\n" +
-                            "           ,[SerialNr])\n" +
+                            "           ,[SerialNr]) \n" +
                             "     VALUES\n" +
                             "           (?" +
                             "           ,?" +
@@ -594,7 +597,8 @@ public class SupplyChainService {
                     ps.setString(2,serial);
                     ps.setString(3, batch);
                     ps.setTimestamp(4, expdate);
-                    ps.setString(5,sscc);
+                    ps.setString(5, sscc);
+                    ps.setInt(6, GtinbContainesA.get(pos.getGtin()).LogisticQuantity);
 
                     item.setGTIN(pos.getGtin());
                     item.setSerial(serial);
@@ -609,11 +613,11 @@ public class SupplyChainService {
 
                     ps = connection.prepareStatement(primaryQuery);
                     ps.setString(1,pos.getGtin());
-                    ps.setString(2, GtinbContainesA.get(pos.getGtin()).first);
+                    ps.setString(2, GtinbContainesA.get(pos.getGtin()).GtinA);
                     ps.setString(3, batch);
                     ps.setTimestamp(4, expdate);
                     ps.setString(5, "");
-                    ps.setString(6, GtinbContainesA.get(pos.getGtin()).second);
+                    ps.setString(6, GtinbContainesA.get(pos.getGtin()).Manufacturer);
                     ps.setString(7, serial);
 
                     success = ps.executeUpdate();
@@ -640,14 +644,15 @@ public class SupplyChainService {
         return items;
     }
 
-    private Map<String, Tuple<String,String>> getProductInformation() {
+    private Map<String, LogisticInformation> getProductInformation() {
         Connection connection = connectorLogistic.getConnection();
-        Map<String, Tuple<String,String>> GtinbContainesA = new HashMap<>();
+        Map<String, LogisticInformation> GtinbContainesA = new HashMap<>();
         @Language("DB2")
         String query = "SELECT \n" +
                 "[GTINB],\n" +
                 "[GTINA],\n" +
-                "[Manufacturer]\n" +
+                "[Manufacturer],\n" +
+                "[ContainedUnits] \n" +
                 "FROM \n" +
                 "ProductionGtinBContainesA";
 
@@ -659,7 +664,7 @@ public class SupplyChainService {
             while (rs.next()) {
                 GtinbContainesA.put(
                         rs.getString(1),
-                        new Tuple<>(rs.getString(2), rs.getString(3))
+                        new LogisticInformation(rs.getString(2), rs.getString(3), rs.getInt(4))
                 );
             }
 
@@ -696,8 +701,6 @@ public class SupplyChainService {
         java.sql.Timestamp timestamp = Timestamp.valueOf(dateTime1);
         return timestamp;
     }
-
-
 
     /**
      * Returns a list of quantity objects.
@@ -1013,7 +1016,6 @@ public class SupplyChainService {
         }
         return items;
     }
-
 
     /**
      * Gets an Item with corresponding GTIN and Serial Number
@@ -1762,6 +1764,12 @@ public class SupplyChainService {
                             "           ,?\n" +
                             "           ,?\n" +
                             "           ,?)";
+                    String queryUpdate = "Update " +
+                            "SecondaryPackage " +
+                            "SET ProductQuantity = ProductQuantity-1 " +
+                            "WHERE GTINSek = ? " +
+                            "AND SerialNr = ? " +
+                            "AND ExpiryDate = ?";
 
                     for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
 
@@ -1780,10 +1788,18 @@ public class SupplyChainService {
                         ps.setString(8, trspPreparedMedication.getStaffGln());
 
                         ps.executeUpdate();
+                        connection.commit();
+
+                        ps = connection.prepareStatement(queryUpdate);
+                        ps.setString(1, trspPreparedMedication.getGtinFromAssignedItem());
+                        ps.setString(2, trspPreparedMedication.getSerial());
+                        ps.setTimestamp(3, expiryDate);
+
+                        ps.executeUpdate();
+                        connection.commit();
 
                     }
 
-                    connection.commit();
 
 
                     break;
@@ -1829,6 +1845,9 @@ public class SupplyChainService {
                         psTracking.setInt(6,3); //Set item to processed
                         psTracking.setString(7, null);
                         psTracking.executeUpdate();
+                        
+                        //Make new Prescription "clone"
+
 
                     }
 
@@ -1942,12 +1961,10 @@ public class SupplyChainService {
                 scheduldedPrescriptionsNight);
     }
 
-
     public String getDosetForPatient(String pid) {
 
         throw new NotImplementedException();
     }
-
 
     public static void main(String[] argv) {
     Object implementor = new SupplyChainService();

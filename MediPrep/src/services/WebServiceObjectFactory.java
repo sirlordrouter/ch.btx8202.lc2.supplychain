@@ -61,6 +61,7 @@ public class WebServiceObjectFactory {
         for (PreparedMedication preparedMedication : preparedMedicationList) {
             preparedMedication.setApplicationScheme(trspPrescription.getSchedule());
             preparedMedication.setBasedOnPrescription(prescription);
+            preparedMedication.setDescription(prescription.getDescription());
         }
 
         return prescription;

@@ -28,6 +28,180 @@ public interface SupplyChainService {
 
     /**
      * 
+     */
+    @WebMethod
+    @RequestWrapper(localName = "resetTrackedItems", targetNamespace = "http://service/", className = "webservice.erp.ResetTrackedItems")
+    @ResponseWrapper(localName = "resetTrackedItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.ResetTrackedItemsResponse")
+    @Action(input = "http://service/SupplyChainService/resetTrackedItemsRequest", output = "http://service/SupplyChainService/resetTrackedItemsResponse")
+    public void resetTrackedItems();
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getLogisticUnitsForProduct", targetNamespace = "http://service/", className = "webservice.erp.GetLogisticUnitsForProduct")
+    @ResponseWrapper(localName = "getLogisticUnitsForProductResponse", targetNamespace = "http://service/", className = "webservice.erp.GetLogisticUnitsForProductResponse")
+    @Action(input = "http://service/SupplyChainService/getLogisticUnitsForProductRequest", output = "http://service/SupplyChainService/getLogisticUnitsForProductResponse")
+    public List<String> getLogisticUnitsForProduct(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<webservice.erp.Station>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getStations", targetNamespace = "http://service/", className = "webservice.erp.GetStations")
+    @ResponseWrapper(localName = "getStationsResponse", targetNamespace = "http://service/", className = "webservice.erp.GetStationsResponse")
+    @Action(input = "http://service/SupplyChainService/getStationsRequest", output = "http://service/SupplyChainService/getStationsResponse")
+    public List<Station> getStations();
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<webservice.erp.TrspPatient>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPatients", targetNamespace = "http://service/", className = "webservice.erp.GetPatients")
+    @ResponseWrapper(localName = "getPatientsResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPatientsResponse")
+    @Action(input = "http://service/SupplyChainService/getPatientsRequest", output = "http://service/SupplyChainService/getPatientsResponse")
+    public List<TrspPatient> getPatients();
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<webservice.erp.TrspPrescription>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPrescriptionsForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetPrescriptionsForPatient")
+    @ResponseWrapper(localName = "getPrescriptionsForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPrescriptionsForPatientResponse")
+    @Action(input = "http://service/SupplyChainService/getPrescriptionsForPatientRequest", output = "http://service/SupplyChainService/getPrescriptionsForPatientResponse")
+    public List<TrspPrescription> getPrescriptionsForPatient(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<webservice.erp.TrspPrescription>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPreparedPrescriptionsForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedPrescriptionsForPatient")
+    @ResponseWrapper(localName = "getPreparedPrescriptionsForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedPrescriptionsForPatientResponse")
+    @Action(input = "http://service/SupplyChainService/getPreparedPrescriptionsForPatientRequest", output = "http://service/SupplyChainService/getPreparedPrescriptionsForPatientResponse")
+    public List<TrspPrescription> getPreparedPrescriptionsForPatient(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<webservice.erp.TrspPrescription>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPrescriptionsWithPreparedMedicationsForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetPrescriptionsWithPreparedMedicationsForPatient")
+    @ResponseWrapper(localName = "getPrescriptionsWithPreparedMedicationsForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPrescriptionsWithPreparedMedicationsForPatientResponse")
+    @Action(input = "http://service/SupplyChainService/getPrescriptionsWithPreparedMedicationsForPatientRequest", output = "http://service/SupplyChainService/getPrescriptionsWithPreparedMedicationsForPatientResponse")
+    public List<TrspPrescription> getPrescriptionsWithPreparedMedicationsForPatient(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns webservice.erp.MediPrepResult
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "updateDispensedMedication", targetNamespace = "http://service/", className = "webservice.erp.UpdateDispensedMedication")
+    @ResponseWrapper(localName = "updateDispensedMedicationResponse", targetNamespace = "http://service/", className = "webservice.erp.UpdateDispensedMedicationResponse")
+    @Action(input = "http://service/SupplyChainService/updateDispensedMedicationRequest", output = "http://service/SupplyChainService/updateDispensedMedicationResponse")
+    public MediPrepResult updateDispensedMedication(
+        @WebParam(name = "arg0", targetNamespace = "")
+        TrspPrescription arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns webservice.erp.MediPrepResult
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "updatePreparedMedications", targetNamespace = "http://service/", className = "webservice.erp.UpdatePreparedMedications")
+    @ResponseWrapper(localName = "updatePreparedMedicationsResponse", targetNamespace = "http://service/", className = "webservice.erp.UpdatePreparedMedicationsResponse")
+    @Action(input = "http://service/SupplyChainService/updatePreparedMedicationsRequest", output = "http://service/SupplyChainService/updatePreparedMedicationsResponse")
+    public MediPrepResult updatePreparedMedications(
+        @WebParam(name = "arg0", targetNamespace = "")
+        List<TrspPreparedMedication> arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        MedicationState arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns int
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getPreparedPrescriptionsCountForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedPrescriptionsCountForPatient")
+    @ResponseWrapper(localName = "getPreparedPrescriptionsCountForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedPrescriptionsCountForPatientResponse")
+    @Action(input = "http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientRequest", output = "http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientResponse")
+    public int getPreparedPrescriptionsCountForPatient(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @return
+     *     returns webservice.erp.ToDoListPrescriptions
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getToDoListPrescriptions", targetNamespace = "http://service/", className = "webservice.erp.GetToDoListPrescriptions")
+    @ResponseWrapper(localName = "getToDoListPrescriptionsResponse", targetNamespace = "http://service/", className = "webservice.erp.GetToDoListPrescriptionsResponse")
+    @Action(input = "http://service/SupplyChainService/getToDoListPrescriptionsRequest", output = "http://service/SupplyChainService/getToDoListPrescriptionsResponse")
+    public ToDoListPrescriptions getToDoListPrescriptions();
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getDosetForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetDosetForPatient")
+    @ResponseWrapper(localName = "getDosetForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetDosetForPatientResponse")
+    @Action(input = "http://service/SupplyChainService/getDosetForPatientRequest", output = "http://service/SupplyChainService/getDosetForPatientResponse")
+    public String getDosetForPatient(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
      * @param arg2
      * @param arg1
      * @param arg0
@@ -263,183 +437,6 @@ public interface SupplyChainService {
     @ResponseWrapper(localName = "getOrderForSSCCResponse", targetNamespace = "http://service/", className = "webservice.erp.GetOrderForSSCCResponse")
     @Action(input = "http://service/SupplyChainService/getOrderForSSCCRequest", output = "http://service/SupplyChainService/getOrderForSSCCResponse")
     public String getOrderForSSCC(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     */
-    @WebMethod
-    @RequestWrapper(localName = "resetTrackedItems", targetNamespace = "http://service/", className = "webservice.erp.ResetTrackedItems")
-    @ResponseWrapper(localName = "resetTrackedItemsResponse", targetNamespace = "http://service/", className = "webservice.erp.ResetTrackedItemsResponse")
-    @Action(input = "http://service/SupplyChainService/resetTrackedItemsRequest", output = "http://service/SupplyChainService/resetTrackedItemsResponse")
-    public void resetTrackedItems();
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.util.List<java.lang.String>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getLogisticUnitsForProduct", targetNamespace = "http://service/", className = "webservice.erp.GetLogisticUnitsForProduct")
-    @ResponseWrapper(localName = "getLogisticUnitsForProductResponse", targetNamespace = "http://service/", className = "webservice.erp.GetLogisticUnitsForProductResponse")
-    @Action(input = "http://service/SupplyChainService/getLogisticUnitsForProductRequest", output = "http://service/SupplyChainService/getLogisticUnitsForProductResponse")
-    public List<String> getLogisticUnitsForProduct(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<webservice.erp.Station>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getStations", targetNamespace = "http://service/", className = "webservice.erp.GetStations")
-    @ResponseWrapper(localName = "getStationsResponse", targetNamespace = "http://service/", className = "webservice.erp.GetStationsResponse")
-    @Action(input = "http://service/SupplyChainService/getStationsRequest", output = "http://service/SupplyChainService/getStationsResponse")
-    public List<Station> getStations();
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<webservice.erp.TrspPatient>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getPatients", targetNamespace = "http://service/", className = "webservice.erp.GetPatients")
-    @ResponseWrapper(localName = "getPatientsResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPatientsResponse")
-    @Action(input = "http://service/SupplyChainService/getPatientsRequest", output = "http://service/SupplyChainService/getPatientsResponse")
-    public List<TrspPatient> getPatients();
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.util.List<webservice.erp.TrspPrescription>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getPrescriptionsForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetPrescriptionsForPatient")
-    @ResponseWrapper(localName = "getPrescriptionsForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPrescriptionsForPatientResponse")
-    @Action(input = "http://service/SupplyChainService/getPrescriptionsForPatientRequest", output = "http://service/SupplyChainService/getPrescriptionsForPatientResponse")
-    public List<TrspPrescription> getPrescriptionsForPatient(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.util.List<webservice.erp.TrspPrescription>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getPrescriptionsWithPreparedMedicationsForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetPrescriptionsWithPreparedMedicationsForPatient")
-    @ResponseWrapper(localName = "getPrescriptionsWithPreparedMedicationsForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPrescriptionsWithPreparedMedicationsForPatientResponse")
-    @Action(input = "http://service/SupplyChainService/getPrescriptionsWithPreparedMedicationsForPatientRequest", output = "http://service/SupplyChainService/getPrescriptionsWithPreparedMedicationsForPatientResponse")
-    public List<TrspPrescription> getPrescriptionsWithPreparedMedicationsForPatient(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "savePreparedMedications", targetNamespace = "http://service/", className = "webservice.erp.SavePreparedMedications")
-    @ResponseWrapper(localName = "savePreparedMedicationsResponse", targetNamespace = "http://service/", className = "webservice.erp.SavePreparedMedicationsResponse")
-    @Action(input = "http://service/SupplyChainService/savePreparedMedicationsRequest", output = "http://service/SupplyChainService/savePreparedMedicationsResponse")
-    public boolean savePreparedMedications(
-        @WebParam(name = "arg0", targetNamespace = "")
-        List<TrspPreparedMedication> arg0);
-
-    /**
-     * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns webservice.erp.MediPrepResult
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "updatePreparedMedications", targetNamespace = "http://service/", className = "webservice.erp.UpdatePreparedMedications")
-    @ResponseWrapper(localName = "updatePreparedMedicationsResponse", targetNamespace = "http://service/", className = "webservice.erp.UpdatePreparedMedicationsResponse")
-    @Action(input = "http://service/SupplyChainService/updatePreparedMedicationsRequest", output = "http://service/SupplyChainService/updatePreparedMedicationsResponse")
-    public MediPrepResult updatePreparedMedications(
-        @WebParam(name = "arg0", targetNamespace = "")
-        List<TrspPreparedMedication> arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        MedicationState arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns int
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getPreparedPrescriptionsCountForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedPrescriptionsCountForPatient")
-    @ResponseWrapper(localName = "getPreparedPrescriptionsCountForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedPrescriptionsCountForPatientResponse")
-    @Action(input = "http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientRequest", output = "http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientResponse")
-    public int getPreparedPrescriptionsCountForPatient(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "updatePrescriptions", targetNamespace = "http://service/", className = "webservice.erp.UpdatePrescriptions")
-    @ResponseWrapper(localName = "updatePrescriptionsResponse", targetNamespace = "http://service/", className = "webservice.erp.UpdatePrescriptionsResponse")
-    @Action(input = "http://service/SupplyChainService/updatePrescriptionsRequest", output = "http://service/SupplyChainService/updatePrescriptionsResponse")
-    public boolean updatePrescriptions(
-        @WebParam(name = "arg0", targetNamespace = "")
-        List<TrspPrescription> arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        PrescriptionState arg1);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.util.List<webservice.erp.TrspPreparedMedication>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getPreparedMedicationsForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedMedicationsForPatient")
-    @ResponseWrapper(localName = "getPreparedMedicationsForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetPreparedMedicationsForPatientResponse")
-    @Action(input = "http://service/SupplyChainService/getPreparedMedicationsForPatientRequest", output = "http://service/SupplyChainService/getPreparedMedicationsForPatientResponse")
-    public List<TrspPreparedMedication> getPreparedMedicationsForPatient(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getDosetForPatient", targetNamespace = "http://service/", className = "webservice.erp.GetDosetForPatient")
-    @ResponseWrapper(localName = "getDosetForPatientResponse", targetNamespace = "http://service/", className = "webservice.erp.GetDosetForPatientResponse")
-    @Action(input = "http://service/SupplyChainService/getDosetForPatientRequest", output = "http://service/SupplyChainService/getDosetForPatientResponse")
-    public String getDosetForPatient(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
 

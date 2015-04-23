@@ -33,6 +33,7 @@ public class PreparedMedication extends Medication {
     private ObjectProperty<LocalDateTime> preparationTime = new SimpleObjectProperty<LocalDateTime>();
     private StringProperty StaffGln = new SimpleStringProperty();
     private IntegerProperty preparedMedicationId = new SimpleIntegerProperty();
+    private StringProperty staffFullName = new SimpleStringProperty();
 
     private boolean isReserve = false;
 
@@ -50,6 +51,7 @@ public class PreparedMedication extends Medication {
         this.basedOnPrescription.setValue(basedOnPrescription);
         this.preparationTime.setValue(preparationTime);
         this.isReserve = isReserve;
+
     }
 
     public int getPreparedMedicationId() {
@@ -178,5 +180,10 @@ public class PreparedMedication extends Medication {
 
     public void setStaffGln(String staffGln) {
         this.StaffGln.set(staffGln);
+    }
+
+    public StringProperty getStaffName() {
+        staffFullName.setValue(this.getBasedOnPrescription().getName() + ", " + this.getBasedOnPrescription().getFirstName());
+        return staffFullName;
     }
 }

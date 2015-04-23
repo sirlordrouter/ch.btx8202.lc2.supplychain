@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für getPreparedMedicationsForPatient complex type.
+ * <p>Java-Klasse für getPreparedPrescriptionsForPatient complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
  * <pre>
- * &lt;complexType name="getPreparedMedicationsForPatient">
+ * &lt;complexType name="getPreparedPrescriptionsForPatient">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getPreparedMedicationsForPatient", propOrder = {
+@XmlType(name = "getPreparedPrescriptionsForPatient", propOrder = {
     "arg0"
 })
-public class GetPreparedMedicationsForPatient {
+public class GetPreparedPrescriptionsForPatient {
 
     protected String arg0;
 

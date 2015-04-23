@@ -10,16 +10,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für getPreparedMedicationsForPatientResponse complex type.
+ * <p>Java-Klasse für getPreparedPrescriptionsForPatientResponse complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
  * <pre>
- * &lt;complexType name="getPreparedMedicationsForPatientResponse">
+ * &lt;complexType name="getPreparedPrescriptionsForPatientResponse">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="return" type="{http://service/}trspPreparedMedication" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="return" type="{http://service/}trspPrescription" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,13 +29,13 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getPreparedMedicationsForPatientResponse", propOrder = {
+@XmlType(name = "getPreparedPrescriptionsForPatientResponse", propOrder = {
     "_return"
 })
-public class GetPreparedMedicationsForPatientResponse {
+public class GetPreparedPrescriptionsForPatientResponse {
 
     @XmlElement(name = "return")
-    protected List<TrspPreparedMedication> _return;
+    protected List<TrspPrescription> _return;
 
     /**
      * Gets the value of the return property.
@@ -55,13 +55,13 @@ public class GetPreparedMedicationsForPatientResponse {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link TrspPreparedMedication }
+     * {@link TrspPrescription }
      * 
      * 
      */
-    public List<TrspPreparedMedication> getReturn() {
+    public List<TrspPrescription> getReturn() {
         if (_return == null) {
-            _return = new ArrayList<TrspPreparedMedication>();
+            _return = new ArrayList<TrspPrescription>();
         }
         return this._return;
     }

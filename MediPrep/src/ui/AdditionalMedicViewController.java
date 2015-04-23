@@ -19,6 +19,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 import services.ErpWebserviceClient;
 import services.PropertiesReader;
 import webservice.erp.Item;
@@ -39,6 +41,10 @@ import java.util.stream.Collectors;
  *
  *<p>
  *  View for additional Medications in fluid application form.
+ *  <div>Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>,
+ *  <a href="http://www.flaticon.com/authors/simpleicon" title="SimpleIcon">SimpleIcon</a>
+ *  from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>
+ *  is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
  *</p>
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
@@ -120,7 +126,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                         addMedDialog.showAndWait(); //TODO: Check successful in DIalog to display error
 
                         if (!addMedDialog.isCanceled()) {
-                            if (rowData.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.prepared)) {
+                            if (rowData.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.controlled)) {
                                 showSuccessfullPreparationAndPrintLabel(rowData);
 
                             }
@@ -182,11 +188,38 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
             };
         });
 
+ //       TableColumn<PreparedMedication, String> name = new TableColumn("Name");
+ //       name.setCellValueFactory(cellData -> cellData.getValue().getName());
+
         TableColumn<PreparedMedication, String> name = new TableColumn("Name");
+        name.setMaxWidth(250);
         name.setCellValueFactory(cellData -> cellData.getValue().getName());
 
         TableColumn<PreparedMedication, String> description = new TableColumn("Beschreibung");
+        description.setMaxWidth(200);
+        description.setMinWidth(200);
         description.setCellValueFactory(cellData -> cellData.getValue().getDescription());
+        description.setCellFactory(new Callback<TableColumn<PreparedMedication, String>, TableCell<PreparedMedication, String>>() {
+            @Override
+            public TableCell<PreparedMedication, String> call(TableColumn<PreparedMedication, String> arg0) {
+                return new TableCell<PreparedMedication, String>() {
+                    private Text text;
+
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            text = new Text(item.toString());
+                            text.setWrappingWidth(description.getWidth());
+                            this.setWrapText(true);
+
+                            setGraphic(text);
+                        }
+                    }
+                };
+            }
+        });
+
 
         TableColumn<PreparedMedication, String> dosage = new TableColumn("Dosierung");
         dosage.setCellValueFactory(cellData -> cellData.getValue().getDosage());
@@ -228,7 +261,11 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         TableColumn<PreparedMedication, String> night = new TableColumn("Na");
         night.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApplicationScheme().get().substring(3,4)));
         applicationScheme.getColumns().addAll(morning, noon, evening, night);
-        aTable.getColumns().addAll(state, name, description, dosage, dosageUnit, applicationScheme, preparationTime);
+
+        TableColumn<PreparedMedication, String> prescriber = new TableColumn("Ausgestellt von");
+        prescriber.setCellValueFactory(cellData -> cellData.getValue().getStaffName());
+
+        aTable.getColumns().addAll(state, name, description, dosage, dosageUnit, applicationScheme, preparationTime, prescriber);
 
     }
 
