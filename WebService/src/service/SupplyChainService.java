@@ -1470,7 +1470,7 @@ public class SupplyChainService {
         try {
             String query =
                     "SELECT \n" +
-                            "\tp.PolypointID,\n" +
+                            "\t DISTINCT(p.PolypointID),\n" +
                             "    PatientPolypointID, \n" +
                             "    DateCreated, \n" +
                             "    p.State, \n" +
@@ -1844,8 +1844,9 @@ public class SupplyChainService {
                         psTracking.setTimestamp(5,timestamp);
                         psTracking.setInt(6,3); //Set item to processed
                         psTracking.setString(7, null);
+                        psTracking.setString(8, trspPreparedMedication.getBatchLot());
                         psTracking.executeUpdate();
-                        
+
                         //Make new Prescription "clone"
 
 

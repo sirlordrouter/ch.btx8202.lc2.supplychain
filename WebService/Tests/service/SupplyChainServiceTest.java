@@ -148,4 +148,25 @@ public class SupplyChainServiceTest extends TestCase {
             System.out.println(patient.getFirstname() + " " + patient.getLastname() + " | prepared prescription count:" + service.getPreparedPrescriptionsCountForPatient(Integer.toString(patient.getPid())));
         }
     }
+
+    public void testUpdateDispensedMedication() throws Exception {
+        SupplyChainService service = new SupplyChainService();
+        List<TrspPrescription> prescriptions = service.getPreparedPrescriptionsForPatient("1");
+
+        //service.updateDispensedMedication(prescriptions.get(0), "1");
+
+
+    }
+
+    public void testUpdatePreparedMedications() throws Exception {
+
+    }
+
+    public void testGetPreparedPrescriptionsCountForPatient1() throws Exception {
+
+    }
+
+    public void testGetToDoListPrescriptions() throws Exception {
+
+    }
 }

@@ -22,7 +22,7 @@
       <TextField fx:id="txtExpiryDate" layoutX="112.0" layoutY="126.0" prefHeight="26.0" prefWidth="208.0" />
       <TextField fx:id="txtLot" layoutX="112.0" layoutY="164.0" prefHeight="26.0" prefWidth="208.0" />
       <TextField fx:id="txtSerial" layoutX="112.0" layoutY="201.0" prefHeight="26.0" prefWidth="208.0" />
-      <Label layoutX="14.0" layoutY="14.0" text="Eingabe Produktdaten - manuell Erfassung">
+      <Label layoutX="14.0" layoutY="14.0" text="Eingabe Produktdaten - manuelle Erfassung">
          <font>
             <Font size="24.0" />
          </font>
