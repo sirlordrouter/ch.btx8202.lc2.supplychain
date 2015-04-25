@@ -399,8 +399,6 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 foundQuantityConstraint = quantities.stream().filter(q -> q.getDescription().equals(item.getValue().getDescription())).findFirst();
             }
 
-
-
             if (count == 0 && foundQuantityConstraint.isPresent()) { // no items in stock
 
                 int orderQuantity = ((Quantity) foundQuantityConstraint.get()).getOptQuantity();

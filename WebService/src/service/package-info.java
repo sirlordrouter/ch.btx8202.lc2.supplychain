@@ -3,7 +3,9 @@
  * BSc Medical Informatics<br>
  * Module <br>
  * <p>
- * <p></p>
+ *     Package Information and instantiation of TypeAdapters for LocalDate to
+ *     provide String Date to Webservice callers.
+ * </p>
  * Project: WebService
  * Package: entities
  *

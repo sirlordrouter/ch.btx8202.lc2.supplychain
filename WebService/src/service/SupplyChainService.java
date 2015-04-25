@@ -1587,7 +1587,7 @@ public class SupplyChainService {
             rs =  ps.executeQuery();
 
             //TODO: Pattern für encapsulated Base Class (zuerst Basisklasse TrspMedication nutzen und dann beim vorbereiten der Medis auf die erweiterte Klasse TrspPreparedMedication wechseln) => nur falls sinnvoll
-            medications = getMedicationFromResult(rs);
+            medications = getMedicationFromResult(rs, p);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1604,7 +1604,7 @@ public class SupplyChainService {
 
     }
 
-    private List<TrspPreparedMedication> getMedicationFromResult(ResultSet rs) throws SQLException {
+    private List<TrspPreparedMedication> getMedicationFromResult(ResultSet rs, TrspPrescription p) throws SQLException {
         List<TrspPreparedMedication> trspPreparedMedications = new ArrayList<>();
 
         while (rs.next()) {
@@ -1635,6 +1635,7 @@ public class SupplyChainService {
             trspPreparedMedication.setStaffGln(rs.getString(13));
             trspPreparedMedication.setPreparedMedicationId(rs.getInt(14));
             trspPreparedMedication.setIsReserve(rs.getBoolean(15));
+            trspPreparedMedication.setBasedOnPrescription(p);
 
             trspPreparedMedications.add(trspPreparedMedication);
         }
@@ -1770,6 +1771,8 @@ public class SupplyChainService {
                             "WHERE GTINSek = ? " +
                             "AND SerialNr = ? " +
                             "AND ExpiryDate = ?";
+                    //Ev hier noch ergänzen dass nur Einträge ageupdated werden können wo Quantity > 0
+                    //Sonst fehler und Meldung an Client.
 
                     for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
 
@@ -1821,6 +1824,8 @@ public class SupplyChainService {
                     break;
                 case served: //update and tracker input as well as quantity decrement
 
+                    Set<TrspPrescription> prescriptionsSet = new HashSet<>();
+
                     query =  "Update MediPrep_PreparedMedication " +
                             "SET State = 4 " +
                             "WHERE UID = ?";
@@ -1829,12 +1834,23 @@ public class SupplyChainService {
                             "(GTIN, SerialNr, ExpiryDate, GLNscan, ScanDate, StateNr, ScannedSSCC,Lot) " +
                             "VALUES (?,?,?,?,?,?,?,?)";
 
+
+
                     for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
+
+                        if (trspPreparedMedication.getBasedOnPrescription() != null) {
+                            prescriptionsSet.add(trspPreparedMedication.getBasedOnPrescription());
+                        } else {
+                            throw new SQLException();
+                        }
+
                         PreparedStatement psUpdate = connection.prepareStatement(query);
                         PreparedStatement  psTracking = connection.prepareStatement(queryTracking);
 
                         psUpdate.setInt(1, trspPreparedMedication.getPreparedMedicationId());
                         psUpdate.executeUpdate();
+
+                        connection.commit();
 
                         psTracking.setString(1, trspPreparedMedication.getGtinFromAssignedItem());
                         psTracking.setString(2, trspPreparedMedication.getSerial());
@@ -1842,17 +1858,80 @@ public class SupplyChainService {
                         psTracking.setString(4, stationGLN);
                         java.sql.Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
                         psTracking.setTimestamp(5,timestamp);
-                        psTracking.setInt(6,3); //Set item to processed
+                        psTracking.setInt(6, 3); //Set item to processed
                         psTracking.setString(7, null);
                         psTracking.setString(8, trspPreparedMedication.getBatchLot());
                         psTracking.executeUpdate();
 
-                        //Make new Prescription "clone"
+                        connection.commit();
 
+                        //Make new Prescription "clone" if < Valid Unti new,
+                        // else new Prescription with valid until now + 1 year
 
                     }
 
-                    connection.commit();
+                    String clonePresc = "INSERT INTO [dbo].[MediPrep_Prescription]\n" +
+                            "           ([PolypointID]\n" +
+                            "           ,[PatientPolypointID]\n" +
+                            "           ,[DateCreated]\n" +
+                            "           ,[ValidUntil]\n" +
+                            "           ,[State]\n" +
+                            "           ,[CreatedByStaffGLN]\n" +
+                            "           ,[Description]\n" +
+                            "           ,[Schedule]\n" +
+                            "           ,[RouteOfAdministration]\n" +
+                            "           ,[Notes])\n" +
+                            "     SELECT (SELECT MAX(PolypointID) + 1 FROM MediPrep_Prescription),\n" +
+                            "\t [PatientPolypointID] + 1\n" +
+                            "      ,[DateCreated]\n" +
+                            "      ,DATEADD(YEAR,1,GETDATE())\n" +
+                            "      ,[State]\n" +
+                            "      ,[CreatedByStaffGLN]\n" +
+                            "      ,[Description]\n" +
+                            "      ,[Schedule]\n" +
+                            "      ,[RouteOfAdministration]\n" +
+                            "      ,[Notes]\n" +
+                            "  FROM [SupplyChainLogistic].[dbo].[MediPrep_Prescription]\n" +
+                            "  WHERE PolypointID=? \n" +
+                            "  AND ValidUntil > GETDATE()";
+
+                    String clonePrescMedi = "INSERT INTO [dbo].[MediPrep_PrescriptionDefinesMedication]\n" +
+                            "           ([GTIN]\n" +
+                            "           ,? \n" +
+                            "           ,[Dosage]\n" +
+                            "           ,[isAdditionalMedic]\n" +
+                            "           ,[DosageUnit])\n" +
+                            "SELECT [GTIN]\n" +
+                            "      ,[PrescriptionID]\n" +
+                            "      ,[Dosage]\n" +
+                            "      ,[isAdditionalMedic]\n" +
+                            "      ,[DosageUnit]\n" +
+                            "  FROM [dbo].[MediPrep_PrescriptionDefinesMedication]\n" +
+                            "  WHERE PrescriptionID = ?";
+
+                    for (TrspPrescription trspPrescription : prescriptionsSet) {
+                        PreparedStatement psClonePresc = connection.prepareStatement(clonePresc);
+                        PreparedStatement psClonePrescMedi = connection.prepareStatement(clonePrescMedi);
+
+                        psClonePresc.setString(1,trspPrescription.getPolypointID());
+                        psClonePresc.executeUpdate();
+
+                        int autoIncKeyFromApi = -1;
+                        rs = psClonePresc.getGeneratedKeys();
+                        if (rs.next()) {
+                            autoIncKeyFromApi = rs.getInt(1);
+
+                            psClonePrescMedi.setString(1, Integer.toString(autoIncKeyFromApi));
+                            psClonePrescMedi.setString(2, trspPrescription.getPolypointID());
+                        } else {
+                            throw new SQLException();
+                        }
+
+                        connection.commit();
+                        
+                    }
+
+
 
                     break;
             }

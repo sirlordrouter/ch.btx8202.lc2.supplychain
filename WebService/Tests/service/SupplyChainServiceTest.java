@@ -4,14 +4,54 @@ import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import junit.framework.TestCase;
-import org.junit.Assert;
+import org.junit.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SupplyChainServiceTest extends TestCase {
 
+    public static final String TESTSTATION_C_GLN = "7640166731099";
+    public static final String TEST_PRODUCER_GLN = "1234567890124";
+    public static final String TEST_APOTHEKE_GLN = "1234567890125";
+
+    public static final String ASPIRIN_TEST_GTIN = "21342431";
+    public static final String DAFALGAN_TEST_GTIN = "2341341355";
+
+    public static final String TEST_PATIENT_ID = "4";
+    public static final String TEST_PRESC_KIS_ID_ASPIRINE = "12";
+    public static final String TEST_PRESC_KIS_ID_DAFALGAN = "13";
+
+
+    public static String aGeneratedSSCC;
+    public static SupplyChainService service;
+    public static ObservableList<Position> positions;
+    public static Order testOrder;
+
     public void testSayHelloWorldFrom() throws Exception {
 
+    }
+
+    @BeforeClass
+    @Override
+    public void setUp() {
+        service = new SupplyChainService();
+    }
+
+    @AfterClass
+    @Override
+    public void tearDown() {
+        /*Delete Testdata from database:
+        - Tracked Items
+        -
+        -
+        -
+        -
+        -
+        -
+        -
+        */
     }
 
     public void testGetCheckedInItems() throws Exception {
@@ -51,27 +91,24 @@ public class SupplyChainServiceTest extends TestCase {
     }
 
     public void testSetOrder() throws Exception {
-        SupplyChainService service = new SupplyChainService();
         Order order = new Order("Order",null,true);
         ObservableList<Position> positions = FXCollections.observableArrayList();
         positions.add(new Position("21342431", "Aspirin", 10));
         positions.add(new Position("2341341355", "Dafalgan", 10));
         order.setPositions(positions);
-        service.setOrder(order,null,null);
+        service.setOrder(order, null, null);
     }
 
     public void testGetQuantities() throws Exception {
-        SupplyChainService service = new SupplyChainService();
         Order order = new Order("Order 7",null,true);
       ObservableList<Position> positions = FXCollections.observableArrayList();
        positions.add(new Position("21342431", "Aspirin", 10));
         positions.add(new Position("2341341355", "Dafalgan", 10));
         order.setPositions(positions);
-        service.processOrder(order,"1234567890124","1234567890125");
+        service.processOrder(order, "1234567890124", "1234567890125");
     }
 
     public void testProcessOrder() throws Exception {
-        SupplyChainService service = new SupplyChainService();
         List<Quantity> itemList = service.getQuantities("1234567890124");
         Assert.assertEquals("Count of quantity items in db for gln 1234567890124", 1, itemList.size());
     }
@@ -108,15 +145,9 @@ public class SupplyChainServiceTest extends TestCase {
     }
 
     public void testGetPatients() throws Exception {
-        SupplyChainService service = new SupplyChainService();
         List<TrspPatient> trspPatients = service.getPatients();
-
         Assert.assertNotNull(trspPatients);
-        Assert.assertTrue(trspPatients.size() >= 2);
-
-    }
-
-    public void testGetPatientByUUID() throws Exception {
+        Assert.assertTrue(trspPatients.size() == 5);
 
     }
 
@@ -169,4 +200,302 @@ public class SupplyChainServiceTest extends TestCase {
     public void testGetToDoListPrescriptions() throws Exception {
 
     }
+
+    public void testFullSzenarioTest() throws Exception {
+
+        /*
+
+        Testitem mit minimalem Bestand 1 und Optimalem bestand 2
+
+        1.Bestellung machen von Mindestbestand 0
+
+        Lieferung erstellen
+
+        Lieferung Hersteller auschecken (Kontrolle ob in Tracked Item Tabelle: Produziert und Ausgechecked)
+
+        Einchecken Spital (Kontrolle TrackedItem eingechecked)
+
+        Auschecken Spitalapotheke (Kontrolle Tracked Item ausgechecked)
+
+        Einchecken Stationsapotheke (Kontrolle TrackedItem eingechecked)
+
+        Loop bis Bestand 0 des Medikaments {
+        Medikament richten (Kontrolle anzahl gerichtete Medikamente für patient)
+
+        Medikament abgaben (Kontrolle anzahl Medikamente gerichtet, abgegeben, Trackeditems, Menge Produkteinheiten)
+
+        }
+
+        Kontrolle Bestand weniger als Optimaler Bestand
+
+        Wiederholen bei 1 (Gesamthaft 3 mal Durchgang)
+         */
+    }
+
+    //Teststation A: GLN 7640166731078
+
+
+    public void testOrderWithMinunitsZero() {
+        SupplyChainService service = new SupplyChainService();
+        WebServiceResult result = service.getCheckedInItems(TESTSTATION_C_GLN);
+        List<Item> checkedInItems =  result.getItems().stream()
+                .filter(i ->
+                        i.getGTIN().equals(ASPIRIN_TEST_GTIN)
+                                || i.getGTIN().equals(DAFALGAN_TEST_GTIN)).collect(Collectors.toList());
+        HashMap<String, Integer> checkedInItemsCount = new HashMap<>();
+        testOrder = new Order("TestOrder", null, false);
+        positions = FXCollections.observableArrayList();
+
+        Assert.assertTrue("Assert that there is no Stock of Testitems", checkedInItems.size() == 0);
+
+        for (Item checkedInItem : checkedInItems) {
+            if (checkedInItemsCount.containsKey(checkedInItem.getGTIN())) {
+                checkedInItemsCount.replace(
+                        checkedInItem.getGTIN(),
+                        checkedInItemsCount.get(checkedInItem.getGTIN())+1
+                );
+            } else {
+                checkedInItemsCount.put(checkedInItem.getGTIN(),1);
+            }
+        }
+
+        List<Quantity> quantities =  service.getQuantities(TESTSTATION_C_GLN).stream()
+                .filter(i ->
+                        i.getGtin().equals(ASPIRIN_TEST_GTIN)
+                                || i.getGtin().equals(DAFALGAN_TEST_GTIN)).collect(Collectors.toList());
+        for (Quantity quantity : quantities) {
+            int count = checkedInItemsCount.get(quantity.getGtin());
+
+            Assert.assertTrue("There should be no Quantity yet in Stock", count == 0);
+
+            if (quantity.getMinQuantity() > count) {
+                positions.add(
+                        new Position(quantity.getGtin(), quantity.getDescription(), quantity.getOptQuantity()));
+            }
+        }
+
+        Assert.assertTrue("For each testItem not in Stock, a new Position should be generated", positions.size() == 2);
+        Assert.assertTrue("The Quantity ordered should be 2", positions.get(0).getQuantity() == 2);
+        Assert.assertTrue("The Quantity ordered should be 2", positions.get(1).getQuantity() == 2);
+
+
+    }
+
+    public void testCreateOrder() {
+        testOrder.setPositions(positions);
+        Production production = service.processOrder(testOrder, TEST_PRODUCER_GLN, TESTSTATION_C_GLN);
+
+        Shipment s = production.getShipment();
+        aGeneratedSSCC = s.getSscc();
+
+        Assert.assertTrue("The SSCC should not be empty", !aGeneratedSSCC.equals(""));
+
+
+        //wird beim Produzieren ware auf eingechecked gesetzt?
+        List<Item> producedItems = production.getItems();
+
+        WebServiceResult result = service.getCheckedInItems(TEST_PRODUCER_GLN);
+        boolean allMatch = result.getItems().parallelStream().allMatch(i ->
+                        producedItems.parallelStream().anyMatch(
+                                p -> i.getGTIN().equals(p.getGTIN()) &&
+                                        i.getExpiryDate().equals(p.getExpiryDate()) &&
+                                        i.getLot().equals(p.getLot()) &&
+                                        i.getSerial().equals(p.getSerial())
+
+                        )
+        );
+
+        Assert.assertTrue("There should be no more Items from the produced and checkout items", allMatch);
+
+    }
+
+    public void testCheckoutItemsProducer() {
+
+        List<Item> producedItems =  service.getItemsBySSCC(aGeneratedSSCC);
+        WebServiceResult result = service.checkoutItems(producedItems, TEST_PRODUCER_GLN);
+
+        Assert.assertTrue("Checkout should be successfull", result.isResult());
+        Assert.assertTrue("All Items should be sucessfully checked out,", result.getItems().size() == 0);
+
+        result = service.getCheckedInItems(TEST_PRODUCER_GLN);
+        boolean anyMatch = result.getItems().parallelStream().anyMatch(i ->
+                    producedItems.parallelStream().anyMatch(
+                            p -> i.getGTIN().equals(p.getGTIN()) &&
+                                    i.getExpiryDate().equals(p.getExpiryDate()) &&
+                                    i.getLot().equals(p.getLot()) &&
+                                    i.getSerial().equals(p.getSerial())
+
+                    )
+        );
+
+        Assert.assertFalse("There should be no more Items from the produced and checkout items", anyMatch);
+    }
+
+    //optionally test for checkin/checkout Hospital Logistics
+
+    public void testCheckinHospitalPharmacy() {
+        List<Item> itemsToCheckin =  service.getItemsBySSCC(aGeneratedSSCC);
+        WebServiceResult result = service.checkinItems(itemsToCheckin, TEST_APOTHEKE_GLN);
+        Assert.assertTrue("Checkin should be successfull", result.isResult());
+        Assert.assertTrue("All Items should be sucessfully checked in,", result.getItems().size() == 0);
+
+        result = service.getCheckedInItems(TEST_APOTHEKE_GLN);
+        boolean allMatch = result.getItems().parallelStream().allMatch(i ->
+                        itemsToCheckin.parallelStream().anyMatch(
+                                p -> i.getGTIN().equals(p.getGTIN()) &&
+                                        i.getExpiryDate().equals(p.getExpiryDate()) &&
+                                        i.getLot().equals(p.getLot()) &&
+                                        i.getSerial().equals(p.getSerial())
+
+                        )
+        );
+
+        Assert.assertTrue("There should be no more Items from the produced and checkout items", allMatch);
+
+    }
+
+    public void testCheckoutHospitalPharmacy() {
+        List<Item> checkoutedItems =  service.getItemsBySSCC(aGeneratedSSCC);
+        WebServiceResult result = service.checkoutItems(checkoutedItems, TEST_APOTHEKE_GLN);
+
+        Assert.assertTrue("Checkout should be successfull", result.isResult());
+        Assert.assertTrue("All Items should be sucessfully checked out,", result.getItems().size() == 0);
+
+        result = service.getCheckedInItems(TEST_APOTHEKE_GLN);
+        boolean anyMatch = result.getItems().parallelStream().anyMatch(i ->
+                        checkoutedItems.parallelStream().anyMatch(
+                                p -> i.getGTIN().equals(p.getGTIN()) &&
+                                        i.getExpiryDate().equals(p.getExpiryDate()) &&
+                                        i.getLot().equals(p.getLot()) &&
+                                        i.getSerial().equals(p.getSerial())
+
+                        )
+        );
+
+        Assert.assertFalse("There should be no more Items from the produced and checkout items", anyMatch);
+    }
+    public void testCheckinStation() {
+        List<Item> itemsToCheckin =  service.getItemsBySSCC(aGeneratedSSCC);
+        WebServiceResult result = service.checkinItems(itemsToCheckin, TESTSTATION_C_GLN);
+        Assert.assertTrue("Checkin should be successfull", result.isResult());
+        Assert.assertTrue("All Items should be sucessfully checked in,", result.getItems().size() == 0);
+
+        result = service.getCheckedInItems(TESTSTATION_C_GLN);
+        boolean allMatch = result.getItems().parallelStream().allMatch(i ->
+                        itemsToCheckin.parallelStream().anyMatch(
+                                p -> i.getGTIN().equals(p.getGTIN()) &&
+                                        i.getExpiryDate().equals(p.getExpiryDate()) &&
+                                        i.getLot().equals(p.getLot()) &&
+                                        i.getSerial().equals(p.getSerial())
+
+                        )
+        );
+
+        Assert.assertTrue("There should be no more Items from the produced and checkout items", allMatch);
+
+    }
+
+    public void testPrepareFirstRound() {
+
+        //Prerequisites: Testprescription with dafalgan &  testprescription with asprine
+        //Prepare
+
+        int prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        int preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+
+        Assert.assertTrue("Es gibt 2 Veordnungen", prescriptionsCountForPatient == 2);
+        Assert.assertTrue("Es gibt 0 vorbereitete Verordnungen", preparedPrescriptionsCountForPatient == 0);
+
+        List<TrspPrescription> prescriptions = service.getPrescriptionsForPatient(TEST_PATIENT_ID);
+        WebServiceResult result = service.getCheckedInItems(TESTSTATION_C_GLN);
+        Item anAspirine = result.getItems().parallelStream().filter(i -> i.getGTIN().equals(ASPIRIN_TEST_GTIN))
+                .findFirst().get();
+        Item aDafalagn = result.getItems().parallelStream().filter(i -> i.getGTIN().equals(DAFALGAN_TEST_GTIN))
+                .findFirst().get();
+
+        Assert.assertNotNull("Aspirin ist nicht NULL", anAspirine);
+        Assert.assertNotNull("Dafalgan ist nicht NULL", aDafalagn);
+
+        //prepare one: there should be 1 open prescription
+
+        TrspPrescription aspririnPrescription = prescriptions.stream().filter(p -> p.getPolypointID().equals(TEST_PRESC_KIS_ID_ASPIRINE))
+                .findFirst().get();
+        Assert.assertTrue("Verordnung enthält Aspirin",
+                aspririnPrescription.getMedications().get(0).getGtinA().equals(ASPIRIN_TEST_GTIN));
+
+        TrspPreparedMedication medication = aspririnPrescription.getMedications().get(0);
+        medication.setState(TrspPreparedMedication.MedicationState.controlled);
+        medication.setGtinFromAssignedItem(anAspirine.getGTIN());
+        medication.setExpiryDate(anAspirine.getExpiryDate());
+        medication.setBatchLot(anAspirine.getLot());
+        medication.setSerial(anAspirine.getSerial());
+
+        service.updatePreparedMedications(aspririnPrescription.getMedications(),
+                TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
+
+        prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        Assert.assertTrue("Es gibt 2 Veordnungen", prescriptionsCountForPatient == 2);
+        Assert.assertTrue("Es gibt 1 vorbereitete Verordnungen", preparedPrescriptionsCountForPatient == 1);
+
+        //prepare second: there should be 2 open prescriptions
+        TrspPrescription dafalganPrescription = prescriptions.stream().filter(p -> p.getPolypointID().equals(TEST_PRESC_KIS_ID_DAFALGAN))
+                .findFirst().get();
+        Assert.assertTrue("Verordnung enthält Dafalgan",
+                dafalganPrescription.getMedications().get(0).getGtinA().equals(DAFALGAN_TEST_GTIN));
+        medication = dafalganPrescription.getMedications().get(0);
+        medication.setState(TrspPreparedMedication.MedicationState.controlled);
+        medication.setGtinFromAssignedItem(aDafalagn.getGTIN());
+        medication.setExpiryDate(aDafalagn.getExpiryDate());
+        medication.setBatchLot(aDafalagn.getLot());
+        medication.setSerial(aDafalagn.getSerial());
+
+        service.updatePreparedMedications(dafalganPrescription.getMedications(),
+                TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
+
+        prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        Assert.assertTrue("Es gibt 2 Veordnungen", prescriptionsCountForPatient == 2);
+        Assert.assertTrue("Es gibt 2 vorbereitete Verordnungen", preparedPrescriptionsCountForPatient == 2);
+
+    }
+
+    public void testServeFirstRound() {
+        //Serve
+
+        //serve one: there should be 1 open prescription
+        List<TrspPrescription> preparedPrescriptionsForPatient = service.getPreparedPrescriptionsForPatient(TEST_PATIENT_ID);
+        Assert.assertTrue("Es wurden 2 vorbereitete Verordnungen gefunden.", preparedPrescriptionsForPatient.size() == 2);
+
+        preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
+        service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
+
+        int prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        int preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        Assert.assertTrue("Es gibt 2 Veordnungen.", prescriptionsCountForPatient == 2);
+        Assert.assertTrue("Es gibt 1 vorbereitete Verordnungen.", preparedPrescriptionsCountForPatient == 1);
+
+        //serve second: there should be 0 open prescriptions
+        preparedPrescriptionsForPatient = service.getPreparedPrescriptionsForPatient(TEST_PATIENT_ID);
+        Assert.assertTrue("Es wurde nur 1 vorbereitete Verordnung geladen.", preparedPrescriptionsForPatient.size() == 1);
+
+        preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
+        service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
+
+        prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        Assert.assertTrue("Es gibt 2 Veordnungen.", prescriptionsCountForPatient == 2);
+        Assert.assertTrue("Es gibt 0 vorbereitete Verordnungen.", preparedPrescriptionsCountForPatient == 0);
+    }
+
+    public void testPrepareSecondRound() {
+
+    }
+
+    public void testServeSecondRound() {
+
+    }
+
+
+
 }
