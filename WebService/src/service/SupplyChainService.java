@@ -14,9 +14,11 @@ import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.spi.DateFormatProvider;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
@@ -354,14 +356,17 @@ public class SupplyChainService {
             String query = "INSERT INTO TrackedItems (GTIN, SerialNr, ExpiryDate, GLNscan, ScanDate, StateNr, ScannedSSCC,Lot) VALUES (?,?,?,?,?,?,?,?)";
             for (Item item : items) {
                 //TODO: Inhalt überprüfen ob stimmt, gerade Datum schwierig, muss auch Zeitstempel beinhalten
+
+                LocalDate expDate = LocalDate.parse(item.getExpiryDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+                LocalDateTime expDateTime = expDate.atTime(0,0,0,0);
+
                 PreparedStatement ps = connection.prepareStatement(query);
                 ps.setString(1, item.getGTIN());
                 ps.setString(2, item.getSerial());
-                ps.setString(3, item.getExpiryDate());
+                ps.setTimestamp(3, Timestamp.valueOf(expDateTime));
                 ps.setString(4, gln);
-                GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
-                java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
-                ps.setTimestamp(5, timestamp);
+                LocalDateTime now = LocalDateTime.now();
+                ps.setTimestamp(5, Timestamp.valueOf(now));
                 ps.setInt(6, trackingState);
                 ps.setString(7, null); //ScannedSSCC
                 ps.setString(8, item.getLot());
@@ -627,8 +632,7 @@ public class SupplyChainService {
                     item.setGTIN(pos.getGtin());
                     item.setSerial(serial);
                     item.setLot(batch);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
-                    String expDate  = dateFormat.format(expdate);
+                    String expDate  = expdate.toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE);
                     item.setExpiryDate(expDate);
                     item.setBeschreibung(pos.getDescription());
                     items.add(item);
@@ -647,9 +651,10 @@ public class SupplyChainService {
                     success = ps.executeUpdate();
                     connection.commit();
 
-                    insertTrackingItems(items, glnMan,  1);
-                    connection.commit();
                 }
+
+                insertTrackingItems(items, glnMan,  2);
+                connection.commit();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -713,7 +718,8 @@ public class SupplyChainService {
     private String getBatch(){ //Beutel 9stellig
         java.util.Date date = new java.util.Date();
         DateFormat formatter = new SimpleDateFormat("ddMMyyHHm");
-        return formatter.format(date).substring(1,10);
+        String stringDate = formatter.format(date);
+        return stringDate.substring(0, 9);
     }
     private String getSerial(String batch, int objectNumber){ //17 stellig
         String serial = Integer.toString(objectNumber);
@@ -724,6 +730,7 @@ public class SupplyChainService {
     }
     private Timestamp getExpDate(){
         LocalDate dateTime = LocalDate.now();
+        dateTime.plusYears(1);
         LocalDateTime dateTime1 = dateTime.atTime(0, 0, 0, 0);
         java.sql.Timestamp timestamp = Timestamp.valueOf(dateTime1);
         return timestamp;
@@ -1470,7 +1477,7 @@ public class SupplyChainService {
                             "AND m.GTIN = pm.GtinPrescribedMedic  \n" +
                             "WHERE PatientPolypointID = ? \n" +
                             "AND ValidUntil >= GETDATE()  \n" +
-                            "AND pm.State is null";
+                            "AND (pm.State IS NULL OR pm.State < 4)";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, Integer.parseInt(pid));
             rs =  ps.executeQuery();
@@ -1710,44 +1717,44 @@ public class SupplyChainService {
         MediPrepResult result ;
 
         if (
-                p.getMedications().size()           == 0 &&
-                p.getMedicationsMorning().size()    == 0 &&
-                p.getMedicationsNoon().size()       == 0 &&
-                p.getMedicationsEvening().size()    == 0 &&
-                p.getMedicationsNight().size()      == 0 ) {
+                (p.getMedications() == null || p.getMedications().size() == 0) &&
+                        (p.getMedicationsMorning() == null || p.getMedicationsMorning().size()    == 0) &&
+                        (p.getMedicationsNoon() == null || p.getMedicationsNoon().size()       == 0) &&
+                        (p.getMedicationsEvening() == null || p.getMedicationsEvening().size()    == 0) &&
+                        (p.getMedicationsNight() == null || p.getMedicationsNight().size()      == 0) ) {
             return new MediPrepResult(false, 3);
 
         }
 
-        if (p.getMedications().size() > 0) {
+        if (p.getMedications() != null && p.getMedications().size() > 0) {
             result = updatePreparedMedications(p.getMedications(),
                     TrspPreparedMedication.MedicationState.served, stationGLN);
             if (!result.isResult()) {
                 return result;
             }
         }
-        if (p.getMedicationsMorning().size() > 0) {
+        if (p.getMedicationsMorning() != null && p.getMedicationsMorning().size() > 0) {
             result = updatePreparedMedications(p.getMedicationsMorning(),
                     TrspPreparedMedication.MedicationState.served, stationGLN);
             if (!result.isResult()) {
                 return result;
             }
         }
-        if (p.getMedicationsNoon().size() > 0) {
+        if (p.getMedicationsNoon() != null && p.getMedicationsNoon().size() > 0) {
             result = updatePreparedMedications(p.getMedicationsNoon(),
                     TrspPreparedMedication.MedicationState.served, stationGLN);
             if (!result.isResult()) {
                 return result;
             }
         }
-        if (p.getMedicationsEvening().size() > 0) {
+        if (p.getMedicationsEvening() != null && p.getMedicationsEvening().size() > 0) {
             result = updatePreparedMedications(p.getMedicationsEvening(),
                     TrspPreparedMedication.MedicationState.served, stationGLN);
             if (!result.isResult()) {
                 return result;
             }
         }
-        if (p.getMedicationsNight().size() > 0) {
+        if (p.getMedicationsNight() != null && p.getMedicationsNight().size() > 0) {
             result = updatePreparedMedications(p.getMedicationsNight(),
                     TrspPreparedMedication.MedicationState.served, stationGLN);
             if (!result.isResult()) {
@@ -1897,8 +1904,7 @@ public class SupplyChainService {
                     }
 
                     String clonePresc = "INSERT INTO [dbo].[MediPrep_Prescription]\n" +
-                            "           ([PolypointID]\n" +
-                            "           ,[PatientPolypointID]\n" +
+                            "           ([PatientPolypointID]\n" +
                             "           ,[DateCreated]\n" +
                             "           ,[ValidUntil]\n" +
                             "           ,[State]\n" +
@@ -1907,8 +1913,7 @@ public class SupplyChainService {
                             "           ,[Schedule]\n" +
                             "           ,[RouteOfAdministration]\n" +
                             "           ,[Notes])\n" +
-                            "     SELECT (SELECT MAX(PolypointID) + 1 FROM MediPrep_Prescription),\n" +
-                            "\t [PatientPolypointID] + 1\n" +
+                            "     SELECT [PatientPolypointID]\n" +
                             "      ,[DateCreated]\n" +
                             "      ,DATEADD(YEAR,1,GETDATE())\n" +
                             "      ,[State]\n" +
@@ -1923,12 +1928,12 @@ public class SupplyChainService {
 
                     String clonePrescMedi = "INSERT INTO [dbo].[MediPrep_PrescriptionDefinesMedication]\n" +
                             "           ([GTIN]\n" +
-                            "           ,? \n" +
+                            "           ,[PrescriptionID]" +
                             "           ,[Dosage]\n" +
                             "           ,[isAdditionalMedic]\n" +
                             "           ,[DosageUnit])\n" +
                             "SELECT [GTIN]\n" +
-                            "      ,[PrescriptionID]\n" +
+                            "      ,?\n" +
                             "      ,[Dosage]\n" +
                             "      ,[isAdditionalMedic]\n" +
                             "      ,[DosageUnit]\n" +
@@ -1936,11 +1941,12 @@ public class SupplyChainService {
                             "  WHERE PrescriptionID = ?";
 
                     for (TrspPrescription trspPrescription : prescriptionsSet) {
-                        PreparedStatement psClonePresc = connection.prepareStatement(clonePresc);
-                        PreparedStatement psClonePrescMedi = connection.prepareStatement(clonePrescMedi);
+                        PreparedStatement psClonePresc = connection.prepareStatement(clonePresc, Statement.RETURN_GENERATED_KEYS);
+                        PreparedStatement psClonePrescMedi = connection.prepareStatement(clonePrescMedi, Statement.RETURN_GENERATED_KEYS);
 
-                        psClonePresc.setString(1,trspPrescription.getPolypointID());
+                        psClonePresc.setString(1, trspPrescription.getPolypointID());
                         psClonePresc.executeUpdate();
+                        connection.commit();
 
                         int autoIncKeyFromApi = -1;
                         rs = psClonePresc.getGeneratedKeys();
@@ -1949,6 +1955,8 @@ public class SupplyChainService {
 
                             psClonePrescMedi.setString(1, Integer.toString(autoIncKeyFromApi));
                             psClonePrescMedi.setString(2, trspPrescription.getPolypointID());
+
+                            psClonePrescMedi.executeUpdate();
                         } else {
                             throw new SQLException();
                         }

@@ -1,15 +1,17 @@
 package service;
 
+import data.DbConnectorLogistic;
 import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import junit.framework.TestCase;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
+import org.junit.*;
 import org.junit.runners.MethodSorters;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SupplyChainServiceTest extends TestCase {
 
-    public static final String TESTSTATION_C_GLN = "7640166731099";
+    public static final String TESTSTATION_C_GLN = "7640166731092";
     public static final String TEST_PRODUCER_GLN = "1234567890124";
     public static final String TEST_APOTHEKE_GLN = "7640166731061";
 
@@ -34,30 +36,13 @@ public class SupplyChainServiceTest extends TestCase {
     public static ObservableList<Position> positions;
     public static Order testOrder;
 
-    public void testSayHelloWorldFrom() throws Exception {
-
-    }
-
     @BeforeClass
     @Override
     public void setUp() {
         service = new SupplyChainService();
     }
 
-    @AfterClass
-    @Override
-    public void tearDown() {
-        /*Delete Testdata from database:
-        - Tracked Items
-        - Secondary Items
-        - orders
-        - shipments
-        -
-        -
-        -
-        -
-        */
-    }
+
 
     //Single Tests
     /**
@@ -171,6 +156,7 @@ public class SupplyChainServiceTest extends TestCase {
     //Teststation A: GLN 7640166731078
 
 
+    @Test
     public void testAOrderWithMinunitsZero() {
         //Bestand in der Apotheke kontrollieren
         WebServiceResult result = service.getCheckedInItems(TEST_APOTHEKE_GLN);
@@ -195,12 +181,12 @@ public class SupplyChainServiceTest extends TestCase {
             }
         }
 
-        List<Quantity> quantities =  service.getQuantities(TESTSTATION_C_GLN).stream()
+        List<Quantity> quantities =  service.getQuantities(TEST_APOTHEKE_GLN).stream()
                 .filter(i ->
                         i.getGtin().equals(ASPIRIN_TEST_GTIN)
                                 || i.getGtin().equals(DAFALGAN_TEST_GTIN)).collect(Collectors.toList());
         for (Quantity quantity : quantities) {
-            int count = checkedInItemsCount.get(quantity.getGtin());
+            int count = checkedInItemsCount.size() > 0 ? checkedInItemsCount.get(quantity.getGtin()) : 0;
 
             Assert.assertTrue("There should be no Quantity yet in Stock", count == 0);
 
@@ -218,11 +204,16 @@ public class SupplyChainServiceTest extends TestCase {
 
     }
 
+    @Test
     public void testBCreateOrder() {
 
 
         service.setOrder(testOrder, TEST_APOTHEKE_GLN, TEST_APOTHEKE_GLN);
-        testOrder.setPositions(positions);
+        List<Order> openOrdersByGLN = service.getOpenOrdersByGLN(TEST_APOTHEKE_GLN);
+
+        Assert.assertTrue("Es gibt nur 1 Testorder", openOrdersByGLN.size() == 1);
+        testOrder = openOrdersByGLN.get(0);
+
         Production production = service.processOrder(testOrder, TEST_PRODUCER_GLN, TESTSTATION_C_GLN);
 
         Shipment s = production.getShipment();
@@ -249,6 +240,7 @@ public class SupplyChainServiceTest extends TestCase {
 
     }
 
+    @Test
     public void testCCheckoutItemsProducer() {
 
         List<Item> producedItems =  service.getItemsBySSCC(aGeneratedSSCC);
@@ -272,7 +264,7 @@ public class SupplyChainServiceTest extends TestCase {
     }
 
     //optionally test for checkin/checkout Hospital Logistics
-
+    @Test
     public void testDCheckinHospitalPharmacy() {
         List<Item> itemsToCheckin =  service.getItemsBySSCC(aGeneratedSSCC);
         WebServiceResult result = service.checkinItems(itemsToCheckin, TEST_APOTHEKE_GLN);
@@ -294,6 +286,7 @@ public class SupplyChainServiceTest extends TestCase {
 
     }
 
+    @Test
     public void testECheckoutHospitalPharmacy() {
         List<Item> checkoutedItems =  service.getItemsBySSCC(aGeneratedSSCC);
         WebServiceResult result = service.checkoutItems(checkoutedItems, TEST_APOTHEKE_GLN);
@@ -314,7 +307,7 @@ public class SupplyChainServiceTest extends TestCase {
 
         Assert.assertFalse("There should be no more Items from the produced and checkout items", anyMatch);
     }
-
+    @Test
     public void testFCheckinStation() {
         WebServiceResult result = service.getCheckedInItems(TESTSTATION_C_GLN);
         List<Item> checkedInItems =  result.getItems().stream()
@@ -351,12 +344,13 @@ public class SupplyChainServiceTest extends TestCase {
 
     }
 
+    @Test
     public void testGPrepareFirstRound() {
 
         //Prerequisites: Testprescription with dafalgan &  testprescription with asprine
         //Prepare
 
-        int prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        int prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         int preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
 
         Assert.assertTrue("Es gibt 2 Veordnungen", prescriptionsCountForPatient == 2);
@@ -385,11 +379,12 @@ public class SupplyChainServiceTest extends TestCase {
         medication.setExpiryDate(anAspirine.getExpiryDate());
         medication.setBatchLot(anAspirine.getLot());
         medication.setSerial(anAspirine.getSerial());
+        medication.setPreparationTime(LocalDateTime.now());
 
         service.updatePreparedMedications(aspririnPrescription.getMedications(),
                 TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
 
-        prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es gibt 2 Veordnungen", prescriptionsCountForPatient == 2);
         Assert.assertTrue("Es gibt 1 vorbereitete Verordnungen", preparedPrescriptionsCountForPatient == 1);
@@ -405,28 +400,30 @@ public class SupplyChainServiceTest extends TestCase {
         medication.setExpiryDate(aDafalagn.getExpiryDate());
         medication.setBatchLot(aDafalagn.getLot());
         medication.setSerial(aDafalagn.getSerial());
+        medication.setPreparationTime(LocalDateTime.now());
 
         service.updatePreparedMedications(dafalganPrescription.getMedications(),
                 TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
 
-        prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es gibt 2 Veordnungen", prescriptionsCountForPatient == 2);
         Assert.assertTrue("Es gibt 2 vorbereitete Verordnungen", preparedPrescriptionsCountForPatient == 2);
 
     }
 
+    @Test
     public void testHServeFirstRound() {
         //Serve
 
         //serve one: there should be 1 open prescription
-        List<TrspPrescription> preparedPrescriptionsForPatient = service.getPreparedPrescriptionsForPatient(TEST_PATIENT_ID);
+        List<TrspPrescription> preparedPrescriptionsForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es wurden 2 vorbereitete Verordnungen gefunden.", preparedPrescriptionsForPatient.size() == 2);
 
         preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
         service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
 
-        int prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        int prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         int preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es gibt 2 Veordnungen.", prescriptionsCountForPatient == 2);
         Assert.assertTrue("Es gibt 1 vorbereitete Verordnungen.", preparedPrescriptionsCountForPatient == 1);
@@ -438,17 +435,21 @@ public class SupplyChainServiceTest extends TestCase {
         preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
         service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
 
-        prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es gibt 2 Veordnungen.", prescriptionsCountForPatient == 2);
         Assert.assertTrue("Es gibt 0 vorbereitete Verordnungen.", preparedPrescriptionsCountForPatient == 0);
     }
 
+    @Test
     public void testIPrepareSecondRound() {
 //Prerequisites: Testprescription with dafalgan &  testprescription with asprine
         //Prepare
 
-        int prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        //Prerequisites: Testprescription with dafalgan &  testprescription with asprine
+        //Prepare
+
+        int prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         int preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
 
         Assert.assertTrue("Es gibt 2 Veordnungen", prescriptionsCountForPatient == 2);
@@ -466,7 +467,7 @@ public class SupplyChainServiceTest extends TestCase {
 
         //prepare one: there should be 1 open prescription
 
-        TrspPrescription aspririnPrescription = prescriptions.stream().filter(p -> p.getPolypointID().equals(TEST_PRESC_KIS_ID_ASPIRINE))
+        TrspPrescription aspririnPrescription = prescriptions.stream().filter(p -> p.getMedications().get(0).getGtinA().equals(ASPIRIN_TEST_GTIN))
                 .findFirst().get();
         Assert.assertTrue("Verordnung enthält Aspirin",
                 aspririnPrescription.getMedications().get(0).getGtinA().equals(ASPIRIN_TEST_GTIN));
@@ -477,17 +478,18 @@ public class SupplyChainServiceTest extends TestCase {
         medication.setExpiryDate(anAspirine.getExpiryDate());
         medication.setBatchLot(anAspirine.getLot());
         medication.setSerial(anAspirine.getSerial());
+        medication.setPreparationTime(LocalDateTime.now());
 
         service.updatePreparedMedications(aspririnPrescription.getMedications(),
                 TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
 
-        prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es gibt 2 Veordnungen", prescriptionsCountForPatient == 2);
         Assert.assertTrue("Es gibt 1 vorbereitete Verordnungen", preparedPrescriptionsCountForPatient == 1);
 
         //prepare second: there should be 2 open prescriptions
-        TrspPrescription dafalganPrescription = prescriptions.stream().filter(p -> p.getPolypointID().equals(TEST_PRESC_KIS_ID_DAFALGAN))
+        TrspPrescription dafalganPrescription = prescriptions.stream().filter(p -> p.getMedications().get(0).getGtinA().equals(DAFALGAN_TEST_GTIN))
                 .findFirst().get();
         Assert.assertTrue("Verordnung enthält Dafalgan",
                 dafalganPrescription.getMedications().get(0).getGtinA().equals(DAFALGAN_TEST_GTIN));
@@ -497,27 +499,29 @@ public class SupplyChainServiceTest extends TestCase {
         medication.setExpiryDate(aDafalagn.getExpiryDate());
         medication.setBatchLot(aDafalagn.getLot());
         medication.setSerial(aDafalagn.getSerial());
+        medication.setPreparationTime(LocalDateTime.now());
 
         service.updatePreparedMedications(dafalganPrescription.getMedications(),
                 TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
 
-        prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es gibt 2 Veordnungen", prescriptionsCountForPatient == 2);
         Assert.assertTrue("Es gibt 2 vorbereitete Verordnungen", preparedPrescriptionsCountForPatient == 2);
     }
 
+    @Test
     public void testJServeSecondRound() {
         //Serve
 
         //serve one: there should be 1 open prescription
-        List<TrspPrescription> preparedPrescriptionsForPatient = service.getPreparedPrescriptionsForPatient(TEST_PATIENT_ID);
+        List<TrspPrescription> preparedPrescriptionsForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es wurden 2 vorbereitete Verordnungen gefunden.", preparedPrescriptionsForPatient.size() == 2);
 
         preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
         service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
 
-        int prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        int prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         int preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es gibt 2 Veordnungen.", prescriptionsCountForPatient == 2);
         Assert.assertTrue("Es gibt 1 vorbereitete Verordnungen.", preparedPrescriptionsCountForPatient == 1);
@@ -529,16 +533,14 @@ public class SupplyChainServiceTest extends TestCase {
         preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
         service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
 
-        prescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
+        prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
         Assert.assertTrue("Es gibt 2 Veordnungen.", prescriptionsCountForPatient == 2);
         Assert.assertTrue("Es gibt 0 vorbereitete Verordnungen.", preparedPrescriptionsCountForPatient == 0);
 
-
-
-
     }
 
+    @Test
     public void testKOrderWithMinunitsOne() {
 
         //Nach 2 mailiger Abgabe: Bestand von beiden Medikamenten sollten um 1 abnehmen,
@@ -575,7 +577,7 @@ public class SupplyChainServiceTest extends TestCase {
                         i.getGtin().equals(ASPIRIN_TEST_GTIN)
                                 || i.getGtin().equals(DAFALGAN_TEST_GTIN)).collect(Collectors.toList());
         for (Quantity quantity : quantities) {
-            int count = checkedInItemsCount.get(quantity.getGtin());
+            int count = checkedInItemsCount.size() > 0 ? checkedInItemsCount.get(quantity.getGtin()) : 0;
 
             Assert.assertTrue("There should be no Quantity yet in Stock", count == 0);
 
@@ -588,6 +590,42 @@ public class SupplyChainServiceTest extends TestCase {
         Assert.assertTrue("For each testItem not in Stock, a new Position should be generated", positions.size() == 2);
         Assert.assertTrue("The Quantity ordered should be 2", positions.get(0).getQuantity() == 1);
         Assert.assertTrue("The Quantity ordered should be 2", positions.get(1).getQuantity() == 1);
+
+    }
+
+
+
+    public void testZ() {
+        /*Delete Testdata from database:
+        - Tracked Items
+        - Secondary Items
+        - orders
+        - shipments
+        -
+        -
+        -
+        -
+        */
+
+        DbConnectorLogistic connectorLogistic = new DbConnectorLogistic();
+        Connection connection = connectorLogistic.getConnection();
+        ResultSet rs;
+
+        String orderDelete = "delete from [SupplyChainLogistic].[dbo].[Order]\n" +
+                "where OrderNr >= 7";
+
+        String testPrescriptionDelete = "delete from MediPrep_Prescription\n" +
+                "where PatientPolypointID=6 AND PolypointID > 13";
+
+        try {
+
+            java.sql.Statement st = connection.createStatement();
+            st.execute(orderDelete);
+            st.execute(testPrescriptionDelete);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
