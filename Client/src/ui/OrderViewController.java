@@ -408,7 +408,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 pos.setQuantity(orderQuantity);
                 order.getPositions().add(pos);
             }
-            else if(count != 0  && !foundQuantityConstraint.isPresent()) { //items in stock but no
+            else if(count != 0  && !foundQuantityConstraint.isPresent()) { //items in stock but no quantity defined
                 int orderQuantity = 2;
                 Position pos = new Position();
                 pos.setGtin(item.getChildren().get(0).getValue().getGtin());
@@ -418,7 +418,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
 
             } else if (count != 0
                     && foundQuantityConstraint.isPresent()
-                    && count < ((Quantity) foundQuantityConstraint.get()).getMinQuantity()) {
+                    && count <= ((Quantity) foundQuantityConstraint.get()).getMinQuantity()) {
 
                 int orderQuantity = ((Quantity) foundQuantityConstraint.get()).getOptQuantity() -count;
                 Position pos = new Position();

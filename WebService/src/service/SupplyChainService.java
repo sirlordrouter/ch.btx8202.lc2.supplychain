@@ -67,13 +67,23 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
+
+            //TODO: was passiert mit Items in Secondary Package wo Inhalt = 0?
+            /*
+                All Tracked Items which are not marked checked out in the same institution
+             */
             @Language("DB2")
-            String query = "SELECT i.GTIN,i.SerialNr,i.Lot,i.ExpiryDate,i.ScanDate, i.StateNr FROM TrackedItems i \n" +
-                    "where not exists\n" +
-                    "(\n" +
-                    "Select i.GTIN From TrackedItems o\n" +
-                    "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and GLNscan = ? and StateNr = 3\n" +
-                    ") and GLNscan = ? AND StateNr = ?";
+            String query = "SELECT i.GTIN,i.SerialNr,i.Lot,i.ExpiryDate,i.ScanDate, i.StateNr, s.ProductQuantity \n" +
+                    "FROM TrackedItems i\n" +
+                    "left join SecondaryPackage s on \n" +
+                    "s.GTINsek = i.GTIN AND s.BatchLot = i.Lot \n" +
+                    "AND s.ExpiryDate = i.ExpiryDate AND s.SerialNr = i.SerialNr\n" +
+                    "where not exists \n" +
+                    "( \n" +
+                    "Select i.GTIN From TrackedItems o \n" +
+                    "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and GLNscan = ? and StateNr = 3 \n" +
+                    ") \n" +
+                    "and GLNscan = ? AND StateNr = ?";
 
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, gln);
@@ -209,6 +219,7 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
+            connection.setAutoCommit(false);
             // get the identifier of the latest order entry in the database
             @Language("DB2")
             String query = "SELECT TOP 1 [OrderNr]\n" +
@@ -218,6 +229,8 @@ public class SupplyChainService {
 
             PreparedStatement ps = connection.prepareStatement(query);
             rs =  ps.executeQuery();
+            connection.commit();
+
             rs.next();
             int lastIndex = (int)(long)(Long)rs.getObject(1);
 
@@ -242,6 +255,7 @@ public class SupplyChainService {
             java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
             ps.setTimestamp(4, timestamp);
             int update =  ps.executeUpdate();
+            connection.commit();
             // fill all positions of the given order in the positions table
             query = "INSERT INTO [dbo].[Positions]\n" +
                     "           ([OrderNr]\n" +
@@ -262,6 +276,7 @@ public class SupplyChainService {
                 ps.setInt(4,pos.getQuantity());
 
                 answer =  ps.executeUpdate();
+                connection.commit();
             }
             if(update==1&&answer==1){
                 success=true;
@@ -270,9 +285,15 @@ public class SupplyChainService {
         } catch (SQLException e) {
             e.printStackTrace();
             success = false;
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             return success;
         } finally {
             try {
+                connection.setAutoCommit(true);
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -410,7 +431,7 @@ public class SupplyChainService {
             rs =  ps.executeQuery();
             rs.next();
             int lastShipmentId = (int)(long)(Long)rs.getObject(1);
-            items=insertLogisticPackage(order,lastShipmentId, Integer.parseInt(orderNr));
+            items=insertLogisticPackage(order,lastShipmentId, Integer.parseInt(orderNr), glnMan);
         } catch (SQLException e) {
             e.printStackTrace();
             production.setSuccess(false);
@@ -466,7 +487,8 @@ public class SupplyChainService {
             }
         }
     }
-    private List<Item> insertLogisticPackage(Order order,int shipmentID, int orderNr)
+
+    private List<Item> insertLogisticPackage(Order order, int shipmentID, int orderNr, String glnMan)
     {
         List<Item> items = new ArrayList<Item>();
         ResultSet rs;
@@ -500,7 +522,7 @@ public class SupplyChainService {
             ps.setInt(2, shipmentID);
             ps.setInt(3, orderNr);
             int success =  ps.executeUpdate();
-            items=insertSecondaryPackagesFromOrder(order,Long.toString(lastSSCC+1));
+            items=insertSecondaryPackagesFromOrder(order,Long.toString(lastSSCC+1), glnMan);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -541,7 +563,7 @@ public class SupplyChainService {
         }
     }
 
-    private List<Item> insertSecondaryPackagesFromOrder(Order order, String sscc)
+    private List<Item> insertSecondaryPackagesFromOrder(Order order, String sscc, String glnMan)
     {
         Connection connection = connectorLogistic.getConnection();
         List<Item> items = new ArrayList<Item>();
@@ -591,6 +613,8 @@ public class SupplyChainService {
                             "           ,?" +
                             "           ,?" +
                             "           ,?)";
+
+
                     PreparedStatement ps = connection.prepareStatement(secondaryQuery);
                     ps.setString(1,pos.getGtin());
                     String serial = getSerial(batch,i+1);
@@ -621,6 +645,9 @@ public class SupplyChainService {
                     ps.setString(7, serial);
 
                     success = ps.executeUpdate();
+                    connection.commit();
+
+                    insertTrackingItems(items, glnMan,  1);
                     connection.commit();
                 }
             }
@@ -1418,23 +1445,32 @@ public class SupplyChainService {
 
         try {
             String query =
-                    "SELECT p.PolypointID, \n" +
-                            "PatientPolypointID, \n" +
-                            "DateCreated, \n" +
-                            "State, \n" +
-                            "CreatedByStaffGLN,\n" +
-                            "s.Name, \n" +
-                            "s.FirstName, \n" +
-                            "s.Position, \n" +
-                            "Description, \n" +
-                            "Schedule, \n" +
-                            "RouteOfAdministration," +
-                            "Notes, \n" +
-                            "ValidUntil  \n" +
-                            "FROM MediPrep_Prescription p  \n" +
-                            "LEFT JOIN MediPrep_Staff  s \n" +
-                            "    ON s.GLN = p.CreatedByStaffGLN   \n" +
-                            "WHERE PatientPolypointID = ? and ValidUntil >= GETDATE()";
+                    "SELECT \n" +
+                            "distinct(p.PolypointID), \n" +
+                            "PatientPolypointID,  \n" +
+                            "DateCreated,  \n" +
+                            "p.State,  \n" +
+                            "CreatedByStaffGLN, \n" +
+                            "s.Name,  \n" +
+                            "s.FirstName,  \n" +
+                            "s.Position,  \n" +
+                            "Description,  \n" +
+                            "Schedule,  \n" +
+                            "RouteOfAdministration, \n" +
+                            "Notes,  \n" +
+                            "ValidUntil ,\n" +
+                            "pm.State  \n" +
+                            "FROM MediPrep_Prescription p   \n" +
+                            "LEFT JOIN MediPrep_Staff  s  \n" +
+                            "ON s.GLN = p.CreatedByStaffGLN   \n" +
+                            "INNER JOIN MediPrep_PrescriptionDefinesMedication m \n" +
+                            "ON p.PolypointID = m.PrescriptionID \n" +
+                            "LEFT JOIN MediPrep_PreparedMedication pm \n" +
+                            "ON m.PrescriptionID = pm.PresciriptionID \n" +
+                            "AND m.GTIN = pm.GtinPrescribedMedic  \n" +
+                            "WHERE PatientPolypointID = ? \n" +
+                            "AND ValidUntil >= GETDATE()  \n" +
+                            "AND pm.State is null";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, Integer.parseInt(pid));
             rs =  ps.executeQuery();
@@ -1667,16 +1703,6 @@ public class SupplyChainService {
         } else {
             return col.toLocalTime();
         }
-    }
-
-    @WebMethod
-    public List<TrspPrescription> getPrescriptionsWithPreparedMedicationsForPatient(String pid) {
-        List<TrspPrescription> trspPrescriptions = new ArrayList<TrspPrescription>();
-
-
-
-        //All Prescriptions
-        return trspPrescriptions;
     }
 
     public MediPrepResult updateDispensedMedication(TrspPrescription p, String stationGLN) {
@@ -1928,7 +1954,7 @@ public class SupplyChainService {
                         }
 
                         connection.commit();
-                        
+
                     }
 
 
