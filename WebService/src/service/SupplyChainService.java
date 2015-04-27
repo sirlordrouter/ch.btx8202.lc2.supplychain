@@ -10,6 +10,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
@@ -80,12 +81,19 @@ public class SupplyChainService {
                     "left join SecondaryPackage s on \n" +
                     "s.GTINsek = i.GTIN AND s.BatchLot = i.Lot \n" +
                     "AND s.ExpiryDate = i.ExpiryDate AND s.SerialNr = i.SerialNr\n" +
-                    "where not exists \n" +
-                    "( \n" +
+                    "where \n" +
+                    "not exists ( \n" +
                     "Select i.GTIN From TrackedItems o \n" +
-                    "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and GLNscan = ? and StateNr = 3 \n" +
+                    "left join SecondaryPackage s2 on \n" +
+                    "s2.GTINsek = i.GTIN AND s2.BatchLot = i.Lot \n" +
+                    "AND s2.ExpiryDate = i.ExpiryDate AND s2.SerialNr = i.SerialNr\n" +
+                    "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and \n" +
+                    "i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and GLNscan = ? and StateNr = 3 \n" +
+                    "and s2.ProductQuantity = 0\n" +
                     ") \n" +
-                    "and GLNscan = ? AND StateNr = ?";
+                    "and\n" +
+                    "GLNscan = ? \n" +
+                    "AND StateNr = ?";
 
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, gln);
@@ -222,67 +230,63 @@ public class SupplyChainService {
 
         try {
             connection.setAutoCommit(false);
-            // get the identifier of the latest order entry in the database
-            @Language("DB2")
-            String query = "SELECT TOP 1 [OrderNr]\n" +
-                    "  FROM [dbo].[Order]\n" +
-                    "  ORDER BY OrderNr\n" +
-                    "  DESC";
 
-            PreparedStatement ps = connection.prepareStatement(query);
-            rs =  ps.executeQuery();
-            connection.commit();
-
-            rs.next();
-            int lastIndex = (int)(long)(Long)rs.getObject(1);
 
             // make a new order entry in the database at position lastindex + 1
-            query = "INSERT INTO [dbo].[Order]\n" +
-                    "           ([OrderNr]\n" +
-                    "           ,[StateNr]\n" +
+            String query = "INSERT INTO [dbo].[Order]\n" +
+                    "           ([StateNr]\n" +
                     "           ,[GLNorderer]\n" +
                     "           ,[GLNdest]\n" +
                     "           ,[OrderDate])\n" +
                     "     VALUES\n" +
-                    "           (?\n" +
-                    "           ,1\n" +
+                    "           (1\n" +
                     "           ,?\n" +
                     "           ,?\n" +
                     "           ,?)";
-            ps = connection.prepareStatement(query);
-            ps.setInt(1,lastIndex+1);
-            ps.setString(2,glnOrd);
-            ps.setString(3,glnDest);
+            PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,glnOrd);
+            ps.setString(2,glnDest);
             GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
             java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
-            ps.setTimestamp(4, timestamp);
+            ps.setTimestamp(3, timestamp);
             int update =  ps.executeUpdate();
             connection.commit();
-            // fill all positions of the given order in the positions table
-            query = "INSERT INTO [dbo].[Positions]\n" +
-                    "           ([OrderNr]\n" +
-                    "           ,[GTIN]\n" +
-                    "           ,[Description]\n" +
-                    "           ,[Quantity])\n" +
-                    "     VALUES\n" +
-                    "           (?\n" +
-                    "           ,?\n" +
-                    "           ,?\n" +
-                    "           ,?)";
-            int answer=0;
-            for(Position pos:order.getPositions()){
-                ps = connection.prepareStatement(query);
-                ps.setInt(1,lastIndex+1);
-                ps.setString(2,pos.getGtin());
-                ps.setString(3,pos.getDescription());
-                ps.setInt(4,pos.getQuantity());
 
-                answer =  ps.executeUpdate();
-                connection.commit();
+            int key =  -1;
+            rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                key = ((BigDecimal)rs.getObject(1)).intValue();
+
+                // fill all positions of the given order in the positions table
+                query = "INSERT INTO [dbo].[Positions]\n" +
+                        "           ([OrderNr]\n" +
+                        "           ,[GTIN]\n" +
+                        "           ,[Description]\n" +
+                        "           ,[Quantity])\n" +
+                        "     VALUES\n" +
+                        "           (?\n" +
+                        "           ,?\n" +
+                        "           ,?\n" +
+                        "           ,?)";
+                int answer=0;
+                for(Position pos:order.getPositions()){
+                    ps = connection.prepareStatement(query);
+                    ps.setInt(1,key);
+                    ps.setString(2,pos.getGtin());
+                    ps.setString(3,pos.getDescription());
+                    ps.setInt(4,pos.getQuantity());
+
+                    answer =  ps.executeUpdate();
+                    connection.commit();
+                }
+                if(update==1&&answer==1){
+                    success=true;
+                }else{success=false;}
+
+
+            } else {
+                throw new SQLException();
             }
-            if(update==1&&answer==1){
-                success=true;
-            }else{success=false;}
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -653,9 +657,11 @@ public class SupplyChainService {
 
                 }
 
-                insertTrackingItems(items, glnMan,  2);
-                connection.commit();
             }
+
+            insertTrackingItems(items, glnMan,  2);
+            connection.commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
             try {

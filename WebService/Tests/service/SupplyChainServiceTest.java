@@ -1,16 +1,15 @@
 package service;
 
-import data.DbConnectorLogistic;
 import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import junit.framework.TestCase;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +28,7 @@ public class SupplyChainServiceTest extends TestCase {
     public static final String TEST_PATIENT_ID = "6";
     public static final String TEST_PRESC_KIS_ID_ASPIRINE = "12";
     public static final String TEST_PRESC_KIS_ID_DAFALGAN = "13";
+    public static final String TEST_ORDER_NUMBER = "TestOrder 7";
 
 
     public static String aGeneratedSSCC;
@@ -165,7 +165,7 @@ public class SupplyChainServiceTest extends TestCase {
                         i.getGTIN().equals(ASPIRIN_TEST_GTIN)
                                 || i.getGTIN().equals(DAFALGAN_TEST_GTIN)).collect(Collectors.toList());
         HashMap<String, Integer> checkedInItemsCount = new HashMap<>();
-        testOrder = new Order("TestOrder 7", null, false);
+        testOrder = new Order(TEST_ORDER_NUMBER, null, false);
         positions = FXCollections.observableArrayList();
 
         Assert.assertTrue("Assert that there is no Stock of Testitems", checkedInItems.size() == 0);
@@ -358,9 +358,11 @@ public class SupplyChainServiceTest extends TestCase {
 
         List<TrspPrescription> prescriptions = service.getPrescriptionsForPatient(TEST_PATIENT_ID);
         WebServiceResult result = service.getCheckedInItems(TESTSTATION_C_GLN);
-        Item anAspirine = result.getItems().parallelStream().filter(i -> i.getGTIN().equals(ASPIRIN_TEST_GTIN))
+        Item anAspirine = result.getItems().parallelStream()
+                .filter(i -> i.getGTIN().equals(ASPIRIN_TEST_GTIN) && i.getSerial().endsWith("1"))
                 .findFirst().get();
-        Item aDafalagn = result.getItems().parallelStream().filter(i -> i.getGTIN().equals(DAFALGAN_TEST_GTIN))
+        Item aDafalagn = result.getItems().parallelStream().filter(i -> i.getGTIN().equals(DAFALGAN_TEST_GTIN)
+                && i.getSerial().endsWith("1"))
                 .findFirst().get();
 
         Assert.assertNotNull("Aspirin ist nicht NULL", anAspirine);
@@ -368,7 +370,8 @@ public class SupplyChainServiceTest extends TestCase {
 
         //prepare one: there should be 1 open prescription
 
-        TrspPrescription aspririnPrescription = prescriptions.stream().filter(p -> p.getPolypointID().equals(TEST_PRESC_KIS_ID_ASPIRINE))
+        TrspPrescription aspririnPrescription = prescriptions.stream()
+                .filter(p -> p.getMedications().get(0).getGtinA().equals(ASPIRIN_TEST_GTIN))
                 .findFirst().get();
         Assert.assertTrue("Verordnung enthält Aspirin",
                 aspririnPrescription.getMedications().get(0).getGtinA().equals(ASPIRIN_TEST_GTIN));
@@ -390,7 +393,7 @@ public class SupplyChainServiceTest extends TestCase {
         Assert.assertTrue("Es gibt 1 vorbereitete Verordnungen", preparedPrescriptionsCountForPatient == 1);
 
         //prepare second: there should be 2 open prescriptions
-        TrspPrescription dafalganPrescription = prescriptions.stream().filter(p -> p.getPolypointID().equals(TEST_PRESC_KIS_ID_DAFALGAN))
+        TrspPrescription dafalganPrescription = prescriptions.stream().filter(p -> p.getMedications().get(0).getGtinA().equals(DAFALGAN_TEST_GTIN))
                 .findFirst().get();
         Assert.assertTrue("Verordnung enthält Dafalgan",
                 dafalganPrescription.getMedications().get(0).getGtinA().equals(DAFALGAN_TEST_GTIN));
@@ -457,9 +460,11 @@ public class SupplyChainServiceTest extends TestCase {
 
         List<TrspPrescription> prescriptions = service.getPrescriptionsForPatient(TEST_PATIENT_ID);
         WebServiceResult result = service.getCheckedInItems(TESTSTATION_C_GLN);
-        Item anAspirine = result.getItems().parallelStream().filter(i -> i.getGTIN().equals(ASPIRIN_TEST_GTIN))
+        Item anAspirine = result.getItems().parallelStream()
+                .filter(i -> i.getGTIN().equals(ASPIRIN_TEST_GTIN) && i.getSerial().endsWith("1"))
                 .findFirst().get();
-        Item aDafalagn = result.getItems().parallelStream().filter(i -> i.getGTIN().equals(DAFALGAN_TEST_GTIN))
+        Item aDafalagn = result.getItems().parallelStream().filter(i -> i.getGTIN().equals(DAFALGAN_TEST_GTIN)
+                && i.getSerial().endsWith("1"))
                 .findFirst().get();
 
         Assert.assertNotNull("Aspirin ist nicht NULL", anAspirine);
@@ -467,7 +472,8 @@ public class SupplyChainServiceTest extends TestCase {
 
         //prepare one: there should be 1 open prescription
 
-        TrspPrescription aspririnPrescription = prescriptions.stream().filter(p -> p.getMedications().get(0).getGtinA().equals(ASPIRIN_TEST_GTIN))
+        TrspPrescription aspririnPrescription = prescriptions.stream()
+                .filter(p -> p.getMedications().get(0).getGtinA().equals(ASPIRIN_TEST_GTIN))
                 .findFirst().get();
         Assert.assertTrue("Verordnung enthält Aspirin",
                 aspririnPrescription.getMedications().get(0).getGtinA().equals(ASPIRIN_TEST_GTIN));
@@ -559,7 +565,7 @@ public class SupplyChainServiceTest extends TestCase {
         testOrder = new Order("TestOrder", null, false);
         positions = FXCollections.observableArrayList();
 
-        Assert.assertTrue("Assert that there is no Stock of Testitems", checkedInItems.size() == 0);
+        Assert.assertTrue("Assert that there is each 1 Stock of Testitems", checkedInItems.size() == 2);
 
         for (Item checkedInItem : checkedInItems) {
             if (checkedInItemsCount.containsKey(checkedInItem.getGTIN())) {
@@ -572,18 +578,18 @@ public class SupplyChainServiceTest extends TestCase {
             }
         }
 
-        List<Quantity> quantities =  service.getQuantities(TESTSTATION_C_GLN).stream()
+        List<Quantity> quantities =  service.getQuantities(TEST_APOTHEKE_GLN).stream()
                 .filter(i ->
                         i.getGtin().equals(ASPIRIN_TEST_GTIN)
                                 || i.getGtin().equals(DAFALGAN_TEST_GTIN)).collect(Collectors.toList());
         for (Quantity quantity : quantities) {
             int count = checkedInItemsCount.size() > 0 ? checkedInItemsCount.get(quantity.getGtin()) : 0;
 
-            Assert.assertTrue("There should be no Quantity yet in Stock", count == 0);
+            Assert.assertTrue("There should be no Quantity yet in Stock", count == 1);
 
             if (quantity.getMinQuantity() >= count) {
                 positions.add(
-                        new Position(quantity.getGtin(), quantity.getDescription(), quantity.getOptQuantity()));
+                        new Position(quantity.getGtin(), quantity.getDescription(), quantity.getOptQuantity()-count));
             }
         }
 
@@ -607,7 +613,7 @@ public class SupplyChainServiceTest extends TestCase {
         -
         */
 
-        DbConnectorLogistic connectorLogistic = new DbConnectorLogistic();
+        /*DbConnectorLogistic connectorLogistic = new DbConnectorLogistic();
         Connection connection = connectorLogistic.getConnection();
         ResultSet rs;
 
@@ -625,7 +631,7 @@ public class SupplyChainServiceTest extends TestCase {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
