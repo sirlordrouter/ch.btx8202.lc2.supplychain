@@ -49,8 +49,8 @@ public class BarcodeGenerator {
 
 //+ basedOnPrescription.getPolypointID()    + basedOnPrescription.getDescription()
         String[] paramArr = new String[] {
-                "Prescription ID: " ,
-                "Beschreibung: " ,
+                "Prescription ID: " + basedOnPrescription.getPolypointID() ,
+                "Beschreibung: " + basedOnPrescription.getDescription(),
                 "Inhalt: Natriumchlorid 0.9%",
                 "Ceftriaxon OrPha 2g"
         };
@@ -153,20 +153,11 @@ public class BarcodeGenerator {
             }
         }
 
-
         PrinterJob job = PrinterJob.getPrinterJob();
-        //boolean doPrint = job.printDialog();
-        //if (doPrint) {
-            job.setPrintService(service);
-            /*BufferedImage bufferedImage = generate(null,prescription);
-            ImagePrintable imagePrintable = new ImagePrintable(
-                    job,bufferedImage
-            );*/
+        //job.printDialog();
+        job.setPrintService(service);
+        job.setPrintable(new PreparedPrescriptionPrinter(prescription));
+        job.print();
 
-            job.setPrintable(new PreparedPrescriptionPrinter());
-            job.print();
-
-
-        //}
     }
 }

@@ -29,7 +29,8 @@ public class BarcodeGeneratorTest {
 
         Prescription prescription = new Prescription(false,null,"1","1", LocalDate.now(),
                 "123", "Hanna", "Montana", "Nurse","Description","1001","p.p.");
-        generator.generate(outputFile,prescription);
+        //generator.generate(outputFile,prescription);
+
 
         generator.printBarcode(prescription);
 
