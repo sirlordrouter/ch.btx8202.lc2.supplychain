@@ -50,11 +50,19 @@ public class PreparedPrescriptionPrinter implements Printable {
             return NO_SUCH_PAGE;
         }
 
+        double pageWidth = pf.getImageableWidth();
+
+
         try {
             AffineTransform symbolPlacement = new AffineTransform();
-            symbolPlacement.setToTranslation(40,40);
+            symbolPlacement.setToTranslation(2,2);
             generator.generate(new File(BARCODE_IMAGE_PATH), prescription);
             RenderedImage image = toBufferedImage(ImageIO.read(new File(BARCODE_IMAGE_PATH)));
+            int imageWidth = image.getWidth();
+
+            double scaleFactor =  imageWidth > pageWidth ? pageWidth / imageWidth : imageWidth / pageWidth;
+            symbolPlacement.scale(scaleFactor,scaleFactor);
+
             ((Graphics2D) g).drawRenderedImage(image, symbolPlacement);
         } catch (IOException e) {
             e.printStackTrace();

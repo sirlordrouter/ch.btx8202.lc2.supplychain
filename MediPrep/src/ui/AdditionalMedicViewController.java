@@ -27,6 +27,7 @@ import services.PropertiesReader;
 import webservice.erp.Item;
 import webservice.erp.MediPrepResult;
 
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -417,9 +418,15 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         alert.showAndWait();
         File outputFile = new File("out.png");
         try {
-            barcodeGenerator.generate(outputFile, preparedMedication.getBasedOnPrescription());
+            barcodeGenerator.printBarcode(preparedMedication.getBasedOnPrescription());
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (PrinterException e) {
+            Alert printAlert = new Alert(Alert.AlertType.ERROR);
+            printAlert.setTitle("Druckfehler Dialog");
+            printAlert.setHeaderText(null);
+            printAlert.setContentText("Leider gab es ein Fehler beim Drucken.\n" +
+                    "Falls der Drucker in Ordnung ist, lösen Sie den Vorgang erneut aus.");
         }
     }
 }
