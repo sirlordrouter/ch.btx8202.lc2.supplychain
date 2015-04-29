@@ -1,17 +1,16 @@
 package services;
 
 import entities.Prescription;
+import org.krysalis.barcode4j.impl.datamatrix.DataMatrixBean;
+import org.krysalis.barcode4j.impl.datamatrix.SymbolShapeHint;
+import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
+import org.krysalis.barcode4j.tools.UnitConv;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Bern University of Applied Sciences<br>
@@ -53,18 +52,34 @@ public class PreparedPrescriptionPrinter implements Printable {
         Graphics2D g2d = (Graphics2D)g;
         g2d.translate(pf.getImageableX(), pf.getImageableY());
 
+        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+                RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
-        //Place the barcode symbol
-        AffineTransform symbolPlacement = new AffineTransform();
-        symbolPlacement.translate(1, 1);
+        Java2DCanvasProvider provider = new Java2DCanvasProvider(g2d, 0);
+        //g2d.scale(2.835, 2.835);
+        g2d.scale(12, 12);
+        //PDF417Bean bean = new PDF417Bean();
+        DataMatrixBean bean = new DataMatrixBean();
 
-        try {
+        bean.generateBarcode(provider, "1");
+        final int dpi = 200;
+
+        //Configure the barcode generator
+        bean.setModuleWidth(UnitConv.in2mm(8.0f / dpi)); //makes a dot/module exactly eight pixels
+        bean.doQuietZone(false);
+        bean.setShape(SymbolShapeHint.FORCE_SQUARE);
+
+        boolean antiAlias = false;
+        int orientation = 0;
+
+
+        /*try {
         //    generator.generate(new File("out.png"), prescription);
-            RenderedImage image = toBufferedImage(ImageIO.read(new File("out.png")));
+            RenderedImage image = toBufferedImage(ImageIO.read(new File("/Users/Johannes/05_Projekte/Java/production/ch.btx8202.lc2.supplychain/MediPrep/src/resources/image/Bett.png")));
             ((Graphics2D) g).drawRenderedImage(image, symbolPlacement);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         // tell the caller that this page is part
         // of the printed document
@@ -85,7 +100,7 @@ public class PreparedPrescriptionPrinter implements Printable {
         }
 
         // Create a buffered image with transparency
-        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
 
         // Draw the image on to the buffered image
         Graphics2D bGr = bimage.createGraphics();
