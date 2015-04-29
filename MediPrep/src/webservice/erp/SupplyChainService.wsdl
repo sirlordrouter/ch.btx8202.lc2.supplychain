@@ -4,84 +4,6 @@
 <xsd:import namespace="http://service/" schemaLocation="http://localhost:8080/services/SupplyChainService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="resetTrackedItems">
-<part name="parameters" element="tns:resetTrackedItems"/>
-</message>
-<message name="resetTrackedItemsResponse">
-<part name="parameters" element="tns:resetTrackedItemsResponse"/>
-</message>
-<message name="getLogisticUnitsForProduct">
-<part name="parameters" element="tns:getLogisticUnitsForProduct"/>
-</message>
-<message name="getLogisticUnitsForProductResponse">
-<part name="parameters" element="tns:getLogisticUnitsForProductResponse"/>
-</message>
-<message name="getStations">
-<part name="parameters" element="tns:getStations"/>
-</message>
-<message name="getStationsResponse">
-<part name="parameters" element="tns:getStationsResponse"/>
-</message>
-<message name="getPatients">
-<part name="parameters" element="tns:getPatients"/>
-</message>
-<message name="getPatientsResponse">
-<part name="parameters" element="tns:getPatientsResponse"/>
-</message>
-<message name="getPrescriptionsForPatient">
-<part name="parameters" element="tns:getPrescriptionsForPatient"/>
-</message>
-<message name="getPrescriptionsForPatientResponse">
-<part name="parameters" element="tns:getPrescriptionsForPatientResponse"/>
-</message>
-<message name="getPreparedPrescriptionsForPatient">
-<part name="parameters" element="tns:getPreparedPrescriptionsForPatient"/>
-</message>
-<message name="getPreparedPrescriptionsForPatientResponse">
-<part name="parameters" element="tns:getPreparedPrescriptionsForPatientResponse"/>
-</message>
-<message name="getPrescriptionsWithPreparedMedicationsForPatient">
-<part name="parameters" element="tns:getPrescriptionsWithPreparedMedicationsForPatient"/>
-</message>
-<message name="getPrescriptionsWithPreparedMedicationsForPatientResponse">
-<part name="parameters" element="tns:getPrescriptionsWithPreparedMedicationsForPatientResponse"/>
-</message>
-<message name="updateDispensedMedication">
-<part name="parameters" element="tns:updateDispensedMedication"/>
-</message>
-<message name="updateDispensedMedicationResponse">
-<part name="parameters" element="tns:updateDispensedMedicationResponse"/>
-</message>
-<message name="updatePreparedMedications">
-<part name="parameters" element="tns:updatePreparedMedications"/>
-</message>
-<message name="updatePreparedMedicationsResponse">
-<part name="parameters" element="tns:updatePreparedMedicationsResponse"/>
-</message>
-<message name="getPreparedPrescriptionsCountForPatient">
-<part name="parameters" element="tns:getPreparedPrescriptionsCountForPatient"/>
-</message>
-<message name="getPreparedPrescriptionsCountForPatientResponse">
-<part name="parameters" element="tns:getPreparedPrescriptionsCountForPatientResponse"/>
-</message>
-<message name="getToDoListPrescriptions">
-<part name="parameters" element="tns:getToDoListPrescriptions"/>
-</message>
-<message name="getToDoListPrescriptionsResponse">
-<part name="parameters" element="tns:getToDoListPrescriptionsResponse"/>
-</message>
-<message name="getDosetForPatient">
-<part name="parameters" element="tns:getDosetForPatient"/>
-</message>
-<message name="getDosetForPatientResponse">
-<part name="parameters" element="tns:getDosetForPatientResponse"/>
-</message>
-<message name="setOrder">
-<part name="parameters" element="tns:setOrder"/>
-</message>
-<message name="setOrderResponse">
-<part name="parameters" element="tns:setOrderResponse"/>
-</message>
 <message name="sayHelloWorldFrom">
 <part name="parameters" element="tns:sayHelloWorldFrom"/>
 </message>
@@ -105,6 +27,12 @@
 </message>
 <message name="checkinItemsResponse">
 <part name="parameters" element="tns:checkinItemsResponse"/>
+</message>
+<message name="setOrder">
+<part name="parameters" element="tns:setOrder"/>
+</message>
+<message name="setOrderResponse">
+<part name="parameters" element="tns:setOrderResponse"/>
 </message>
 <message name="checkoutItems">
 <part name="parameters" element="tns:checkoutItems"/>
@@ -160,59 +88,73 @@
 <message name="getOrderForSSCCResponse">
 <part name="parameters" element="tns:getOrderForSSCCResponse"/>
 </message>
+<message name="resetTrackedItems">
+<part name="parameters" element="tns:resetTrackedItems"/>
+</message>
+<message name="resetTrackedItemsResponse">
+<part name="parameters" element="tns:resetTrackedItemsResponse"/>
+</message>
+<message name="getLogisticUnitsForProduct">
+<part name="parameters" element="tns:getLogisticUnitsForProduct"/>
+</message>
+<message name="getLogisticUnitsForProductResponse">
+<part name="parameters" element="tns:getLogisticUnitsForProductResponse"/>
+</message>
+<message name="getStations">
+<part name="parameters" element="tns:getStations"/>
+</message>
+<message name="getStationsResponse">
+<part name="parameters" element="tns:getStationsResponse"/>
+</message>
+<message name="getPatients">
+<part name="parameters" element="tns:getPatients"/>
+</message>
+<message name="getPatientsResponse">
+<part name="parameters" element="tns:getPatientsResponse"/>
+</message>
+<message name="getPrescriptionsForPatient">
+<part name="parameters" element="tns:getPrescriptionsForPatient"/>
+</message>
+<message name="getPrescriptionsForPatientResponse">
+<part name="parameters" element="tns:getPrescriptionsForPatientResponse"/>
+</message>
+<message name="getPreparedPrescriptionsForPatient">
+<part name="parameters" element="tns:getPreparedPrescriptionsForPatient"/>
+</message>
+<message name="getPreparedPrescriptionsForPatientResponse">
+<part name="parameters" element="tns:getPreparedPrescriptionsForPatientResponse"/>
+</message>
+<message name="updateDispensedMedication">
+<part name="parameters" element="tns:updateDispensedMedication"/>
+</message>
+<message name="updateDispensedMedicationResponse">
+<part name="parameters" element="tns:updateDispensedMedicationResponse"/>
+</message>
+<message name="updatePreparedMedications">
+<part name="parameters" element="tns:updatePreparedMedications"/>
+</message>
+<message name="updatePreparedMedicationsResponse">
+<part name="parameters" element="tns:updatePreparedMedicationsResponse"/>
+</message>
+<message name="getPreparedPrescriptionsCountForPatient">
+<part name="parameters" element="tns:getPreparedPrescriptionsCountForPatient"/>
+</message>
+<message name="getPreparedPrescriptionsCountForPatientResponse">
+<part name="parameters" element="tns:getPreparedPrescriptionsCountForPatientResponse"/>
+</message>
+<message name="getToDoListPrescriptions">
+<part name="parameters" element="tns:getToDoListPrescriptions"/>
+</message>
+<message name="getToDoListPrescriptionsResponse">
+<part name="parameters" element="tns:getToDoListPrescriptionsResponse"/>
+</message>
+<message name="getDosetForPatient">
+<part name="parameters" element="tns:getDosetForPatient"/>
+</message>
+<message name="getDosetForPatientResponse">
+<part name="parameters" element="tns:getDosetForPatientResponse"/>
+</message>
 <portType name="SupplyChainService">
-<operation name="resetTrackedItems">
-<input wsam:Action="http://service/SupplyChainService/resetTrackedItemsRequest" message="tns:resetTrackedItems"/>
-<output wsam:Action="http://service/SupplyChainService/resetTrackedItemsResponse" message="tns:resetTrackedItemsResponse"/>
-</operation>
-<operation name="getLogisticUnitsForProduct">
-<input wsam:Action="http://service/SupplyChainService/getLogisticUnitsForProductRequest" message="tns:getLogisticUnitsForProduct"/>
-<output wsam:Action="http://service/SupplyChainService/getLogisticUnitsForProductResponse" message="tns:getLogisticUnitsForProductResponse"/>
-</operation>
-<operation name="getStations">
-<input wsam:Action="http://service/SupplyChainService/getStationsRequest" message="tns:getStations"/>
-<output wsam:Action="http://service/SupplyChainService/getStationsResponse" message="tns:getStationsResponse"/>
-</operation>
-<operation name="getPatients">
-<input wsam:Action="http://service/SupplyChainService/getPatientsRequest" message="tns:getPatients"/>
-<output wsam:Action="http://service/SupplyChainService/getPatientsResponse" message="tns:getPatientsResponse"/>
-</operation>
-<operation name="getPrescriptionsForPatient">
-<input wsam:Action="http://service/SupplyChainService/getPrescriptionsForPatientRequest" message="tns:getPrescriptionsForPatient"/>
-<output wsam:Action="http://service/SupplyChainService/getPrescriptionsForPatientResponse" message="tns:getPrescriptionsForPatientResponse"/>
-</operation>
-<operation name="getPreparedPrescriptionsForPatient">
-<input wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsForPatientRequest" message="tns:getPreparedPrescriptionsForPatient"/>
-<output wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsForPatientResponse" message="tns:getPreparedPrescriptionsForPatientResponse"/>
-</operation>
-<operation name="getPrescriptionsWithPreparedMedicationsForPatient">
-<input wsam:Action="http://service/SupplyChainService/getPrescriptionsWithPreparedMedicationsForPatientRequest" message="tns:getPrescriptionsWithPreparedMedicationsForPatient"/>
-<output wsam:Action="http://service/SupplyChainService/getPrescriptionsWithPreparedMedicationsForPatientResponse" message="tns:getPrescriptionsWithPreparedMedicationsForPatientResponse"/>
-</operation>
-<operation name="updateDispensedMedication">
-<input wsam:Action="http://service/SupplyChainService/updateDispensedMedicationRequest" message="tns:updateDispensedMedication"/>
-<output wsam:Action="http://service/SupplyChainService/updateDispensedMedicationResponse" message="tns:updateDispensedMedicationResponse"/>
-</operation>
-<operation name="updatePreparedMedications">
-<input wsam:Action="http://service/SupplyChainService/updatePreparedMedicationsRequest" message="tns:updatePreparedMedications"/>
-<output wsam:Action="http://service/SupplyChainService/updatePreparedMedicationsResponse" message="tns:updatePreparedMedicationsResponse"/>
-</operation>
-<operation name="getPreparedPrescriptionsCountForPatient">
-<input wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientRequest" message="tns:getPreparedPrescriptionsCountForPatient"/>
-<output wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientResponse" message="tns:getPreparedPrescriptionsCountForPatientResponse"/>
-</operation>
-<operation name="getToDoListPrescriptions">
-<input wsam:Action="http://service/SupplyChainService/getToDoListPrescriptionsRequest" message="tns:getToDoListPrescriptions"/>
-<output wsam:Action="http://service/SupplyChainService/getToDoListPrescriptionsResponse" message="tns:getToDoListPrescriptionsResponse"/>
-</operation>
-<operation name="getDosetForPatient">
-<input wsam:Action="http://service/SupplyChainService/getDosetForPatientRequest" message="tns:getDosetForPatient"/>
-<output wsam:Action="http://service/SupplyChainService/getDosetForPatientResponse" message="tns:getDosetForPatientResponse"/>
-</operation>
-<operation name="setOrder">
-<input wsam:Action="http://service/SupplyChainService/setOrderRequest" message="tns:setOrder"/>
-<output wsam:Action="http://service/SupplyChainService/setOrderResponse" message="tns:setOrderResponse"/>
-</operation>
 <operation name="sayHelloWorldFrom">
 <input wsam:Action="http://service/SupplyChainService/sayHelloWorldFromRequest" message="tns:sayHelloWorldFrom"/>
 <output wsam:Action="http://service/SupplyChainService/sayHelloWorldFromResponse" message="tns:sayHelloWorldFromResponse"/>
@@ -228,6 +170,10 @@
 <operation name="checkinItems">
 <input wsam:Action="http://service/SupplyChainService/checkinItemsRequest" message="tns:checkinItems"/>
 <output wsam:Action="http://service/SupplyChainService/checkinItemsResponse" message="tns:checkinItemsResponse"/>
+</operation>
+<operation name="setOrder">
+<input wsam:Action="http://service/SupplyChainService/setOrderRequest" message="tns:setOrder"/>
+<output wsam:Action="http://service/SupplyChainService/setOrderResponse" message="tns:setOrderResponse"/>
 </operation>
 <operation name="checkoutItems">
 <input wsam:Action="http://service/SupplyChainService/checkoutItemsRequest" message="tns:checkoutItems"/>
@@ -265,126 +211,53 @@
 <input wsam:Action="http://service/SupplyChainService/getOrderForSSCCRequest" message="tns:getOrderForSSCC"/>
 <output wsam:Action="http://service/SupplyChainService/getOrderForSSCCResponse" message="tns:getOrderForSSCCResponse"/>
 </operation>
+<operation name="resetTrackedItems">
+<input wsam:Action="http://service/SupplyChainService/resetTrackedItemsRequest" message="tns:resetTrackedItems"/>
+<output wsam:Action="http://service/SupplyChainService/resetTrackedItemsResponse" message="tns:resetTrackedItemsResponse"/>
+</operation>
+<operation name="getLogisticUnitsForProduct">
+<input wsam:Action="http://service/SupplyChainService/getLogisticUnitsForProductRequest" message="tns:getLogisticUnitsForProduct"/>
+<output wsam:Action="http://service/SupplyChainService/getLogisticUnitsForProductResponse" message="tns:getLogisticUnitsForProductResponse"/>
+</operation>
+<operation name="getStations">
+<input wsam:Action="http://service/SupplyChainService/getStationsRequest" message="tns:getStations"/>
+<output wsam:Action="http://service/SupplyChainService/getStationsResponse" message="tns:getStationsResponse"/>
+</operation>
+<operation name="getPatients">
+<input wsam:Action="http://service/SupplyChainService/getPatientsRequest" message="tns:getPatients"/>
+<output wsam:Action="http://service/SupplyChainService/getPatientsResponse" message="tns:getPatientsResponse"/>
+</operation>
+<operation name="getPrescriptionsForPatient">
+<input wsam:Action="http://service/SupplyChainService/getPrescriptionsForPatientRequest" message="tns:getPrescriptionsForPatient"/>
+<output wsam:Action="http://service/SupplyChainService/getPrescriptionsForPatientResponse" message="tns:getPrescriptionsForPatientResponse"/>
+</operation>
+<operation name="getPreparedPrescriptionsForPatient">
+<input wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsForPatientRequest" message="tns:getPreparedPrescriptionsForPatient"/>
+<output wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsForPatientResponse" message="tns:getPreparedPrescriptionsForPatientResponse"/>
+</operation>
+<operation name="updateDispensedMedication">
+<input wsam:Action="http://service/SupplyChainService/updateDispensedMedicationRequest" message="tns:updateDispensedMedication"/>
+<output wsam:Action="http://service/SupplyChainService/updateDispensedMedicationResponse" message="tns:updateDispensedMedicationResponse"/>
+</operation>
+<operation name="updatePreparedMedications">
+<input wsam:Action="http://service/SupplyChainService/updatePreparedMedicationsRequest" message="tns:updatePreparedMedications"/>
+<output wsam:Action="http://service/SupplyChainService/updatePreparedMedicationsResponse" message="tns:updatePreparedMedicationsResponse"/>
+</operation>
+<operation name="getPreparedPrescriptionsCountForPatient">
+<input wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientRequest" message="tns:getPreparedPrescriptionsCountForPatient"/>
+<output wsam:Action="http://service/SupplyChainService/getPreparedPrescriptionsCountForPatientResponse" message="tns:getPreparedPrescriptionsCountForPatientResponse"/>
+</operation>
+<operation name="getToDoListPrescriptions">
+<input wsam:Action="http://service/SupplyChainService/getToDoListPrescriptionsRequest" message="tns:getToDoListPrescriptions"/>
+<output wsam:Action="http://service/SupplyChainService/getToDoListPrescriptionsResponse" message="tns:getToDoListPrescriptionsResponse"/>
+</operation>
+<operation name="getDosetForPatient">
+<input wsam:Action="http://service/SupplyChainService/getDosetForPatientRequest" message="tns:getDosetForPatient"/>
+<output wsam:Action="http://service/SupplyChainService/getDosetForPatientResponse" message="tns:getDosetForPatientResponse"/>
+</operation>
 </portType>
 <binding name="SupplyChainServicePortBinding" type="tns:SupplyChainService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="resetTrackedItems">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getLogisticUnitsForProduct">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getStations">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getPatients">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getPrescriptionsForPatient">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getPreparedPrescriptionsForPatient">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getPrescriptionsWithPreparedMedicationsForPatient">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="updateDispensedMedication">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="updatePreparedMedications">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getPreparedPrescriptionsCountForPatient">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getToDoListPrescriptions">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getDosetForPatient">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="setOrder">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="sayHelloWorldFrom">
 <soap:operation soapAction=""/>
 <input>
@@ -413,6 +286,15 @@
 </output>
 </operation>
 <operation name="checkinItems">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="setOrder">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -494,6 +376,105 @@
 </output>
 </operation>
 <operation name="getOrderForSSCC">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="resetTrackedItems">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getLogisticUnitsForProduct">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getStations">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getPatients">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getPrescriptionsForPatient">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getPreparedPrescriptionsForPatient">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="updateDispensedMedication">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="updatePreparedMedications">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getPreparedPrescriptionsCountForPatient">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getToDoListPrescriptions">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getDosetForPatient">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

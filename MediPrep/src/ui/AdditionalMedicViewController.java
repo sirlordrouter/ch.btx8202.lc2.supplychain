@@ -21,11 +21,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+import services.BarcodeGenerator;
 import services.ErpWebserviceClient;
 import services.PropertiesReader;
 import webservice.erp.Item;
 import webservice.erp.MediPrepResult;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -62,6 +64,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
     private final ObservableList<PreparedMedication> medications =  FXCollections.observableArrayList();
     private final ObservableList<PreparedMedication> medicationReserve =  FXCollections.observableArrayList();
     private IRepository dataSource;
+    private BarcodeGenerator barcodeGenerator;
 
     public AdditionalMedicViewController(String fxml) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
@@ -85,6 +88,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         }
 
         dataSource = new ErpWebserviceClient(prop.getProperty("stationGLN"));
+        barcodeGenerator = new BarcodeGenerator();
 
         setUpTables(medicationsList);
         setUpTables(medicationsListReserve);
@@ -411,5 +415,11 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         );
 
         alert.showAndWait();
+        File outputFile = new File("out.png");
+        try {
+            barcodeGenerator.generate(outputFile, preparedMedication.getBasedOnPrescription());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

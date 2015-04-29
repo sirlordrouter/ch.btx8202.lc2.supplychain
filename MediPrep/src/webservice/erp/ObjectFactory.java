@@ -46,7 +46,6 @@ public class ObjectFactory {
     private final static QName _GetStations_QNAME = new QName("http://service/", "getStations");
     private final static QName _GetPreparedPrescriptionsCountForPatientResponse_QNAME = new QName("http://service/", "getPreparedPrescriptionsCountForPatientResponse");
     private final static QName _GetCheckedInItemsResponse_QNAME = new QName("http://service/", "getCheckedInItemsResponse");
-    private final static QName _GetPrescriptionsWithPreparedMedicationsForPatient_QNAME = new QName("http://service/", "getPrescriptionsWithPreparedMedicationsForPatient");
     private final static QName _InsertTrackingItemsResponse_QNAME = new QName("http://service/", "insertTrackingItemsResponse");
     private final static QName _GetDosetForPatientResponse_QNAME = new QName("http://service/", "getDosetForPatientResponse");
     private final static QName _GetItemByIdentifier_QNAME = new QName("http://service/", "getItemByIdentifier");
@@ -57,7 +56,6 @@ public class ObjectFactory {
     private final static QName _GetItemsByGSIN_QNAME = new QName("http://service/", "getItemsByGSIN");
     private final static QName _GetItemsByGSINResponse_QNAME = new QName("http://service/", "getItemsByGSINResponse");
     private final static QName _GetToDoListPrescriptions_QNAME = new QName("http://service/", "getToDoListPrescriptions");
-    private final static QName _GetPrescriptionsWithPreparedMedicationsForPatientResponse_QNAME = new QName("http://service/", "getPrescriptionsWithPreparedMedicationsForPatientResponse");
     private final static QName _InsertTrackingItems_QNAME = new QName("http://service/", "insertTrackingItems");
     private final static QName _GetItemByIdentifierResponse_QNAME = new QName("http://service/", "getItemByIdentifierResponse");
     private final static QName _GetPatients_QNAME = new QName("http://service/", "getPatients");
@@ -221,14 +219,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetPrescriptionsWithPreparedMedicationsForPatient }
-     * 
-     */
-    public GetPrescriptionsWithPreparedMedicationsForPatient createGetPrescriptionsWithPreparedMedicationsForPatient() {
-        return new GetPrescriptionsWithPreparedMedicationsForPatient();
-    }
-
-    /**
      * Create an instance of {@link GetCheckedInItemsResponse }
      * 
      */
@@ -322,14 +312,6 @@ public class ObjectFactory {
      */
     public InsertTrackingItems createInsertTrackingItems() {
         return new InsertTrackingItems();
-    }
-
-    /**
-     * Create an instance of {@link GetPrescriptionsWithPreparedMedicationsForPatientResponse }
-     * 
-     */
-    public GetPrescriptionsWithPreparedMedicationsForPatientResponse createGetPrescriptionsWithPreparedMedicationsForPatientResponse() {
-        return new GetPrescriptionsWithPreparedMedicationsForPatientResponse();
     }
 
     /**
@@ -819,15 +801,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetPrescriptionsWithPreparedMedicationsForPatient }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://service/", name = "getPrescriptionsWithPreparedMedicationsForPatient")
-    public JAXBElement<GetPrescriptionsWithPreparedMedicationsForPatient> createGetPrescriptionsWithPreparedMedicationsForPatient(GetPrescriptionsWithPreparedMedicationsForPatient value) {
-        return new JAXBElement<GetPrescriptionsWithPreparedMedicationsForPatient>(_GetPrescriptionsWithPreparedMedicationsForPatient_QNAME, GetPrescriptionsWithPreparedMedicationsForPatient.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link InsertTrackingItemsResponse }{@code >}}
      * 
      */
@@ -915,15 +888,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service/", name = "getToDoListPrescriptions")
     public JAXBElement<GetToDoListPrescriptions> createGetToDoListPrescriptions(GetToDoListPrescriptions value) {
         return new JAXBElement<GetToDoListPrescriptions>(_GetToDoListPrescriptions_QNAME, GetToDoListPrescriptions.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetPrescriptionsWithPreparedMedicationsForPatientResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://service/", name = "getPrescriptionsWithPreparedMedicationsForPatientResponse")
-    public JAXBElement<GetPrescriptionsWithPreparedMedicationsForPatientResponse> createGetPrescriptionsWithPreparedMedicationsForPatientResponse(GetPrescriptionsWithPreparedMedicationsForPatientResponse value) {
-        return new JAXBElement<GetPrescriptionsWithPreparedMedicationsForPatientResponse>(_GetPrescriptionsWithPreparedMedicationsForPatientResponse_QNAME, GetPrescriptionsWithPreparedMedicationsForPatientResponse.class, null, value);
     }
 
     /**

@@ -1471,19 +1471,23 @@ public class SupplyChainService {
                             "Schedule,  \n" +
                             "RouteOfAdministration, \n" +
                             "Notes,  \n" +
-                            "ValidUntil ,\n" +
-                            "pm.State  \n" +
+                            "ValidUntil\n" +
                             "FROM MediPrep_Prescription p   \n" +
                             "LEFT JOIN MediPrep_Staff  s  \n" +
                             "ON s.GLN = p.CreatedByStaffGLN   \n" +
                             "INNER JOIN MediPrep_PrescriptionDefinesMedication m \n" +
                             "ON p.PolypointID = m.PrescriptionID \n" +
-                            "LEFT JOIN MediPrep_PreparedMedication pm \n" +
-                            "ON m.PrescriptionID = pm.PresciriptionID \n" +
-                            "AND m.GTIN = pm.GtinPrescribedMedic  \n" +
-                            "WHERE PatientPolypointID = ? \n" +
-                            "AND ValidUntil >= GETDATE()  \n" +
-                            "AND (pm.State IS NULL OR pm.State < 4)";
+                            "WHERE PatientPolypointID = ?\n" +
+                            "AND ValidUntil >= GETDATE()\n" +
+                            "AND NOT EXISTS (\n" +
+                            "\tSELECT \n" +
+                            "\tp1.PolypointID\n" +
+                            "\tFROM MediPrep_Prescription p1\n" +
+                            "\tWHERE p1.PatientPolypointID = p.PatientPolypointID\n" +
+                            "\tAND p1.PolypointID > p.PolypointID \n" +
+                            "\tAND p1.Description = p.Description\n" +
+                            "\tAND p1.Schedule = p.Schedule AND p1.Notes = p.Notes\n" +
+                            ")";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, Integer.parseInt(pid));
             rs =  ps.executeQuery();
@@ -1684,7 +1688,7 @@ public class SupplyChainService {
             trspPreparedMedication.setStaffGln(rs.getString(13));
             trspPreparedMedication.setPreparedMedicationId(rs.getInt(14));
             trspPreparedMedication.setIsReserve(rs.getBoolean(15));
-            trspPreparedMedication.setBasedOnPrescription(p);
+            //TODO: gibt fehler trspPreparedMedication.setBasedOnPrescription(p);
 
             trspPreparedMedications.add(trspPreparedMedication);
         }
@@ -1880,7 +1884,7 @@ public class SupplyChainService {
                         if (trspPreparedMedication.getBasedOnPrescription() != null) {
                             prescriptionsSet.add(trspPreparedMedication.getBasedOnPrescription());
                         } else {
-                            throw new SQLException();
+                            throw new SQLException("Based on Prescription is null");
                         }
 
                         PreparedStatement psUpdate = connection.prepareStatement(query);
@@ -1964,7 +1968,7 @@ public class SupplyChainService {
 
                             psClonePrescMedi.executeUpdate();
                         } else {
-                            throw new SQLException();
+                            throw new SQLException("No generated Keys");
                         }
 
                         connection.commit();

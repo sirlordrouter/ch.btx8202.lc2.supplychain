@@ -1,5 +1,6 @@
 package service;
 
+import data.DbConnectorLogistic;
 import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,10 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +34,8 @@ public class SupplyChainServiceTest extends TestCase {
     public static final String TEST_PRESC_KIS_ID_ASPIRINE = "12";
     public static final String TEST_PRESC_KIS_ID_DAFALGAN = "13";
     public static final String TEST_ORDER_NUMBER = "TestOrder 7";
+
+    public static int TestOrderNumber = -1;
 
 
     public static String aGeneratedSSCC;
@@ -213,6 +220,7 @@ public class SupplyChainServiceTest extends TestCase {
 
         Assert.assertTrue("Es gibt nur 1 Testorder", openOrdersByGLN.size() == 1);
         testOrder = openOrdersByGLN.get(0);
+        TestOrderNumber = Integer.parseInt(testOrder.getName());
 
         Production production = service.processOrder(testOrder, TEST_PRODUCER_GLN, TESTSTATION_C_GLN);
 
@@ -350,6 +358,9 @@ public class SupplyChainServiceTest extends TestCase {
         //Prerequisites: Testprescription with dafalgan &  testprescription with asprine
         //Prepare
 
+        //Prerequisites: Testprescription with dafalgan &  testprescription with asprine
+        //Prepare
+
         int prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
         int preparedPrescriptionsCountForPatient = service.getPreparedPrescriptionsCountForPatient(TEST_PATIENT_ID);
 
@@ -383,6 +394,7 @@ public class SupplyChainServiceTest extends TestCase {
         medication.setBatchLot(anAspirine.getLot());
         medication.setSerial(anAspirine.getSerial());
         medication.setPreparationTime(LocalDateTime.now());
+        medication.setBasedOnPrescription(aspririnPrescription);
 
         service.updatePreparedMedications(aspririnPrescription.getMedications(),
                 TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
@@ -404,6 +416,7 @@ public class SupplyChainServiceTest extends TestCase {
         medication.setBatchLot(aDafalagn.getLot());
         medication.setSerial(aDafalagn.getSerial());
         medication.setPreparationTime(LocalDateTime.now());
+        medication.setBasedOnPrescription(dafalganPrescription);
 
         service.updatePreparedMedications(dafalganPrescription.getMedications(),
                 TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
@@ -424,6 +437,7 @@ public class SupplyChainServiceTest extends TestCase {
         Assert.assertTrue("Es wurden 2 vorbereitete Verordnungen gefunden.", preparedPrescriptionsForPatient.size() == 2);
 
         preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
+        preparedPrescriptionsForPatient.get(0).getMedications().get(0).setBasedOnPrescription(preparedPrescriptionsForPatient.get(0));
         service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
 
         int prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
@@ -436,6 +450,7 @@ public class SupplyChainServiceTest extends TestCase {
         Assert.assertTrue("Es wurde nur 1 vorbereitete Verordnung geladen.", preparedPrescriptionsForPatient.size() == 1);
 
         preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
+        preparedPrescriptionsForPatient.get(0).getMedications().get(0).setBasedOnPrescription(preparedPrescriptionsForPatient.get(0));
         service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
 
         prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
@@ -485,6 +500,7 @@ public class SupplyChainServiceTest extends TestCase {
         medication.setBatchLot(anAspirine.getLot());
         medication.setSerial(anAspirine.getSerial());
         medication.setPreparationTime(LocalDateTime.now());
+        medication.setBasedOnPrescription(aspririnPrescription);
 
         service.updatePreparedMedications(aspririnPrescription.getMedications(),
                 TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
@@ -506,6 +522,7 @@ public class SupplyChainServiceTest extends TestCase {
         medication.setBatchLot(aDafalagn.getLot());
         medication.setSerial(aDafalagn.getSerial());
         medication.setPreparationTime(LocalDateTime.now());
+        medication.setBasedOnPrescription(dafalganPrescription);
 
         service.updatePreparedMedications(dafalganPrescription.getMedications(),
                 TrspPreparedMedication.MedicationState.prepared, TESTSTATION_C_GLN);
@@ -525,6 +542,7 @@ public class SupplyChainServiceTest extends TestCase {
         Assert.assertTrue("Es wurden 2 vorbereitete Verordnungen gefunden.", preparedPrescriptionsForPatient.size() == 2);
 
         preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
+        preparedPrescriptionsForPatient.get(0).getMedications().get(0).setBasedOnPrescription(preparedPrescriptionsForPatient.get(0));
         service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
 
         int prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
@@ -537,6 +555,7 @@ public class SupplyChainServiceTest extends TestCase {
         Assert.assertTrue("Es wurde nur 1 vorbereitete Verordnung geladen.", preparedPrescriptionsForPatient.size() == 1);
 
         preparedPrescriptionsForPatient.get(0).getMedications().get(0).setState(TrspPreparedMedication.MedicationState.served);
+        preparedPrescriptionsForPatient.get(0).getMedications().get(0).setBasedOnPrescription(preparedPrescriptionsForPatient.get(0));
         service.updateDispensedMedication(preparedPrescriptionsForPatient.get(0), TESTSTATION_C_GLN);
 
         prescriptionsCountForPatient = service.getPrescriptionsForPatient(TEST_PATIENT_ID).size();
@@ -613,12 +632,12 @@ public class SupplyChainServiceTest extends TestCase {
         -
         */
 
-        /*DbConnectorLogistic connectorLogistic = new DbConnectorLogistic();
+        DbConnectorLogistic connectorLogistic = new DbConnectorLogistic();
         Connection connection = connectorLogistic.getConnection();
         ResultSet rs;
 
         String orderDelete = "delete from [SupplyChainLogistic].[dbo].[Order]\n" +
-                "where OrderNr >= 7";
+                "where OrderNr = ?";
 
         String testPrescriptionDelete = "delete from MediPrep_Prescription\n" +
                 "where PatientPolypointID=6 AND PolypointID > 13";
@@ -626,12 +645,17 @@ public class SupplyChainServiceTest extends TestCase {
         try {
 
             java.sql.Statement st = connection.createStatement();
-            st.execute(orderDelete);
+            PreparedStatement pst = connection.prepareStatement(orderDelete);
+
             st.execute(testPrescriptionDelete);
+
+            pst.setInt(1, TestOrderNumber);
+
+            pst.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
 
     }
 
