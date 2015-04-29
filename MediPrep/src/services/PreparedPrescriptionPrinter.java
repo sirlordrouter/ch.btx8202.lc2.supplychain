@@ -55,7 +55,7 @@ public class PreparedPrescriptionPrinter implements Printable {
 
         try {
             AffineTransform symbolPlacement = new AffineTransform();
-            symbolPlacement.setToTranslation(2,2);
+            symbolPlacement.setToTranslation(pf.getImageableX(),pf.getImageableY());
             generator.generate(new File(BARCODE_IMAGE_PATH), prescription);
             RenderedImage image = toBufferedImage(ImageIO.read(new File(BARCODE_IMAGE_PATH)));
             int imageWidth = image.getWidth();
