@@ -116,7 +116,7 @@ public class ImagePrintable implements Printable {
             width += 4 * padding;
             height += 2 * padding;
 
-            BufferedImage bitmap = new BufferedImage(PRINT_LABEL_WITH, PRINT_LABEL_HEIGT, BufferedImage.TYPE_BYTE_BINARY);
+            BufferedImage bitmap = new BufferedImage(PRINT_LABEL_WITH, PRINT_LABEL_HEIGT, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2d = (Graphics2D)bitmap.getGraphics();
 
             g2d.setBackground(Color.white);

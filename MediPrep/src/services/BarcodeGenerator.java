@@ -90,7 +90,8 @@ public class BarcodeGenerator {
         for (int i = 0; i < paramArr.length; i++) {
             String line = paramArr[i];
             Rectangle2D bounds = font.getStringBounds(line, frc);
-            width = (int)Math.ceil(Math.max(width, bounds.getWidth())) >= width ? (int)Math.ceil(Math.max(width, bounds.getWidth())) : width;
+            width = (int)Math.ceil(Math.max(width, bounds.getWidth())) >= width ?
+                    (int)Math.ceil(Math.max(width, bounds.getWidth())) : width;
             height += lineHeight;
         }
 
@@ -100,7 +101,7 @@ public class BarcodeGenerator {
         height += 2 * padding;
 
 
-        BufferedImage bitmap = new BufferedImage(PRINT_LABEL_WITH, PRINT_LABEL_HEIGT, BufferedImage.TYPE_BYTE_BINARY);
+        BufferedImage bitmap = new BufferedImage(PRINT_LABEL_WITH, PRINT_LABEL_HEIGT, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = (Graphics2D)bitmap.getGraphics();
 
         g2d.setBackground(Color.white);
@@ -122,6 +123,7 @@ public class BarcodeGenerator {
             g2d.drawString(line, x, y);
         }
 
+        g2d.dispose();
 
         //return bitmap;
 
@@ -153,8 +155,8 @@ public class BarcodeGenerator {
 
 
         PrinterJob job = PrinterJob.getPrinterJob();
-        boolean doPrint = job.printDialog();
-        if (doPrint) {
+        //boolean doPrint = job.printDialog();
+        //if (doPrint) {
             job.setPrintService(service);
             /*BufferedImage bufferedImage = generate(null,prescription);
             ImagePrintable imagePrintable = new ImagePrintable(
@@ -165,6 +167,6 @@ public class BarcodeGenerator {
             job.print();
 
 
-        }
+        //}
     }
 }

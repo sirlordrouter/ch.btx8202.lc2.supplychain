@@ -40,5 +40,15 @@
         <jarDirectory url="file://$MODULE_DIR$/../../itext-5.5.5" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../barbecue-1.5-beta1" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/../../barbecue-1.5-beta1" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>

@@ -7,6 +7,9 @@ import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
 import org.krysalis.barcode4j.tools.UnitConv;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -25,6 +28,9 @@ import java.awt.print.PrinterException;
  * @version 28.04.15
  */
 public class PreparedPrescriptionPrinter implements Printable {
+
+    public static int PRINT_LABEL_WITH = 300;
+    public static int PRINT_LABEL_HEIGT = 100;
 
     private Prescription prescription;
     BarcodeGenerator generator;
@@ -45,6 +51,13 @@ public class PreparedPrescriptionPrinter implements Printable {
             return NO_SUCH_PAGE;
         }
 
+        String[] paramArr = new String[] {
+                "Prescription ID: 1" ,
+                "Beschreibung: ",
+                "Inhalt: Natriumchlorid 0.9%",
+                "Ceftriaxon OrPha 2g"
+        };
+
         // User (0,0) is typically outside the
         // imageable area, so we must translate
         // by the X and Y values in the PageFormat
@@ -56,9 +69,8 @@ public class PreparedPrescriptionPrinter implements Printable {
                 RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
         Java2DCanvasProvider provider = new Java2DCanvasProvider(g2d, 0);
-        //g2d.scale(2.835, 2.835);
         g2d.scale(12, 12);
-        //PDF417Bean bean = new PDF417Bean();
+
         DataMatrixBean bean = new DataMatrixBean();
 
         bean.generateBarcode(provider, "1");
@@ -69,8 +81,52 @@ public class PreparedPrescriptionPrinter implements Printable {
         bean.doQuietZone(false);
         bean.setShape(SymbolShapeHint.FORCE_SQUARE);
 
+        BufferedImage bitmap = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphicsText = (Graphics2D)bitmap.getGraphics();
+
         boolean antiAlias = false;
         int orientation = 0;
+
+        //Get generated bitmap
+        //BufferedImage symbol = provider. provider.getBufferedImage();
+
+        int fontSize = 14; //pixels
+        int lineHeight = (int)(fontSize * 1.2);
+        Font font = new Font("Arial", Font.PLAIN, fontSize);
+        Font font1 = new Font("Arial", Font.BOLD, fontSize);
+        int width = 1;
+        int height = 1;
+        FontRenderContext frc = new FontRenderContext(new AffineTransform(), antiAlias, true);
+        for (int i = 0; i < paramArr.length; i++) {
+            String line = paramArr[i];
+            Rectangle2D bounds = font.getStringBounds(line, frc);
+            width = (int)Math.ceil(Math.max(width, bounds.getWidth())) >= width ? (int)Math.ceil(Math.max(width, bounds.getWidth())) : width;
+            height += lineHeight;
+        }
+
+        //Add padding
+        int padding = 1;
+        width += 1 * padding;
+        height += 1 * padding;
+
+
+        graphicsText.setBackground(Color.white);
+        graphicsText.setColor(Color.black);
+        graphicsText.clearRect(0, 0, 50, 50);
+        graphicsText.setFont(font);
+
+        //Add text lines (or anything else you might want to add)
+        int y = padding;
+        int x = 0;
+        for (int i = 0; i < paramArr.length; i++) {
+            String line = paramArr[i];
+            y += lineHeight;
+            graphicsText.drawString(line, 0, i);
+        }
+
+        graphicsText.dispose();
+
+        g.drawImage(bitmap,0,4,null);
 
 
         /*try {
