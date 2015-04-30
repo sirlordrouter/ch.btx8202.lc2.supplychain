@@ -148,7 +148,7 @@ public class BarcodeGenerator {
         PrintService service = null;
         for (PrintService printer : printServices) {
             System.out.println(printer.getName());
-            if (printer.getName().equals("PDFwriter")) {
+            if (printer.getName().equals("Brother QL-700")) {
                 service = printer;
             }
         }

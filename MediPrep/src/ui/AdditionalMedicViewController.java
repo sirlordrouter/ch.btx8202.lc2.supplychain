@@ -28,7 +28,6 @@ import webservice.erp.Item;
 import webservice.erp.MediPrepResult;
 
 import java.awt.print.PrinterException;
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -408,25 +407,34 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("You now have successfully prepared all medications\n for the prescription" +
-                        "congratulations!! :-p" +
-                        "\nTake the printed barcode and put in on the item" +
-                        "\nto enable bedside scanning." +
-                        "\n<< Happy Scan >>"
-        );
 
-        alert.showAndWait();
-        File outputFile = new File("out.png");
-        try {
-            barcodeGenerator.printBarcode(preparedMedication.getBasedOnPrescription());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (PrinterException e) {
-            Alert printAlert = new Alert(Alert.AlertType.ERROR);
-            printAlert.setTitle("Druckfehler Dialog");
-            printAlert.setHeaderText(null);
-            printAlert.setContentText("Leider gab es ein Fehler beim Drucken.\n" +
-                    "Falls der Drucker in Ordnung ist, lösen Sie den Vorgang erneut aus.");
+        if (preparedMedication.getBasedOnPrescription().getMedications().size() > 1) {
+
+            alert.setContentText("You now have successfully prepared all medications\n for the prescription" +
+                            "congratulations!! :-p" +
+                            "\nTake the printed barcode and put in on the item" +
+                            "\nto enable bedside scanning." +
+                            "\n<< Happy Scan >>"
+            );
+
+            alert.showAndWait();
+
+            try {
+                barcodeGenerator.printBarcode(preparedMedication.getBasedOnPrescription());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (PrinterException e) {
+                Alert printAlert = new Alert(Alert.AlertType.ERROR);
+                printAlert.setTitle("Druckfehler Dialog");
+                printAlert.setHeaderText(null);
+                printAlert.setContentText("Leider gab es ein Fehler beim Drucken.\n" +
+                        "Falls der Drucker in Ordnung ist, lösen Sie den Vorgang erneut aus.");
+            }
+
         }
+
+
+
+
     }
 }
