@@ -140,7 +140,7 @@ public class BarcodeGenerator {
         }
     }
 
-    public void printBarcode(Prescription prescription) throws PrinterException, IOException {
+    public void printBarcode(Prescription prescription, String printerName) throws PrinterException, IOException {
 
         PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
         System.out.println("Number of print services: " + printServices.length);
@@ -148,7 +148,7 @@ public class BarcodeGenerator {
         PrintService service = null;
         for (PrintService printer : printServices) {
             System.out.println(printer.getName());
-            if (printer.getName().equals("Brother QL-700")) {
+            if (printer.getName().equals(printerName)) {
                 service = printer;
             }
         }

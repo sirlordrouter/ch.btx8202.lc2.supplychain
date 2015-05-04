@@ -94,6 +94,7 @@ public class WebServiceObjectFactory {
                 false
         );
         preparedMedication.setIsReserve(trspPreparedMedication.isIsReserve());
+        assert preparedMedication.getGtinBs().size() >= 1;
         return preparedMedication;
     }
 

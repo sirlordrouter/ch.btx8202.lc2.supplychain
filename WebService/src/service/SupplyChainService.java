@@ -1292,16 +1292,18 @@ public class SupplyChainService {
 
         try {
 
-            String query = "SELECT  prim.GTINsek \n" +
-                    "FROM Product p\n" +
-                    "LEFT JOIN PrimaryPackage prim ON p.GTINprim = prim.GTINprim\n" +
-                    "WHERE p.GTINprim = ?";
+            String query = "SELECT GTINB FROM ProductionGtinBContainesA " +
+                    "WHERE GTINA = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, productGTIN);
             rs =  ps.executeQuery();
 
             while (rs.next()) {
-                secondaryGTINs.add(rs.getString(1));
+                String result = rs.getString(1);
+                if(result != null) {
+                    secondaryGTINs.add(result);
+                }
+
             }
 
         } catch (SQLException e) {
@@ -1595,7 +1597,8 @@ public class SupplyChainService {
             p.setRouteOfAdministration(rs.getString(11));
             p.setNotes(rs.getString(12));
             p.setMedications(getPreparedMedicationsForPrescription(p));
-            p.setPrescriptionState(TrspPrescription.PrescriptionState.open); //TODO: change to db value, value 4
+            int prepState = rs.getInt(4)-1;
+            p.setPrescriptionState(TrspPrescription.PrescriptionState.values()[prepState]);
 
             trspPrescriptions.add(p);
         }

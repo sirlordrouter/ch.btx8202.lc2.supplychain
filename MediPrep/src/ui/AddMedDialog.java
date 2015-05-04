@@ -102,6 +102,7 @@ public class AddMedDialog extends Stage implements Initializable {
     @FXML
     void save(ActionEvent event) {
 
+
         if (!currentMedication.getGtinBs().stream().anyMatch(l -> l.equals(txtGtin.getText())) && !currentMedication.getGtinA().equals(txtGtin.getText())){
             //TODO: ERROR message below field
             txtGtin.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY

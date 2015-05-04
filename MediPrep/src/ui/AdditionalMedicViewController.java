@@ -29,10 +29,12 @@ import webservice.erp.MediPrepResult;
 
 import java.awt.print.PrinterException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -58,13 +60,17 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
     public Label lblBirthdate;
     public Label lblPatInfo;
 
-    public TableView<PreparedMedication> medicationsList;
-    public TableView<PreparedMedication> medicationsListReserve;
+    public TableView<Prescription> prescriptionTableView;
+    public TableView<Prescription> prescriptionTableViewReserve;
+    public TableView<PreparedMedication> preparedMedicationTableView;
 
+
+    private final ObservableList<Prescription> prescriptions = FXCollections.observableArrayList();
+    private final ObservableList<Prescription> prescriptionsAdditional =  FXCollections.observableArrayList();
     private final ObservableList<PreparedMedication> medications =  FXCollections.observableArrayList();
-    private final ObservableList<PreparedMedication> medicationReserve =  FXCollections.observableArrayList();
     private IRepository dataSource;
     private BarcodeGenerator barcodeGenerator;
+    private String printerName;
 
     public AdditionalMedicViewController(String fxml) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
@@ -88,16 +94,16 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         }
 
         dataSource = new ErpWebserviceClient(prop.getProperty("stationGLN"));
+        printerName = prop.getProperty("printerName");
         barcodeGenerator = new BarcodeGenerator();
 
-        setUpTables(medicationsList);
-        setUpTables(medicationsListReserve);
+        setUpPrescriptionsTable(prescriptionTableView);
+        setUpPrescriptionsTable(prescriptionTableViewReserve);
+        setUpTables(preparedMedicationTableView);
 
-        medications.addAll(FakeDataRepository.getInstance().getMedications().stream().filter(m -> !m.isReserve()).collect(Collectors.toList()));
-        medicationReserve.addAll(FakeDataRepository.getInstance().getMedications().stream().filter(m -> m.isReserve()).collect(Collectors.toList()));
-
-        medicationsList.setItems(medications);
-        medicationsListReserve.setItems(medicationReserve);
+        prescriptionTableView.setItems(prescriptions);
+        prescriptionTableViewReserve.setItems(prescriptionsAdditional);
+        preparedMedicationTableView.setItems(medications);
 
     }
 
@@ -117,6 +123,184 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
 
     }
 
+    private void setUpPrescriptionsTable(TableView<Prescription> prescriptionTableView) {
+        prescriptionTableView.setRowFactory(t -> {
+            TableRow<Prescription> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    Prescription rowData = row.getItem();
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation Dialog");
+                    alert.setHeaderText("Ausdruck Verordnungs ID");
+                    alert.setContentText("Möchten Sie die Etikette für die Verordnung erneut ausdrucken?");
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK &&
+                            (rowData.doAllMedicationsHave(PreparedMedication.MedicationState.prepared) ||
+                            rowData.doAllMedicationsHave(PreparedMedication.MedicationState.controlled))){
+                        showSuccessfullPreparationAndPrintLabel(rowData);
+                    } else {
+                        // ... user chose CANCEL or closed the dialog
+                    }
+                } else if(event.getClickCount() == 1 && (! row.isEmpty())) {
+                    medications.clear();
+                    medications.addAll(row.getItem().getMedications());
+                }
+            });
+            return row;
+        });
+        /**
+         * Main Columns
+         */
+        TableColumn<Prescription, Prescription.PrescriptionState> state = new TableColumn("Status");
+        state.setCellValueFactory(cellData -> {
+            return cellData.getValue().prescriptionStateProperty();
+        });
+        state.setCellFactory(cellData -> {
+            return new TableCell<Prescription, Prescription.PrescriptionState>() {
+
+                Image openImage = new Image("resources/image/play.png");
+                Image pausedImage = new Image("resources/image/paused.png");
+                Image stoppedImage = new Image("resources/image/stopped.png");
+                Image doseChangedImage = new Image("resources/image/update.png");
+                ImageView view;
+
+                {
+                    view = new ImageView();
+                    view.setFitHeight(26);
+                    view.setFitWidth(26);
+                    setGraphic(view);
+                }
+
+                @Override
+                public void updateItem(Prescription.PrescriptionState item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        view.setImage(null);
+                    } else {
+                        switch (item) {
+
+                            case open:
+                                view.setImage(openImage);
+                                break;
+                            case paused:
+                                view.setImage(pausedImage);
+                                break;
+                            case stopped:
+                                view.setImage(stoppedImage);
+                                break;
+                            case doseChanged:
+                                view.setImage(doseChangedImage);
+                                break;
+                        }
+                    }
+                }
+            };
+        });
+
+        TableColumn<Prescription, String> description = new TableColumn("Beschreibung");
+        description.setMaxWidth(200);
+        description.setMinWidth(200);
+        description.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
+        description.setCellFactory(new Callback<TableColumn<Prescription, String>, TableCell<Prescription, String>>() {
+            @Override
+            public TableCell<Prescription, String> call(TableColumn<Prescription, String> arg0) {
+                return new TableCell<Prescription, String>() {
+                    private Text text;
+
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            text = new Text(item.toString());
+                            text.setWrappingWidth(description.getWidth());
+                            this.setWrapText(true);
+
+                            setGraphic(text);
+                        }
+                    }
+                };
+            }
+        });
+
+        TableColumn<Prescription, String> applicationScheme = new TableColumn("Schema");
+
+
+        TableColumn<Prescription, LocalDate> preparationTime = new TableColumn("Erstellt am:");
+        DateTimeFormatter myDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        preparationTime.setCellValueFactory(cellData -> cellData.getValue().dateCreatedProperty());
+        preparationTime.setCellFactory(cellData ->
+                new TableCell<Prescription, LocalDate>() {
+                    @Override
+                    protected void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            // Format date.
+                            setText(myDateFormatter.format(item));
+                        }
+                    }
+                });
+
+
+        /**
+         *  Nested Columns ApplicationSchme
+         */
+        TableColumn<Prescription, String> morning = new TableColumn("Mo");
+        morning.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSchedule().substring(0, 1)));
+        TableColumn<Prescription, String> noon = new TableColumn("Mi");
+        noon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSchedule().substring(1,2)));
+        TableColumn<Prescription, String> evening = new TableColumn("Ab");
+        evening.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSchedule().substring(2,3)));
+        TableColumn<Prescription, String> night = new TableColumn("Na");
+        night.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSchedule().substring(3,4)));
+        applicationScheme.getColumns().addAll(morning, noon, evening, night);
+
+        TableColumn<Prescription, String> prescriber = new TableColumn("Ausgestellt von");
+        prescriber.setCellValueFactory(cellData -> cellData.getValue().getStaffName());
+
+        TableColumn<Prescription, Boolean> prepState = new TableColumn("Vorbereitung");
+        prepState.setCellValueFactory(cellData -> cellData.getValue().isPreparedProperty());
+
+        prepState.setCellFactory(cellData -> {
+            return new TableCell<Prescription, Boolean>() {
+
+                Image pendingImage = new Image("resources/image/time.png");
+                Image readyImage = new Image("resources/image/ok_icon.png");
+                ImageView view;
+
+                {
+                    view = new ImageView();
+                    view.setFitHeight(25);
+                    view.setFitWidth(25);
+                    setGraphic(view);
+                }
+
+                @Override
+                public void updateItem(Boolean item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        view.setImage(null);
+                    } else {
+                        if (item) {
+                            view.setImage(readyImage);
+                        } else {
+                            view.setImage(pendingImage);
+                        }
+                    }
+                }
+            };
+        });
+
+
+        prescriptionTableView.getColumns().addAll(state, description, applicationScheme, preparationTime, prescriber, prepState);
+
+    }
+
     private void setUpTables(TableView aTable) {
         aTable.setRowFactory(t -> {
                     TableRow<PreparedMedication> row = new TableRow<>();
@@ -127,11 +311,11 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                     if (rowData.getState() == PreparedMedication.MedicationState.open) {
                         AddMedDialog addMedDialog = new AddMedDialog(null, rowData, dataSource);
                         addMedDialog.centerOnScreen();
-                        addMedDialog.showAndWait(); //TODO: Check successful in DIalog to display error
+                        addMedDialog.showAndWait(); //TODO: Check successful in Dialog to display error
 
                         if (!addMedDialog.isCanceled()) {
                             if (rowData.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.controlled)) {
-                                showSuccessfullPreparationAndPrintLabel(rowData);
+                                showSuccessfullPreparationAndPrintLabel(rowData.getBasedOnPrescription());
 
                             }
                         }
@@ -199,80 +383,15 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         name.setMaxWidth(250);
         name.setCellValueFactory(cellData -> cellData.getValue().getName());
 
-        TableColumn<PreparedMedication, String> description = new TableColumn("Beschreibung");
-        description.setMaxWidth(200);
-        description.setMinWidth(200);
-        description.setCellValueFactory(cellData -> cellData.getValue().getDescription());
-        description.setCellFactory(new Callback<TableColumn<PreparedMedication, String>, TableCell<PreparedMedication, String>>() {
-            @Override
-            public TableCell<PreparedMedication, String> call(TableColumn<PreparedMedication, String> arg0) {
-                return new TableCell<PreparedMedication, String>() {
-                    private Text text;
-
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (!isEmpty()) {
-                            text = new Text(item.toString());
-                            text.setWrappingWidth(description.getWidth());
-                            this.setWrapText(true);
-
-                            setGraphic(text);
-                        }
-                    }
-                };
-            }
-        });
-
-
         TableColumn<PreparedMedication, String> dosage = new TableColumn("Dosierung");
         dosage.setCellValueFactory(cellData -> cellData.getValue().getDosage());
 
         TableColumn<PreparedMedication, String> dosageUnit = new TableColumn("Einheit");
         dosageUnit.setCellValueFactory(cellData -> cellData.getValue().getDosageUnit());
 
-        TableColumn<PreparedMedication, String> applicationScheme = new TableColumn("Schema");
-
-
-        TableColumn<PreparedMedication, LocalDateTime> preparationTime = new TableColumn("Bereitgestellt am");
-        DateTimeFormatter myDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        preparationTime.setCellValueFactory(cellData -> cellData.getValue().preparationTimeProperty());
-        preparationTime.setCellFactory(cellData ->
-                new TableCell<PreparedMedication, LocalDateTime>() {
-                    @Override
-                    protected void updateItem(LocalDateTime item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (item == null || empty) {
-                            setText(null);
-                        } else {
-                            // Format date.
-                            setText(myDateFormatter.format(item));
-                        }
-                    }
-                });
-
-
-        //TODO: not working yet
-        /**
-         *  Nested Columns ApplicationSchme
-         */
-        TableColumn<PreparedMedication, String> morning = new TableColumn("Mo");
-        morning.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApplicationScheme().get().substring(0,1)));
-        TableColumn<PreparedMedication, String> noon = new TableColumn("Mi");
-        noon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApplicationScheme().get().substring(1,2)));
-        TableColumn<PreparedMedication, String> evening = new TableColumn("Ab");
-        evening.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApplicationScheme().get().substring(2,3)));
-        TableColumn<PreparedMedication, String> night = new TableColumn("Na");
-        night.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApplicationScheme().get().substring(3,4)));
-        applicationScheme.getColumns().addAll(morning, noon, evening, night);
-
-        TableColumn<PreparedMedication, String> prescriber = new TableColumn("Ausgestellt von");
-        prescriber.setCellValueFactory(cellData -> cellData.getValue().getStaffName());
-
-        aTable.getColumns().addAll(state, name, description, dosage, dosageUnit, applicationScheme, preparationTime, prescriber);
+        aTable.getColumns().addAll(state, name, dosage, dosageUnit);
 
     }
-
 
     @Override
     public void beforeLeaving() {
@@ -290,27 +409,26 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         if (FakeDataRepository.getInstance().getCurrentPatient() != null) {
             setUpPatientInfo(FakeDataRepository.getInstance().getCurrentPatient());
 
-
             medications.clear();
-            medicationReserve.clear();
+            prescriptions.clear();
+            prescriptionsAdditional.clear();
 
-            List<Prescription> prescriptionList = dataSource.getPrescriptions(FakeDataRepository.getInstance().getCurrentPatient());
-            List<PreparedMedication> preparedMedications = new ArrayList<>();
+            List<Prescription> prescriptionListTemp = dataSource.getPrescriptions(
+                    FakeDataRepository.getInstance().getCurrentPatient());
 
-            for (Prescription prescription : prescriptionList) {
-                preparedMedications.addAll(prescription.getMedications());
-            }
-
-            medications.addAll(preparedMedications.stream().filter(p -> !p.isReserve()).collect(Collectors.toList()));
-            medicationReserve.addAll(preparedMedications.stream().filter(p -> p.isReserve()).collect(Collectors.toList()));
-
+            prescriptions.addAll(prescriptionListTemp.stream().filter(
+                    p -> p.getMedications().stream().anyMatch(
+                            m -> !m.isReserve())
+            ).collect(Collectors.toList()));
+            prescriptionsAdditional.addAll(prescriptionListTemp.stream().filter(
+                    p -> p.getMedications().stream().anyMatch(
+                            m -> m.isReserve())
+            ).collect(Collectors.toList()));
         }
     }
 
     @Override
     public void handleScannerEvent(ScannerEvent scannerEvent) {
-        //Navigator.getInstance().getMainController().setStatusbarWaiting("scanned item is evaluated...");
-
         List<Item> items;
 
         //txtareaMediInfo.setText("Barcode " + evt.getBarCode() + " gescannt.");
@@ -319,6 +437,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         String errorMessage = "";
 
         if(info != null) {
+            System.out.println("Info is not null.");
             if (info.getAI01_HANDELSEINHEIT() != null
                     && info.getAI21_SERIAL_NUMBER() != null
                     && info.getAI17_VERFALLSDATUM() != null
@@ -331,8 +450,10 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 ).collect(Collectors.toList());
                 if (medis.size() == 0 || medis.size() > 1) {
                     //TODO: fehler, keine entpsrechende gtin gefunden bzw. zu viele passende medis
-                   errorMessage +=  medis.size() == 0 ? "Fehler 1: Es wurden keine Medikamente in der Verordnung gefunden,\n die zum gescannten Medikament passen.\n" : "";
-                    errorMessage += medis.size() > 1 ? "Fehler 2: Das gescannte Medikament konnte nicht eindeutig einer Verordnung zugewiesen werden." : "";
+                    errorMessage +=  medis.size() == 0 ? "Fehler 1: Es wurden keine Medikamente in der Verordnung gefunden," +
+                            "\n die zum gescannten Medikament passen.\n" : "";
+                    errorMessage += medis.size() > 1 ? "Fehler 2: Das gescannte Medikament konnte nicht eindeutig\n" +
+                            "einer Verordnung zugewiesen werden." : "";
                 } else {
 
                     PreparedMedication preparedMedication = medis.get(0);
@@ -345,22 +466,23 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                         showSuccessfullScan(preparedMedication);
 
                         if (preparedMedication.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.controlled)) {
-                            showSuccessfullPreparationAndPrintLabel(preparedMedication);
+                            showSuccessfullPreparationAndPrintLabel(preparedMedication.getBasedOnPrescription());
                         }
                     }
 
                 }
-
 
             } else {
                 //TODO: what to do if not every field captured
                 errorMessage += "Es konnten nicht alle Informationen zum Medikament ausgelesen werden.";
             }
 
-            if(!errorMessage.equals("")) {
-                showError(errorMessage);
-            }
+        } else {
+            errorMessage += "Es konnten keine Informationen ausgelesen werden.";
+        }
 
+        if(!errorMessage.equals("")) {
+            showError(errorMessage);
         }
     }
 
@@ -402,13 +524,13 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         }
     }
 
-    private void showSuccessfullPreparationAndPrintLabel(PreparedMedication preparedMedication) {
+    private void showSuccessfullPreparationAndPrintLabel(Prescription prescription) {
         //Print Barcode for product and make info .....
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
 
-        if (preparedMedication.getBasedOnPrescription().getMedications().size() > 1) {
+        if (prescription.getMedications().size() > 1) {
 
             alert.setContentText("You now have successfully prepared all medications\n for the prescription" +
                             "congratulations!! :-p" +
@@ -420,7 +542,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
             alert.showAndWait();
 
             try {
-                barcodeGenerator.printBarcode(preparedMedication.getBasedOnPrescription());
+                barcodeGenerator.printBarcode(prescription, printerName);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (PrinterException e) {

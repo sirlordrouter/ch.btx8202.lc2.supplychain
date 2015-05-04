@@ -123,7 +123,12 @@ public class PreparedMedication extends Medication {
     }
 
     public void setState(MedicationState medicationState) {
+
         this.state.set(medicationState);
+        if(getBasedOnPrescription().doAllMedicationsHave(MedicationState.prepared) ||
+                getBasedOnPrescription().doAllMedicationsHave(MedicationState.controlled)) {
+            getBasedOnPrescription().setIsPrepared(true);
+        }
     }
 
     public Patient getForPatient() {

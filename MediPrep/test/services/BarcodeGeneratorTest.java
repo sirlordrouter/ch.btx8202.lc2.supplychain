@@ -32,7 +32,7 @@ public class BarcodeGeneratorTest {
         //generator.generate(outputFile,prescription);
 
 
-        generator.printBarcode(prescription);
+        generator.printBarcode(prescription, "Brother QL-700");
 
     }
 }
