@@ -57,7 +57,7 @@ public class WebServiceObjectFactory {
                         null
                 );
 
-        //TODO: solve better (webservice)
+        //TODO: solve better (webservice) => not possible due to serialization
         for (PreparedMedication preparedMedication : preparedMedicationList) {
             preparedMedication.setApplicationScheme(trspPrescription.getSchedule());
             preparedMedication.setBasedOnPrescription(prescription);
