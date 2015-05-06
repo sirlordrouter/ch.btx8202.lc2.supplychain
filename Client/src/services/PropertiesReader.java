@@ -21,7 +21,7 @@ public class PropertiesReader {
     public Properties getPropValues() throws IOException {
 
         Properties prop = new Properties();
-        String propFileName = "resources/config.properties";
+        String propFileName = "config.properties";
 
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
         prop.load(inputStream);
