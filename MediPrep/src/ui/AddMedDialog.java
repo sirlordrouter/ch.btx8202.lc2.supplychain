@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
  * BSc Medical Informatics<br>
  * Module <br>
  * <p>
+ *     A Dialog to add Product Information manually
  * <p></p>
  * Project: MediPrep
  * Package: ui

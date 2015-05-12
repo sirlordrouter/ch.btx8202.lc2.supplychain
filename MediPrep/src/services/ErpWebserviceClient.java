@@ -11,9 +11,10 @@ import java.util.List;
 /**
  * Bern University of Applied Sciences<br>
  * BSc Medical Informatics<br>
- * Module <br>
+ * Module Bachelorthesis<br>
  * <p>
- * <p></p>
+ *     Connection to the central web service
+ * </p>
  * Project: MediPrep
  * Package: services
  *
@@ -45,7 +46,6 @@ public class ErpWebserviceClient implements IRepository {
             }
 
             return patientList;
-
 
         } catch (SOAPFaultException e) {
             e.printStackTrace();

@@ -34,13 +34,12 @@ public class PreparedPrescriptionPrinter implements Printable {
     private Prescription prescription;
     BarcodeGenerator generator;
 
+
     public PreparedPrescriptionPrinter(Prescription prescription) {
         generator = new BarcodeGenerator();
         this.prescription = prescription;
 
     }
-
-    public PreparedPrescriptionPrinter() {}
 
     @Override
     public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
@@ -60,7 +59,11 @@ public class PreparedPrescriptionPrinter implements Printable {
             RenderedImage image = toBufferedImage(ImageIO.read(new File(BARCODE_IMAGE_PATH)));
             int imageWidth = image.getWidth();
 
-            double scaleFactor =  imageWidth > pageWidth ? pageWidth / imageWidth : imageWidth / pageWidth;
+            double scaleFactorWidth =  imageWidth > pageWidth ?
+                    pageWidth / imageWidth : imageWidth / pageWidth;
+            double scaleFactorHeight = image.getHeight() > pf.getImageableHeight() ?
+                    image.getHeight() / pf.getImageableHeight() : pf.getImageableHeight() / image.getHeight();
+            double scaleFactor = scaleFactorHeight > scaleFactorWidth ? scaleFactorHeight : scaleFactorWidth;
             symbolPlacement.scale(scaleFactor,scaleFactor);
 
             ((Graphics2D) g).drawRenderedImage(image, symbolPlacement);

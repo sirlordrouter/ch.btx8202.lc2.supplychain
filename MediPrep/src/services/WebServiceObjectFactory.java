@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  * <p>
  *  Converter class to chnage objects from Webservice to local client specific objects with javafx properties and back.
  *  No validation of Input is performed.
+ *  (Problem with data types)
  * </p>
  * Project: MediPrep
  * Package: services
@@ -26,6 +27,14 @@ import java.util.stream.Collectors;
  * @version 13.04.15
  */
 public class WebServiceObjectFactory {
+
+    /**
+     * Prescription conversion from webservice to local prescription object
+     * @param trspPrescription
+     *  a webservice prescription
+     * @return
+     *  a local prescription object
+     */
     public static Prescription convertFromWebserviceObject(TrspPrescription trspPrescription) {
 
         if (trspPrescription == null) {
@@ -68,6 +77,13 @@ public class WebServiceObjectFactory {
 
     }
 
+    /**
+     * Medication conversion from webservice to local medication object
+     * @param trspPreparedMedication
+     *  a webservice medication
+     * @return
+     *  a local medication
+     */
     public static PreparedMedication convertFromWebserviceObject(TrspPreparedMedication trspPreparedMedication) {
 
         if (trspPreparedMedication == null) {
@@ -98,6 +114,13 @@ public class WebServiceObjectFactory {
         return preparedMedication;
     }
 
+    /**
+     * Patient conversion from webservice to local patient object
+     * @param trspPatient
+     *  a webservice patient object
+     * @return
+     *  a local patient object
+     */
     public static Patient convertFromWebserviceObject(TrspPatient trspPatient) {
 
         if (trspPatient == null) {
@@ -121,6 +144,13 @@ public class WebServiceObjectFactory {
         return patient;
     }
 
+    /**
+     * Converts a local prescription to a webservice prescription
+     * @param prescription
+     *  a local prescription
+     * @return
+     *  a webservice prescription
+     */
     public static TrspPrescription convertToWebServiceObject(Prescription prescription) {
 
         if (prescription == null) {
@@ -153,6 +183,11 @@ public class WebServiceObjectFactory {
         return trspPrescription;
     }
 
+    /**
+     * Converts a local medication to a webservice medication object
+     * @param preparedMedication
+     * @return
+     */
     public static TrspPreparedMedication convertToWebServiceObject(PreparedMedication preparedMedication) {
 
         if (preparedMedication == null) {
@@ -179,6 +214,13 @@ public class WebServiceObjectFactory {
         return trspPreparedMedication;
     }
 
+    /**
+     * converts a local patient object to a webservice patient object
+     * @param patient
+     *  a local patient object
+     * @return
+     *  a webservice patient object
+     */
     public static TrspPatient convertToWebServiceObject(Patient patient) {
 
         if (patient == null) {
@@ -202,6 +244,13 @@ public class WebServiceObjectFactory {
         return trspPatient;
     }
 
+    /**
+     * Converts the medication state from local to webservice state
+     * @param state
+     *  a local medication state
+     * @return
+     *  a webservice medication state
+     */
     public static MedicationState convertToWebServiceObject(PreparedMedication.MedicationState state) {
         switch (state) {
             case open:
@@ -216,6 +265,13 @@ public class WebServiceObjectFactory {
         return null;
     }
 
+    /**
+     * Converts a local Gender to webservice gender object
+     * @param gender
+     *  a local gender object
+     * @return
+     *  a webservice gender object
+     */
     public static Gender convertToWebServiceObject(Patient.Gender gender) {
         switch (gender) {
             case male:
@@ -229,6 +285,13 @@ public class WebServiceObjectFactory {
         return null;
     }
 
+    /**
+     * converts a local bloodgroup object to webservice bloodgroup
+     * @param bloodGroup
+     *   a local bloodgroup
+     * @return
+     *  a webservice bloodgroup
+     */
     public static BloodGroup convertToWebServiceObject(Patient.BloodGroup bloodGroup) {
         switch (bloodGroup) {
 

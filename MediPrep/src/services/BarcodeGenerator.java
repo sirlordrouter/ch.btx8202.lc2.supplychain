@@ -25,9 +25,11 @@ import java.io.OutputStream;
 /**
  * Bern University of Applied Sciences<br>
  * BSc Medical Informatics<br>
- * Module <br>
+ * Module Bachelorthesis<br>
  * <p>
- * <p></p>
+ *     Generates a Barcode Image which is stored on given file location based on a given prescription.
+ *
+ * </p>
  * Project: MediPrep
  * Package: services
  *
@@ -39,20 +41,23 @@ public class BarcodeGenerator {
     public static int PRINT_LABEL_WITH = 300;
     public static int PRINT_LABEL_HEIGT = 100;
 
+    /**
+     * Generate a barcode to  file based on prescription, generates a datamatrix with prescription id
+     * also id and description in clear text
+     * @param outputFile
+     *  file path
+     * @param basedOnPrescription
+     *  prescription to print label with id as datamatrix
+     * @throws IOException
+     *  file error
+     */
     public void generate(File outputFile, Prescription basedOnPrescription) throws IOException {
-        String msg = "1";
-        String content = "Natriumchlorid 0.9% Ceftriaxon OrPha 2g";
-        /*
-        for (PreparedMedication preparedMedication : basedOnPrescription.getMedications()) {
-            content += preparedMedication.getName().get() + ", ";
-        }*/
+        String msg = basedOnPrescription.getPolypointID();
 
-//+ basedOnPrescription.getPolypointID()    + basedOnPrescription.getDescription()
         String[] paramArr = new String[] {
                 "Prescription ID: " + basedOnPrescription.getPolypointID() ,
                 "Beschreibung: " + basedOnPrescription.getDescription(),
-                "Inhalt: Natriumchlorid 0.9%",
-                "Ceftriaxon OrPha 2g"
+                "Notizen:" + basedOnPrescription.getNotes()
         };
 
         //Create the barcode bean
@@ -125,9 +130,6 @@ public class BarcodeGenerator {
 
         g2d.dispose();
 
-        //return bitmap;
-
-
         //Encode bitmap as file
         String mime = "image/png";
         OutputStream out = new FileOutputStream(outputFile);
@@ -140,6 +142,16 @@ public class BarcodeGenerator {
         }
     }
 
+    /**
+     * Prints a Barcode with a given Printer and Prescription
+     * @param prescription
+     *  prescription to print id
+     * @param printerName
+     *  a printer name as string
+     * @throws PrinterException
+     *  exception when printing not possible
+     * @throws IOException
+     */
     public void printBarcode(Prescription prescription, String printerName) throws PrinterException, IOException {
 
         PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
