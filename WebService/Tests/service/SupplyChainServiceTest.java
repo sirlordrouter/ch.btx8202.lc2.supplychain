@@ -631,7 +631,7 @@ public class SupplyChainServiceTest extends TestCase {
         -
         -
         */
-
+/**
         DbConnectorLogistic connectorLogistic = new DbConnectorLogistic();
         Connection connection = connectorLogistic.getConnection();
         ResultSet rs;
@@ -656,7 +656,7 @@ public class SupplyChainServiceTest extends TestCase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+*/
     }
 
     //Test if only secondary packes could be moved inside hospital
