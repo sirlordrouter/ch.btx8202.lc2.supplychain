@@ -21,7 +21,7 @@
          <children>
             <ImageView fx:id="genderView" fitHeight="55.0" fitWidth="55.0" layoutX="4.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resources/image/user194.png" />
+                  <Image url="@../../resources/image/user194.png" />
                </image>
             </ImageView>
          </children>

@@ -160,10 +160,10 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         state.setCellFactory(cellData -> {
             return new TableCell<Prescription, Prescription.PrescriptionState>() {
 
-                Image openImage = new Image("resources/image/play.png");
-                Image pausedImage = new Image("resources/image/paused.png");
-                Image stoppedImage = new Image("resources/image/stopped.png");
-                Image doseChangedImage = new Image("resources/image/update.png");
+                Image openImage = new Image("image/play.png");
+                Image pausedImage = new Image("image/paused.png");
+                Image stoppedImage = new Image("image/stopped.png");
+                Image doseChangedImage = new Image("image/update.png");
                 ImageView view;
 
                 {
@@ -268,8 +268,8 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         prepState.setCellFactory(cellData -> {
             return new TableCell<Prescription, Boolean>() {
 
-                Image pendingImage = new Image("resources/image/time.png");
-                Image readyImage = new Image("resources/image/ok_icon.png");
+                Image pendingImage = new Image("image/time.png");
+                Image readyImage = new Image("image/ok_icon.png");
                 ImageView view;
 
                 {
@@ -336,8 +336,8 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         state.setCellFactory(cellData -> {
             return new TableCell<PreparedMedication, PreparedMedication.MedicationState>() {
 
-                Image pendingImage = new Image("resources/image/time.png");
-                Image readyImage = new Image("resources/image/ok_icon.png");
+                Image pendingImage = new Image("image/time.png");
+                Image readyImage = new Image("image/ok_icon.png");
                 ImageView view;
 
                 {

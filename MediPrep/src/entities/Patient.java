@@ -51,9 +51,9 @@ public class Patient {
         this.bloodGroup = bloodGroup;
 
         if (this.gender == Gender.female) {
-            this.genderImage = new Image("resources/image/woman139.png");
+            this.genderImage = new Image("image/woman139.png");
         } else if(this.gender == Gender.male) {
-            this.genderImage = new Image("resources/image/user194.png");
+            this.genderImage = new Image("image/user194.png");
         } else {
             this.genderImage = null;
         }

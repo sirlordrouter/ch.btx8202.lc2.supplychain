@@ -28,7 +28,7 @@
                         <graphic>
                             <ImageView>
                                <image>
-                                   <Image url="@../resources/image/logout.png" />
+                                   <Image url="@../../resources/image/logout.png" />
                                </image>
                             </ImageView>
                         </graphic>
@@ -39,7 +39,7 @@
             
                   <ImageView fitHeight="63.0" fitWidth="60.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="8.0">
                      <image>
-                        <Image fx:id="imgProfilePicture" url="@../resources/image/Profilbild.png" />
+                        <Image fx:id="imgProfilePicture" url="@../../resources/image/Profilbild.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="248.0" layoutY="60.0" text="Aktueller Patient:" />
@@ -56,7 +56,7 @@
                      <graphic>
                         <ImageView fitHeight="55.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../resources/image/man369.png" />
+                              <Image url="@../../resources/image/man369.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -65,7 +65,7 @@
                      <graphic>
                         <ImageView fx:id="btnAdditionalMedics" fitHeight="59.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../resources/image/medical4.png" />
+                              <Image url="@../../resources/image/medical4.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -74,7 +74,7 @@
                      <graphic>
                         <ImageView fitHeight="63.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../resources/image/medicine.png" />
+                              <Image url="@../../resources/image/medicine.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -83,7 +83,7 @@
                      <graphic>
                         <ImageView fitHeight="70.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../resources/image/magnifier13.png" />
+                              <Image url="@../../resources/image/magnifier13.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -92,7 +92,7 @@
                      <graphic>
                         <ImageView fitHeight="36.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../resources/image/settings48.png" />
+                              <Image url="@../../resources/image/settings48.png" />
                            </image>
                         </ImageView>
                      </graphic>
