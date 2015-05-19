@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse fÃ¼r updatePreparedMedications complex type.
+ * <p>Java-Klasse für updatePreparedMedications complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
@@ -38,6 +39,7 @@ import javax.xml.bind.annotation.XmlType;
 public class UpdatePreparedMedications {
 
     protected List<TrspPreparedMedication> arg0;
+    @XmlSchemaType(name = "string")
     protected MedicationState arg1;
     protected String arg2;
 
