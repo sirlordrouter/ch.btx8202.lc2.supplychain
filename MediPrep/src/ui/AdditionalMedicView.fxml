@@ -35,19 +35,19 @@
                         <Label layoutX="47.0" layoutY="3.0" text="Entsprechendes Medikament scannen. Falls dies nicht möglich ist, Erfassen über anwählen des entsprechenden Medikaments." />
                   <ImageView fitHeight="26.0" fitWidth="29.0" layoutX="604.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/image/time.png" />
+                        <Image url="@/image/time.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="26.0" fitWidth="29.0" layoutX="604.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/image/ok_icon.png" />
+                        <Image url="@/image/ok_icon.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="642.0" layoutY="37.0" text="Dieses Medikament wurde noch nicht gerichtet." />
                   <Label layoutX="642.0" layoutY="69.0" text="Dieses Medikament wurde bereits bereitgestellt." />
                   <ImageView fitHeight="75.0" fitWidth="26.0" layoutX="9.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/image/info.png" />
+                        <Image url="@/image/info.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="12.0" layoutY="35.0" prefHeight="16.0" prefWidth="125.0" text="Status Verordnung:">
@@ -57,22 +57,22 @@
                   </Label>
                   <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="143.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/image/play.png" />
+                        <Image url="@/image/play.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="143.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/image/paused.png" />
+                        <Image url="@/image/paused.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="269.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/image/stopped.png" />
+                        <Image url="@/image/stopped.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="269.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/image/update.png" />
+                        <Image url="@/image/update.png" />
                      </image>
                   </ImageView>
                   <Label layoutX="469.0" layoutY="37.0" prefHeight="16.0" prefWidth="133.0" text="Status Medikament:">

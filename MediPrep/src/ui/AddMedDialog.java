@@ -16,6 +16,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ui.validation.RequiredField;
 import webservice.erp.MediPrepResult;
 
 import java.io.IOException;
@@ -68,6 +69,15 @@ public class AddMedDialog extends Stage implements Initializable {
     @FXML
     private Label lblErrorCode;
 
+    @FXML
+    private RequiredField requiredFieldGTIN;
+    @FXML
+    private RequiredField requiredFieldExpDate;
+    @FXML
+    private RequiredField requiredFieldLot;
+    @FXML
+    private RequiredField requiredFieldSerial;
+
     private boolean canceled = false;
 
     private IRepository repository;
@@ -102,48 +112,59 @@ public class AddMedDialog extends Stage implements Initializable {
 
     @FXML
     void save(ActionEvent event) {
+        requiredFieldGTIN.eval();
+        requiredFieldExpDate.eval();
+        requiredFieldLot.eval();
+        requiredFieldSerial.eval();
+
+        if(!requiredFieldGTIN.getHasErrors() &&
+                !requiredFieldExpDate.getHasErrors() &&
+                !requiredFieldLot.getHasErrors() &&
+                !requiredFieldSerial.getHasErrors()) {
 
 
-        if (!currentMedication.getGtinBs().stream().anyMatch(l -> l.equals(txtGtin.getText())) && !currentMedication.getGtinA().equals(txtGtin.getText())){
-            //TODO: ERROR message below field
-            txtGtin.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
-            , Insets.EMPTY)));
-            lblErrorCode.setText("Das eingegebene Produkt passt nicht zum Produkt der Verordnung!\n" +
-                    "Überprüfen Sie noch einmal das Medikament.");
-        } else {
-            String gtin = getTxtGtin().getText();
-            String expDate = getTxtExpiryDate().getText();
-            String lot = getTxtLot().getText();
-            String serial = getTxtSerial().getText();
-
-            currentMedication.setAssignedProductGTIN(gtin);
-            currentMedication.setExpiryDate(expDate);
-            currentMedication.setBatchLot(lot);
-            currentMedication.setSerial(serial);
-
-            currentMedication.setPreparationTime(LocalDateTime.now());
-            currentMedication.setState(PreparedMedication.MedicationState.controlled);
-            List<PreparedMedication> medicationList = new ArrayList<>();
-            medicationList.add(currentMedication);
-            //Additional Medics are directly in controlled state as they are immediately given to the patient but mapping must be
-            //done first, so state is prepared for webservice but logic is controlled
-            MediPrepResult success = repository.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
-
-            if (!success.isResult() && (success.getErrorCode() == 0 || success.getErrorCode() == 547)) {
-                txtExpiryDate.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
-                        , Insets.EMPTY)));
-                txtLot.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
-                        , Insets.EMPTY)));
-                txtSerial.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
-                        , Insets.EMPTY)));
-                lblErrorCode.setText("Das eingegebene Produktaten passen nicht zu einem Produkt im Bestand!\n" +
+            if (!currentMedication.getGtinBs().stream().anyMatch(l -> l.equals(txtGtin.getText())) && !currentMedication.getGtinA().equals(txtGtin.getText())){
+                //TODO: ERROR message below field
+                txtGtin.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
+                , Insets.EMPTY)));
+                lblErrorCode.setText("Das eingegebene Produkt passt nicht zum Produkt der Verordnung!\n" +
                         "Überprüfen Sie noch einmal das Medikament.");
-                currentMedication.setState(PreparedMedication.MedicationState.open);
-
             } else {
-                close();
+                String gtin = getTxtGtin().getText();
+                String expDate = getTxtExpiryDate().getText();
+                String lot = getTxtLot().getText();
+                String serial = getTxtSerial().getText();
+
+                currentMedication.setAssignedProductGTIN(gtin);
+                currentMedication.setExpiryDate(expDate);
+                currentMedication.setBatchLot(lot);
+                currentMedication.setSerial(serial);
+
+                currentMedication.setPreparationTime(LocalDateTime.now());
+                currentMedication.setState(PreparedMedication.MedicationState.controlled);
+                List<PreparedMedication> medicationList = new ArrayList<>();
+                medicationList.add(currentMedication);
+                //Additional Medics are directly in controlled state as they are immediately given to the patient but mapping must be
+                //done first, so state is prepared for webservice but logic is controlled
+                MediPrepResult success = repository.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
+
+                if (!success.isResult() && (success.getErrorCode() == 0 || success.getErrorCode() == 547)) {
+                    txtExpiryDate.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
+                            , Insets.EMPTY)));
+                    txtLot.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
+                            , Insets.EMPTY)));
+                    txtSerial.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
+                            , Insets.EMPTY)));
+                    lblErrorCode.setText("Das eingegebene Produktaten passen nicht zu einem Produkt im Bestand!\n" +
+                            "Überprüfen Sie noch einmal das Medikament.");
+                    currentMedication.setState(PreparedMedication.MedicationState.open);
+
+                } else {
+                    close();
+                }
             }
         }
+
 
 
     }

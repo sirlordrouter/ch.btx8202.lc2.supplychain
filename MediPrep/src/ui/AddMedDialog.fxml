@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import ui.validation.*?>
+<?import java.net.URL?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="343.0" prefWidth="514.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button layoutX="386.0" layoutY="284.0" mnemonicParsing="false" onAction="#save" prefHeight="38.0" prefWidth="94.0" text="OK" />
@@ -31,5 +31,54 @@
       <Label layoutX="54.0" layoutY="54.0" text="Produkt:" />
       <Label fx:id="lblName" layoutX="112.0" layoutY="54.0" prefHeight="16.0" prefWidth="369.0" text="Label" />
       <Label fx:id="lblErrorCode" layoutX="33.0" layoutY="242.0" text="Das eingegebene Produkt passt nicht zum Produkt der Verordnung!&#10;Überprüfen Sie noch einmal das Medikament." textFill="RED" />
+
+       <fx:define>
+           <RequiredField fx:id="requiredFieldGTIN" >
+               <srcControl>
+                   <fx:reference source="txtGtin"></fx:reference>
+               </srcControl>
+           </RequiredField>
+           <RequiredField fx:id="requiredFieldExpDate" >
+               <srcControl>
+                   <fx:reference source="txtExpiryDate"></fx:reference>
+               </srcControl>
+           </RequiredField>
+           <RequiredField fx:id="requiredFieldLot" >
+               <srcControl>
+                   <fx:reference source="txtLot"></fx:reference>
+               </srcControl>
+           </RequiredField>
+           <RequiredField fx:id="requiredFieldSerial" >
+               <srcControl>
+                   <fx:reference source="txtSerial"></fx:reference>
+               </srcControl>
+           </RequiredField>
+       </fx:define>
+       <ErrorLabel message="Bitte GTIN angeben" styleClass="first-error" layoutX="33.0" layoutY="242.0">
+           <validator>
+               <fx:reference source="requiredFieldGTIN"></fx:reference>
+           </validator>
+       </ErrorLabel>
+       <ErrorLabel message="Bitte Ablaufdatum angeben" layoutX="33.0" layoutY="257.0">
+           <validator>
+               <fx:reference source="requiredFieldExpDate"></fx:reference>
+           </validator>
+       </ErrorLabel>
+       <ErrorLabel message="Bitte Lot angeben" layoutX="33.0" layoutY="272.0">
+           <validator>
+               <fx:reference source="requiredFieldLot"></fx:reference>
+           </validator>
+       </ErrorLabel>
+       <ErrorLabel message="Bitte Serial angeben" layoutX="33.0" layoutY="287.0">
+           <validator>
+               <fx:reference source="requiredFieldSerial"></fx:reference>
+           </validator>
+       </ErrorLabel>
    </children>
+
+    <stylesheets>
+        <URL value="@../resources/style.css" />
+    </stylesheets>
 </Pane>
+
+
