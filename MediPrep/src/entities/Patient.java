@@ -2,11 +2,20 @@ package entities;
 
 import javafx.scene.image.Image;
 
-import java.util.Date;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.Period;
 
 /**
- * Created by Johannes on 24.03.15.
+ * Bern University of Applied Sciences<br>
+ * BSc Medical Informatics<br>
+ * Module <br>
+ *
+ *<p>
+ * Describes a Patient Object with necessary information to display in MediPrep.
+ *</p>
+ *
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
  */
 public class Patient {
 
@@ -14,11 +23,11 @@ public class Patient {
     public static enum BloodGroup {Apositive, Bpositive, AB, ZeroNegative, ZeroPositive}
 
     private int pid = -1;
-    private UUID beaconID = null;
+    private String beaconID = null;
     private String firstname;
     private String lastname;
-    private Date birthDate;
-    private boolean reaState;
+    private LocalDate birthDate;
+    private boolean reaState = false;
     private int fid = -1;
     private String StationName;
     private String room;
@@ -26,7 +35,9 @@ public class Patient {
     private BloodGroup bloodGroup;
     public Image genderImage;
 
-    public Patient(int pid, UUID beaconID, String firstname, String lastname, Date birthDate, boolean reaState, int fid, String stationName, String room, Gender gender, BloodGroup bloodGroup) {
+    public Patient() {}
+
+    public Patient(int pid, String beaconID, String firstname, String lastname, LocalDate birthDate, boolean reaState, int fid, String stationName, String room, Gender gender, BloodGroup bloodGroup) {
         this.pid = pid;
         this.beaconID = beaconID;
         this.firstname = firstname;
@@ -40,9 +51,9 @@ public class Patient {
         this.bloodGroup = bloodGroup;
 
         if (this.gender == Gender.female) {
-            this.genderImage = new Image("resources/image/woman139.png");
+            this.genderImage = new Image("image/woman139.png");
         } else if(this.gender == Gender.male) {
-            this.genderImage = new Image("resources/image/user194.png");
+            this.genderImage = new Image("image/user194.png");
         } else {
             this.genderImage = null;
         }
@@ -56,11 +67,11 @@ public class Patient {
         this.pid = pid;
     }
 
-    public UUID getBeaconID() {
+    public String getBeaconID() {
         return beaconID;
     }
 
-    public void setBeaconID(UUID beaconID) {
+    public void setBeaconID(String beaconID) {
         this.beaconID = beaconID;
     }
 
@@ -80,11 +91,18 @@ public class Patient {
         this.lastname = lastname;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public int getAge() {
+        LocalDate today = LocalDate.now();
+        LocalDate birthday = this.getBirthDate();
+        Period p = Period.between(birthday, today);
+        return p.getYears();
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -127,7 +145,6 @@ public class Patient {
     public void setStationName(String stationName) {
         StationName = stationName;
     }
-
 
     public BloodGroup getBloodGroup() {
         return bloodGroup;

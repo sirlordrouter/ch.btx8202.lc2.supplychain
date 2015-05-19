@@ -5,13 +5,23 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
+<!--
+* Bern University of Applied Sciences</br>
+* BSc Medical Informatics</br>
+* Module Bachelorthesis</br>
+*
+*<p>Layout of a Patient cell in Patient List view</p>
+*
+ * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
+ * @version 26.03.2015
+-->
 <HBox fx:id="patientCellBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane prefHeight="65.0" prefWidth="64.0">
          <children>
             <ImageView fx:id="genderView" fitHeight="55.0" fitWidth="55.0" layoutX="4.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resources/image/user194.png" />
+                  <Image url="@../../resources/image/user194.png" />
                </image>
             </ImageView>
          </children>

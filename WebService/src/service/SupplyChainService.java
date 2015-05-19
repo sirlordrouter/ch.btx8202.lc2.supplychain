@@ -5,6 +5,8 @@ import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.intellij.lang.annotations.Language;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
@@ -13,6 +15,12 @@ import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.spi.DateFormatProvider;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 /**
@@ -35,16 +43,15 @@ import java.util.*;
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
  * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
- * @version 29-11-2014
+ * @version 06-04-2015
  */
 @WebService()
 public class SupplyChainService {
 
     DbConnectorLogistic connectorLogistic = new DbConnectorLogistic();
 
-
-  @WebMethod
-  public String sayHelloWorldFrom(String from) {
+    @WebMethod
+    public String sayHelloWorldFrom(String from) {
     String result = "Hello, world, from " + from;
       return result;
   }
@@ -63,13 +70,30 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
+
+            //TODO: was passiert mit Items in Secondary Package wo Inhalt = 0?
+            /*
+                All Tracked Items which are not marked checked out in the same institution
+             */
             @Language("DB2")
-            String query = "SELECT i.GTIN,i.SerialNr,i.Lot,i.ExpiryDate,i.ScanDate, i.StateNr FROM TrackedItems i \n" +
-                    "where not exists\n" +
-                    "(\n" +
-                    "Select i.GTIN From TrackedItems o\n" +
-                    "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and GLNscan = ? and StateNr = 3\n" +
-                    ") and GLNscan = ? AND StateNr = ?";
+            String query = "SELECT i.GTIN,i.SerialNr,i.Lot,i.ExpiryDate,i.ScanDate, i.StateNr, s.ProductQuantity \n" +
+                    "FROM TrackedItems i\n" +
+                    "left join SecondaryPackage s on \n" +
+                    "s.GTINsek = i.GTIN AND s.BatchLot = i.Lot \n" +
+                    "AND s.ExpiryDate = i.ExpiryDate AND s.SerialNr = i.SerialNr\n" +
+                    "where \n" +
+                    "not exists ( \n" +
+                    "Select i.GTIN From TrackedItems o \n" +
+                    "left join SecondaryPackage s2 on \n" +
+                    "s2.GTINsek = i.GTIN AND s2.BatchLot = i.Lot \n" +
+                    "AND s2.ExpiryDate = i.ExpiryDate AND s2.SerialNr = i.SerialNr\n" +
+                    "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and \n" +
+                    "i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and GLNscan = ? and StateNr = 3 \n" +
+                    "and s2.ProductQuantity = 0\n" +
+                    ") \n" +
+                    "and\n" +
+                    "GLNscan = ? \n" +
+                    "AND StateNr = ?";
 
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, gln);
@@ -184,7 +208,7 @@ public class SupplyChainService {
         }
 
 
-        //State 2: Arrived
+        //MedicationState 2: Arrived
         insertTrackingItems(items, gln, 2);
         return new WebServiceResult(removedItems,true);
     }
@@ -205,70 +229,77 @@ public class SupplyChainService {
         Connection connection = connectorLogistic.getConnection();
 
         try {
-            // get the identifier of the latest order entry in the database
-            @Language("DB2")
-            String query = "SELECT TOP 1 [OrderNr]\n" +
-                    "  FROM [dbo].[Order]\n" +
-                    "  ORDER BY OrderNr\n" +
-                    "  DESC";
+            connection.setAutoCommit(false);
 
-            PreparedStatement ps = connection.prepareStatement(query);
-            rs =  ps.executeQuery();
-            rs.next();
-            int lastIndex = (int)(long)(Long)rs.getObject(1);
 
             // make a new order entry in the database at position lastindex + 1
-            query = "INSERT INTO [dbo].[Order]\n" +
-                    "           ([OrderNr]\n" +
-                    "           ,[StateNr]\n" +
+            String query = "INSERT INTO [dbo].[Order]\n" +
+                    "           ([StateNr]\n" +
                     "           ,[GLNorderer]\n" +
                     "           ,[GLNdest]\n" +
                     "           ,[OrderDate])\n" +
                     "     VALUES\n" +
-                    "           (?\n" +
-                    "           ,1\n" +
+                    "           (1\n" +
                     "           ,?\n" +
                     "           ,?\n" +
                     "           ,?)";
-            ps = connection.prepareStatement(query);
-            ps.setInt(1,lastIndex+1);
-            ps.setString(2,glnOrd);
-            ps.setString(3,glnDest);
+            PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,glnOrd);
+            ps.setString(2,glnDest);
             GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
             java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
-            ps.setTimestamp(4, timestamp);
+            ps.setTimestamp(3, timestamp);
             int update =  ps.executeUpdate();
-            // fill all positions of the given order in the positions table
-            query = "INSERT INTO [dbo].[Positions]\n" +
-                    "           ([OrderNr]\n" +
-                    "           ,[GTIN]\n" +
-                    "           ,[Description]\n" +
-                    "           ,[Quantity])\n" +
-                    "     VALUES\n" +
-                    "           (?\n" +
-                    "           ,?\n" +
-                    "           ,?\n" +
-                    "           ,?)";
-            int answer=0;
-            for(Position pos:order.getPositions()){
-                ps = connection.prepareStatement(query);
-                ps.setInt(1,lastIndex+1);
-                ps.setString(2,pos.getGtin());
-                ps.setString(3,pos.getDescription());
-                ps.setInt(4,pos.getQuantity());
+            connection.commit();
 
-                answer =  ps.executeUpdate();
+            int key =  -1;
+            rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                key = ((BigDecimal)rs.getObject(1)).intValue();
+
+                // fill all positions of the given order in the positions table
+                query = "INSERT INTO [dbo].[Positions]\n" +
+                        "           ([OrderNr]\n" +
+                        "           ,[GTIN]\n" +
+                        "           ,[Description]\n" +
+                        "           ,[Quantity])\n" +
+                        "     VALUES\n" +
+                        "           (?\n" +
+                        "           ,?\n" +
+                        "           ,?\n" +
+                        "           ,?)";
+                int answer=0;
+                for(Position pos:order.getPositions()){
+                    ps = connection.prepareStatement(query);
+                    ps.setInt(1,key);
+                    ps.setString(2,pos.getGtin());
+                    ps.setString(3,pos.getDescription());
+                    ps.setInt(4,pos.getQuantity());
+
+                    answer =  ps.executeUpdate();
+                    connection.commit();
+                }
+                if(update==1&&answer==1){
+                    success=true;
+                }else{success=false;}
+
+
+            } else {
+                throw new SQLException();
             }
-            if(update==1&&answer==1){
-                success=true;
-            }else{success=false;}
 
         } catch (SQLException e) {
             e.printStackTrace();
             success = false;
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             return success;
         } finally {
             try {
+                connection.setAutoCommit(true);
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -320,6 +351,7 @@ public class SupplyChainService {
 
     }
 
+    @WebMethod
     public void insertTrackingItems(List<Item> items, String gln, Integer trackingState )
     {
         Connection connection = connectorLogistic.getConnection();
@@ -328,14 +360,17 @@ public class SupplyChainService {
             String query = "INSERT INTO TrackedItems (GTIN, SerialNr, ExpiryDate, GLNscan, ScanDate, StateNr, ScannedSSCC,Lot) VALUES (?,?,?,?,?,?,?,?)";
             for (Item item : items) {
                 //TODO: Inhalt überprüfen ob stimmt, gerade Datum schwierig, muss auch Zeitstempel beinhalten
+
+                LocalDate expDate = LocalDate.parse(item.getExpiryDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+                LocalDateTime expDateTime = expDate.atTime(0,0,0,0);
+
                 PreparedStatement ps = connection.prepareStatement(query);
                 ps.setString(1, item.getGTIN());
                 ps.setString(2, item.getSerial());
-                ps.setString(3, item.getExpiryDate());
+                ps.setTimestamp(3, Timestamp.valueOf(expDateTime));
                 ps.setString(4, gln);
-                GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
-                java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
-                ps.setTimestamp(5, timestamp);
+                LocalDateTime now = LocalDateTime.now();
+                ps.setTimestamp(5, Timestamp.valueOf(now));
                 ps.setInt(6, trackingState);
                 ps.setString(7, null); //ScannedSSCC
                 ps.setString(8, item.getLot());
@@ -405,7 +440,7 @@ public class SupplyChainService {
             rs =  ps.executeQuery();
             rs.next();
             int lastShipmentId = (int)(long)(Long)rs.getObject(1);
-            items=insertLogisticPackage(order,lastShipmentId, Integer.parseInt(orderNr));
+            items=insertLogisticPackage(order,lastShipmentId, Integer.parseInt(orderNr), glnMan);
         } catch (SQLException e) {
             e.printStackTrace();
             production.setSuccess(false);
@@ -447,7 +482,7 @@ public class SupplyChainService {
 
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1,orderNr);
-            ps.setString(2,glnDest);
+            ps.setString(2, glnDest);
             ps.setString(3,glnSender);
             int success =  ps.executeUpdate();
 
@@ -461,7 +496,8 @@ public class SupplyChainService {
             }
         }
     }
-    private List<Item> insertLogisticPackage(Order order,int shipmentID, int orderNr)
+
+    private List<Item> insertLogisticPackage(Order order, int shipmentID, int orderNr, String glnMan)
     {
         List<Item> items = new ArrayList<Item>();
         ResultSet rs;
@@ -495,7 +531,7 @@ public class SupplyChainService {
             ps.setInt(2, shipmentID);
             ps.setInt(3, orderNr);
             int success =  ps.executeUpdate();
-            items=insertSecondaryPackagesFromOrder(order,Long.toString(lastSSCC+1));
+            items=insertSecondaryPackagesFromOrder(order,Long.toString(lastSSCC+1), glnMan);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -535,56 +571,108 @@ public class SupplyChainService {
             }
         }
     }
-    private List<Item> insertSecondaryPackagesFromOrder(Order order, String sscc)
+
+    private List<Item> insertSecondaryPackagesFromOrder(Order order, String sscc, String glnMan)
     {
         Connection connection = connectorLogistic.getConnection();
         List<Item> items = new ArrayList<Item>();
+        Map<String, LogisticInformation> GtinbContainesA = getProductInformation();
+        //TODO: fetch quantity from product
 
         try {
             // get the identifier of the latest order entry in the database
+            connection.setAutoCommit(false);
             String batch = getBatch();
             Timestamp expdate = getExpDate();
+
             for(Position pos:order.getPositions()){
                 for(int i= 0;i<pos.getQuantity();i++){
                     Item item = new Item();
                     @Language("DB2")
-                    String query = "INSERT INTO [dbo].[SecondaryPackage]\n" +
+                    String secondaryQuery = "INSERT INTO [dbo].[SecondaryPackage]\n" +
                             "           ([GTINsek]\n" +
                             "           ,[SerialNr]\n" +
                             "           ,[BatchLot]\n" +
                             "           ,[ExpiryDate]\n" +
                             "           ,[GTINtert]\n" +
-                            "           ,[SSCC])\n" +
+                            "           ,[SSCC]\n" +
+                            "           ,[ProductQuantity]) " +
                             "     VALUES\n" +
                             "           (?\n" +
                             "           ,?\n" +
                             "           ,?\n" +
                             "           ,?\n" +
                             "           ,null\n" +
+                            "           ,?" +
                             "           ,?)";
-                    PreparedStatement ps = connection.prepareStatement(query);
+
+                    String primaryQuery = "INSERT INTO [dbo].[PrimaryPackage]\n" +
+                            "           ([GTINsek]\n" +
+                            "           ,[GTINprim]\n" +
+                            "           ,[BatchLot]\n" +
+                            "           ,[ExpiryDate]\n" +
+                            "           ,[Type]\n" +
+                            "           ,[GLNman]\n" +
+                            "           ,[SerialNr]) \n" +
+                            "     VALUES\n" +
+                            "           (?" +
+                            "           ,?" +
+                            "           ,?" +
+                            "           ,?" +
+                            "           ,?" +
+                            "           ,?" +
+                            "           ,?)";
+
+
+                    PreparedStatement ps = connection.prepareStatement(secondaryQuery);
                     ps.setString(1,pos.getGtin());
                     String serial = getSerial(batch,i+1);
                     ps.setString(2,serial);
-                    ps.setString(3,batch);
-                    ps.setTimestamp(4,expdate);
-                    ps.setString(5,sscc);
+                    ps.setString(3, batch);
+                    ps.setTimestamp(4, expdate);
+                    ps.setString(5, sscc);
+                    ps.setInt(6, GtinbContainesA.get(pos.getGtin()).LogisticQuantity);
+
                     item.setGTIN(pos.getGtin());
                     item.setSerial(serial);
                     item.setLot(batch);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
-                    String expDate  = dateFormat.format(expdate);
+                    String expDate  = expdate.toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE);
                     item.setExpiryDate(expDate);
                     item.setBeschreibung(pos.getDescription());
                     items.add(item);
                     int success =  ps.executeUpdate();
+                    connection.commit();
+
+                    ps = connection.prepareStatement(primaryQuery);
+                    ps.setString(1,pos.getGtin());
+                    ps.setString(2, GtinbContainesA.get(pos.getGtin()).GtinA);
+                    ps.setString(3, batch);
+                    ps.setTimestamp(4, expdate);
+                    ps.setString(5, "");
+                    ps.setString(6, GtinbContainesA.get(pos.getGtin()).Manufacturer);
+                    ps.setString(7, serial);
+
+                    success = ps.executeUpdate();
+                    connection.commit();
+
                 }
+
             }
+
+            insertTrackingItems(items, glnMan,  2);
+            connection.commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             return null;
         } finally {
             try {
+                connection.setAutoCommit(true);
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -594,10 +682,50 @@ public class SupplyChainService {
         return items;
     }
 
+    private Map<String, LogisticInformation> getProductInformation() {
+        Connection connection = connectorLogistic.getConnection();
+        Map<String, LogisticInformation> GtinbContainesA = new HashMap<>();
+        @Language("DB2")
+        String query = "SELECT \n" +
+                "[GTINB],\n" +
+                "[GTINA],\n" +
+                "[Manufacturer],\n" +
+                "[ContainedUnits] \n" +
+                "FROM \n" +
+                "ProductionGtinBContainesA";
+
+        try {
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                GtinbContainesA.put(
+                        rs.getString(1),
+                        new LogisticInformation(rs.getString(2), rs.getString(3), rs.getInt(4))
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+                return GtinbContainesA;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
     private String getBatch(){ //Beutel 9stellig
         java.util.Date date = new java.util.Date();
         DateFormat formatter = new SimpleDateFormat("ddMMyyHHm");
-        return formatter.format(date);
+        String stringDate = formatter.format(date);
+        return stringDate.substring(0, 9);
     }
     private String getSerial(String batch, int objectNumber){ //17 stellig
         String serial = Integer.toString(objectNumber);
@@ -607,13 +735,12 @@ public class SupplyChainService {
         return batch+serial;
     }
     private Timestamp getExpDate(){
-        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("de-CH"));
-        cal.add((GregorianCalendar.YEAR), 1);
-        java.sql.Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+        LocalDate dateTime = LocalDate.now();
+        dateTime.plusYears(1);
+        LocalDateTime dateTime1 = dateTime.atTime(0, 0, 0, 0);
+        java.sql.Timestamp timestamp = Timestamp.valueOf(dateTime1);
         return timestamp;
     }
-
-
 
     /**
      * Returns a list of quantity objects.
@@ -640,7 +767,7 @@ public class SupplyChainService {
                     "  WHERE [GLN] = ?";
 
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1,gln);
+            ps.setString(1, gln);
             rs =  ps.executeQuery();
 
             while(rs.next()){
@@ -930,7 +1057,6 @@ public class SupplyChainService {
         return items;
     }
 
-
     /**
      * Gets an Item with corresponding GTIN and Serial Number
      *
@@ -1157,6 +1283,815 @@ public class SupplyChainService {
         }
     }
 
+    @WebMethod
+    public List<String> getLogisticUnitsForProduct(String productGTIN) {
+
+        List<String> secondaryGTINs = new ArrayList<>();
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+
+            String query = "SELECT GTINB FROM ProductionGtinBContainesA " +
+                    "WHERE GTINA = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, productGTIN);
+            rs =  ps.executeQuery();
+
+            while (rs.next()) {
+                String result = rs.getString(1);
+                if(result != null) {
+                    secondaryGTINs.add(result);
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return secondaryGTINs;
+    }
+
+    /**
+     * A list of all Station available for the Hospital.
+     * @return a Collection of Stations
+     */
+    @WebMethod
+    public List<Station> getStations() {
+        List<Station> stations = null;
+
+        return stations;
+    }
+
+    /**
+     * A list of all Patients for the Hospital
+     * @return a Collection of Patients
+     */
+    @WebMethod
+    public List<TrspPatient> getPatients() {
+        List<TrspPatient> trspPatients = null;
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            String query = "SELECT PolyPointPID,UUID,Name, FirstName,Birthdate,Gender,Station From MediPrep_Patients";
+            PreparedStatement ps = connection.prepareStatement(query);
+            rs =  ps.executeQuery();
+
+            trspPatients = getPatientsFromResult(rs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return trspPatients;
+    }
+
+    private List<TrspPatient> getPatientsFromResult(ResultSet rs) throws SQLException {
+        int index = 1;
+        List<TrspPatient> trspPatients = new ArrayList<>();
+
+        while (rs.next()) {
+            TrspPatient p = new TrspPatient();
+            p.setPid(rs.getInt(1));
+            p.setBeaconID(rs.getString(2));
+            p.setLastname(rs.getString(3));
+            p.setFirstname(rs.getString(4));
+            p.setBirthDate(rs.getDate(5).toLocalDate());
+
+            String gender = rs.getString(6);
+            switch (gender) {
+                case "m":
+                    p.setGender(TrspPatient.Gender.male);
+                    break;
+                case "f":
+                    p.setGender(TrspPatient.Gender.female);
+                    break;
+                default:
+                    p.setGender(TrspPatient.Gender.undefined);
+            }
+            p.setStationName(rs.getString(7));
+
+            /* Fake other items not in db*/
+            p.setRoom("Zi 20" + index);
+            p.setFid(index);
+            p.setBloodGroup(TrspPatient.BloodGroup.Apositive);
+            p.setReaState(false);
+
+            index++;
+
+            trspPatients.add(p);
+        }
+
+        return trspPatients;
+    }
+
+    //    /**
+//     * Returns the TrspPatient for given UUID
+//     * @return a  TrspPatient
+//     */
+//    @WebMethod
+//    public TrspPatient getPatientByMinorId(String minorid) {
+//        List<TrspPatient> trspPatients = null;
+//        ResultSet rs;
+//        Connection connection = connectorLogistic.getConnection();
+//
+//        try {
+//            String query = "SELECT PolyPointPID,UUID,Name, FirstName,Birthdate,Gender,Station From MediPrep_Patients WHERE UUID = ?";
+//            PreparedStatement ps = connection.prepareStatement(query);
+//            ps.setString(1, minorid);
+//            rs =  ps.executeQuery();
+//
+//            trspPatients = getPatientsFromResult(rs);
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        } finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if( trspPatients.size() > 2 || trspPatients.size() == 0) {
+//            System.out.println("There have been more than one patient with UUID " + minorid);
+//            return null;
+//        } else {
+//            return trspPatients.get(0);
+//        }
+//    }
+//
+//    @WebMethod
+//    public TrspPatient getPatientByPid(String pid) {
+//        return null;
+//    }
+
+    /**
+     * Gets all Prescriptions for a Patient which are valid
+     * @param pid
+     * @return
+     *  a list of prescriptions with perscribed medications defined for this prescription
+     */
+    @WebMethod
+    public List<TrspPrescription> getPrescriptionsForPatient(String pid) {
+
+        //All trspPrescriptions where state is open, paused, doseChanged
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        List<TrspPrescription> trspPrescriptions = new ArrayList<TrspPrescription>();
+
+        try {
+            String query =
+                    "SELECT \n" +
+                            "distinct(p.PolypointID), \n" +
+                            "PatientPolypointID,  \n" +
+                            "DateCreated,  \n" +
+                            "p.State,  \n" +
+                            "CreatedByStaffGLN, \n" +
+                            "s.Name,  \n" +
+                            "s.FirstName,  \n" +
+                            "s.Position,  \n" +
+                            "Description,  \n" +
+                            "Schedule,  \n" +
+                            "RouteOfAdministration, \n" +
+                            "Notes,  \n" +
+                            "ValidUntil\n" +
+                            "FROM MediPrep_Prescription p   \n" +
+                            "LEFT JOIN MediPrep_Staff  s  \n" +
+                            "ON s.GLN = p.CreatedByStaffGLN   \n" +
+                            "INNER JOIN MediPrep_PrescriptionDefinesMedication m \n" +
+                            "ON p.PolypointID = m.PrescriptionID \n" +
+                            "WHERE PatientPolypointID = ?\n" +
+                            "AND ValidUntil >= GETDATE()\n" +
+                            "AND NOT EXISTS (\n" +
+                            "\tSELECT \n" +
+                            "\tp1.PolypointID\n" +
+                            "\tFROM MediPrep_Prescription p1\n" +
+                            "\tWHERE p1.PatientPolypointID = p.PatientPolypointID\n" +
+                            "\tAND p1.PolypointID > p.PolypointID \n" +
+                            "\tAND p1.Description = p.Description\n" +
+                            "\tAND p1.Schedule = p.Schedule AND p1.Notes = p.Notes\n" +
+                            ")";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, Integer.parseInt(pid));
+            rs =  ps.executeQuery();
+
+            trspPrescriptions = getPrescriptionFromResult(rs);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return trspPrescriptions;
+    }
+
+    @WebMethod
+    public List<TrspPrescription> getPreparedPrescriptionsForPatient(String pid) {
+        //Alle trspPrescriptions wo schedule für aktuelle Zeit => join mit allen vorbereiteneten und produkt columns nötig für matchen
+        //für jede trspPrescriptions
+        //Fall 1: ein medi: scanned code als gtin eines scanned items mit gtin vergleichen, falls nicht => ev. fall 2
+        //Fall 2: x-Medis: code als prescription id behandlen und schauen ob vorhanden
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        List<TrspPrescription> trspPrescriptions = new ArrayList<TrspPrescription>();
+
+        try {
+            String query =
+                    "SELECT \n" +
+                            "\t DISTINCT(p.PolypointID),\n" +
+                            "    PatientPolypointID, \n" +
+                            "    DateCreated, \n" +
+                            "    p.State, \n" +
+                            "    CreatedByStaffGLN,\n" +
+                            "    s.Name, \n" +
+                            "    s.FirstName, \n" +
+                            "    s.Position, \n" +
+                            "    Description, \n" +
+                            "    Schedule, \n" +
+                            "    RouteOfAdministration,\n" +
+                            "    Notes, \n" +
+                            "    ValidUntil  \n" +
+                            "FROM MediPrep_Prescription p  \n" +
+                            "LEFT JOIN MediPrep_Staff  s \n" +
+                            "\tON s.GLN = p.CreatedByStaffGLN  \n" +
+                            "INNER JOIN MediPrep_PrescriptionDefinesMedication m\n" +
+                            "\tON p.PolypointID = m.PrescriptionID\n" +
+                            "INNER JOIN MediPrep_PreparedMedication pm\n" +
+                            "\tON m.PrescriptionID = pm.PresciriptionID\n" +
+                            "\tAND m.GTIN = pm.GtinPrescribedMedic\t \n" +
+                            "WHERE PatientPolypointID = ? \n" +
+                            "\tAND ValidUntil >= GETDATE() \n" +
+                            "\tAND pm.State = 3\n" +
+                            "\tAND NOT EXISTS (\n" +
+                            "\t\tselect * \n" +
+                            "\t\tfrom MediPrep_PrescriptionDefinesMedication a\n" +
+                            "\t\tLEFT JOIN MediPrep_PreparedMedication b\n" +
+                            "\t\t\tON a.GTIN = b.GtinPrescribedMedic\n" +
+                            "\t\t\tAND a.PrescriptionID = b.PresciriptionID\n" +
+                            "\t\tWHERE (b.State IS NULL OR b.State < 3) \n" +
+                            "\t\t\tAND a.PrescriptionID =p.PolypointID\n" +
+                            "\t)";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, Integer.parseInt(pid));
+            rs =  ps.executeQuery();
+
+            trspPrescriptions = getPrescriptionFromResult(rs);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return trspPrescriptions;
+    }
+
+    private List<TrspPrescription> getPrescriptionFromResult(ResultSet rs) throws SQLException {
+        List<TrspPrescription> trspPrescriptions = new ArrayList<TrspPrescription>();
+        while (rs.next()) {
+            TrspPrescription p = new TrspPrescription();
+
+            p.setPolypointID(rs.getString(1));
+            p.setPatientPolypointID(rs.getString(2));
+            p.setDateCreated(rs.getDate(3).toLocalDate());
+            p.setVaildUntil(rs.getDate(13).toLocalDate());
+            p.setCreatedByStaffGLN(rs.getString(5));
+            p.setName(rs.getString(6));
+            p.setFirstName(rs.getString(7));
+            p.setPosition(rs.getString(8));
+            p.setDescription(rs.getString(9));
+            p.setSchedule(rs.getString(10));
+            p.setRouteOfAdministration(rs.getString(11));
+            p.setNotes(rs.getString(12));
+            p.setMedications(getPreparedMedicationsForPrescription(p));
+            int prepState = rs.getInt(4)-1;
+            p.setPrescriptionState(TrspPrescription.PrescriptionState.values()[prepState]);
+
+            trspPrescriptions.add(p);
+        }
+        return trspPrescriptions;
+    }
+
+    private List<TrspPreparedMedication> getPreparedMedicationsForPrescription(TrspPrescription p) {
+        List<TrspPreparedMedication> medications = new ArrayList<TrspPreparedMedication>();
+
+        //All prescriptions where state is open, paused, doseChanged
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+
+        try {
+            String query =
+                    "SELECT\n " +
+            "GTIN,\n" +
+                    "Name," +
+                    "Pharmacode," +
+                    "pdm.PrescriptionID," +
+                    "Dosage," +
+                    "DosageUnit," +
+                    "State," +
+                    "TimePrepared," +
+                    "sp.GTINSek," +
+                    "sp.SerialNr," +
+                    "sp.ExpiryDate," +
+                    "sp.BatchLot," +
+                    "StaffGLN," +
+                    "pm.UID," +
+                    "pdm.isAdditionalMedic "  +
+                    "FROM MediPrep_PrescriptionDefinesMedication pdm " +
+                    "LEFT JOIN Product p\n" +
+                    "ON GTINprim = GTIN\n" +
+                    "Left JOIN MediPrep_PreparedMedication pm\n" +
+                    "ON pm.PresciriptionID = pdm.PrescriptionID AND pm.GtinPrescribedMedic = pdm.GTIN\n" +
+                    "Left JOIN SecondaryPackage sp\n" +
+                    "ON sp.GTINsek = pm.GTINSek AND sp.SerialNr = pm.SerialNr AND sp.ExpiryDate = pm.ExpiryDate\n" +
+                    "WHERE PrescriptionID = ? and (pm.State < 4 OR pm.State is null)";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, p.getPolypointID());
+            rs =  ps.executeQuery();
+
+            //TODO: Pattern für encapsulated Base Class (zuerst Basisklasse TrspMedication nutzen und dann beim vorbereiten der Medis auf die erweiterte Klasse TrspPreparedMedication wechseln) => nur falls sinnvoll
+            medications = getMedicationFromResult(rs, p);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return medications;
+
+    }
+
+    private List<TrspPreparedMedication> getMedicationFromResult(ResultSet rs, TrspPrescription p) throws SQLException {
+        List<TrspPreparedMedication> trspPreparedMedications = new ArrayList<>();
+
+        while (rs.next()) {
+            TrspPreparedMedication trspPreparedMedication = new TrspPreparedMedication();
+
+
+            trspPreparedMedication.setGtinA(rs.getString(1));
+            trspPreparedMedication.setGtinBs(getLogisticUnitsForProduct(rs.getString(1)));
+            trspPreparedMedication.setName(rs.getString(2));
+            trspPreparedMedication.setDosage(rs.getString(5));
+            trspPreparedMedication.setDosageUnit(rs.getString(6));
+            int stateIndex = rs.getInt(7)-1;
+
+            if (stateIndex > 0) {
+                trspPreparedMedication.setState(TrspPreparedMedication.MedicationState.values()[stateIndex]);
+            }
+
+            LocalDate localDate = this.getDateValue(rs,8);
+            if (localDate != null) {
+                LocalDateTime localDateTime = localDate.atTime(this.getTimeValue(rs, 8));
+                trspPreparedMedication.setPreparationTime(localDateTime);
+            }
+
+            trspPreparedMedication.setGtinFromAssignedItem(rs.getString(9));
+            trspPreparedMedication.setSerial(rs.getString(10));
+            trspPreparedMedication.setExpiryDate(rs.getString(11));
+            trspPreparedMedication.setBatchLot(rs.getString(12));
+            trspPreparedMedication.setStaffGln(rs.getString(13));
+            trspPreparedMedication.setPreparedMedicationId(rs.getInt(14));
+            trspPreparedMedication.setIsReserve(rs.getBoolean(15));
+            //TODO: gibt fehler trspPreparedMedication.setBasedOnPrescription(p);
+
+            trspPreparedMedications.add(trspPreparedMedication);
+        }
+        return trspPreparedMedications;
+    }
+
+    private String getStringValue(ResultSet rs, int index) throws SQLException {
+        String col = rs.getString(index);
+        if (rs.wasNull()) {
+            return "";
+        } else {
+            return col;
+        }
+    }
+
+    private LocalDate getDateValue(ResultSet rs, int index) throws SQLException {
+        Date col = rs.getDate(index);
+        if (rs.wasNull()) {
+            return null;
+        } else {
+            return col.toLocalDate();
+        }
+    }
+
+    private LocalTime getTimeValue(ResultSet rs, int index) throws SQLException {
+        Time col = rs.getTime(index);
+        if (rs.wasNull()) {
+            return null;
+        } else {
+            return col.toLocalTime();
+        }
+    }
+
+    public MediPrepResult updateDispensedMedication(TrspPrescription p, String stationGLN) {
+
+        MediPrepResult result ;
+
+        if (
+                (p.getMedications() == null || p.getMedications().size() == 0) &&
+                        (p.getMedicationsMorning() == null || p.getMedicationsMorning().size()    == 0) &&
+                        (p.getMedicationsNoon() == null || p.getMedicationsNoon().size()       == 0) &&
+                        (p.getMedicationsEvening() == null || p.getMedicationsEvening().size()    == 0) &&
+                        (p.getMedicationsNight() == null || p.getMedicationsNight().size()      == 0) ) {
+            return new MediPrepResult(false, 3);
+
+        }
+
+        if (p.getMedications() != null && p.getMedications().size() > 0) {
+            result = updatePreparedMedications(p.getMedications(),
+                    TrspPreparedMedication.MedicationState.served, stationGLN);
+            if (!result.isResult()) {
+                return result;
+            }
+        }
+        if (p.getMedicationsMorning() != null && p.getMedicationsMorning().size() > 0) {
+            result = updatePreparedMedications(p.getMedicationsMorning(),
+                    TrspPreparedMedication.MedicationState.served, stationGLN);
+            if (!result.isResult()) {
+                return result;
+            }
+        }
+        if (p.getMedicationsNoon() != null && p.getMedicationsNoon().size() > 0) {
+            result = updatePreparedMedications(p.getMedicationsNoon(),
+                    TrspPreparedMedication.MedicationState.served, stationGLN);
+            if (!result.isResult()) {
+                return result;
+            }
+        }
+        if (p.getMedicationsEvening() != null && p.getMedicationsEvening().size() > 0) {
+            result = updatePreparedMedications(p.getMedicationsEvening(),
+                    TrspPreparedMedication.MedicationState.served, stationGLN);
+            if (!result.isResult()) {
+                return result;
+            }
+        }
+        if (p.getMedicationsNight() != null && p.getMedicationsNight().size() > 0) {
+            result = updatePreparedMedications(p.getMedicationsNight(),
+                    TrspPreparedMedication.MedicationState.served, stationGLN);
+            if (!result.isResult()) {
+                return result;
+            }
+        }
+        return new MediPrepResult(true, -1);
+
+
+    }
+
+    @WebMethod
+    public MediPrepResult updatePreparedMedications(List<TrspPreparedMedication> trspPreparedMedications, TrspPreparedMedication.MedicationState medicationState, String stationGLN) {
+
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+       String query = "";
+
+        try{
+            connection.setAutoCommit(false);
+
+            switch (medicationState) {
+                case open:  //no change
+                    break;
+                case prepared: //initalize
+                    query = "INSERT INTO MediPrep_PreparedMedication\n" +
+                            "           ([State]\n" +
+                            "           ,[TimePrepared]\n" +
+                            "           ,[GTINSek]\n" +
+                            "           ,[SerialNr]\n" +
+                            "           ,[ExpiryDate]\n" +
+                            "           ,[PresciriptionID]\n" +
+                            "           ,[GtinPrescribedMedic]\n" +
+                            "           ,[StaffGLN])\n" +
+                            "     VALUES\n" +
+                            "           (?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?\n" +
+                            "           ,?)";
+                    String queryUpdate = "Update " +
+                            "SecondaryPackage " +
+                            "SET ProductQuantity = ProductQuantity-1 " +
+                            "WHERE GTINSek = ? " +
+                            "AND SerialNr = ? " +
+                            "AND ExpiryDate = ?";
+                    //Ev hier noch ergänzen dass nur Einträge ageupdated werden können wo Quantity > 0
+                    //Sonst fehler und Meldung an Client.
+
+                    for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
+
+                        LocalDate expDate = LocalDate.parse(trspPreparedMedication.getExpiryDate()); //Parse Exception
+                        LocalDateTime expDateTime = expDate.atTime(0, 0, 0, 0);
+                        Timestamp expiryDate = Timestamp.valueOf(expDateTime);
+                        PreparedStatement ps = connection.prepareStatement(query);
+                        int state = trspPreparedMedication.getState().ordinal()+1;
+                        ps.setInt(1,state);
+                        ps.setTimestamp(2, Timestamp.valueOf(trspPreparedMedication.getPreparationTime()));
+                        ps.setString(3, trspPreparedMedication.getGtinFromAssignedItem());
+                        ps.setString(4, trspPreparedMedication.getSerial());
+                        ps.setTimestamp(5, expiryDate);
+                        ps.setInt(6, Integer.valueOf(trspPreparedMedication.getBasedOnPrescription().getPolypointID()));
+                        ps.setString(7, trspPreparedMedication.getGtinA());
+                        ps.setString(8, trspPreparedMedication.getStaffGln());
+
+                        ps.executeUpdate();
+                        connection.commit();
+
+                        ps = connection.prepareStatement(queryUpdate);
+                        ps.setString(1, trspPreparedMedication.getGtinFromAssignedItem());
+                        ps.setString(2, trspPreparedMedication.getSerial());
+                        ps.setTimestamp(3, expiryDate);
+
+                        ps.executeUpdate();
+                        connection.commit();
+
+                    }
+
+
+
+                    break;
+                case controlled: //update
+
+                    query = "Update MediPrep_PreparedMedication " +
+                            "SET State = 3 " +
+                            "WHERE UID = ?";
+
+                    for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
+
+                        PreparedStatement ps = connection.prepareStatement(query);
+                        ps.setInt(1, trspPreparedMedication.getPreparedMedicationId());
+                        ps.executeUpdate();
+
+                    }
+
+                    connection.commit();
+                    break;
+                case served: //update and tracker input as well as quantity decrement
+
+                    Set<TrspPrescription> prescriptionsSet = new HashSet<>();
+
+                    query =  "Update MediPrep_PreparedMedication " +
+                            "SET State = 4 " +
+                            "WHERE UID = ?";
+
+                    String queryTracking = "INSERT INTO TrackedItems " +
+                            "(GTIN, SerialNr, ExpiryDate, GLNscan, ScanDate, StateNr, ScannedSSCC,Lot) " +
+                            "VALUES (?,?,?,?,?,?,?,?)";
+
+
+
+                    for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
+
+                        if (trspPreparedMedication.getBasedOnPrescription() != null) {
+                            prescriptionsSet.add(trspPreparedMedication.getBasedOnPrescription());
+                        } else {
+                            throw new SQLException("Based on Prescription is null");
+                        }
+
+                        PreparedStatement psUpdate = connection.prepareStatement(query);
+                        PreparedStatement  psTracking = connection.prepareStatement(queryTracking);
+
+                        psUpdate.setInt(1, trspPreparedMedication.getPreparedMedicationId());
+                        psUpdate.executeUpdate();
+
+                        connection.commit();
+
+                        psTracking.setString(1, trspPreparedMedication.getGtinFromAssignedItem());
+                        psTracking.setString(2, trspPreparedMedication.getSerial());
+                        psTracking.setString(3, trspPreparedMedication.getExpiryDate());
+                        psTracking.setString(4, stationGLN);
+                        java.sql.Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+                        psTracking.setTimestamp(5,timestamp);
+                        psTracking.setInt(6, 3); //Set item to processed
+                        psTracking.setString(7, null);
+                        psTracking.setString(8, trspPreparedMedication.getBatchLot());
+                        psTracking.executeUpdate();
+
+                        connection.commit();
+
+                        //Make new Prescription "clone" if < Valid Unti new,
+                        // else new Prescription with valid until now + 1 year
+
+                    }
+
+                    String clonePresc = "INSERT INTO [dbo].[MediPrep_Prescription]\n" +
+                            "           ([PatientPolypointID]\n" +
+                            "           ,[DateCreated]\n" +
+                            "           ,[ValidUntil]\n" +
+                            "           ,[State]\n" +
+                            "           ,[CreatedByStaffGLN]\n" +
+                            "           ,[Description]\n" +
+                            "           ,[Schedule]\n" +
+                            "           ,[RouteOfAdministration]\n" +
+                            "           ,[Notes])\n" +
+                            "     SELECT [PatientPolypointID]\n" +
+                            "      ,[DateCreated]\n" +
+                            "      ,DATEADD(YEAR,1,GETDATE())\n" +
+                            "      ,[State]\n" +
+                            "      ,[CreatedByStaffGLN]\n" +
+                            "      ,[Description]\n" +
+                            "      ,[Schedule]\n" +
+                            "      ,[RouteOfAdministration]\n" +
+                            "      ,[Notes]\n" +
+                            "  FROM [SupplyChainLogistic].[dbo].[MediPrep_Prescription]\n" +
+                            "  WHERE PolypointID=? \n" +
+                            "  AND ValidUntil > GETDATE()";
+
+                    String clonePrescMedi = "INSERT INTO [dbo].[MediPrep_PrescriptionDefinesMedication]\n" +
+                            "           ([GTIN]\n" +
+                            "           ,[PrescriptionID]" +
+                            "           ,[Dosage]\n" +
+                            "           ,[isAdditionalMedic]\n" +
+                            "           ,[DosageUnit])\n" +
+                            "SELECT [GTIN]\n" +
+                            "      ,?\n" +
+                            "      ,[Dosage]\n" +
+                            "      ,[isAdditionalMedic]\n" +
+                            "      ,[DosageUnit]\n" +
+                            "  FROM [dbo].[MediPrep_PrescriptionDefinesMedication]\n" +
+                            "  WHERE PrescriptionID = ?";
+
+                    for (TrspPrescription trspPrescription : prescriptionsSet) {
+                        PreparedStatement psClonePresc = connection.prepareStatement(clonePresc, Statement.RETURN_GENERATED_KEYS);
+                        PreparedStatement psClonePrescMedi = connection.prepareStatement(clonePrescMedi, Statement.RETURN_GENERATED_KEYS);
+
+                        psClonePresc.setString(1, trspPrescription.getPolypointID());
+                        psClonePresc.executeUpdate();
+                        connection.commit();
+
+                        int autoIncKeyFromApi = -1;
+                        rs = psClonePresc.getGeneratedKeys();
+                        if (rs.next()) {
+                            autoIncKeyFromApi = rs.getInt(1);
+
+                            psClonePrescMedi.setString(1, Integer.toString(autoIncKeyFromApi));
+                            psClonePrescMedi.setString(2, trspPrescription.getPolypointID());
+
+                            psClonePrescMedi.executeUpdate();
+                        } else {
+                            throw new SQLException("No generated Keys");
+                        }
+
+                        connection.commit();
+
+                    }
+
+
+
+                    break;
+            }
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+                connection.setAutoCommit(true);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            return new MediPrepResult(false, e.getErrorCode());
+        } catch (DateTimeParseException e) {
+            return new MediPrepResult(false, 2);
+        }
+
+        return new MediPrepResult(true, -1);
+
+    }
+
+    @WebMethod
+    public int getPreparedPrescriptionsCountForPatient(String pid) {
+        int result = -1;
+        ResultSet rs;
+        Connection connection = connectorLogistic.getConnection();
+        String query =
+                "select COUNT(*) AS PrescriptionCount \n" +
+                        "FROM (\n" +
+                        "\tSELECT \n" +
+                        "\t\tDISTINCT(p.PolypointID)\n" +
+                        "\tFROM MediPrep_Prescription p  \n" +
+                        "\tLEFT JOIN MediPrep_Staff  s \n" +
+                        "\t\tON s.GLN = p.CreatedByStaffGLN  \n" +
+                        "\tINNER JOIN MediPrep_PrescriptionDefinesMedication m\n" +
+                        "\t\tON p.PolypointID = m.PrescriptionID\n" +
+                        "\tINNER JOIN MediPrep_PreparedMedication pm\n" +
+                        "\t\tON m.PrescriptionID = pm.PresciriptionID\n" +
+                        "\t\tAND m.GTIN = pm.GtinPrescribedMedic\t \n" +
+                        "\tWHERE PatientPolypointID = ? \n" +
+                        "\t\tAND ValidUntil >= GETDATE() \n" +
+                        "\t\tAND pm.State = 3\n" +
+                        "\t\tand not exists (\n" +
+                        "\t\t\tselect * \n" +
+                        "\t\t\tfrom MediPrep_PrescriptionDefinesMedication a\n" +
+                        "\t\t\tleft join MediPrep_PreparedMedication b\n" +
+                        "\t\t\tON a.GTIN = b.GtinPrescribedMedic\n" +
+                        "\t\t\tAND a.PrescriptionID = b.PresciriptionID\n" +
+                        "\t\t\tWHERE (b.State is null or b.State < 3) and a.PrescriptionID =p.PolypointID\n" +
+                        "\t\t)\n" +
+                        ") as prescriptions";
+        // noch anpassen dass wenn ein medi noch nicht vorbereitet ist, prescription nicht als prepared angezeigt wird
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, pid);
+            rs =  ps.executeQuery();
+
+            rs.next();
+            int count = 0;
+            count = rs.getInt(1);
+            return count;
+
+
+        } catch (SQLException e) {
+            return -1;
+        }
+    }
+
+    @WebMethod
+    public ToDoListPrescriptions getToDoListPrescriptions() {
+
+        List<TrspPrescription> scheduldedPrescriptionsMorning = new ArrayList<>();
+        List<TrspPrescription> scheduldedPrescriptionsNoon  = new ArrayList<>();
+        List<TrspPrescription> scheduldedPrescriptionsEvening  = new ArrayList<>();
+        List<TrspPrescription> scheduldedPrescriptionsNight  = new ArrayList<>();
+
+        List<TrspPatient> trspPatients = getPatients();
+
+        for (TrspPatient trspPatient : trspPatients) {
+            List<TrspPrescription> tempPresc = getPrescriptionsForPatient(Integer.toString(trspPatient.getPid()));
+            for (TrspPrescription trspPrescription : tempPresc) {
+                String schedule = trspPrescription.getSchedule();
+                for (int i = 0; i < schedule.length(); i++) {
+                    if (Integer.valueOf(schedule.substring(i,i+1)) == 1 ) {
+                        switch (i) {
+                            case 0:
+                                scheduldedPrescriptionsMorning.add(trspPrescription);
+                                break;
+                            case 1:
+                                scheduldedPrescriptionsNoon.add(trspPrescription);
+                                break;
+                            case 2:
+                                scheduldedPrescriptionsEvening.add(trspPrescription);
+                                break;
+                            case 3:
+                                scheduldedPrescriptionsNight.add(trspPrescription);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return new ToDoListPrescriptions(
+                scheduldedPrescriptionsMorning,
+                scheduldedPrescriptionsNoon,
+                scheduldedPrescriptionsEvening,
+                scheduldedPrescriptionsNight);
+    }
+
+    public String getDosetForPatient(String pid) {
+
+        throw new NotImplementedException();
+    }
 
     public static void main(String[] argv) {
     Object implementor = new SupplyChainService();

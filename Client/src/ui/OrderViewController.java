@@ -10,18 +10,21 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.layout.VBox;
+import model.entities.OrderTreeItem;
 import model.entities.StockTreeItem;
 import model.entities.SwissIndexResult;
 import model.entities.TradeItem;
-import services.SwissIndexClient;
-import webservice.erp.*;
-import model.entities.OrderTreeItem;
 import services.ErpClient;
 import services.IDataSource;
 import services.PropertiesReader;
+import services.SwissIndexClient;
+import webservice.erp.*;
 
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
@@ -376,22 +379,77 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         // count the items for each group
         List<Quantity> quantities = dataSource.getQuantities(prop.getProperty("stationGLN"));
 
-        for (TreeItem<StockTreeItem> item : root.getChildren()) {
+        for (Quantity quantity : quantities) {
+            if (!groupnames.contains(quantity.getDescription())) {
+                groupnames.add(quantity.getDescription());
+                StockTreeItem treeGroup = new StockTreeItem(quantity.getDescription(), "", "", "", "", "");
+                root.getChildren().add(new TreeItem<StockTreeItem>(treeGroup));
+            }
+        }
+
+        for (TreeItem<StockTreeItem> item : root.getChildren()) { // alle Positionsüberschriften
             int count = item.getChildren().size();
             item.getValue().setQuantity(Integer.toString(count) + " pc.");
             // check for order suggestions
-                for(Quantity quantity:quantities){
-                    if(item.getChildren().get(0).getValue().getGtin().equals(quantity.getGtin())){
-                        if(count<quantity.getMinQuantity()){
-                            int orderQuantity = quantity.getOptQuantity() -count;
-                            Position pos = new Position();
-                            pos.setGtin(item.getChildren().get(0).getValue().getGtin());
-                            pos.setDescription(item.getChildren().get(0).getValue().getDescription());
-                            pos.setQuantity(orderQuantity);
-                            order.getPositions().add(pos);
-                        }
-                    }
-                }
+                boolean added = false;
+            Optional foundQuantityConstraint = Optional.empty();
+            if (count != 0) {
+                foundQuantityConstraint = quantities.stream().filter(q -> q.getGtin().equals(item.getChildren().get(0).getValue().getGtin())).findFirst();
+            } else {
+                foundQuantityConstraint = quantities.stream().filter(q -> q.getDescription().equals(item.getValue().getDescription())).findFirst();
+            }
+
+            if (count == 0 && foundQuantityConstraint.isPresent()) { // no items in stock
+
+                int orderQuantity = ((Quantity) foundQuantityConstraint.get()).getOptQuantity();
+                Position pos = new Position();
+                pos.setGtin(((Quantity) foundQuantityConstraint.get()).getGtin());
+                pos.setDescription(((Quantity) foundQuantityConstraint.get()).getDescription());
+                pos.setQuantity(orderQuantity);
+                order.getPositions().add(pos);
+            }
+            else if(count != 0  && !foundQuantityConstraint.isPresent()) { //items in stock but no quantity defined
+                int orderQuantity = 2;
+                Position pos = new Position();
+                pos.setGtin(item.getChildren().get(0).getValue().getGtin());
+                pos.setDescription(item.getChildren().get(0).getValue().getDescription());
+                pos.setQuantity(orderQuantity);
+                order.getPositions().add(pos);
+
+            } else if (count != 0
+                    && foundQuantityConstraint.isPresent()
+                    && count <= ((Quantity) foundQuantityConstraint.get()).getMinQuantity()) {
+
+                int orderQuantity = ((Quantity) foundQuantityConstraint.get()).getOptQuantity() -count;
+                Position pos = new Position();
+                pos.setGtin(item.getChildren().get(0).getValue().getGtin());
+                pos.setDescription(item.getChildren().get(0).getValue().getDescription());
+                pos.setQuantity(orderQuantity);
+                order.getPositions().add(pos);
+
+            }
+//
+//            // keine items vorhanden oder
+//            // keine quantities vorhanden oder etwas vorhanden
+//            // aber weniger als quantity oder
+//            // gefunden und über quantity;
+//
+//                for(Quantity quantity:quantities){
+//                    if(count != 0 && item.getChildren().get(0).getValue().getGtin().equals(quantity.getGtin()) && !added){
+//                        if(count < quantity.getMinQuantity()){
+//                            int orderQuantity = quantity.getOptQuantity() -count;
+//                            Position pos = new Position();
+//                            pos.setGtin(item.getChildren().get(0).getValue().getGtin());
+//                            pos.setDescription(item.getChildren().get(0).getValue().getDescription());
+//                            pos.setQuantity(orderQuantity);
+//                            order.getPositions().add(pos);
+//                        }
+//                    } else {
+//                        if(!added) {
+//
+//                        }
+//                    }
+//                }
 
         }
         return order;

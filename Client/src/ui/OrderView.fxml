@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
@@ -14,8 +15,10 @@
 * @author Patrick Hirschi, patrick.hirschi@students.bfh.ch
 * @version 28-02-2015
 -->
+
 <?import java.net.URL?>
-<fx:root type="javafx.scene.layout.VBox" fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml" >
+
+<fx:root fx:id="mainFrame" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="999.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <SplitPane dividerPositions="0.1" layoutY="40.0" prefHeight="604.0" prefWidth="656.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
             <items>
@@ -29,19 +32,21 @@
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="604.0" prefWidth="450.0">
-                    <TreeTableView fx:id="orderTable" layoutX="14.0" layoutY="14.0" prefHeight="604.0" prefWidth="450.0">
+                   <children>
+                       <TreeTableView fx:id="orderTable" layoutX="14.0" layoutY="14.0" prefHeight="578.0" prefWidth="854.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
 
                     </TreeTableView>
+                   </children>
                 </AnchorPane>
             </items>
         </SplitPane>
         <AnchorPane layoutY="546.0" prefHeight="128.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="editButton" mnemonicParsing="false" text="Edit" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" ></Button>
-                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="addButton" mnemonicParsing="false" text="Add" textAlignment="RIGHT" AnchorPane.rightAnchor="107.0" AnchorPane.topAnchor="7.0" ></Button>
-                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="removeButton" mnemonicParsing="false" text="Remove" textAlignment="RIGHT" AnchorPane.rightAnchor="207.0" AnchorPane.topAnchor="7.0" ></Button>
-                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="sendButton" mnemonicParsing="false" text="Send" textAlignment="RIGHT" AnchorPane.rightAnchor="307.0" AnchorPane.topAnchor="7.0" ></Button>
-                <Button id="default-button" prefWidth="80" prefHeight="35" fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshOrderTable" text="Refresh" textAlignment="RIGHT" AnchorPane.rightAnchor="407.0" AnchorPane.topAnchor="7.0" />
+                <Button id="default-button" fx:id="editButton" mnemonicParsing="false" prefHeight="35" prefWidth="80" text="Edit" textAlignment="RIGHT" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
+                <Button id="default-button" fx:id="addButton" mnemonicParsing="false" prefHeight="35" prefWidth="80" text="Add" textAlignment="RIGHT" AnchorPane.rightAnchor="107.0" AnchorPane.topAnchor="7.0" />
+                <Button id="default-button" fx:id="removeButton" mnemonicParsing="false" prefHeight="35" prefWidth="80" text="Remove" textAlignment="RIGHT" AnchorPane.rightAnchor="207.0" AnchorPane.topAnchor="7.0" />
+                <Button id="default-button" fx:id="sendButton" mnemonicParsing="false" prefHeight="35" prefWidth="80" text="Send" textAlignment="RIGHT" AnchorPane.rightAnchor="307.0" AnchorPane.topAnchor="7.0" />
+                <Button id="default-button" fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshOrderTable" prefHeight="35" prefWidth="80" text="Refresh" textAlignment="RIGHT" AnchorPane.rightAnchor="407.0" AnchorPane.topAnchor="7.0" />
             </children>
         </AnchorPane>
     </children>
