@@ -65,7 +65,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
         try {
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+            dataSource = new ErpClient(prop.getProperty("currentGLN"));
 
         } catch (ConnectException e ) {
             e.printStackTrace();

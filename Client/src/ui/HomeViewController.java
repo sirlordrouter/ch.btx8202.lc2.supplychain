@@ -106,7 +106,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
         try {
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+            dataSource = new ErpClient(prop.getProperty("currentGLN"));
         }
         catch (IOException e) {
             e.printStackTrace();

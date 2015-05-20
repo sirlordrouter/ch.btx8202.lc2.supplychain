@@ -68,7 +68,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
             // get a connection object to the webservice
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+            dataSource = new ErpClient(prop.getProperty("currentGLN"));
 
         } catch (ConnectException e ) {
             e.printStackTrace();
