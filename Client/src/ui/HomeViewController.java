@@ -390,23 +390,24 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
     }
 
     private void retrieveItemInformation(Item item) {
-        TradeItem i = null;
-        SwissIndexResult result = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
-        if(result.isResult()){
-            i = result.getTradeItems().get(0);
-        }else{
-            UserInformationPopup popup = new UserInformationPopup(result.getMessage(), "Achtung");
-            popup.show();
-            return;
-        }
-        i.setSerial(item.getSerial());
-        i.setLot(item.getLot());
-        i.setExpiryDate(item.getExpiryDate());
-        i.setCheckInDate(item.getCheckInDate());
 
-        if (i != null) {
-            txtareaMediInfo.setText(i.toString());
-            data.add(i);
+        TradeItem tradeItem = null;
+        SwissIndexResult swissIndexResult = null;
+        if(item.getGTIN().length() > 10) {
+            swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+        }
+        if(swissIndexResult!=null && swissIndexResult.isResult()){
+            tradeItem = swissIndexResult.getTradeItems().get(0);
+        }else{
+            System.out.println("Keine GTIN gefunden: " + item.getGTIN());
+            tradeItem = SwissIndexClient.ItemConstructor("Keine Info", "Keine Info",
+                    item.getGTIN(), item.getLot(), item.getSerial(),
+                    "Keine Info", "Keine Info", "Keine Info",null, null);
+        }
+
+        if (tradeItem != null) {
+            txtareaMediInfo.setText(tradeItem.toString());
+            data.add(tradeItem);
         }else {
             txtareaMediInfo.setText("Kein Item gefunden.");
         }

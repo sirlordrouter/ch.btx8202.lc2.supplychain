@@ -36,14 +36,15 @@ public class SwissIndexClient {
             PHARMA de = service.getByGTIN(gtin, "de");
             PHARMARESULT result = de.getRESULT();
 
-            if(result.getNBR_RECORD()==1){
+            if(result != null && result.getNBR_RECORD()==1){
                 if (de.getITEM() != null) {
                     tradeItemList = new ArrayList<TradeItem>();
                     for (PHARMAITEM pharmaitem : de.getITEM()) {
                         if (pharmaitem != null) {
                             PHARMAITEMCOMP comp = pharmaitem.getCOMP();
                             Company c = CompanyConstructor(comp.getNAME(),comp.getGLN(), "ABTEILUNG");
-                            tradeItemList.add(ItemConstructor(pharmaitem.getDSCR(), pharmaitem.getADDSCR(),gtin, "BATCH/LOT", "SERIAL", "DESC", "Zusatz",
+                            tradeItemList.add(ItemConstructor(pharmaitem.getDSCR(),
+                                    pharmaitem.getADDSCR(),gtin, "BATCH/LOT", "SERIAL", "DESC", "Zusatz",
                                     pharmaitem.getATC(), c, pharmaitem.getPHAR()));
                         } else {
                             response.setResult(false);
