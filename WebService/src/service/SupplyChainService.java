@@ -5,6 +5,9 @@ import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.intellij.lang.annotations.Language;
+import org.junit.Assert;
+import service.exceptions.ConversionException;
+import service.exceptions.NotCorrectEANLenghtException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.jws.WebMethod;
@@ -15,7 +18,6 @@ import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.text.spi.DateFormatProvider;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -527,11 +529,13 @@ public class SupplyChainService {
                     "           ,null)";
 
             ps = connection.prepareStatement(query);
-            ps.setString(1, Long.toString(lastSSCC + 1));
+            String ssccString = Long.toString(lastSSCC+10);
+            ssccString =  AddCheckDigit(ssccString);
+            ps.setString(1, ssccString);
             ps.setInt(2, shipmentID);
             ps.setInt(3, orderNr);
             int success =  ps.executeUpdate();
-            items=insertSecondaryPackagesFromOrder(order,Long.toString(lastSSCC+1), glnMan);
+            items=insertSecondaryPackagesFromOrder(order,ssccString, glnMan);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -546,6 +550,21 @@ public class SupplyChainService {
         return items;
 
     }
+
+    private String AddCheckDigit(String number) {
+        String fullLength = "";
+
+        //append 0 and remove checkdigit
+        fullLength = number.substring(0,number.length()-1);
+        int checkdigit = GtinFormatConverter.calc_checksumDigit(
+                GtinFormatConverter.charToIntArray(
+                        fullLength.split("(?!^)")));
+        fullLength = fullLength + checkdigit;
+
+        return fullLength;
+    }
+
+
     private void setOrderState(String orderNr, int state)
     {
         Connection connection = connectorLogistic.getConnection();
@@ -627,11 +646,16 @@ public class SupplyChainService {
                     PreparedStatement ps = connection.prepareStatement(secondaryQuery);
                     ps.setString(1,pos.getGtin());
                     String serial = getSerial(batch,i+1);
-                    ps.setString(2,serial);
+                    ps.setString(2, serial);
                     ps.setString(3, batch);
                     ps.setTimestamp(4, expdate);
                     ps.setString(5, sscc);
-                    ps.setInt(6, GtinbContainesA.get(pos.getGtin()).LogisticQuantity);
+                    int quantity = -2;
+                    if (GtinbContainesA != null) {
+                        LogisticInformation information = GtinbContainesA.get(pos.getGtin());
+                        quantity = information == null ? -2 : information.LogisticQuantity;
+                    }
+                    ps.setInt(6, quantity);
 
                     item.setGTIN(pos.getGtin());
                     item.setSerial(serial);
@@ -736,7 +760,7 @@ public class SupplyChainService {
     }
     private Timestamp getExpDate(){
         LocalDate dateTime = LocalDate.now();
-        dateTime.plusYears(1);
+        dateTime = dateTime.plusYears(1);
         LocalDateTime dateTime1 = dateTime.atTime(0, 0, 0, 0);
         java.sql.Timestamp timestamp = Timestamp.valueOf(dateTime1);
         return timestamp;

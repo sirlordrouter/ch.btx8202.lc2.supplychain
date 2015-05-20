@@ -1,6 +1,5 @@
 package service;
 
-import data.DbConnectorLogistic;
 import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,10 +10,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +20,7 @@ public class SupplyChainServiceTest extends TestCase {
 
     public static final String TESTSTATION_C_GLN = "7640166731092";
     public static final String TEST_PRODUCER_GLN = "1234567890124";
-    public static final String TEST_APOTHEKE_GLN = "7640166731061";
+    public static final String TEST_APOTHEKE_GLN = "7640166731054"; //Anlieferung
 
     public static final String ASPIRIN_TEST_GTIN = "21342431";
     public static final String DAFALGAN_TEST_GTIN = "2341341355";
@@ -103,6 +98,7 @@ public class SupplyChainServiceTest extends TestCase {
         SupplyChainService service = new SupplyChainService();
         List<Order> orderList = service.getOpenOrdersByGLN(gln);
         Assert.assertEquals("Count of order items in db for gln 1234567890125", 1, orderList.size());
+
     }
 
     public void testGetPatients() throws Exception {
@@ -165,6 +161,8 @@ public class SupplyChainServiceTest extends TestCase {
 
     @Test
     public void testAOrderWithMinunitsZero() {
+
+
         //Bestand in der Apotheke kontrollieren
         WebServiceResult result = service.getCheckedInItems(TEST_APOTHEKE_GLN);
         List<Item> checkedInItems =  result.getItems().stream()
@@ -228,6 +226,8 @@ public class SupplyChainServiceTest extends TestCase {
         aGeneratedSSCC = s.getSscc();
 
         Assert.assertTrue("The SSCC should not be empty", !aGeneratedSSCC.equals(""));
+        Assert.assertTrue("Items in Production oobject should not be 0", production.getItems().size() > 0);
+        Assert.assertTrue("Positions in Production oobject should not be 0", production.getPositions().size() > 0);
 
 
         //wird beim Produzieren ware auf eingechecked gesetzt?
