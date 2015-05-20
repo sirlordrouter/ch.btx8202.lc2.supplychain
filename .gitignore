@@ -16,6 +16,7 @@ log/
 target/
 
 *.class
+config.properties
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
