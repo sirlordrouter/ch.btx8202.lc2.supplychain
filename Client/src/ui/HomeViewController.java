@@ -253,7 +253,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                     evt.setBarCode(txtInput.getText().trim().substring(2));
                     Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
                     info =  code.getBarcodeInformation();
-                    if (info.getAI00_SSCC() != null) {
+                    if (info != null && info.getAI00_SSCC() != null) {
                         if(dataSource == null ) {
                             System.out.println("No Webservice available.");
                         }
@@ -405,7 +405,12 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                     "Keine Info", "Keine Info", "Keine Info",null, null);
         }
 
+
         if (tradeItem != null) {
+            tradeItem.setExpiryDate(item.getExpiryDate());
+            tradeItem.setCheckInDate(item.getCheckInDate());
+            tradeItem.setLot(item.getLot());
+            tradeItem.setSerial(item.getSerial());
             txtareaMediInfo.setText(tradeItem.toString());
             data.add(tradeItem);
         }else {

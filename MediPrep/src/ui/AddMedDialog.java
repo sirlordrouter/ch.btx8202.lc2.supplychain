@@ -131,7 +131,7 @@ public class AddMedDialog extends Stage implements Initializable {
                         "Überprüfen Sie noch einmal das Medikament.");
             } else {
                 String gtin = getTxtGtin().getText();
-                String expDate = getTxtExpiryDate().getText();
+                String expDate = getTxtExpiryDate().getText(); //TODO: Parse to format yyyy-mm--dd
                 String lot = getTxtLot().getText();
                 String serial = getTxtSerial().getText();
 
@@ -145,18 +145,53 @@ public class AddMedDialog extends Stage implements Initializable {
                 List<PreparedMedication> medicationList = new ArrayList<>();
                 medicationList.add(currentMedication);
                 //Additional Medics are directly in controlled state as they are immediately given to the patient but mapping must be
-                //done first, so state is prepared for webservice but logic is controlled
+                //done first, so state is prepared for webservice but logical it is controlled
                 MediPrepResult success = repository.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
 
-                if (!success.isResult() && (success.getErrorCode() == 0 || success.getErrorCode() == 547)) {
+
+
+                if (!success.isResult()) {
                     txtExpiryDate.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
                             , Insets.EMPTY)));
                     txtLot.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
                             , Insets.EMPTY)));
                     txtSerial.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
                             , Insets.EMPTY)));
-                    lblErrorCode.setText("Das eingegebene Produktaten passen nicht zu einem Produkt im Bestand!\n" +
-                            "Überprüfen Sie noch einmal das Medikament.");
+
+                    /**
+                     * -1: Unbekannt
+                     * 0:
+                     * 1:
+                     * 2: DateTime Parse Exception
+                     * 3: No Data found to update
+                     * 4: Item Content is 0
+                     * 547: Integrity Contraint error => Product does not match stock item
+                     */
+                    switch (success.getErrorCode()) {
+                        case 0:
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            lblErrorCode.setText("Das Ablaufdatum ist nicht analysierbar, " +
+                                    "bitte halten SIe sich an die Form yyyy-mm-dd");
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            lblErrorCode.setText("Das Produkt enthält laut Bestand keinen Inhalt mehr. " +
+                                    "Nehmen Sie eine andere Pckung");
+                            break;
+                        case 547:
+                            lblErrorCode.setText("Das eingegebene Produkt passt nicht zu einem Produkt im Bestand!\n" +
+                                    "Überprüfen Sie noch einmal das Medikament (Seriennummer, Batch, Ablaufdatum).");
+                            break;
+                        default:
+                            lblErrorCode.setText("Fehler im Webservice: Dieser Fall wurde nicht behandelt.");
+                            break;
+
+                    }
+
                     currentMedication.setState(PreparedMedication.MedicationState.open);
 
                 } else {
@@ -171,7 +206,6 @@ public class AddMedDialog extends Stage implements Initializable {
 
     @FXML
     void cancel(ActionEvent event) {
-
         this.canceled = true;
         close();
     }

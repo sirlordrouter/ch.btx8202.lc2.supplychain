@@ -319,9 +319,9 @@ public class SupplyChainService {
      */
     @WebMethod
     public WebServiceResult checkoutItems(List<Item> items, String gln) {
-        List<Item> notCheckedInItems= new ArrayList<Item>();
+        List<Item> notCheckedInItems = new ArrayList<Item>();
         // check for checked-in items
-        WebServiceResult checkedInItemsResult = getCheckedInItems(gln);
+        WebServiceResult checkedInItemsResult = getCheckedInItems(gln); //TODO: Was passiert wenn hier false?
         // check if the request was successful
 
         if(checkedInItemsResult.isResult()){
@@ -330,7 +330,7 @@ public class SupplyChainService {
             List<Item> foundCheckedIn = new ArrayList<Item>();
 
             for(Item item:items){
-                //Check if there are all neded properties filled in in both, else handle error
+                //Check if there are all needed properties filled in in both, else handle error
 
                 for(Item checkedInItem:checkedInItemsList){
                     // check for every item if it is  already in the checked in list
@@ -364,6 +364,7 @@ public class SupplyChainService {
                 //TODO: Inhalt überprüfen ob stimmt, gerade Datum schwierig, muss auch Zeitstempel beinhalten
 
                 LocalDate expDate = LocalDate.parse(item.getExpiryDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+
                 LocalDateTime expDateTime = expDate.atTime(0,0,0,0);
 
                 PreparedStatement ps = connection.prepareStatement(query);
@@ -1835,41 +1836,64 @@ public class SupplyChainService {
                             "           ,?\n" +
                             "           ,?\n" +
                             "           ,?)";
+
+                    String queryEmpty ="SELECT COUNT(*) FROM " +
+                            "SecondaryPackage " +
+                            "WHERE ProductQuantity = 0 " +
+                            "AND GTINSek = ? " +
+                            "AND SerialNr = ? " +
+                            "AND ExpiryDate = ?";
+
                     String queryUpdate = "Update " +
                             "SecondaryPackage " +
                             "SET ProductQuantity = ProductQuantity-1 " +
                             "WHERE GTINSek = ? " +
                             "AND SerialNr = ? " +
                             "AND ExpiryDate = ?";
-                    //Ev hier noch ergänzen dass nur Einträge ageupdated werden können wo Quantity > 0
-                    //Sonst fehler und Meldung an Client.
 
                     for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
+
 
                         LocalDate expDate = LocalDate.parse(trspPreparedMedication.getExpiryDate()); //Parse Exception
                         LocalDateTime expDateTime = expDate.atTime(0, 0, 0, 0);
                         Timestamp expiryDate = Timestamp.valueOf(expDateTime);
-                        PreparedStatement ps = connection.prepareStatement(query);
-                        int state = trspPreparedMedication.getState().ordinal()+1;
-                        ps.setInt(1,state);
-                        ps.setTimestamp(2, Timestamp.valueOf(trspPreparedMedication.getPreparationTime()));
-                        ps.setString(3, trspPreparedMedication.getGtinFromAssignedItem());
-                        ps.setString(4, trspPreparedMedication.getSerial());
-                        ps.setTimestamp(5, expiryDate);
-                        ps.setInt(6, Integer.valueOf(trspPreparedMedication.getBasedOnPrescription().getPolypointID()));
-                        ps.setString(7, trspPreparedMedication.getGtinA());
-                        ps.setString(8, trspPreparedMedication.getStaffGln());
 
-                        ps.executeUpdate();
-                        connection.commit();
-
-                        ps = connection.prepareStatement(queryUpdate);
+                        PreparedStatement ps = connection.prepareStatement(queryEmpty);
                         ps.setString(1, trspPreparedMedication.getGtinFromAssignedItem());
                         ps.setString(2, trspPreparedMedication.getSerial());
                         ps.setTimestamp(3, expiryDate);
+                        rs = ps.executeQuery();
+                        rs.next();
+                        int count = rs.wasNull() ? -1 : rs.getInt(1);
 
-                        ps.executeUpdate();
-                        connection.commit();
+                        if (count == 0) {
+
+                            ps = connection.prepareStatement(query);
+                            int state = trspPreparedMedication.getState().ordinal() + 1;
+                            ps.setInt(1, state);
+                            ps.setTimestamp(2, Timestamp.valueOf(trspPreparedMedication.getPreparationTime()));
+                            ps.setString(3, trspPreparedMedication.getGtinFromAssignedItem());
+                            ps.setString(4, trspPreparedMedication.getSerial());
+                            ps.setTimestamp(5, expiryDate);
+                            ps.setInt(6, Integer.valueOf(trspPreparedMedication.getBasedOnPrescription().getPolypointID()));
+                            ps.setString(7, trspPreparedMedication.getGtinA());
+                            ps.setString(8, trspPreparedMedication.getStaffGln());
+
+                            ps.executeUpdate();
+                            connection.commit();
+
+                            ps = connection.prepareStatement(queryUpdate);
+                            ps.setString(1, trspPreparedMedication.getGtinFromAssignedItem());
+                            ps.setString(2, trspPreparedMedication.getSerial());
+                            ps.setTimestamp(3, expiryDate);
+
+                            ps.executeUpdate();
+                            connection.commit();
+                        } else {
+                            connection.rollback();
+                            connection.setAutoCommit(true);
+                            return new MediPrepResult(false, 4);
+                        }
 
                     }
 
@@ -1904,14 +1928,25 @@ public class SupplyChainService {
                             "(GTIN, SerialNr, ExpiryDate, GLNscan, ScanDate, StateNr, ScannedSSCC,Lot) " +
                             "VALUES (?,?,?,?,?,?,?,?)";
 
+                    String queryPrescriptionsFromMedis = "SELECT " +
+                            "PresciriptionID FROM MediPrep_PreparedMedication WHERE UID = ?";
+
 
 
                     for (TrspPreparedMedication trspPreparedMedication : trspPreparedMedications) {
 
-                        if (trspPreparedMedication.getBasedOnPrescription() != null) {
-                            prescriptionsSet.add(trspPreparedMedication.getBasedOnPrescription());
+                        PreparedStatement ps = connection.prepareStatement(queryPrescriptionsFromMedis);
+                        ps.setInt(1,trspPreparedMedication.getPreparedMedicationId());
+                        rs = ps.executeQuery();
+                        rs.next();
+                        int id = rs.wasNull()? -1 : rs.getInt(1);
+
+                        if (id > 0) {
+                            TrspPrescription tempP = new TrspPrescription();
+                            tempP.setPolypointID(Integer.toString(id));
+                            prescriptionsSet.add(tempP);
                         } else {
-                            throw new SQLException("Based on Prescription is null");
+                            throw new SQLException("no Prescription found");
                         }
 
                         PreparedStatement psUpdate = connection.prepareStatement(query);

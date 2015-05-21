@@ -485,6 +485,8 @@ public class SupplyChainServiceTest extends TestCase {
         Assert.assertNotNull("Aspirin ist nicht NULL", anAspirine);
         Assert.assertNotNull("Dafalgan ist nicht NULL", aDafalagn);
 
+        Assert.assertTrue("Verordnung enthält Medikament", prescriptions.get(0).getMedications().size() > 0);
+        Assert.assertTrue("Verordnung enthält Medikament", prescriptions.get(1).getMedications().size() > 0);
         //prepare one: there should be 1 open prescription
 
         TrspPrescription aspririnPrescription = prescriptions.stream()
