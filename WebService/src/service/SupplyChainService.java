@@ -2012,6 +2012,8 @@ public class SupplyChainService {
                             "  FROM [dbo].[MediPrep_PrescriptionDefinesMedication]\n" +
                             "  WHERE PrescriptionID = ?";
 
+
+
                     for (TrspPrescription trspPrescription : prescriptionsSet) {
                         PreparedStatement psClonePresc = connection.prepareStatement(clonePresc, Statement.RETURN_GENERATED_KEYS);
                         PreparedStatement psClonePrescMedi = connection.prepareStatement(clonePrescMedi, Statement.RETURN_GENERATED_KEYS);
