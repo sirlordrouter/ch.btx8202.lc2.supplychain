@@ -1,7 +1,9 @@
 package ui;
 
+import barcode.GtinFormatConverter;
 import datalayer.IRepository;
 import entities.PreparedMedication;
+import exceptions.NotCorrectEANLenghtException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -85,7 +87,7 @@ public class AddMedDialog extends Stage implements Initializable {
     private boolean canceled = false;
 
     private IRepository repository;
-    
+
     private PreparedMedication currentMedication;
 
     public AddMedDialog(Parent parent, PreparedMedication selectedMedication, IRepository dataSource) {
@@ -120,14 +122,20 @@ public class AddMedDialog extends Stage implements Initializable {
                 !requiredFieldLot.getHasErrors() &&
                 !requiredFieldSerial.getHasErrors()) {
 
-            if (!currentMedication.getGtinBs().stream().anyMatch(l -> l.equals(txtGtin.getText()))
-                    && !currentMedication.getGtinA().equals(txtGtin.getText())){
+            String gtin = txtGtin.getText();
+            try {
+                gtin = GtinFormatConverter.ConvertEan13To14(gtin);
+            } catch (NotCorrectEANLenghtException e) {  /* leave old gtin as it is 14*/     }
+            final String gtin14 = gtin;
+
+            if (!currentMedication.getGtinBs().stream().anyMatch(l -> l.equals(gtin14))
+                    && !currentMedication.getGtinA().equals(gtin14)){
                 ShowWrongProductInfo();
 
             } else {
 
                 try {
-                    updateMedication();
+                    updateMedication(gtin);
 
                     List<PreparedMedication> medicationList = new ArrayList<>();
                     medicationList.add(currentMedication);
@@ -197,8 +205,7 @@ public class AddMedDialog extends Stage implements Initializable {
         currentMedication.setState(PreparedMedication.MedicationState.open);
     }
 
-    private void updateMedication() throws DateTimeParseException{
-        String gtin = getTxtGtin().getText();
+    private void updateMedication(String gtin) throws DateTimeParseException{
         String expDate = "";
         expDate = Helpers.parseDateFrom(getTxtExpiryDate().getText());
         String lot = getTxtLot().getText();

@@ -22,7 +22,7 @@ public class Helpers {
 
     public static String parseDateFrom(String aDate) throws DateTimeParseException{
 
-        List<String> patterns = Arrays.asList("dd/MM/yyyy", "dd-MM-yyyy", "dd.MM.yyyy", "ddMMyy",
+        List<String> patterns = Arrays.asList("dd/MM/yyyy", "dd-MM-yyyy", "dd.MM.yyyy", "yyMMdd",
                 "ddMMyyyy", "yyyy-MM-dd", "yyyyMMdd", "yyyy/MM/dd", "yyyy.MM.dd");
         String parsed ="";
         for (String pattern : patterns) {
