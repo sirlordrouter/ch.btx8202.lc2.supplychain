@@ -25,6 +25,7 @@ import java.util.List;
  */
 public class SwissIndexClient {
 
+    //TODO: Item anstatt gtin
     public static SwissIndexResult getItemInformationFromGTIN(String gtin) {
 
         Ws_Pharma_V101Locator locator = new Ws_Pharma_V101Locator();

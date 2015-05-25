@@ -136,6 +136,9 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
             public void changed(ObservableValue observableValue, Object o, Object o2) {
                 if (medList.getSelectionModel().getSelectedItem() != null) {
                     txtareaMediInfo.setText(o2.toString());
+                    WebEngine webEngine =medicationWebView.getEngine();
+                    webEngine.load("http://pictures.documed.ch/wa_getphoto/wv_getPhoto.aspx?lang=de&query=pharmacode=" + ((TradeItem)o2).getPharmaCode());
+
                 }
             }
         });
@@ -398,13 +401,16 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
         }
         if(swissIndexResult!=null && swissIndexResult.isResult()){
             tradeItem = swissIndexResult.getTradeItems().get(0);
+            tradeItem.setExpiryDate(item.getExpiryDate());
+            tradeItem.setLot(item.getLot());
+            tradeItem.setSerial(item.getSerial());
+            tradeItem.setCheckInDate(item.getCheckInDate());
         }else{
             System.out.println("Keine GTIN gefunden: " + item.getGTIN());
             tradeItem = SwissIndexClient.ItemConstructor("Keine Info", "Keine Info",
                     item.getGTIN(), item.getLot(), item.getSerial(),
                     "Keine Info", "Keine Info", "Keine Info",null, null);
         }
-
         if (tradeItem != null) {
             txtareaMediInfo.setText(tradeItem.toString());
             data.add(tradeItem);
