@@ -264,8 +264,8 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                         for (Item item : items) {
                             retrieveItemInformation(item);
 
-                            WebEngine webEngine =medicationWebView.getEngine();
-                            webEngine.load("http://pictures.documed.ch/wa_getphoto/wv_getPhoto.aspx?lang=de&query=pharmacode=" + ((TradeItem)data.get(0)).getPharmaCode());
+ //                           WebEngine webEngine =medicationWebView.getEngine();
+//                            webEngine.load("http://pictures.documed.ch/wa_getphoto/wv_getPhoto.aspx?lang=de&query=pharmacode=" + ((TradeItem)item).getPharmaCode());
                         }
                     }
 
@@ -412,7 +412,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                     "Keine Info", "Keine Info", "Keine Info",null, null);
         }
 
-        /*if (tradeItem != null) {
+        if (tradeItem != null) {
             tradeItem.setExpiryDate(item.getExpiryDate());
             tradeItem.setCheckInDate(item.getCheckInDate());
             tradeItem.setLot(item.getLot());
@@ -421,7 +421,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
             data.add(tradeItem);
         }else {
             txtareaMediInfo.setText("Kein Item gefunden.");
-        }*/
+        }
     }
 
     /**
