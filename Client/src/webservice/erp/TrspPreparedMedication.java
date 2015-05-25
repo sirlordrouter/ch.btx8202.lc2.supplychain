@@ -3,12 +3,11 @@ package webservice.erp;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für trspPreparedMedication complex type.
+ * <p>Java-Klasse fÃ¼r trspPreparedMedication complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
@@ -64,7 +63,6 @@ public class TrspPreparedMedication
     protected int preparedMedicationId;
     protected String serial;
     protected String staffGln;
-    @XmlSchemaType(name = "string")
     protected MedicationState state;
 
     /**

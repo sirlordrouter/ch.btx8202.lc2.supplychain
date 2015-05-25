@@ -6,12 +6,11 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für trspPrescription complex type.
+ * <p>Java-Klasse fÃ¼r trspPrescription complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
@@ -88,7 +87,6 @@ public class TrspPrescription {
     protected String patientPolypointID;
     protected String polypointID;
     protected String position;
-    @XmlSchemaType(name = "string")
     protected PrescriptionState prescriptionState;
     protected String routeOfAdministration;
     protected String schedule;

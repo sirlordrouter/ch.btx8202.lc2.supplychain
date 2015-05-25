@@ -376,6 +376,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 }
             }
         }
+
         // count the items for each group
         List<Quantity> quantities = dataSource.getQuantities(prop.getProperty("currentGLN"));
 
