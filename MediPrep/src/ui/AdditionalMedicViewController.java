@@ -11,6 +11,7 @@ import datalayer.IRepository;
 import entities.Patient;
 import entities.PreparedMedication;
 import entities.Prescription;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -436,30 +437,40 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
 
         //txtareaMediInfo.setText("Barcode " + evt.getBarCode() + " gescannt.");
         Barcode code = BarcodeDecoder.getBarcodeFrom(scannerEvent);
+
         final BarcodeInformation info =  code.getBarcodeInformation();
-        String errorMessage = "";
 
-        if(info != null) {
-            System.out.println("Info is not null.");
-            if (info.getAI01_HANDELSEINHEIT() != null
-                    && info.getAI21_SERIAL_NUMBER() != null
-                    && info.getAI17_VERFALLSDATUM() != null
-                    && info.getAI10_CHARGENNUMMER() != null) {
-                //is product or logistic unit scanned matching a medic in the preparation list?
-                errorMessage = findPrecribedMedicForScannedProduct(info, errorMessage);
+        new Thread(new Runnable() {
+            @Override public void run() {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            String errorMessage = "";
+                            if(info != null) {
+                                System.out.println("Info is not null.");
+                                if (info.getAI01_HANDELSEINHEIT() != null
+                                        && info.getAI21_SERIAL_NUMBER() != null
+                                        && info.getAI17_VERFALLSDATUM() != null
+                                        && info.getAI10_CHARGENNUMMER() != null) {
+                                    //is product or logistic unit scanned matching a medic in the preparation list?
+                                    errorMessage = findPrecribedMedicForScannedProduct(info, errorMessage);
 
-            } else {
-                //TODO: what to do if not every field captured
-                errorMessage += "Es konnten nicht alle Informationen zum Medikament ausgelesen werden.";
+                                } else {
+                                    //TODO: what to do if not every field captured
+                                    errorMessage += "Es konnten nicht alle Informationen zum Medikament ausgelesen werden.";
+                                }
+
+                            } else {
+                                errorMessage += "Es konnten keine Informationen ausgelesen werden.";
+                            }
+
+                            if(!errorMessage.equals("")) {
+                                showError(errorMessage);
+                            }
+                        }
+                    });
             }
-
-        } else {
-            errorMessage += "Es konnten keine Informationen ausgelesen werden.";
-        }
-
-        if(!errorMessage.equals("")) {
-            showError(errorMessage);
-        }
+        }).start();
     }
 
     private String findPrecribedMedicForScannedProduct(BarcodeInformation info, String errorMessage) {
@@ -567,8 +578,32 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         //Additional Medics are directly in controlled state as they are immediately given to the patient
         MediPrepResult success = dataSource.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
         if (!success.isResult()) {
-            //fehlermeldung => ev stimmen batch/serial/expirydate nicht überein mit produkten im SPital
-            return "Fehler: Spezifisches Produkt konnten im ERP nicht gefunden werden.";
+            switch (success.getErrorCode()) {
+                case 0:
+                    return "";
+
+                case 1:
+                    return "";
+
+                case 2:
+                    return "Das Ablaufdatum ist nicht analysierbar,\n " +
+                            "bitte halten SIe sich an die Form ddmmyyyy";
+
+                case 3:
+                    return "";
+
+                case 4:
+                    return "Das Produkt enthält laut Bestand keinen Inhalt mehr. " +
+                            "Nehmen Sie eine andere Pckung";
+
+                case 547:
+                    return "Das eingegebene Produkt passt nicht zu einem Produkt im Bestand!\n" +
+                            "Überprüfen Sie noch einmal das Medikament (Seriennummer, Batch, Ablaufdatum).";
+
+                default:
+                    return "Fehler im Webservice: Dieser Fall wurde nicht behandelt.";
+                
+            }
         } else {
             //TODO: get inserted data and set also state to controlled
             return "";
