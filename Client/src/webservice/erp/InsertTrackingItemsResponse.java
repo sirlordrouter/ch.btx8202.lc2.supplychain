@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse fÃ¼r insertTrackingItemsResponse complex type.
+ * <p>Java-Klasse für insertTrackingItemsResponse complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 

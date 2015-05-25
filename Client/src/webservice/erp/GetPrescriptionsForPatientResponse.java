@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse fÃ¼r getPrescriptionsForPatientResponse complex type.
+ * <p>Java-Klasse für getPrescriptionsForPatientResponse complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
