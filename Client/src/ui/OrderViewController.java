@@ -278,11 +278,13 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                                 order.setName("Order");
                                 order.setOrdered(true);
                                 for(TreeItem<OrderTreeItem> item:selectedItem.getChildren()){
-                                    Position pos = new Position();
-                                    pos.setGtin(item.getValue().getGtin());
-                                    pos.setDescription(item.getValue().getDescription());
-                                    pos.setQuantity(Integer.parseInt(item.getValue().getQuantity()));
-                                    positions.add(pos);
+                                    if(!item.getValue().getQuantity().contentEquals("0")) {
+                                        Position pos = new Position();
+                                        pos.setGtin(item.getValue().getGtin());
+                                        pos.setDescription(item.getValue().getDescription());
+                                        pos.setQuantity(Integer.parseInt(item.getValue().getQuantity()));
+                                        positions.add(pos);
+                                    }
                                 }
                                 order.getPositions().addAll(positions);
                                 boolean request = dataSource.setOrder(order,prop.getProperty("stationGLN"),prop.getProperty("manufacturerGLN"));
