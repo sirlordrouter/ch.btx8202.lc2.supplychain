@@ -18,8 +18,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        BarcodeGeneratorTest.class,
-        WebServiceObjectFactoryTest.class
+        WebServiceObjectFactoryTest.class,
+        HelpersTest2.class
 })
+//BarcodeGeneratorTest.class,
 public class SuiteTest {
 }

@@ -1,13 +1,17 @@
 package services;
 
+import barcode.GtinFormatConverter;
 import entities.Patient;
 import entities.PreparedMedication;
 import entities.Prescription;
+import exceptions.ConversionException;
+import exceptions.NotCorrectEANLenghtException;
 import webservice.erp.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,9 +94,25 @@ public class WebServiceObjectFactory {
             return null;
         }
 
+        String gtin = "";
+        try {
+            gtin = GtinFormatConverter.ConvertEan13To14(trspPreparedMedication.getGtinA());
+        } catch (NotCorrectEANLenghtException e) {
+            gtin = trspPreparedMedication.getGtinA();
+        }
+
+        List<String> gtinB14list = new ArrayList<>();
+        for (String s : trspPreparedMedication.getGtinBs()) {
+            try {
+                s = GtinFormatConverter.ConvertEan13To14(s);
+            } catch (NotCorrectEANLenghtException e) { }
+
+            gtinB14list.add(s);
+        }
+
         PreparedMedication preparedMedication = new PreparedMedication(
-                trspPreparedMedication.getGtinA(),
-                trspPreparedMedication.getGtinBs(),
+                gtin,
+                gtinB14list,
                 trspPreparedMedication.getName(),
                 trspPreparedMedication.getDescription(),
                 trspPreparedMedication.getDosage(),
@@ -196,16 +216,29 @@ public class WebServiceObjectFactory {
 
         TrspPreparedMedication trspPreparedMedication = new TrspPreparedMedication();
 
-        trspPreparedMedication.setGtinA(preparedMedication.getGtinA().get());
+        try {
+            trspPreparedMedication.setGtinA(GtinFormatConverter.ConvertEan14To13(preparedMedication.getGtinA().get()));
+        } catch (NotCorrectEANLenghtException e) {
+            trspPreparedMedication.setGtinA(preparedMedication.getGtinA().get());
+        } catch (ConversionException e) {
+            trspPreparedMedication.setGtinA(preparedMedication.getGtinA().get());
+        }
         trspPreparedMedication.setName(preparedMedication.getName().get());
         trspPreparedMedication.setDescription(preparedMedication.getDescription().get());
         trspPreparedMedication.setDosage(preparedMedication.getDosage().get());
         trspPreparedMedication.setDosageUnit(preparedMedication.getDosageUnit().get());
         trspPreparedMedication.setApplicationScheme(preparedMedication.getApplicationScheme().get());
-        trspPreparedMedication.setGtinFromAssignedItem(preparedMedication.getAssignedProductGTIN());
+        try {
+            trspPreparedMedication.setGtinFromAssignedItem(GtinFormatConverter.ConvertEan14To13(preparedMedication.getAssignedProductGTIN()));
+        } catch (NotCorrectEANLenghtException e) {
+            trspPreparedMedication.setGtinFromAssignedItem(preparedMedication.getAssignedProductGTIN());
+        } catch (ConversionException e) {
+            trspPreparedMedication.setGtinFromAssignedItem(preparedMedication.getAssignedProductGTIN());
+        }
+
         trspPreparedMedication.setBatchLot(preparedMedication.getBatchLot());
         trspPreparedMedication.setSerial(preparedMedication.getSerial());
-        trspPreparedMedication.setExpiryDate(preparedMedication.getExpiryDate());
+        trspPreparedMedication.setExpiryDate(Helpers.parseDateFrom(preparedMedication.getExpiryDate()));
         trspPreparedMedication.setState(convertToWebServiceObject(preparedMedication.getState()));
         trspPreparedMedication.setForPatient(convertToWebServiceObject(preparedMedication.getForPatient()));
         trspPreparedMedication.setBasedOnPrescription(convertToWebServiceObject(preparedMedication.getBasedOnPrescription()));

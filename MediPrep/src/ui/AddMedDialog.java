@@ -1,7 +1,9 @@
 package ui;
 
+import barcode.GtinFormatConverter;
 import datalayer.IRepository;
 import entities.PreparedMedication;
+import exceptions.NotCorrectEANLenghtException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,16 +14,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import services.Helpers;
 import ui.validation.RequiredField;
 import webservice.erp.MediPrepResult;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -82,9 +88,7 @@ public class AddMedDialog extends Stage implements Initializable {
 
     private IRepository repository;
 
-
     private PreparedMedication currentMedication;
-
 
     public AddMedDialog(Parent parent, PreparedMedication selectedMedication, IRepository dataSource) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddMedDialog.fxml"));
@@ -109,75 +113,132 @@ public class AddMedDialog extends Stage implements Initializable {
         this.repository = dataSource;
     }
 
-
     @FXML
     void save(ActionEvent event) {
-        requiredFieldGTIN.eval();
-        requiredFieldExpDate.eval();
-        requiredFieldLot.eval();
-        requiredFieldSerial.eval();
+        evalFields();
 
         if(!requiredFieldGTIN.getHasErrors() &&
                 !requiredFieldExpDate.getHasErrors() &&
                 !requiredFieldLot.getHasErrors() &&
                 !requiredFieldSerial.getHasErrors()) {
 
+            String gtin = txtGtin.getText();
+            try {
+                gtin = GtinFormatConverter.ConvertEan13To14(gtin);
+            } catch (NotCorrectEANLenghtException e) {  /* leave old gtin as it is 14*/     }
+            final String gtin14 = gtin;
 
-            if (!currentMedication.getGtinBs().stream().anyMatch(l -> l.equals(txtGtin.getText())) && !currentMedication.getGtinA().equals(txtGtin.getText())){
-                //TODO: ERROR message below field
-                txtGtin.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
-                , Insets.EMPTY)));
-                lblErrorCode.setText("Das eingegebene Produkt passt nicht zum Produkt der Verordnung!\n" +
-                        "Überprüfen Sie noch einmal das Medikament.");
+            if (!currentMedication.getGtinBs().stream().anyMatch(l -> l.equals(gtin14))
+                    && !currentMedication.getGtinA().equals(gtin14)){
+                ShowWrongProductInfo();
+
             } else {
-                String gtin = getTxtGtin().getText();
-                String expDate = getTxtExpiryDate().getText();
-                String lot = getTxtLot().getText();
-                String serial = getTxtSerial().getText();
 
-                currentMedication.setAssignedProductGTIN(gtin);
-                currentMedication.setExpiryDate(expDate);
-                currentMedication.setBatchLot(lot);
-                currentMedication.setSerial(serial);
+                try {
+                    updateMedication(gtin);
 
-                currentMedication.setPreparationTime(LocalDateTime.now());
-                currentMedication.setState(PreparedMedication.MedicationState.controlled);
-                List<PreparedMedication> medicationList = new ArrayList<>();
-                medicationList.add(currentMedication);
-                //Additional Medics are directly in controlled state as they are immediately given to the patient but mapping must be
-                //done first, so state is prepared for webservice but logic is controlled
-                MediPrepResult success = repository.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
+                    List<PreparedMedication> medicationList = new ArrayList<>();
+                    medicationList.add(currentMedication);
+                    //Additional Medics are directly in controlled state as they are immediately given to the patient but mapping must be
+                    //done first, so state is prepared for webservice but logical it is controlled
+                    MediPrepResult success = repository.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
 
-                if (!success.isResult() && (success.getErrorCode() == 0 || success.getErrorCode() == 547)) {
+                    if (!success.isResult()) {
+                        showErrors(success);
+
+                    } else {
+                        close();
+                    }
+
+                } catch (DateTimeParseException e) {
                     txtExpiryDate.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
                             , Insets.EMPTY)));
-                    txtLot.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
-                            , Insets.EMPTY)));
-                    txtSerial.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
-                            , Insets.EMPTY)));
-                    lblErrorCode.setText("Das eingegebene Produktaten passen nicht zu einem Produkt im Bestand!\n" +
-                            "Überprüfen Sie noch einmal das Medikament.");
-                    currentMedication.setState(PreparedMedication.MedicationState.open);
-
-                } else {
-                    close();
+                    lblErrorCode.setText("Das Ablaufdatum ist nicht analysierbar,\n " +
+                            "bitte halten SIe sich an die Form ddmmyyyy");
                 }
             }
         }
+    }
 
+    private void showErrors(MediPrepResult success) {
+        txtExpiryDate.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
+                , Insets.EMPTY)));
+        txtLot.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
+                , Insets.EMPTY)));
+        txtSerial.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
+                , Insets.EMPTY)));
 
+        /**
+         * -1: Unbekannt
+         * 0:
+         * 1:
+         * 2: DateTime Parse Exception
+         * 3: No Data found to update
+         * 4: Item Content is 0
+         * 547: Integrity Contraint error => Product does not match stock item
+         */
+        switch (success.getErrorCode()) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                lblErrorCode.setText("Das Ablaufdatum ist nicht analysierbar,\n " +
+                        "bitte halten SIe sich an die Form ddmmyyyy");
+                break;
+            case 3:
+                break;
+            case 4:
+                lblErrorCode.setText("Das Produkt enthält laut Bestand keinen Inhalt mehr. " +
+                        "Nehmen Sie eine andere Pckung");
+                break;
+            case 547:
+                lblErrorCode.setText("Das eingegebene Produkt passt nicht zu einem Produkt im Bestand!\n" +
+                        "Überprüfen Sie noch einmal das Medikament (Seriennummer, Batch, Ablaufdatum).");
+                break;
+            default:
+                lblErrorCode.setText("Fehler im Webservice: Dieser Fall wurde nicht behandelt.");
+                break;
 
+        }
+
+        currentMedication.setState(PreparedMedication.MedicationState.open);
+    }
+
+    private void updateMedication(String gtin) throws DateTimeParseException{
+        String expDate = "";
+        expDate = Helpers.parseDateFrom(getTxtExpiryDate().getText());
+        String lot = getTxtLot().getText();
+        String serial = getTxtSerial().getText();
+
+        currentMedication.setAssignedProductGTIN(gtin);
+        currentMedication.setExpiryDate(expDate);
+        currentMedication.setBatchLot(lot);
+        currentMedication.setSerial(serial);
+        currentMedication.setPreparationTime(LocalDateTime.now());
+        currentMedication.setState(PreparedMedication.MedicationState.controlled);
+    }
+
+    private void ShowWrongProductInfo() {
+        //TODO: ERROR message below field
+        txtGtin.setBackground(new Background(new BackgroundFill(Paint.valueOf("red"), CornerRadii.EMPTY
+        , Insets.EMPTY)));
+        lblErrorCode.setText("Das eingegebene Produkt passt nicht zum Produkt der Verordnung!\n" +
+                "Überprüfen Sie noch einmal das Medikament.");
+    }
+
+    private void evalFields() {
+        requiredFieldGTIN.eval();
+        requiredFieldExpDate.eval();
+        requiredFieldLot.eval();
+        requiredFieldSerial.eval();
     }
 
     @FXML
     void cancel(ActionEvent event) {
-
         this.canceled = true;
         close();
     }
-
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

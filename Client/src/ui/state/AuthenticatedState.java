@@ -43,6 +43,7 @@ public class AuthenticatedState extends AuthenticationState {
 	protected void entryState() {
         try {
             Scanner.initStream();
+            System.out.println("Scanner Registered");
 
             controller = (MainController) super.context.replaceSceneContent(Navigator.MAIN);
             /**

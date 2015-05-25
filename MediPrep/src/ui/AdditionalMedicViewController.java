@@ -14,6 +14,7 @@ import entities.Prescription;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -24,6 +25,7 @@ import javafx.util.Callback;
 import services.BarcodeGenerator;
 import services.ErpWebserviceClient;
 import services.PropertiesReader;
+import ui.exceptions.BarcodeParseException;
 import webservice.erp.Item;
 import webservice.erp.MediPrepResult;
 
@@ -59,6 +61,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
     public Label lblNameGender;
     public Label lblBirthdate;
     public Label lblPatInfo;
+    public TextField txtBarcode;
 
     public TableView<Prescription> prescriptionTableView;
     public TableView<Prescription> prescriptionTableViewReserve;
@@ -443,34 +446,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                     && info.getAI17_VERFALLSDATUM() != null
                     && info.getAI10_CHARGENNUMMER() != null) {
                 //is product or logistic unit scanned matching a medic in the preparation list?
-                List<PreparedMedication> medis =  medications.stream().filter(
-                        m ->
-                                m.getGtinA().equals(info.getAI01_HANDELSEINHEIT()) ||
-                                m.getGtinBs().stream().anyMatch(b -> b.equals(info.getAI01_HANDELSEINHEIT()))
-                ).collect(Collectors.toList());
-                if (medis.size() == 0 || medis.size() > 1) {
-                    //TODO: fehler, keine entpsrechende gtin gefunden bzw. zu viele passende medis
-                    errorMessage +=  medis.size() == 0 ? "Fehler 1: Es wurden keine Medikamente in der Verordnung gefunden," +
-                            "\n die zum gescannten Medikament passen.\n" : "";
-                    errorMessage += medis.size() > 1 ? "Fehler 2: Das gescannte Medikament konnte nicht eindeutig\n" +
-                            "einer Verordnung zugewiesen werden." : "";
-                } else {
-
-                    PreparedMedication preparedMedication = medis.get(0);
-
-                    if(preparedMedication.getState() == PreparedMedication.MedicationState.open) {
-
-                        updatePreparedMedication(preparedMedication, info.getAI01_HANDELSEINHEIT(),
-                                info.getAI17_VERFALLSDATUM(), info.getAI10_CHARGENNUMMER(), info.getAI21_SERIAL_NUMBER());
-
-                        showSuccessfullScan(preparedMedication);
-
-                        if (preparedMedication.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.controlled)) {
-                            showSuccessfullPreparationAndPrintLabel(preparedMedication.getBasedOnPrescription());
-                        }
-                    }
-
-                }
+                errorMessage = findPrecribedMedicForScannedProduct(info, errorMessage);
 
             } else {
                 //TODO: what to do if not every field captured
@@ -486,11 +462,85 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         }
     }
 
+    private String findPrecribedMedicForScannedProduct(BarcodeInformation info, String errorMessage) {
+
+        final String gtinSearch = info.getAI01_HANDELSEINHEIT();
+        List<PreparedMedication> medis =  medications.stream().filter(
+                m ->
+                        m.getGtinA().get().equals(gtinSearch) ||
+                        m.getGtinBs().stream().anyMatch(b -> b.equals(gtinSearch))
+        ).collect(Collectors.toList());
+        if (medis.size() == 0 || medis.size() > 1) {
+            //TODO: fehler, keine entpsrechende gtin gefunden bzw. zu viele passende medis
+            errorMessage +=  medis.size() == 0 ? "Fehler 1: Es wurden keine Medikamente in der Verordnung gefunden," +
+                    "\n die zum gescannten Medikament passen.\n" : "";
+            errorMessage += medis.size() > 1 ? "Fehler 2: Das gescannte Medikament konnte nicht eindeutig\n" +
+                    "einer Verordnung zugewiesen werden." : "";
+        } else {
+
+            PreparedMedication preparedMedication = medis.get(0);
+
+            if(preparedMedication.getState() == PreparedMedication.MedicationState.open) {
+
+                errorMessage = updatePreparedMedication(preparedMedication, info.getAI01_HANDELSEINHEIT(),
+                        info.getAI17_VERFALLSDATUM(), info.getAI10_CHARGENNUMMER(), info.getAI21_SERIAL_NUMBER());
+
+                if (errorMessage.equals("")) {
+                    finishPreparation(preparedMedication);
+                } else {
+                    preparedMedication.setState(PreparedMedication.MedicationState.open);
+                }
+
+            }
+
+        }
+        return errorMessage;
+    }
+
+    private void finishPreparation(PreparedMedication preparedMedication) {
+        showSuccessfullScan(preparedMedication);
+
+        if (preparedMedication.getBasedOnPrescription().doAllMedicationsHave(PreparedMedication.MedicationState.controlled)) {
+            showSuccessfullPreparationAndPrintLabel(preparedMedication.getBasedOnPrescription());
+        }
+    }
+
+    public void evaluateCode(ActionEvent event) {
+        String barcodeInput = txtBarcode.getText();
+        try {
+            if (!barcodeInput.startsWith("(/")) throw new BarcodeParseException("Kein Scanner input: Prefix ist falsch.");
+
+            ScannerEvent evt = new ScannerEvent(this, barcodeInput.substring(2),"(/","",0);
+            Barcode b = BarcodeDecoder.getBarcodeFrom(evt);
+            if (b == null || b.getBarcodeInformation() == null) throw new BarcodeParseException("Barcode konnte nicht evaluiert werden");
+
+            BarcodeInformation information = b.getBarcodeInformation();
+            if (information.getAI00_SSCC() != null) throw new BarcodeParseException("Kein Produkt gefunden, es handelt sich um ein SSCC");
+
+            if (information.getAI01_HANDELSEINHEIT() == null
+                    || information.getAI21_SERIAL_NUMBER() == null
+                    || information.getAI17_VERFALLSDATUM() == null
+                    || information.getAI10_CHARGENNUMMER() == null) {
+                throw new BarcodeParseException("Informationen nicht vollständig.");
+            }
+
+            String errorMessage = findPrecribedMedicForScannedProduct(information, "");
+            if (!errorMessage.equals("")) {
+                throw new BarcodeParseException(errorMessage);
+
+            }
+            txtBarcode.setText("");
+
+        }catch (BarcodeParseException e) {
+            showError(e.getMessage());
+        }
+    }
+
     private void showError(String errorMessage) {
         Alert alertSuccessfulScan = new Alert(Alert.AlertType.ERROR);
         alertSuccessfulScan.setTitle("Information Dialog");
         alertSuccessfulScan.setHeaderText(null);
-        alertSuccessfulScan.setContentText("Scan von nicht erfolgreich. Gefundene Fehler:\n" + errorMessage);
+        alertSuccessfulScan.setContentText(errorMessage); //"Scan nicht erfolgreich. Gefundene Fehler:\n" +
 
         alertSuccessfulScan.showAndWait();
     }
@@ -504,7 +554,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         alertSuccessfulScan.showAndWait();
     }
 
-    private void updatePreparedMedication(PreparedMedication preparedMedication, String gtin, String expDate, String lot, String serial) {
+    private String updatePreparedMedication(PreparedMedication preparedMedication, String gtin, String expDate, String lot, String serial) {
         preparedMedication.setAssignedProductGTIN(gtin);
         preparedMedication.setExpiryDate(expDate);
         preparedMedication.setBatchLot(lot);
@@ -518,9 +568,10 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         MediPrepResult success = dataSource.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
         if (!success.isResult()) {
             //fehlermeldung => ev stimmen batch/serial/expirydate nicht überein mit produkten im SPital
-            System.out.println("Fehler: Produktinformationen konnten im ERP nicht gefunden werden.");
+            return "Fehler: Spezifisches Produkt konnten im ERP nicht gefunden werden.";
         } else {
             //TODO: get inserted data and set also state to controlled
+            return "";
         }
     }
 
