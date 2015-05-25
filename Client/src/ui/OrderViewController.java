@@ -68,7 +68,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
             // get a connection object to the webservice
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+            dataSource = new ErpClient(prop.getProperty("currentGLN"));
 
         } catch (ConnectException e ) {
             e.printStackTrace();
@@ -332,7 +332,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         order.setName("Order Suggestion");
         order.setOrdered(false);
         // fetch checkedin items from the supply chain service
-        WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
+        WebServiceResult result = dataSource.getCheckedInItems(prop.getProperty("currentGLN"));
         ObservableList<Item> tempData = FXCollections.observableArrayList();
         tempData.setAll(result.getItems());
 
@@ -340,7 +340,7 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         for(Item item:tempData){
             TradeItem tradeItem = null;
             SwissIndexResult swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
-            if(result.isResult()){
+            if(result.isResult() && swissIndexResult.isResult()){
                 tradeItem = swissIndexResult.getTradeItems().get(0);
             }else{
                 Navigator.getInstance().getMainController().setStatusbarEmpty();
@@ -378,8 +378,9 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
                 }
             }
         }
+
         // count the items for each group
-        List<Quantity> quantities = dataSource.getQuantities(prop.getProperty("stationGLN"));
+        List<Quantity> quantities = dataSource.getQuantities(prop.getProperty("currentGLN"));
 
         for (Quantity quantity : quantities) {
             if (!groupnames.contains(quantity.getDescription())) {

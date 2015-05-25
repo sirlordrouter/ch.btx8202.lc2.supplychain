@@ -3,12 +3,11 @@ package webservice.erp;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für trspPatient complex type.
+ * <p>Java-Klasse fÃ¼r trspPatient complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
@@ -54,11 +53,9 @@ public class TrspPatient {
 
     protected String beaconID;
     protected String birthDate;
-    @XmlSchemaType(name = "string")
     protected BloodGroup bloodGroup;
     protected int fid;
     protected String firstname;
-    @XmlSchemaType(name = "string")
     protected Gender gender;
     protected String lastname;
     protected int pid;

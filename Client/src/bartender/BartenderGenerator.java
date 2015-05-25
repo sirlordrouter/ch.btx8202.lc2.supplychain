@@ -97,7 +97,7 @@ public class BartenderGenerator {
                     "%END%");
             // add the custom data
             for(Item item:production.getItems()){
-                output.append(separator + item.getGTIN() + "," + item.getExpiryDate() + "," + item.getLot() +
+                output.append(separator + item.getGTIN() + "," + formatOutputDate(item.getExpiryDate()) + "," + item.getLot() +
                         "," + item.getSerial() + "," + item.getBeschreibung());
             }
 
@@ -107,6 +107,12 @@ public class BartenderGenerator {
             System.out.println("Could not create file");
         }
     }
+
+    private String formatOutputDate(String date) {
+        date = date.replaceAll("-","");
+        return date.substring(2,date.length());
+    }
+
     public void createShipmenttriggerFile(){
         // build the trigger text field at the specified location
         try{

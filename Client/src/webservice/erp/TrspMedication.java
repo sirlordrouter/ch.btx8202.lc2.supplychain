@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für trspMedication complex type.
+ * <p>Java-Klasse fÃ¼r trspMedication complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für getItemByIdentifierResponse complex type.
+ * <p>Java-Klasse fÃ¼r getItemByIdentifierResponse complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 

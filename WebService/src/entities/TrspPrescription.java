@@ -230,4 +230,9 @@ public class TrspPrescription {
     public void setMedicationsNight(List<TrspPreparedMedication> medicationsNight) {
         this.medicationsNight = medicationsNight;
     }
+
+    @Override
+    public int hashCode() {
+        return Integer.parseInt(this.getPolypointID());
+    }
 }

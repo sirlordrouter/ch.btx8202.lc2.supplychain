@@ -19,6 +19,7 @@ import services.ErpClient;
 import services.IDataSource;
 import services.PropertiesReader;
 import services.SwissIndexClient;
+import webservice.erp.Company;
 import webservice.erp.Item;
 import webservice.erp.Quantity;
 import webservice.erp.WebServiceResult;
@@ -65,7 +66,7 @@ public class StockViewController extends VBox implements Initializable,IPartialV
         try {
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+            dataSource = new ErpClient(prop.getProperty("currentGLN"));
 
         } catch (ConnectException e ) {
             e.printStackTrace();
@@ -131,19 +132,24 @@ public class StockViewController extends VBox implements Initializable,IPartialV
 
                 WebServiceResult result = null;
                 try {
-                    result = dataSource.getCheckedInItems(prop.getProperty("stationGLN"));
+                    result = dataSource.getCheckedInItems(prop.getProperty("currentGLN"));
                     tempData.setAll(result.getItems());
 
 
                     // iterate over all checked in items and get item information from swissindex
                     for(Item item:tempData){
                         TradeItem tradeItem = null;
-                        SwissIndexResult swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
-                        if(result.isResult()){
+                        SwissIndexResult swissIndexResult = null;
+                        if(item.getGTIN().length() > 10) {
+                            swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+                        }
+                        if(result.isResult() && swissIndexResult!=null && swissIndexResult.isResult()){
                             tradeItem = swissIndexResult.getTradeItems().get(0);
                         }else{
-                            System.out.println(swissIndexResult.getMessage());
-                            return;
+                            System.out.println("Keine GTIN gefunden: " + item.getGTIN());
+                            tradeItem = SwissIndexClient.ItemConstructor("Keine Info", "Keine Info",
+                                    item.getGTIN(), item.getLot(), item.getSerial(),
+                                    "Keine Info", "Keine Info", "Keine Info",null, null);
                         }
                         TradeItem tradeItem1 = new TradeItem();
                         tradeItem1.setName(tradeItem.getName());

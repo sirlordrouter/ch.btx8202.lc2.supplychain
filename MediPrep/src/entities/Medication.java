@@ -55,6 +55,7 @@ public class Medication {
     }
 
     public void setGtinBs(List<String> gtinBs) {
+        
         this.gtinBs = gtinBs;
     }
 

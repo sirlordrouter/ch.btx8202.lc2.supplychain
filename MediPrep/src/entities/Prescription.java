@@ -299,6 +299,7 @@ public class Prescription {
     }
 
     public boolean doAllMedicationsHave(PreparedMedication.MedicationState state) {
+        if (medications == null || medications.size() == 0) return false;
         for (PreparedMedication medication : medications) {
             if (medication.getState() != state ) {
                 return false;

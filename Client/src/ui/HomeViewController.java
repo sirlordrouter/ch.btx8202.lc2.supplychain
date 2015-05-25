@@ -106,7 +106,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
         try {
             PropertiesReader reader = new PropertiesReader();
             prop = reader.getPropValues();
-            dataSource = new ErpClient(prop.getProperty("stationGLN"));
+            dataSource = new ErpClient(prop.getProperty("currentGLN"));
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -136,6 +136,9 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
             public void changed(ObservableValue observableValue, Object o, Object o2) {
                 if (medList.getSelectionModel().getSelectedItem() != null) {
                     txtareaMediInfo.setText(o2.toString());
+                    WebEngine webEngine =medicationWebView.getEngine();
+                    webEngine.load("http://pictures.documed.ch/wa_getphoto/wv_getPhoto.aspx?lang=de&query=pharmacode=" + ((TradeItem)o2).getPharmaCode());
+
                 }
             }
         });
@@ -253,7 +256,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
                     evt.setBarCode(txtInput.getText().trim().substring(2));
                     Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
                     info =  code.getBarcodeInformation();
-                    if (info.getAI00_SSCC() != null) {
+                    if (info != null && info.getAI00_SSCC() != null) {
                         if(dataSource == null ) {
                             System.out.println("No Webservice available.");
                         }
@@ -390,26 +393,35 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
     }
 
     private void retrieveItemInformation(Item item) {
-        TradeItem i = null;
-        SwissIndexResult result = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
-        if(result.isResult()){
-            i = result.getTradeItems().get(0);
-        }else{
-            UserInformationPopup popup = new UserInformationPopup(result.getMessage(), "Achtung");
-            popup.show();
-            return;
-        }
-        i.setSerial(item.getSerial());
-        i.setLot(item.getLot());
-        i.setExpiryDate(item.getExpiryDate());
-        i.setCheckInDate(item.getCheckInDate());
 
-        if (i != null) {
-            txtareaMediInfo.setText(i.toString());
-            data.add(i);
+        TradeItem tradeItem = null;
+        SwissIndexResult swissIndexResult = null;
+        if(item.getGTIN().length() > 10) {
+            swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+        }
+        if(swissIndexResult!=null && swissIndexResult.isResult()){
+            tradeItem = swissIndexResult.getTradeItems().get(0);
+            tradeItem.setExpiryDate(item.getExpiryDate());
+            tradeItem.setLot(item.getLot());
+            tradeItem.setSerial(item.getSerial());
+            tradeItem.setCheckInDate(item.getCheckInDate());
+        }else{
+            System.out.println("Keine GTIN gefunden: " + item.getGTIN());
+            tradeItem = SwissIndexClient.ItemConstructor("Keine Info", "Keine Info",
+                    item.getGTIN(), item.getLot(), item.getSerial(),
+                    "Keine Info", "Keine Info", "Keine Info",null, null);
+        }
+
+        /*if (tradeItem != null) {
+            tradeItem.setExpiryDate(item.getExpiryDate());
+            tradeItem.setCheckInDate(item.getCheckInDate());
+            tradeItem.setLot(item.getLot());
+            tradeItem.setSerial(item.getSerial());
+            txtareaMediInfo.setText(tradeItem.toString());
+            data.add(tradeItem);
         }else {
             txtareaMediInfo.setText("Kein Item gefunden.");
-        }
+        }*/
     }
 
     /**
