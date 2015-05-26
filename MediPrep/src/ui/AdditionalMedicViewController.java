@@ -600,7 +600,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 Alert printAlert = new Alert(Alert.AlertType.ERROR);
                 printAlert.setTitle("Druckfehler Dialog");
                 printAlert.setHeaderText(null);
-                printAlert.setContentText("Leider gab es ein Fehler beim Drucken.\n" +
+                printAlert.setContentText("Leider gab es ein Fehler beim Drucken mit Drucker " + printerName + ".\n" +
                         "Falls der Drucker in Ordnung ist, lösen Sie den Vorgang erneut aus.");
             }
 
