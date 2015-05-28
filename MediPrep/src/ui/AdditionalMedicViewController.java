@@ -438,15 +438,19 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         //txtareaMediInfo.setText("Barcode " + evt.getBarCode() + " gescannt.");
         Barcode code = BarcodeDecoder.getBarcodeFrom(scannerEvent);
 
-        final BarcodeInformation info =  code.getBarcodeInformation();
+        if (code != null) {
 
-        new Thread(new Runnable() {
-            @Override public void run() {
+
+            final BarcodeInformation info = code.getBarcodeInformation();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             String errorMessage = "";
-                            if(info != null) {
+                            if (info != null) {
                                 System.out.println("Info is not null.");
                                 if (info.getAI01_HANDELSEINHEIT() != null
                                         && info.getAI21_SERIAL_NUMBER() != null
@@ -464,13 +468,14 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                                 errorMessage += "Es konnten keine Informationen ausgelesen werden.";
                             }
 
-                            if(!errorMessage.equals("")) {
+                            if (!errorMessage.equals("")) {
                                 showError(errorMessage);
                             }
                         }
                     });
-            }
-        }).start();
+                }
+            }).start();
+        }
     }
 
     private String findPrecribedMedicForScannedProduct(BarcodeInformation info, String errorMessage) {

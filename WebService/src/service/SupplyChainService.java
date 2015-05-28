@@ -91,11 +91,11 @@ public class SupplyChainService {
                     "AND s2.ExpiryDate = i.ExpiryDate AND s2.SerialNr = i.SerialNr\n" +
                     "where i.GTIN = o.GTIN and i.SerialNr = o.SerialNr and \n" +
                     "i.Lot = o.Lot and i.ExpiryDate = o.ExpiryDate and GLNscan = ? and StateNr = 3 \n" +
-                    "and s2.ProductQuantity = 0\n" +
+                    "" +
                     ") \n" +
                     "and\n" +
                     "GLNscan = ? \n" +
-                    "AND StateNr = ?";
+                    "AND StateNr = ? and ProductQuantity > 0";
 
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, gln);

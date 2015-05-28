@@ -8,6 +8,7 @@ import exceptions.BarcodeNotDeserializeableException;
 import exceptions.ConversionException;
 import exceptions.NotCorrectEANLenghtException;
 import exceptions.NotImplementedBarcodeTypeException;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -348,6 +349,19 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
 
         List<Item> items;
         BarcodeInformation info = null;
+
+        new Thread(new Runnable() {
+            @Override public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+
+                    }
+                });
+            }
+        }).start();
 
         txtareaMediInfo.setText("Barcode " + evt.getBarCode() + " gescannt.");
         Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
