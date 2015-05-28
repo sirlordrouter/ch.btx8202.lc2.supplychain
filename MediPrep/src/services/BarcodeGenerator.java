@@ -136,7 +136,6 @@ public class BarcodeGenerator {
         try {
             final BitmapEncoder encoder = BitmapEncoderRegistry.getInstance(mime);
             encoder.encode(bitmap, out, mime, dpi);
-
         } finally {
             out.close();
         }

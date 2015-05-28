@@ -25,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import services.BarcodeGenerator;
 import services.ErpWebserviceClient;
+import services.Helpers;
 import services.PropertiesReader;
 import ui.exceptions.BarcodeParseException;
 import webservice.erp.Item;
@@ -134,18 +135,20 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     Prescription rowData = row.getItem();
 
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Confirmation Dialog");
-                    alert.setHeaderText("Ausdruck Verordnungs ID");
-                    alert.setContentText("Möchten Sie die Etikette für die Verordnung erneut ausdrucken?");
+                    if (rowData.doAllMedicationsHave(PreparedMedication.MedicationState.controlled)) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation Dialog");
+                        alert.setHeaderText("Ausdruck Verordnungs ID");
+                        alert.setContentText("Möchten Sie die Etikette für die Verordnung erneut ausdrucken?");
 
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.OK &&
-                            (rowData.doAllMedicationsHave(PreparedMedication.MedicationState.prepared) ||
-                            rowData.doAllMedicationsHave(PreparedMedication.MedicationState.controlled))){
-                        showSuccessfullPreparationAndPrintLabel(rowData);
-                    } else {
-                        // ... user chose CANCEL or closed the dialog
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == ButtonType.OK &&
+                                (rowData.doAllMedicationsHave(PreparedMedication.MedicationState.prepared) ||
+                                        rowData.doAllMedicationsHave(PreparedMedication.MedicationState.controlled))) {
+                            showSuccessfullPreparationAndPrintLabel(rowData);
+                        } else {
+                            // ... user chose CANCEL or closed the dialog
+                        }
                     }
                 } else if(event.getClickCount() == 1 && (! row.isEmpty())) {
                     medications.clear();
@@ -488,9 +491,9 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         ).collect(Collectors.toList());
         if (medis.size() == 0 || medis.size() > 1) {
             //TODO: fehler, keine entpsrechende gtin gefunden bzw. zu viele passende medis
-            errorMessage +=  medis.size() == 0 ? "Fehler 1: Es wurden keine Medikamente in der Verordnung gefunden," +
-                    "\n die zum gescannten Medikament passen.\n" : "";
-            errorMessage += medis.size() > 1 ? "Fehler 2: Das gescannte Medikament konnte nicht eindeutig\n" +
+            errorMessage +=  medis.size() == 0 ? "Fehler 1: Es wurden keine Medikamente in der Verordnung gefunden,\n" +
+                    "die zum gescannten Medikament passen." : "";
+            errorMessage += medis.size() > 1 ? "Fehler 2: Das gescannte Medikament konnte nicht \neindeutig" +
                     "einer Verordnung zugewiesen werden." : "";
         } else {
 
@@ -565,7 +568,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         Alert alertSuccessfulScan = new Alert(Alert.AlertType.INFORMATION);
         alertSuccessfulScan.setTitle("Information Dialog");
         alertSuccessfulScan.setHeaderText(null);
-        alertSuccessfulScan.setContentText("Scan von " + preparedMedication.getDescription() + "erfolgreich.");
+        alertSuccessfulScan.setContentText("Scan von " + preparedMedication.getDescription().get() + " erfolgreich.");
 
         alertSuccessfulScan.showAndWait();
     }
@@ -582,37 +585,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         medicationList.add(preparedMedication);
         //Additional Medics are directly in controlled state as they are immediately given to the patient
         MediPrepResult success = dataSource.UpdatePreperationState(medicationList, PreparedMedication.MedicationState.prepared);
-        if (!success.isResult()) {
-            switch (success.getErrorCode()) {
-                case 0:
-                    return "";
-
-                case 1:
-                    return "";
-
-                case 2:
-                    return "Das Ablaufdatum ist nicht analysierbar,\n " +
-                            "bitte halten SIe sich an die Form ddmmyyyy";
-
-                case 3:
-                    return "";
-
-                case 4:
-                    return "Das Produkt enthält laut Bestand keinen Inhalt mehr. " +
-                            "Nehmen Sie eine andere Pckung";
-
-                case 547:
-                    return "Das eingegebene Produkt passt nicht zu einem Produkt im Bestand!\n" +
-                            "Überprüfen Sie noch einmal das Medikament (Seriennummer, Batch, Ablaufdatum).";
-
-                default:
-                    return "Fehler im Webservice: Dieser Fall wurde nicht behandelt.";
-                
-            }
-        } else {
-            //TODO: get inserted data and set also state to controlled
-            return "";
-        }
+        return Helpers.getWebserviceErrorCode(success);
     }
 
     private void showSuccessfullPreparationAndPrintLabel(Prescription prescription) {
@@ -621,15 +594,20 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
 
-        if (prescription.getMedications().size() > 1) {
+       // if (prescription.getMedications().size() > 1) {
 
-            alert.setContentText("You now have successfully prepared all medications\n for the prescription" +
+/*            alert.setContentText("You now have successfully prepared all medications\n for the prescription" +
                             "congratulations!! :-p" +
                             "\nTake the printed barcode and put in on the item" +
                             "\nto enable bedside scanning." +
                             "\n<< Happy Scan >>"
-            );
+            );*/
 
+            alert.setContentText("Für die Verordnung -" + prescription.getDescription()
+                    + "- mit ID " + prescription.getPolypointID() +
+                            " wurden alle Medikamente vorbereitet,\n" +
+                            "eine Barcode-Etikette wird im Anschluss gedruckt."
+            );
             alert.showAndWait();
 
             try {
@@ -644,7 +622,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
                         "Falls der Drucker in Ordnung ist, lösen Sie den Vorgang erneut aus.");
             }
 
-        }
+        //}
 
 
 
