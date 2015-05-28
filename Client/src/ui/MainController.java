@@ -95,7 +95,6 @@ public class MainController implements Initializable {
 
     }
 
-
     public void openStockView(ActionEvent actionEvent) {
         Navigator.getInstance().loadVista(Navigator.STOCK_VIEW);
     }
@@ -121,19 +120,46 @@ public class MainController implements Initializable {
     public void openTrackerView(ActionEvent actionEvent) {Navigator.getInstance().loadVista(Navigator.TRACKER_VIEW);}
 
     public void setStatusbarWaiting(String infotext) {
-        statusLineIndicator.setVisible(true);
-        //SetisShowingProperty(new SimpleBooleanProperty(true));
-        statusLineLabel.setText(infotext);
+
+        new Thread(new Runnable() {
+            @Override public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusLineIndicator.setVisible(true);
+                        statusLineLabel.setText(infotext);
+                    }
+                });
+            }
+        }).start();
     }
 
     public void setStatusbarEmpty() {
-   //     statusLineIndicator.setVisible(false);
-    //    statusLineLabel.setText("");
+
+        new Thread(new Runnable() {
+            @Override public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusLineIndicator.setVisible(false);
+                        statusLineLabel.setText("");
+                    }
+                });
+            }
+        }).start();
     }
 
     public void setStatusbarText(String infotext) {
-
-        SetisShowingProperty(new SimpleBooleanProperty(false));
-        statusLineLabel.setText(infotext);
+        new Thread(new Runnable() {
+            @Override public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        SetisShowingProperty(new SimpleBooleanProperty(false));
+                        statusLineLabel.setText(infotext);
+                    }
+                });
+            }
+        }).start();
     }
 }

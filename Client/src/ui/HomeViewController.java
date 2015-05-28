@@ -347,61 +347,57 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
     public void handleScannerEvent(ScannerEvent evt) {
         Navigator.getInstance().getMainController().setStatusbarWaiting("scanned item is evaluated...");
 
-        List<Item> items;
-        BarcodeInformation info = null;
-
         new Thread(new Runnable() {
             @Override public void run() {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
 
+                        txtareaMediInfo.setText("Barcode " + evt.getBarCode() + " gescannt.");
+                        Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
+                        final BarcodeInformation info =  code.getBarcodeInformation();
+                        if(info != null) {
+                            txtareaMediInfo.appendText(info.toString());
+                            //TODO: in datamatrix 14 digit gtins were used, in this project (also swissindex) ist working with 13 digits, so change it if necessary
+                            if (info.getAI01_HANDELSEINHEIT()!= null && info.getAI01_HANDELSEINHEIT().length() == 14) {
+                                try {
+                                    if (info.getAI01_HANDELSEINHEIT() != null) {info.setAI01_HANDELSEINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI01_HANDELSEINHEIT()));}
+                                    if(info.getAI02_ENTHALTENE_EINHEIT() != null) {info.setAI02_ENTHALTENE_EINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI02_ENTHALTENE_EINHEIT()));}
+                                } catch (NotCorrectEANLenghtException e) {
+                                    e.printStackTrace();
+                                } catch (ConversionException e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
+                            if (info.getAI00_SSCC() != null) {
+                                if(dataSource == null ) {
+                                    System.out.println("No Webservice available.");
+                                }
+                                final List<Item> items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
+                                for (Item item : items) {
+                                    retrieveItemInformation(item);
+                                }
+                            } else if(info.getAI01_HANDELSEINHEIT() != null) {
+                                Item i = dataSource.getItemByIdentifier(info.getAI01_HANDELSEINHEIT(), info.getAI21_SERIAL_NUMBER());
+                                retrieveItemInformation(i);
+                            } else {
+                                Navigator.getInstance().getMainController().setStatusbarEmpty();
+                                //Well then... no idea wwhat to do => there is no usable data stored here...
+                                System.out.println("No Data Found for Barcode...");
+                            }
+                        } else {
+                            Navigator.getInstance().getMainController().setStatusbarEmpty();
+                            System.out.println("Info was null");
+                            txtareaMediInfo.setText("Could not extract Information from Code: Info was null");
+                        }
 
                     }
                 });
             }
         }).start();
 
-        txtareaMediInfo.setText("Barcode " + evt.getBarCode() + " gescannt.");
-        Barcode code = BarcodeDecoder.getBarcodeFrom(evt);
-        info =  code.getBarcodeInformation();
-        if(info != null) {
-            txtareaMediInfo.appendText(info.toString());
-            //TODO: in datamatrix 14 digit gtins were used, in this project (also swissindex) ist working with 13 digits, so change it if necessary
-            if (info.getAI01_HANDELSEINHEIT()!= null && info.getAI01_HANDELSEINHEIT().length() == 14) {
-                try {
-                   if (info.getAI01_HANDELSEINHEIT() != null) {info.setAI01_HANDELSEINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI01_HANDELSEINHEIT()));}
-                   if(info.getAI02_ENTHALTENE_EINHEIT() != null) {info.setAI02_ENTHALTENE_EINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI02_ENTHALTENE_EINHEIT()));}
-                } catch (NotCorrectEANLenghtException e) {
-                    e.printStackTrace();
-                } catch (ConversionException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            if (info.getAI00_SSCC() != null) {
-                if(dataSource == null ) {
-                    System.out.println("No Webservice available.");
-                }
-                items = dataSource.getItemsBySSCC(info.getAI00_SSCC());
-                for (Item item : items) {
-                    retrieveItemInformation(item);
-                }
-            } else if(info.getAI01_HANDELSEINHEIT() != null) {
-                Item i = dataSource.getItemByIdentifier(info.getAI01_HANDELSEINHEIT(), info.getAI21_SERIAL_NUMBER());
-//                i.setGTIN(info.getAI01_HANDELSEINHEIT());
-                retrieveItemInformation(i);
-            } else {
-                Navigator.getInstance().getMainController().setStatusbarEmpty();
-                //Well then... no idea wwhat to do => there is no usable data stored here...
-                System.out.println("No Data Found for Barcode...");
-            }
-        } else {
-            Navigator.getInstance().getMainController().setStatusbarEmpty();
-            System.out.println("Info was null");
-            txtareaMediInfo.setText("Could not extract Information from Code: Info was null");
-        }
         Navigator.getInstance().getMainController().setStatusbarEmpty();
 
     }
