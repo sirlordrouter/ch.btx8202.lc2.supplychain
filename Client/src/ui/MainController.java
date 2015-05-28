@@ -127,8 +127,8 @@ public class MainController implements Initializable {
     }
 
     public void setStatusbarEmpty() {
-        statusLineIndicator.setVisible(false);
-        statusLineLabel.setText("");
+   //     statusLineIndicator.setVisible(false);
+    //    statusLineLabel.setText("");
     }
 
     public void setStatusbarText(String infotext) {

@@ -369,7 +369,7 @@ public class HomeViewController extends VBox implements ScannerListener,IPartial
         if(info != null) {
             txtareaMediInfo.appendText(info.toString());
             //TODO: in datamatrix 14 digit gtins were used, in this project (also swissindex) ist working with 13 digits, so change it if necessary
-            if (info.getAI01_HANDELSEINHEIT().length() == 14) {
+            if (info.getAI01_HANDELSEINHEIT()!= null && info.getAI01_HANDELSEINHEIT().length() == 14) {
                 try {
                    if (info.getAI01_HANDELSEINHEIT() != null) {info.setAI01_HANDELSEINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI01_HANDELSEINHEIT()));}
                    if(info.getAI02_ENTHALTENE_EINHEIT() != null) {info.setAI02_ENTHALTENE_EINHEIT(GtinFormatConverter.ConvertEan14To13(info.getAI02_ENTHALTENE_EINHEIT()));}

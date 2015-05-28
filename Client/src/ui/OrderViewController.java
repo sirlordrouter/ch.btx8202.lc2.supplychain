@@ -339,12 +339,18 @@ public class OrderViewController extends VBox implements Initializable,IPartialV
         // iterate over all checked in items and get item information from swissindex
         for(Item item:tempData){
             TradeItem tradeItem = null;
-            SwissIndexResult swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+            SwissIndexResult swissIndexResult = null;
+            if(item.getGTIN().length() > 10) {
+                swissIndexResult = SwissIndexClient.getItemInformationFromGTIN(item.getGTIN());
+            }
             if(result.isResult() && swissIndexResult.isResult()){
                 tradeItem = swissIndexResult.getTradeItems().get(0);
             }else{
                 Navigator.getInstance().getMainController().setStatusbarEmpty();
                 System.out.println(swissIndexResult.getMessage());
+                tradeItem = SwissIndexClient.ItemConstructor("Keine Info", "Keine Info",
+                        item.getGTIN(), item.getLot(), item.getSerial(),
+                        "Keine Info", "Keine Info", "Keine Info",null, null);
             }
             TradeItem tradeItem1 = new TradeItem();
             tradeItem1.setName(tradeItem.getName());
