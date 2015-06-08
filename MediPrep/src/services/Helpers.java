@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Bern University of Applied Sciences<br>
  * BSc Medical Informatics<br>
- * Module <br>
+ * Module Bachelorthesis<br>
  * <p>
  * <p></p>
  * Project: MediPrep

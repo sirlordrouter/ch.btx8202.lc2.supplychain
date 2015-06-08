@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für getPreparedPrescriptionsCountForPatientResponse complex type.
+ * <p>Java-Klasse fuer getPreparedPrescriptionsCountForPatientResponse complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 

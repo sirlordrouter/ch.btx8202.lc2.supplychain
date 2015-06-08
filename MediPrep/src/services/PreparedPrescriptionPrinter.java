@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Bern University of Applied Sciences<br>
  * BSc Medical Informatics<br>
- * Module <br>
+ * Module Bachelorthesis<br>
  * <p>
  * <p></p>
  * Project: MediPrep
@@ -56,6 +56,7 @@ public class PreparedPrescriptionPrinter implements Printable {
             AffineTransform symbolPlacement = new AffineTransform();
             symbolPlacement.setToTranslation(pf.getImageableX(),pf.getImageableY());
             generator.generate(new File(BARCODE_IMAGE_PATH), prescription);
+            System.out.println("File generated");
             RenderedImage image = toBufferedImage(ImageIO.read(new File(BARCODE_IMAGE_PATH)));
             int imageWidth = image.getWidth();
 
@@ -63,7 +64,7 @@ public class PreparedPrescriptionPrinter implements Printable {
                     pageWidth / imageWidth : imageWidth / pageWidth;
             double scaleFactorHeight = image.getHeight() > pf.getImageableHeight() ?
                     image.getHeight() / pf.getImageableHeight() : pf.getImageableHeight() / image.getHeight();
-            double scaleFactor = scaleFactorHeight > scaleFactorWidth ? scaleFactorHeight : scaleFactorWidth;
+            double scaleFactor = scaleFactorHeight > scaleFactorWidth ? scaleFactorWidth : scaleFactorHeight;
             symbolPlacement.scale(scaleFactor,scaleFactor);
 
             ((Graphics2D) g).drawRenderedImage(image, symbolPlacement);

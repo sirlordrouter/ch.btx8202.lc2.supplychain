@@ -2,5 +2,7 @@ datalayer
 entities
 services
 ui
+ui.exceptions
 ui.state
+ui.validation
 webservice.erp

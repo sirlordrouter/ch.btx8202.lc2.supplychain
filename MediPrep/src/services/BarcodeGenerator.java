@@ -136,8 +136,10 @@ public class BarcodeGenerator {
         try {
             final BitmapEncoder encoder = BitmapEncoderRegistry.getInstance(mime);
             encoder.encode(bitmap, out, mime, dpi);
+            System.out.println("Bild encodiert");
         } finally {
             out.close();
+            System.out.println("Verordnungsetikette Bild erstellt.");
         }
     }
 
@@ -161,14 +163,20 @@ public class BarcodeGenerator {
             System.out.println(printer.getName());
             if (printer.getName().equals(printerName)) {
                 service = printer;
+                System.out.println("Drucker gefunden.");
             }
         }
+        if(service != null) {
+            PrinterJob job = PrinterJob.getPrinterJob();
+            job.printDialog();
+            job.setPrintService(service);
+            job.setPrintable(new PreparedPrescriptionPrinter(prescription));
+            job.print();
+            System.out.println("Wird gedruckt ...");
+        } else {
+            System.out.println("Drucker " + printerName + " wurde nicht gefunden.");
+        }
 
-        PrinterJob job = PrinterJob.getPrinterJob();
-        //job.printDialog();
-        job.setPrintService(service);
-        job.setPrintable(new PreparedPrescriptionPrinter(prescription));
-        job.print();
 
     }
 }

@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Bern University of Applied Sciences<br>
  * BSc Medical Informatics<br>
- * Module <br>
+ * Module Bachelorthesis<br>
  * <p>
  *  Converter class to chnage objects from Webservice to local client specific objects with javafx properties and back.
  *  No validation of Input is performed.
