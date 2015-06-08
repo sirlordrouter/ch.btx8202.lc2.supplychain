@@ -1,9 +1,9 @@
-package services;
-
 import entities.Prescription;
-import org.junit.Test;
+import services.BarcodeGenerator;
 
+import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 
 /**
@@ -13,17 +13,14 @@ import java.time.LocalDate;
  * <p>
  * <p></p>
  * Project: MediPrep
- * Package: services
+ * Package: PACKAGE_NAME
  *
  * @author Johannes Gnaegi, johannes.gnaegi@students.bfh.ch
- * @version 28.04.15
+ * @version 08.06.15
  */
-public class BarcodeGeneratorTest {
+public class BarcodeTester {
 
-
-    @Test
-    public void testGenerate() throws Exception {
-
+    public static void main(String[] args) {
         BarcodeGenerator generator = new BarcodeGenerator();
         File outputFile = new File("out.png");
 
@@ -32,7 +29,12 @@ public class BarcodeGeneratorTest {
         //generator.generate(outputFile,prescription);
 
 
-        generator.printBarcode(prescription, "Brother QL-700", "");
-
+        try {
+            generator.printBarcode(prescription, "Brother QL-700", "");
+        } catch (PrinterException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

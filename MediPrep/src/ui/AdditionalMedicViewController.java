@@ -76,6 +76,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
     private IRepository dataSource;
     private BarcodeGenerator barcodeGenerator;
     private String printerName;
+    private String filePath;
 
     public AdditionalMedicViewController(String fxml) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
@@ -100,6 +101,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
 
         dataSource = new ErpWebserviceClient(prop.getProperty("stationGLN"));
         printerName = prop.getProperty("printerName");
+        filePath = prop.getProperty("PrescLabelPath");
         barcodeGenerator = new BarcodeGenerator();
 
         setUpPrescriptionsTable(prescriptionTableView);
@@ -611,7 +613,7 @@ public class AdditionalMedicViewController extends VBox implements IPartialView,
             alert.showAndWait();
 
             try {
-                barcodeGenerator.printBarcode(prescription, printerName);
+                barcodeGenerator.printBarcode(prescription, printerName, filePath);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (PrinterException e) {

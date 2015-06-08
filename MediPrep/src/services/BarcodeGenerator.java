@@ -153,7 +153,7 @@ public class BarcodeGenerator {
      *  exception when printing not possible
      * @throws IOException
      */
-    public void printBarcode(Prescription prescription, String printerName) throws PrinterException, IOException {
+    public void printBarcode(Prescription prescription, String printerName, String filePath) throws PrinterException, IOException {
 
         PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
         System.out.println("Number of print services: " + printServices.length);
@@ -168,9 +168,9 @@ public class BarcodeGenerator {
         }
         if(service != null) {
             PrinterJob job = PrinterJob.getPrinterJob();
-            job.printDialog();
+            //job.printDialog();
             job.setPrintService(service);
-            job.setPrintable(new PreparedPrescriptionPrinter(prescription));
+            job.setPrintable(new PreparedPrescriptionPrinter(prescription,filePath));
             job.print();
             System.out.println("Wird gedruckt ...");
         } else {

@@ -29,16 +29,16 @@ public class PreparedPrescriptionPrinter implements Printable {
 
     public static int PRINT_LABEL_WITH = 300;
     public static int PRINT_LABEL_HEIGT = 100;
-    public static String BARCODE_IMAGE_PATH = "out.png";
+    private String barcode_Image_path = "out.png";
 
     private Prescription prescription;
     BarcodeGenerator generator;
 
 
-    public PreparedPrescriptionPrinter(Prescription prescription) {
+    public PreparedPrescriptionPrinter(Prescription prescription, String filePath) {
         generator = new BarcodeGenerator();
         this.prescription = prescription;
-
+        this.barcode_Image_path = filePath + barcode_Image_path;
     }
 
     @Override
@@ -55,9 +55,9 @@ public class PreparedPrescriptionPrinter implements Printable {
         try {
             AffineTransform symbolPlacement = new AffineTransform();
             symbolPlacement.setToTranslation(pf.getImageableX(),pf.getImageableY());
-            generator.generate(new File(BARCODE_IMAGE_PATH), prescription);
+            generator.generate(new File(barcode_Image_path), prescription);
             System.out.println("File generated");
-            RenderedImage image = toBufferedImage(ImageIO.read(new File(BARCODE_IMAGE_PATH)));
+            RenderedImage image = toBufferedImage(ImageIO.read(new File(barcode_Image_path)));
             int imageWidth = image.getWidth();
 
             double scaleFactorWidth =  imageWidth > pageWidth ?
