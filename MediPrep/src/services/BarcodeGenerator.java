@@ -15,8 +15,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
+import java.awt.print.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -157,6 +156,8 @@ public class BarcodeGenerator {
 
         PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
         System.out.println("Number of print services: " + printServices.length);
+        BarcodeGenerator generator = new BarcodeGenerator();
+        generator.generate(new File(filePath + "out.png"), prescription);
 
         PrintService service = null;
         for (PrintService printer : printServices) {
@@ -170,7 +171,19 @@ public class BarcodeGenerator {
             PrinterJob job = PrinterJob.getPrinterJob();
             //job.printDialog();
             job.setPrintService(service);
-            job.setPrintable(new PreparedPrescriptionPrinter(prescription,filePath));
+            PageFormat p = job.defaultPage();
+            /*final double mm = 72.0 / 25.4;
+            Paper paper = new Paper();
+            paper.setSize(62 * mm, 29 * mm);
+            paper.setImageableArea(0, 0, paper.getWidth(), paper.getHeight());
+            p.setPaper(paper);
+
+            job.defaultPage(p);*/
+
+            p = job.validatePage(p);
+            System.out.println("Page size: h" + p.getImageableHeight() + "x w" + p.getImageableWidth());
+            job.setPrintable(new PreparedPrescriptionPrinter(prescription, filePath), p);
+
             job.print();
             System.out.println("Wird gedruckt ...");
         } else {

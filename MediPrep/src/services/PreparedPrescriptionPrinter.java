@@ -7,9 +7,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
+import java.awt.print.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -33,7 +31,6 @@ public class PreparedPrescriptionPrinter implements Printable {
 
     private Prescription prescription;
     BarcodeGenerator generator;
-
 
     public PreparedPrescriptionPrinter(Prescription prescription, String filePath) {
         generator = new BarcodeGenerator();
@@ -101,4 +98,20 @@ public class PreparedPrescriptionPrinter implements Printable {
         // Return the buffered image
         return bimage;
     }
+/*
+    @Override
+    public int getNumberOfPages() {
+        return 1;
+    }
+
+    @Override
+    public PageFormat getPageFormat(int pageIndex) throws IndexOutOfBoundsException {
+        return null;
+    }
+
+    @Override
+    public Printable getPrintable(int pageIndex) throws IndexOutOfBoundsException {
+        return this;
+    }
+    */
 }
